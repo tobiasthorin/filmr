@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -18,10 +19,12 @@ public class Showing {
 	
 	private LocalDateTime showDateTime;
 	@ManyToOne
+	@JoinColumn(name = "movie_id")
 	private Movie movie;
 	@ManyToOne
+	@JoinColumn(name = "theater_id")
 	private Theater theater;
-	@OneToMany
+	@OneToMany(mappedBy = "showing")
 	private List<Booking> bookings;
 	
 	public Showing() {}

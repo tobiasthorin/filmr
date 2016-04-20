@@ -14,9 +14,9 @@ public class Theater {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String name;
-	@OneToMany
+	@OneToMany(mappedBy = "theater")
 	private List<Row> rows;
-	@OneToMany
+	@OneToMany(mappedBy = "theater")
 	private List<Showing> showings;
 	
 	public Theater() {}

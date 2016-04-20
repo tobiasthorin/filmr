@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -18,6 +19,7 @@ public class Booking {
 	@OneToMany
 	private List<Seat> bookedSeats;
 	@ManyToOne
+	@JoinColumn(name = "showing_id")
 	private Showing showing;
 	
 	private String phoneNumber;

@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -13,8 +15,11 @@ public class Row {
 	@Id
 	@GeneratedValue( strategy = GenerationType.AUTO)
 	private Long id;
-	@OneToMany
+	@OneToMany(mappedBy = "row")
 	private List<Seat> seats;
+	@ManyToOne
+	@JoinColumn(name = "theater_id")
+	private Theater theater;
 	private String rowLabel;
 	
 	public Row() {}
