@@ -1,0 +1,28 @@
+<div class="showings-wrapper">
+	<p>The showings view, loaded into the div with ng-view</p>
+	
+	<h3>One paragraph for each thing in the sample array.</h3>
+	<p>Each sample object looks similar to: <br>
+		<code>{<br>id: 1, <br>	date: new Date(), <br> theater: {name: "bergakungen 02"}, <br> movie: {title:"Lion king", desc: "lions and stuff"} <br>}</code></p>
+	
+	<p>Angular code/syntax for repeating is
+		<code>
+			<span ng-non-bindable>
+				ng-repeat="showing in sampleShowingsArray <br><br>
+				Id: {{showing.id}} - Date: {{showing.date}} - Theater: {{showing.theater.name}} - Movie: {{showing.movie.title}} ( {{showing.movie.desc}})
+			</span>
+		</code>
+	</p>
+	<ul>
+		<li ng-repeat="showing in sampleShowingsArray">
+			Id: {{showing.id}} - Filtered date: {{showing.date | date : 'dd MMM HH:mm'}} - Theater: {{showing.theater.name}} - Movie: {{showing.movie.title}} ( {{showing.movie.desc}})
+		</li>
+	</ul>
+	
+	<input type="button" ng-click="functionForBtnClick()" value="click me">
+	
+	<h4> Binding. One value effects another value.</h4>
+	<input type="text" ng-model="someVariableName">
+	<p>value above and below is: {{someVariableName}}</p>
+	<input type="text" ng-model="someVariableName">
+</div>
