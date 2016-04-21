@@ -29,8 +29,8 @@
 	app.run(['$rootScope', function($rootScope) {
 	    $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
 	        
-	    	$rootScope.baseUrl = "/repairshop-test/#/";
-	    	$rootScope.API_baseUrl = "/repairshop-test/api/";
+	    	$rootScope.baseUrl = "/filmr/#/";
+	    	$rootScope.API_baseUrl = "/filmr/api/";
 	    	
 	    	$rootScope.title = current.$$route.title;
 	        $rootScope.activeTab = current.$$route.activeTab;  

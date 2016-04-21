@@ -1,4 +1,19 @@
+
+<!-- TODO: move to a correct place to have css -->
+<style> 
+	ul.movie_list {display:block; margin:0; padding:0; width:50%}
+	ul.movie_list li{display:block; padding: 10px; margin:0; background: #eee; border-bottom: 1px solid #bbb}
+
+	ul.movie_list .movie_title{font-size:16px; font-weight:bold}
+	ul.movie_list .showing_time{font-size:12px; font-weight:bold }
+	ul.movie_list .at_theater{font-size:12px; font-weight:bold; float:left}
+	ul.movie_list li.header{font-size:18px; font-weight:bold; background: #008BAD; color: #eee}
+
+</style>
+
 <div class="showings-wrapper">
+
+	<!--
 	<p>The showings view, loaded into the div with ng-view</p>
 	
 	<h3>One paragraph for each thing in the sample array.</h3>
@@ -13,16 +28,31 @@
 			</span>
 		</code>
 	</p>
-	<ul>
-		<li ng-repeat="showing in sampleShowingsArray">
-			Id: {{showing.id}} - Filtered date: {{showing.date | date : 'dd MMM HH:mm'}} - Theater: {{showing.theater.name}} - Movie: {{showing.movie.title}} ( {{showing.movie.desc}})
-		</li>
-	</ul>
-	
+	-->
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6">
+				<ul class="movie_list">
+					<li class="header">Showings</li>
+					<li ng-repeat="showing in relevantShowings">
+						<div class="movie_title">{{showing.movie.title}}</div>
+						<div class="showing_time">{{showing.date | date : 'dd MMM HH:mm'}}</div>
+						<div class="at_theater">- {{showing.theater.name}}</div>
+					</li>
+				</ul>
+			</div>
+			<div class="col-sm-6">
+				Datepicker
+			</div>
+		</div>
+
+	</div>
+	<!--
 	<input type="button" ng-click="functionForBtnClick()" value="click me">
 	
 	<h4> Binding. One value effects another value.</h4>
 	<input type="text" ng-model="someVariableName">
 	<p>value above and below is: {{someVariableName}}</p>
 	<input type="text" ng-model="someVariableName">
+	-->
 </div>
