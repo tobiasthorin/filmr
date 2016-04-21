@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html ng-app="filmr">
+<head>
+	<meta charset="utf-8">
+	
+	<title>filmr</title>
+	
+  	<!-- Mobile-friendly viewport -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+   	<!-- Style sheet link -->
+	
+	<!-- jQuery  - should be loaded before angular (loading in body) -->
+	<script
+			  src="https://code.jquery.com/jquery-2.2.3.min.js"
+			  integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="
+			  crossorigin="anonymous"></script>
+			  
+	
+	<!-- Bootstrap -->
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	
+</head>
+
+<body>
+
+	<div id="contentWrapper" class="container">
+
+	<!-- activeTab is set in app.js in the routing -->
+		<ul class="nav nav-tabs">
+  			<li role="presentation" ng-class="{'active': activeTab == 'Home'}"><a href="#/">Home</a></li>
+  			<li role="presentation" ng-class="{'active': activeTab == 'Book'}"><a href="#/book">Book</a></li>
+		</ul>
+
+	<h1>h1 for whole page. Will be same, no matter the view</h1>
+	
+	
+	<!-- page specific content loads in this view. see routing in app.js  -->
+	<div ng-view></div>
+	
+	
+	
+	
+	
+	<!-- End of wrapper div -->
+	</div>
+	
+	
+	<!-- Angular files here.. => faster loading?  -->
+	<script src="angular-dependencies/angular.min.js"></script>
+	<script src="angular-dependencies/angular-route.min.js"></script>
+	
+	<script src="app.js"></script>
+	<!-- services and controllers for our custom views -->
+	<!-- booking -->
+	<script src="booking-view/bookingController.js"></script>
+	<script src="booking-view/bookingService.js"></script>
+	
+
+</body>
+
+</html>
