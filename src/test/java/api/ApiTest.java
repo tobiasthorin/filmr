@@ -48,13 +48,17 @@ public class ApiTest {
 //		assertEquals(showingToPost, responseEntity.getBody()); //TODO must compare actual values properly OR create equals method
 
 		//Update showing in database
-//		Showing updateShowingTo = new Showing();
-//		restTemplate.put(showingApiBaseUrl, showingToPost, 1);
+		Showing updateShowingTo = new Showing();
+		restTemplate.put(showingApiBaseUrl+"/1", showingToPost, Showing.class); //TODO bad request?
 
-//		//Read showing in database
-//		ResponseEntity<Showing> readShowingResponseEntity = restTemplate.getForEntity(showingApiBaseUrl, Showing.class,1);
-//		Showing showingToRead = readShowingResponseEntity.getBody();
+
+		//Read showing in database
+		ResponseEntity<Showing> readShowingResponseEntity = restTemplate.getForEntity(showingApiBaseUrl+"/1", Showing.class);
+		Showing showingToRead = readShowingResponseEntity.getBody();
 //		assertEquals(showingToPost, showingToRead);
+
+		//Delete showing in database
+		restTemplate.delete(showingApiBaseUrl+"/1", Showing.class);
 
 		// check that an empty
 		List<Showing> expectedEmptyList = new ArrayList<Showing>();
@@ -66,7 +70,7 @@ public class ApiTest {
 
 
 
-		
+
 //		// insert some data through api, then test that we can retrieve it
 //		Showing actualShowingToSend = new Showing();
 //		actualShowingToSend.setShowDateTime(LocalDateTime.now());
