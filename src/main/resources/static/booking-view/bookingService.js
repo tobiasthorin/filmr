@@ -16,8 +16,11 @@ angular.module('filmr')
 			var mininumAvailableTickets = mininumAvailableTickets || 2;
 			var onlyForMovieWithId = onlyForMovieWithId || -999;
 			
-			
-			return $http.get(showingsBaseUrl); // 
+			return $http.get(showingsBaseUrl, {"from_date":fromDate,
+							   "to_date":toDate,
+							   "mininum_available_tickets":mininumAvailableTickets,
+							   "only_for_movie_with_id":onlyForMovieWithId
+			}); // 
 		};
 		
 		

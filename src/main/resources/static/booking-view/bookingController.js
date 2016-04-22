@@ -9,7 +9,12 @@ angular.module('filmr')
 	                         ];
 	
 	$scope.relevantShowings = [];
-	
+	$scope.relevantMovies = [
+		{"title": "Pulp fiction"},
+		{"title": "Pulp fiction"},
+		{"title": "Pulp fiction"},
+		{"title": "Pulp fiction"}
+	];
 	
 	// run this function as soon as page/view loads
 	getAllRelevantShowings();
@@ -17,7 +22,8 @@ angular.module('filmr')
 	
 	// functions on $scope object will be available to pages/templates (html) that that use this controller (see routing in app.js)
 	$scope.updateAvailableShowings = function() {
-		
+	
+		alert(1);	
 		getAllRelevantShowings();
 	}
 	
@@ -25,7 +31,9 @@ angular.module('filmr')
 		alert("clicked");
 	}
 	
-	
+
+	$scope.cinemas = Array(1,2,3,4,5);
+	$scope.seatlimits = Array(1,2,3,4,5,6,7,8,9,10);
 	
 	// "private" functions. not visible on $scope.  
 	function getAllRelevantShowings() {
