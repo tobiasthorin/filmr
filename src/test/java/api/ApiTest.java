@@ -62,6 +62,11 @@ public class ApiTest {
 		List<Showing> actualListFromEmptyDatabase = (List<Showing>) restTemplate.getForObject(showingApiBaseUrl, List.class);
 		assertEquals(expectedEmptyList, actualListFromEmptyDatabase);
 
+
+
+
+
+		
 //		// insert some data through api, then test that we can retrieve it
 //		Showing actualShowingToSend = new Showing();
 //		actualShowingToSend.setShowDateTime(LocalDateTime.now());
