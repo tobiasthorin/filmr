@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Booking {
 	@Id
@@ -18,6 +20,8 @@ public class Booking {
 	private String bookingReference;
 	@OneToMany
 	private List<Seat> bookedSeats;
+	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "showing_id")
 	private Showing showing;
