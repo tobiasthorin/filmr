@@ -17,7 +17,7 @@ angular.module('filmr')
 			var onlyForMovieWithId = onlyForMovieWithId || -999;
 			
 			
-			return $http.get(showingsBaseUrl); // 
+			return $http.get(showingsBaseUrl, {"from_date": from_date, }); // 
 		};
 		
 		

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,10 +35,22 @@ public class ShowingController {
         return new ResponseEntity<Showing>(retrievedShowing, HttpStatus.OK);
     }
 
+    
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<Showing>> readAllShowings() {
-        List<Showing> retrievedShowings = showingService.readAllEntities();
+    public ResponseEntity<List<Showing>> readAllShowings(
+    		@RequestParam(name="from_date", required=false) LocalDateTime from_date,
+    		@RequestParam(name="to_date", required=false) LocalDateTime to_date,
+    		@RequestParam(name="mininum_available_tickets", required=false) Integer mininum_available_tickets,
+    		@RequestParam(name="only_for_movie_with_id", required=false) Long only_for_movie_with_id
+    		) {
+    	
+    	List<Showing> retrievedShowings = new ArrayList<>();
+    	if(only_for_movie_with_id == null) {
+    		retrievedShowings = showingService.readAllEntities();    		
+    	} else {
+    		retrievedShowings = showingService.getAllMatchingParams(from_date, to_date, mininum_available_tickets, only_for_movie_with_id);
+    	}
         return new ResponseEntity<List<Showing>>(retrievedShowings, HttpStatus.OK);
     }
 
