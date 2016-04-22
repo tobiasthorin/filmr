@@ -47,15 +47,16 @@ public class ApiTest {
 		ResponseEntity<Showing> responseEntity = restTemplate.postForEntity(showingApiBaseUrl, showingToPost, Showing.class);
 //		assertEquals(showingToPost, responseEntity.getBody()); //TODO must compare actual values properly OR create equals method
 
-		//Update showing in database
-		Showing updateShowingTo = new Showing();
-		restTemplate.put(showingApiBaseUrl+"/1", showingToPost, Showing.class); //TODO bad request?
-
 
 		//Read showing in database
 		ResponseEntity<Showing> readShowingResponseEntity = restTemplate.getForEntity(showingApiBaseUrl+"/1", Showing.class);
 		Showing showingToRead = readShowingResponseEntity.getBody();
 //		assertEquals(showingToPost, showingToRead);
+
+		//Update showing in database
+		Showing updateShowingTo = new Showing();
+		restTemplate.put(showingApiBaseUrl+"/1", showingToRead); //TODO bad request if object lacks id. This is intentional
+		//TODO make a test that sends an object without ID and verify Bad Request HTTP
 
 		//Delete showing in database
 		restTemplate.delete(showingApiBaseUrl+"/1", Showing.class);
