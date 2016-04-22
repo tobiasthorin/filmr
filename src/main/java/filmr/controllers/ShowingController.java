@@ -23,21 +23,21 @@ public class ShowingController {
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Showing> createShowing(@RequestBody Showing showing) {
-        Showing savedShowing = showingService.saveShowing(showing);
+        Showing savedShowing = showingService.saveEntity(showing);
         return new ResponseEntity<Showing>(savedShowing, HttpStatus.OK);
     }
 
     @CrossOrigin
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Showing> readShowing(@PathVariable Long id){
-        Showing retrievedShowing = showingService.readShowing(id);
+        Showing retrievedShowing = showingService.readEntity(id);
         return new ResponseEntity<Showing>(retrievedShowing, HttpStatus.OK);
     }
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Showing>> readAllShowings() {
-        List<Showing> retrievedShowings = showingService.readAllShowings();
+        List<Showing> retrievedShowings = showingService.readAllEntities();
         return new ResponseEntity<List<Showing>>(retrievedShowings, HttpStatus.OK);
     }
 
@@ -48,14 +48,14 @@ public class ShowingController {
             return new ResponseEntity<Showing>(new Showing(), HttpStatus.BAD_REQUEST);
         }
 
-        Showing updatedShowing = showingService.saveShowing(showing);
+        Showing updatedShowing = showingService.saveEntity(showing);
         return new ResponseEntity<Showing>(updatedShowing, HttpStatus.OK);
     }
 
     @CrossOrigin
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteShowing(@PathVariable Long id) {
-        showingService.deleteShowing(id);
+        showingService.deleteEntity(id);
         return new ResponseEntity(HttpStatus.OK);
     }
 

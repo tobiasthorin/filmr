@@ -215,5 +215,4 @@ hs_err_pid*
 *.css.map
 
 # user specific application settings
-# /src/main/resources/application.yml
-*.yml
+src/main/resources/application.yml
