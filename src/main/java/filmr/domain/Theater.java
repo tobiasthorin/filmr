@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Theater {
 	@Id
@@ -16,6 +18,8 @@ public class Theater {
 	private String name;
 	@OneToMany(mappedBy = "theater")
 	private List<Row> rows;
+	
+	@JsonIgnore
 	@OneToMany(mappedBy = "theater")
 	private List<Showing> showings;
 	
