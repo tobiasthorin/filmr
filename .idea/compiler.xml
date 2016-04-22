@@ -28,7 +28,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="application" target="1.6" />
-      <module name="filmr" target="1.5" />
+      <module name="filmr" target="1.6" />
     </bytecodeTargetLevel>
   </component>
 </project>
