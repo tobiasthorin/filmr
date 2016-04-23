@@ -1,18 +1,27 @@
 package filmr.controllers;
 
+import filmr.domain.Movie;
 import filmr.domain.Showing;
 import filmr.services.ShowingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Marco on 2016-04-21.
@@ -58,7 +67,23 @@ public class ShowingController {
     		retrievedShowings = showingService.getAllMatchingParams(from_date, to_date, mininum_available_tickets, only_for_movie_with_id);
     	}
     	
-        return new ResponseEntity<List<Showing>>(retrievedShowings, HttpStatus.OK);
+    	
+    	HttpHeaders customHeaders = null;
+    	ResponseEntity<List<Showing>> responseEntity = null;
+		try {
+			customHeaders = buildCustomHeadersForReadAll(retrievedShowings);
+		} catch (JsonProcessingException e) {
+			System.out.println("Couldn't parse movie list into JSON");
+			e.printStackTrace();
+		} finally {
+			if(customHeaders == null) {
+				responseEntity = new ResponseEntity<List<Showing>>(retrievedShowings, HttpStatus.PARTIAL_CONTENT);
+			} else {				
+				responseEntity = ResponseEntity.ok().headers(customHeaders).body(retrievedShowings);
+			}
+		}
+
+    	return responseEntity;
     }
 
     @CrossOrigin
@@ -77,6 +102,32 @@ public class ShowingController {
     public ResponseEntity deleteShowing(@PathVariable Long id) {
         showingService.deleteEntity(id);
         return new ResponseEntity(HttpStatus.OK);
+    }
+    
+    
+    private HttpHeaders buildCustomHeadersForReadAll(List<Showing> showings) throws JsonProcessingException {
+    	
+    	HttpHeaders httpHeaders = new HttpHeaders();
+    	httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+    	
+    	List<Movie> distinctMovies = getDistinctMovieListForShowings(showings);
+
+		httpHeaders.add("distinct_movies", new ObjectMapper().writeValueAsString(distinctMovies));
+		httpHeaders.add("Status Code", "200 OK");
+
+    	return httpHeaders;
+    }
+    
+    private List<Movie> getDistinctMovieListForShowings(List<Showing> showings) {
+    	
+    	List<Movie> movies = 
+    			showings.stream()
+    			.parallel()
+    			.map(showing -> showing.getMovie())
+    			.distinct()
+    			.collect(Collectors.toList());
+    			
+    	return movies;
     }
 
 }
