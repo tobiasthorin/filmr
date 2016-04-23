@@ -41,10 +41,10 @@
 			<div class="col-sm-6">
 				<ul class="list movies">
 					<li class="header">Movies</li>
-					<li ng-repeat="movie in relevantMovies">
+					<li ng-repeat="movie in movies" ng-click="updateAvailableShowings(movie.id)">
 						<div class="movie_title">{{movie.title}}</div>
-						<div class="showing_time">Thriller</div>
-						<div class="at_theater">- 2:15h</div>
+						<div class="showing_time">{{movie.lengthInMinutes}}</div>
+						<div class="at_theater">- {{movie.description}}</div>
 						<div class="end"></div>
 					</li>
 				</ul>
