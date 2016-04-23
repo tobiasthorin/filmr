@@ -2,7 +2,9 @@ package filmr.services;
 
 import filmr.domain.Showing;
 
-import java.time.LocalDateTime;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -21,46 +23,57 @@ public class ShowingService extends BaseServiceClass<Showing, Long> {
 	private EntityManager entityManager;
 	
 	public List<Showing> getAllMatchingParams(
-			LocalDateTime from_date, 
-			LocalDateTime to_date, 
+			Date from_date, 
+			Date to_date, 
 			Integer mininum_available_tickets,
 			Long only_for_movie_with_id) {
 		
 		
-		
-		String sqlQuery = buildQueryForParams(from_date, to_date, mininum_available_tickets, only_for_movie_with_id);
-		
-		Query query = entityManager.createNativeQuery(sqlQuery, Showing.class);
+		String sqlQueryString = buildQueryForParams(from_date, to_date, mininum_available_tickets, only_for_movie_with_id);	
+		Query query = entityManager.createNativeQuery(sqlQueryString, Showing.class);
 		
 		List<Showing> matchingShowings = (List<Showing>) query.getResultList();
-		
+		System.out.println("\nShowingService returning " + matchingShowings.size() + " showings from query:\n" + sqlQueryString);
 		
 		return matchingShowings;
 	}
 	
 	
 	private String buildQueryForParams(
-			LocalDateTime from_date, 
-			LocalDateTime to_date, 
+			Date from_date, 
+			Date to_date, 
 			Integer mininum_available_tickets,
 			Long only_for_movie_with_id
 			) {
 		
 		
 		String query = 
-				"SELECT * FROM showing WHERE " +
+				"SELECT * FROM showing " +
+				"WHERE " +
+				getFromDateCondition(from_date) + 
+				" AND " +
 				getMovieCondition(only_for_movie_with_id) + 
-				"";
+				" ORDER BY show_date_time ASC LIMIT 50";
 		
 		return query;
 	}
 	
 	private String getMovieCondition(Long only_for_movie_with_id) {
 		if(only_for_movie_with_id < 1) {
-			return "true";
+			return "(true)";
 		}
 		
-		return "movie_id = " + only_for_movie_with_id;
+		return "(movie_id = " + only_for_movie_with_id + ")";
 	}
+	
+	private String getFromDateCondition(Date from_date) {
+
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		
+		String fromDateCondition = "(show_date_time > '" + dateFormat.format(from_date) + "')";
+		
+		return fromDateCondition;
+	}
+	
 
 }

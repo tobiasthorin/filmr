@@ -1,6 +1,6 @@
 package filmr.domain;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -11,8 +11,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 @Entity
 public class Showing {
@@ -20,8 +18,7 @@ public class Showing {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@DateTimeFormat(iso = ISO.DATE_TIME)
-	private LocalDateTime showDateTime;
+	private Date showDateTime;
 	@ManyToOne
 	@JoinColumn(name = "movie_id")
 	private Movie movie;
@@ -33,12 +30,14 @@ public class Showing {
 	
 	public Showing() {}
 
-	public LocalDateTime getShowDateTime() {
+
+
+	public Date getShowingDateTime() {
 		return showDateTime;
 	}
 
-	public void setShowDateTime(LocalDateTime showDateTime) {
-		this.showDateTime = showDateTime;
+	public void setShowingDateTime(Date showingDateTime) {
+		this.showDateTime = showingDateTime;
 	}
 
 	public Movie getMovie() {

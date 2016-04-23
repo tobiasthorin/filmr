@@ -20,7 +20,8 @@ angular.module('filmr')
 
 					"url": showingsBaseUrl,
 					"params": {
-							   "only_for_movie_with_id":onlyForMovieWithId
+							   "only_for_movie_with_id":onlyForMovieWithId,
+							   "from_date":fromDate
 						}
 			}
 			); // 
