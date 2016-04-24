@@ -52,6 +52,10 @@ angular.module('filmr')
 				// on success
 				function(response) {
 					
+					// new meta data in response
+					var distinctMovieArray = JSON.parse(response.headers().distinct_movies);
+					console.log("distinct movies", distinctMovieArray);
+					
 					var showingsArray = response.data;
 
 					$scope.movies = [];
