@@ -15,11 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.net.URI;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,20 +50,18 @@ public class ShowingController {
     		@RequestParam(name="from_date", required=false) @DateTimeFormat(iso = ISO.DATE) Date from_date, // @DateTimeFormat(iso = ISO.DATE) seems to work when we retrieve javascript Date objects
     		@RequestParam(name="to_date", required=false) @DateTimeFormat(iso = ISO.DATE) Date to_date,
     		@RequestParam(name="mininum_available_tickets", required=false) Integer mininum_available_tickets,
-    		@RequestParam(name="only_for_movie_with_id", required=false, defaultValue = "-99") Long only_for_movie_with_id
+    		@RequestParam(name="only_for_movie_with_id", required=false) Long only_for_movie_with_id,
+    		@RequestParam(name="limit", required=false, defaultValue = "50") Integer limit
     		) {
     	
-    	List<Showing> retrievedShowings = new ArrayList<>();
-    	if(only_for_movie_with_id == null && from_date == null) {
-    		retrievedShowings = showingService.readAllEntities();    		
-    	} else {
-    		// default values that are hard to code as strings.. If not null -> use the value, else provide a default value
-    		from_date = from_date != null ? from_date : new Date();
-    		
-    		retrievedShowings = showingService.getAllMatchingParams(from_date, to_date, mininum_available_tickets, only_for_movie_with_id);
-    	}
     	
-    	
+		// default values that are hard to code as strings.. If not null -> use the value, else provide a default value
+		from_date = from_date != null ? from_date : new Date();
+		System.out.println("From date: " + from_date);
+		System.out.println("To date: " + to_date);
+		
+		List<Showing> retrievedShowings = showingService.getAllMatchingParams(from_date, to_date, mininum_available_tickets, only_for_movie_with_id, limit);
+	
     	HttpHeaders customHeaders = null;
     	ResponseEntity<List<Showing>> responseEntity = null;
 		try {

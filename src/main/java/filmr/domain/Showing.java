@@ -9,10 +9,22 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 
 @Entity
+@NamedQueries(
+		@NamedQuery(name = "Showing.filteredAndOrdered", 
+					query = "SELECT s FROM Showing s " + 
+							"WHERE " +
+							"(:fromDate is null OR s.showDateTime > :fromDate) AND " +
+							"(:toDate is null OR FUNCTION('DATE_FORMAT', s.showDateTime, '%Y-%m-%d') <= FUNCTION('DATE_FORMAT', :toDate, '%Y-%m-%d')) AND " + // only care about the date, not time
+							"(:onlyForMovieWithId is null OR s.movie.id = :onlyForMovieWithId) " +
+							"ORDER BY s.showDateTime ASC"
+				)
+		)
 public class Showing {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,12 +44,12 @@ public class Showing {
 
 
 
-	public Date getShowingDateTime() {
+	public Date getShowDateTime() {
 		return showDateTime;
 	}
 
-	public void setShowingDateTime(Date showingDateTime) {
-		this.showDateTime = showingDateTime;
+	public void setShowDateTime(Date showDateTime) {
+		this.showDateTime = showDateTime;
 	}
 
 	public Movie getMovie() {
