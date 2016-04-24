@@ -9,37 +9,61 @@ angular.module('filmr')
 	                         ];
 	
 	$scope.relevantShowings = [];
-	
+	$scope.movies = [];
 	
 	// run this function as soon as page/view loads
-	getAllRelevantShowings();
+	getAllRelevantShowings(null,null,null,null);
 	
 	
 	// functions on $scope object will be available to pages/templates (html) that that use this controller (see routing in app.js)
-	$scope.updateAvailableShowings = function() {
-		
-		getAllRelevantShowings();
+	$scope.updateAvailableShowings = function(onlyForMovieWithId) {
+		getAllRelevantShowings(null,null,null,onlyForMovieWithId);
 	}
 	
 	$scope.functionForBtnClick = function() {
 		alert("clicked");
 	}
 	
-	
+
+	$scope.cinemas = Array(1,2,3,4,5);
+	$scope.seatlimits = Array(1,2,3,4,5,6,7,8,9,10);
+
+
+	// COPY-PASTED FROM STACKOVERFLOW (almost)
+	function contains(a, obj) {
+	    for (var i = 0; i < a.length; i++) {
+		if (JSON.stringify(a[i]) == JSON.stringify(obj)) {
+		    return true;
+		}
+	    }
+	    return false;
+	}
+	// ---
+
 	
 	// "private" functions. not visible on $scope.  
-	function getAllRelevantShowings() {
+	function getAllRelevantShowings(fromDate, toDate, mininumAvailableTickets, onlyForMovieWithId) {
 		
 		console.log("fetching relevant showings based on selected options");
 		
 		// TODO: gather relevant variables to limit showings:  fromDate, toDate, mininumAvailableTickets, onlyForMovieWithId
 		
-		BookingService.getAllRelevantShowings().then(
+		BookingService.getAllRelevantShowings(fromDate, toDate, mininumAvailableTickets, onlyForMovieWithId).then(
 				// on success
 				function(response) {
 					
-					var showingsArray = response.data;
+					// new meta data in response
+					var distinctMovieArray = JSON.parse(response.headers().distinct_movies);
+					console.log("distinct movies", distinctMovieArray);
 					
+					var showingsArray = response.data;
+
+					$scope.movies = [];
+					for(i=0; i<showingsArray.length; i++) {
+						var movie = showingsArray[i].movie;
+						if(!contains($scope.movies,movie))
+							$scope.movies.push(movie);
+					}
 					$scope.relevantShowings = showingsArray;
 					
 				}, // on error

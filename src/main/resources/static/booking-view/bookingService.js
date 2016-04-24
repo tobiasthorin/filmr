@@ -14,10 +14,17 @@ angular.module('filmr')
 			var fromDate = fromDate || (new Date());
 			var toDate = toDate; // TODO: add some time from today, 2-3 weeks?
 			var mininumAvailableTickets = mininumAvailableTickets || 2;
-			var onlyForMovieWithId = onlyForMovieWithId || -999;
+			var onlyForMovieWithId = onlyForMovieWithId ? onlyForMovieWithId : ""; //TODO: this is kind of hack, we should fix so paramters is not send if not set instead of empty string
 			
-			
-			return $http.get(showingsBaseUrl); // 
+			return $http({ 
+
+					"url": showingsBaseUrl,
+					"params": {
+							   "only_for_movie_with_id":onlyForMovieWithId,
+							   "from_date":fromDate
+						}
+			}
+			); // 
 		};
 		
 		
