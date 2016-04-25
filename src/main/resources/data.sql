@@ -1,4 +1,3 @@
-
 /* MOVIES*/
 
 INSERT INTO movie (title, length_in_minutes, description) 
