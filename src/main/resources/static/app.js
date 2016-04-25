@@ -19,10 +19,10 @@
 			controller: 'bookingController'
 		})
 		// booking 
-		.when('/book/confirm', {
+		.when('/book/confirm/:id', {
 			title: 'Book',
 			activeTab: 'Book',
-			templateUrl: 'booking-view/book_confirmed.html', 
+			templateUrl: 'booking-view/confirm.html', 
 			controller: 'bookingController'
 				
 		}).otherwise({redirectTo: "/"})

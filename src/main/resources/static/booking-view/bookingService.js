@@ -27,6 +27,12 @@ angular.module('filmr')
 			); 
 		};
 		
+		this.getShowing = function(id) {
+
+			var url = showingsBaseUrl+id;
+			console.log(url);
+			return $http.get(url);
+		}
 		
 		
 		

@@ -1,14 +1,20 @@
 angular.module('filmr')
-.controller('bookingController', ['$rootScope', '$scope', '$routeParams', 'BookingService', function($rootScope, $scope, $routeParams, BookingService) {
+.controller('bookingController', ['$window','$rootScope', '$scope', '$routeParams', 'BookingService', function($window,$rootScope, $scope, $routeParams, BookingService) {
 
 	$scope.relevantShowings = [];
 	$scope.movies = [];
 	$scope.relevantDates = [];
-
+	$scope.id = $routeParams.id;
 	
+
+	//TODO: Split these two logic (show many showings and book confirm paga) into own controllers.
+ 
 	// run this function as soon as page/view loads
 	getAllRelevantShowings(null,null,null,null);
-	
+	getCurrentShowingToBookIfSet();
+
+	//---
+
 	
 	// functions on $scope object will be available to pages/templates (html) that that use this controller (see routing in app.js)
 	$scope.updateAvailableShowings = function(onlyForMovieWithId,date) {
@@ -20,12 +26,9 @@ angular.module('filmr')
 	}
 	
 
-	$scope.cinemas = Array(1,2,3,4,5);
-	$scope.seatlimits = Array(1,2,3,4,5,6,7,8,9,10);
 
-
-	$scope.goToConfirm = function() {
-		alert("TODO: goto booking");
+	$scope.goToConfirm = function(id) {
+		$window.location.href="/filmr/#/book/confirm/"+id;
 	}
 
 	function isDateFoundInShowings(date,showingsArray) {
@@ -38,6 +41,18 @@ angular.module('filmr')
 			}
 		}
 		return false;
+	}
+
+
+	function getCurrentShowingToBookIfSet() {
+		$scope.showing = BookingService.getShowing($routeParams.id).then(
+			function(response) {
+				$scope.showing = response.data;
+			}
+		);
+
+
+		console.log("----");
 	}
 
 	
