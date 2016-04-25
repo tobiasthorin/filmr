@@ -83,12 +83,12 @@ INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-26 1
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-26 19:00', 2, 2);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-26 21:00', 2, 2);
 
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-27 10:00', 2, 2);
+/*INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-27 10:00', 2, 2);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-27 13:00', 2, 2);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-27 15:00', 2, 2);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-27 17:00', 2, 2);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-27 19:00', 2, 2);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-27 21:00', 2, 2);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-27 21:00', 2, 2);*/
 
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-28 10:00', 2, 2);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-28 13:00', 2, 2);
