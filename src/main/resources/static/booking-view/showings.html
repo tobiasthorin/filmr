@@ -79,8 +79,9 @@
 					<li class="header">Showings</li>
 					<li ng-repeat="showing in relevantShowings">
 						<div class="movie_title">{{showing.movie.title}}</div>
-						<div class="showing_time">{{showing.date | date : 'dd MMM HH:mm'}}</div>
-						<div class="at_theater">- {{showing.theater.name}}</div>
+						<!-- checkout https://docs.angularjs.org/api/ng/filter/date -->
+						<div class="showing_time">{{showing.showDateTime | date : 'dd MMM HH:mm'}}</div>
+						<div class="at_theater"> - {{showing.theater.name}}</div>
 						<div class="end"></div>
 					</li>
 				</ul>				

@@ -2,7 +2,9 @@ package filmr.services;
 
 import filmr.domain.Showing;
 
-import java.time.LocalDateTime;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -21,46 +23,29 @@ public class ShowingService extends BaseServiceClass<Showing, Long> {
 	private EntityManager entityManager;
 	
 	public List<Showing> getAllMatchingParams(
-			LocalDateTime from_date, 
-			LocalDateTime to_date, 
+			Date from_date, 
+			Date to_date, 
 			Integer mininum_available_tickets,
-			Long only_for_movie_with_id) {
+			Long only_for_movie_with_id,
+			Integer limit) {
 		
 		
+		// named query, works with null values  - see Showing.java
+		Query query = entityManager.createNamedQuery("Showing.filteredAndOrdered", Showing.class);
+		query.setParameter("fromDate", from_date);
+		query.setParameter("toDate", to_date);
+		query.setParameter("onlyForMovieWithId", only_for_movie_with_id);
+		query.setMaxResults(limit);
 		
-		String sqlQuery = buildQueryForParams(from_date, to_date, mininum_available_tickets, only_for_movie_with_id);
+		List<Showing> matchingShowings = query.getResultList();
 		
-		Query query = entityManager.createNativeQuery(sqlQuery, Showing.class);
-		
-		List<Showing> matchingShowings = (List<Showing>) query.getResultList();
+		System.out.println("ShowingService returning " + matchingShowings.size() + " showings, by named query Showing.filteredAndOrdered:");
+		String queryBeingMade = query.unwrap(org.hibernate.Query.class).getQueryString();
+		System.out.println(queryBeingMade + "\n");
 		
 		
 		return matchingShowings;
 	}
-	
-	
-	private String buildQueryForParams(
-			LocalDateTime from_date, 
-			LocalDateTime to_date, 
-			Integer mininum_available_tickets,
-			Long only_for_movie_with_id
-			) {
-		
-		
-		String query = 
-				"SELECT * FROM showing WHERE " +
-				getMovieCondition(only_for_movie_with_id) + 
-				"";
-		
-		return query;
-	}
-	
-	private String getMovieCondition(Long only_for_movie_with_id) {
-		if(only_for_movie_with_id < 1) {
-			return "true";
-		}
-		
-		return "movie_id = " + only_for_movie_with_id;
-	}
+
 
 }
