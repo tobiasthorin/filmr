@@ -19,6 +19,14 @@
 			templateUrl: 'booking-view/showings.html', 
 			controller: 'bookingController'
 				
+		})
+		// admin
+		.when('/admin', {
+			title: 'Admin',
+			activeTab: 'Admin',
+			templateUrl: 'admin-view/admin.html', 
+			controller: 'adminController'
+				
 		}).otherwise({redirectTo: "/"})
 	});
 	

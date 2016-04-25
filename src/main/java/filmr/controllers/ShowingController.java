@@ -116,7 +116,6 @@ public class ShowingController {
     	
     	List<Movie> movies = 
     			showings.stream()
-    			.parallel()
     			.map(showing -> showing.getMovie())
     			.distinct()
     			.collect(Collectors.toList());

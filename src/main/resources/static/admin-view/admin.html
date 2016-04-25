@@ -1,0 +1,5 @@
+<p ng-repeat="theater in allTheaters">
+{{theater.name}}
+</p>
+
+<select ng-options="theater as theater.name for theater in allTheaters" ng-model="selectedTheater"></select>
