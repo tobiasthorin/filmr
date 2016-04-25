@@ -20,7 +20,10 @@ angular.module('filmr')
 		BookingService.createShowing(showing).then(
 				function(response){
 					console.log("Response",response.data);
-		
+					alert("Successfully created showing for movie " + response.data.movie.title);
+					$scope.selectedDate = null;
+					$scope.selectedTheater = null;
+					$scope.selectedMovie = null;
 				}, 
 				function(error){
 					console.log("error", error);
