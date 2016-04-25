@@ -34,7 +34,6 @@ public class ApiTest {
     private static ConfigurableApplicationContext applicationContext;
 	private String showingApiBaseUrl = "http://localhost:8080/filmr/api/showings";
 	private RestTemplate restTemplate;
-	private Showing testShowing;
 
 	@BeforeClass // just do this once, for the whole test class (not for each method, like @Before)
 	public static void testClassSetup(){
@@ -45,18 +44,6 @@ public class ApiTest {
 	@Before
 	public void setup() {
 		restTemplate = new RestTemplate();
-
-		//Setup showing
-		LocalDateTime time = LocalDateTime.now();
-		ArrayList<Booking> bookings = new ArrayList<Booking>();
-		Movie movie = new Movie();
-		Theater theater = new Theater();
-
-		testShowing = new Showing();
-		testShowing.setShowDateTime(time);
-		testShowing.setBookings(bookings);
-		testShowing.setMovie(movie);
-		testShowing.setTheater(theater);
 	}
 
 

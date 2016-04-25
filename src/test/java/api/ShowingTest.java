@@ -34,7 +34,6 @@ public class ShowingTest {
     private static ConfigurableApplicationContext applicationContext;
 	private String showingApiBaseUrl = "http://localhost:8080/filmr/api/showings";
 	private RestTemplate restTemplate;
-	private Showing testShowing;
     private Long id;
 
     @Parameterized.Parameters
@@ -66,18 +65,6 @@ public class ShowingTest {
 	@Before
 	public void setup() {
 		restTemplate = new RestTemplate();
-
-		//Setup showing
-		LocalDateTime time = LocalDateTime.now();
-		ArrayList<Booking> bookings = new ArrayList<Booking>();
-		Movie movie = new Movie();
-		Theater theater = new Theater();
-
-		testShowing = new Showing();
-		testShowing.setShowDateTime(time);
-		testShowing.setBookings(bookings);
-		testShowing.setMovie(movie);
-		testShowing.setTheater(theater);
 	}
 
 
@@ -142,12 +129,5 @@ public class ShowingTest {
 		restTemplate.delete(showingApiBaseUrl+"/"+id, Showing.class);
 		//Try to read object at id; should not work. If object does not exist, throws a 500 HttpServerErrorException
 		restTemplate.getForEntity(showingApiBaseUrl + "/" + id, Showing.class);
-	}
-
-    @Test
-	public void testIfNoShowingsExist() {
-		List<Showing> expectedEmptyList = new ArrayList<Showing>();
-		List<Showing> actualListFromEmptyDatabase = (List<Showing>) restTemplate.getForObject(showingApiBaseUrl, List.class);
-		assertEquals(expectedEmptyList, actualListFromEmptyDatabase);
 	}
 }
