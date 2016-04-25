@@ -41,7 +41,7 @@
 			<div class="col-sm-6">
 				<ul class="list movies">
 					<li class="header">Movies</li>
-					<li ng-repeat="movie in movies" ng-click="updateAvailableShowings(movie.id)">
+					<li ng-repeat="movie in movies" ng-click="updateAvailableShowings(movie.id,null)">
 						<div class="movie_title">{{movie.title}}</div>
 						<div class="showing_time">{{movie.lengthInMinutes}}</div>
 						<div class="at_theater">- {{movie.description}}</div>
@@ -50,17 +50,19 @@
 				</ul>
 			</div>
 			<div class="col-sm-6">
+				<!--
 				<div class="seat">
 					Hur många blir ni?
 					<select ng-model="select_seat" ng-options="x for x in seatlimits" ng-change="functionForBtnClick()">
 					</select>
 				</div>
+				-->
 				<div class="calendar">
-					Mars
+					April
 					<ul>
-						<li>12</li>
-						<li>13</li>
-						<li>14</li>
+						<li ng-repeat="date in relevantDates" ng-style="{'background-color':date.color}" ng-click="updateAvailableShowings(null,date.date)">
+							{{date.day}}
+						</li>
 					</ul>
 				</div>
 				<!--
@@ -77,7 +79,7 @@
 				<br/> <!--    <-- temponarty hack -->
 				<ul class="list">
 					<li class="header">Showings</li>
-					<li ng-repeat="showing in relevantShowings">
+					<li ng-repeat="showing in relevantShowings" ng-click="goToConfirm(showing.id)">
 						<div class="movie_title">{{showing.movie.title}}</div>
 						<!-- checkout https://docs.angularjs.org/api/ng/filter/date -->
 						<div class="showing_time">{{showing.showDateTime | date : 'dd MMM HH:mm'}}</div>
