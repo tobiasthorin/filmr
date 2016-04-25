@@ -1,7 +1,6 @@
 package filmr.controllers;
 
 import filmr.domain.Movie;
-import filmr.domain.Showing;
 import filmr.services.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,22 +22,22 @@ public class MovieController {
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Movie> createMovie(@RequestBody Movie movie) {
-        Movie savedShowing = movieService.saveEntity(movie);
-        return new ResponseEntity<Movie>(savedShowing, HttpStatus.OK);
+        Movie savedMovie = movieService.saveEntity(movie);
+        return new ResponseEntity<Movie>(savedMovie, HttpStatus.OK);
     }
 
     @CrossOrigin
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Movie> readMovie(@PathVariable Long id){
-        Movie retrievedShowing = movieService.readEntity(id);
-        return new ResponseEntity<Movie>(retrievedShowing, HttpStatus.OK);
+        Movie retrievedMovie = movieService.readEntity(id);
+        return new ResponseEntity<Movie>(retrievedMovie, HttpStatus.OK);
     }
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<Movie>> readAllShowings() {
-        List<Movie> retrievedShowings = movieService.readAllEntities();
-        return new ResponseEntity<List<Movie>>(retrievedShowings, HttpStatus.OK);
+    public ResponseEntity<List<Movie>> readAllMovies() {
+        List<Movie> retrievedMovies = movieService.readAllEntities();
+        return new ResponseEntity<List<Movie>>(retrievedMovies, HttpStatus.OK);
     }
 
     @CrossOrigin
@@ -48,8 +47,8 @@ public class MovieController {
             return new ResponseEntity<Movie>(new Movie(), HttpStatus.BAD_REQUEST);
         }
 
-        Movie updatedShowing = movieService.saveEntity(movie);
-        return new ResponseEntity<Movie>(updatedShowing, HttpStatus.OK);
+        Movie updatedMovie = movieService.saveEntity(movie);
+        return new ResponseEntity<Movie>(updatedMovie, HttpStatus.OK);
     }
 
     @CrossOrigin
