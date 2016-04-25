@@ -1,5 +1,5 @@
 
-# MOVIES
+/* MOVIES*/
 
 INSERT INTO movie (title, length_in_minutes, description) 
 	VALUES ('Lion King', 122, 'Story about lions');
@@ -10,7 +10,7 @@ INSERT INTO movie (title, length_in_minutes, description)
 INSERT INTO movie (title, length_in_minutes, description) 
 	VALUES ('Lion Princess', 125, 'Old tale about lions');
 	
-# THEATERS
+/* THEATERS */
 
 INSERT INTO theater (name) VALUES ('Bergakungen sal 01');
 INSERT INTO theater (name) VALUES ('Bergakungen sal 04');
@@ -18,8 +18,8 @@ INSERT INTO theater (name) VALUES ('Bergakungen sal 05');
 INSERT INTO theater (name) VALUES ('Bergakungen sal 08');
 
 
-# SHOWINGS
-# for movie 1, theater 1
+/* SHOWINGS */
+/*# for movie 1, theater 1*/
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-22 12:00', 1, 1);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-22 15:00', 1, 1);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-22 19:00', 1, 1);
@@ -61,7 +61,7 @@ INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-30 1
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-30 21:00', 1, 1);
 
 
-# for movie 2, theater 2
+/* for movie 2, theater 2*/
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-24 10:00', 2, 2);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-24 13:00', 2, 2);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-24 15:00', 2, 2);
@@ -113,7 +113,7 @@ INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-30 2
 
 
 
-# for movie 3, theater 3
+/* for movie 3, theater 3 */
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-24 12:00', 3, 3);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-24 14:00', 3, 3);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-24 16:00', 3, 3);
