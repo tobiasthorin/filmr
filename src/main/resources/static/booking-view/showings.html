@@ -1,13 +1,20 @@
 
 <!-- TODO: move to a correct place to have css -->
 <style> 
-	ul.movie_list {display:block; margin:0; padding:0; width:50%}
-	ul.movie_list li{display:block; padding: 10px; margin:0; background: #eee; border-bottom: 1px solid #bbb}
+	ul.list {display:block; margin:0; padding:0}
+	ul.list li{display:block; padding: 10px; margin:0; background: #eee; border-bottom: 1px solid #bbb}
+	ul.list li.header{font-size:18px; font-weight:bold;  color: #eee; background: #000}
+	ul.movies li.header{background: #008BAD;}
 
-	ul.movie_list .movie_title{font-size:16px; font-weight:bold}
-	ul.movie_list .showing_time{font-size:12px; font-weight:bold }
-	ul.movie_list .at_theater{font-size:12px; font-weight:bold; float:left}
-	ul.movie_list li.header{font-size:18px; font-weight:bold; background: #008BAD; color: #eee}
+	ul.list .movie_title{font-size:16px; font-weight:bold}
+	ul.list .showing_time{font-size:12px; font-weight:bold; float:left }
+	ul.list .at_theater{font-size:12px; font-weight:bold; float:left}
+
+	.end{clear:both}
+
+	.calendar {border: 1px solid #222; text-align: center}
+	.calendar ul{display:block;padding:0;margin:0}
+	.calendar li{display:block;padding:3px;margin:2px; border: 1px solid #333; text-align: center; font-size: 18px }
 
 </style>
 
@@ -32,20 +39,56 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-6">
-				<ul class="movie_list">
-					<li class="header">Showings</li>
-					<li ng-repeat="showing in relevantShowings">
-						<div class="movie_title">{{showing.movie.title}}</div>
-						<div class="showing_time">{{showing.date | date : 'dd MMM HH:mm'}}</div>
-						<div class="at_theater">- {{showing.theater.name}}</div>
+				<ul class="list movies">
+					<li class="header">Movies</li>
+					<li ng-repeat="movie in movies" ng-click="updateAvailableShowings(movie.id,null)">
+						<div class="movie_title">{{movie.title}}</div>
+						<div class="showing_time">{{movie.lengthInMinutes}}</div>
+						<div class="at_theater">- {{movie.description}}</div>
+						<div class="end"></div>
 					</li>
 				</ul>
 			</div>
 			<div class="col-sm-6">
-				Datepicker
+				<!--
+				<div class="seat">
+					Hur många blir ni?
+					<select ng-model="select_seat" ng-options="x for x in seatlimits" ng-change="functionForBtnClick()">
+					</select>
+				</div>
+				-->
+				<div class="calendar">
+					April
+					<ul>
+						<li ng-repeat="date in relevantDates" ng-style="{'background-color':date.color}" ng-click="updateAvailableShowings(null,date.date)">
+							{{date.day}}
+						</li>
+					</ul>
+				</div>
+				<!--
+				<div class="cinema">
+					Biograf
+					<select ng-model="select_cinema" ng-options="x for x in cinemas" ng-change="functionForBtnClick()">
+					</select>
+				</div>
+				-->
 			</div>
 		</div>
-
+		<div>
+			<div class="col-sm-12">
+				<br/> <!--    <-- temponarty hack -->
+				<ul class="list">
+					<li class="header">Showings</li>
+					<li ng-repeat="showing in relevantShowings" ng-click="goToConfirm()">
+						<div class="movie_title">{{showing.movie.title}}</div>
+						<!-- checkout https://docs.angularjs.org/api/ng/filter/date -->
+						<div class="showing_time">{{showing.showDateTime | date : 'dd MMM HH:mm'}}</div>
+						<div class="at_theater"> - {{showing.theater.name}}</div>
+						<div class="end"></div>
+					</li>
+				</ul>				
+			</div>
+		</div>
 	</div>
 	<!--
 	<input type="button" ng-click="functionForBtnClick()" value="click me">

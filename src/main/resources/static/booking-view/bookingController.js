@@ -1,45 +1,77 @@
 angular.module('filmr')
 .controller('bookingController', ['$rootScope', '$scope', '$routeParams', 'BookingService', function($rootScope, $scope, $routeParams, BookingService) {
 
-	$scope.sampleShowingsArray = [
-	                         {id: 1, date: new Date(), theater: {name: "bergakungen 02"}, movie: {title:"Lion king", desc: "lions and stuff"}},
-	                         {id: 2, date: new Date(), theater: {name: "bergakungen 01"}, movie: {title:"Lion queen", desc: "lions and stuff"}},
-	                         {id: 3, date: new Date(), theater: {name: "bergakungen 05"}, movie: {title:"Lion prince", desc: "lions and stuff"}},
-	                         {id: 4, date: new Date(), theater: {name: "bergakungen 11"}, movie: {title:"Lion princess", desc: "lions and stuff"}}
-	                         ];
-	
 	$scope.relevantShowings = [];
-	
+	$scope.movies = [];
+	$scope.relevantDates = [];
+
 	
 	// run this function as soon as page/view loads
-	getAllRelevantShowings();
+	getAllRelevantShowings(null,null,null,null);
 	
 	
 	// functions on $scope object will be available to pages/templates (html) that that use this controller (see routing in app.js)
-	$scope.updateAvailableShowings = function() {
-		
-		getAllRelevantShowings();
+	$scope.updateAvailableShowings = function(onlyForMovieWithId,date) {
+		getAllRelevantShowings(date,date,null,onlyForMovieWithId);
 	}
 	
 	$scope.functionForBtnClick = function() {
 		alert("clicked");
 	}
 	
-	
+
+	$scope.cinemas = Array(1,2,3,4,5);
+	$scope.seatlimits = Array(1,2,3,4,5,6,7,8,9,10);
+
+
+	$scope.goToConfirm = function() {
+		alert("TODO: goto booking");
+	}
+
+	function isDateFoundInShowings(date,showingsArray) {
+		
+		for(var i=0; i<showingsArray.length; i++) {
+			showing = showingsArray[i];
+			var dateCompare = new Date(showing.showDateTime);
+			if(dateCompare.getDate()==date) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	
 	// "private" functions. not visible on $scope.  
-	function getAllRelevantShowings() {
+	function getAllRelevantShowings(fromDate, toDate, mininumAvailableTickets, onlyForMovieWithId) {
 		
 		console.log("fetching relevant showings based on selected options");
 		
 		// TODO: gather relevant variables to limit showings:  fromDate, toDate, mininumAvailableTickets, onlyForMovieWithId
 		
-		BookingService.getAllRelevantShowings().then(
+		BookingService.getAllRelevantShowings(fromDate, toDate, mininumAvailableTickets, onlyForMovieWithId).then(
 				// on success
 				function(response) {
 					
-					var showingsArray = response.data;
+					// new meta data in response
+					var distinctMovieArray = JSON.parse(response.headers().distinct_movies);
+					console.log("distinct movies", distinctMovieArray);
 					
+					var showingsArray = response.data;
+
+					$scope.movies = [];
+					for(i=0; i<distinctMovieArray.length; i++) {
+						var movie = distinctMovieArray[i];
+						$scope.movies.push(movie);
+					}
+
+
+					$scope.relevantDates = [];
+					for(i=20; i<31; i++) {
+						var color = "#eee";
+						if(isDateFoundInShowings(i,showingsArray)) color = "#4e4";
+						$scope.relevantDates.push({"day":i,"color":color,"date":new Date("2016-04-"+i)});
+					}
+
 					$scope.relevantShowings = showingsArray;
 					
 				}, // on error

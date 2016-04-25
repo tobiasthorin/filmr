@@ -12,11 +12,17 @@
 			activeTab: 'Home',
 			templateUrl: 'home-view/home.html',
 		})
-		// booking 
 		.when('/book', {
 			title: 'Book',
 			activeTab: 'Book',
-			templateUrl: 'booking-view/showings.html', 
+			templateUrl: 'booking-view/showings.html',
+			controller: 'bookingController'
+		})
+		// booking 
+		.when('/book/confirm', {
+			title: 'Book',
+			activeTab: 'Book',
+			templateUrl: 'booking-view/book_confirmed.html', 
 			controller: 'bookingController'
 				
 		}).otherwise({redirectTo: "/"})

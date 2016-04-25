@@ -22,13 +22,19 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="application" />
         <module name="filmr" />
+      </profile>
+      <profile default="false" name="Annotation profile for application" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="application" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="application" target="1.6" />
-      <module name="filmr" target="1.6" />
+      <module name="application" target="1.8" />
+      <module name="filmr" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
