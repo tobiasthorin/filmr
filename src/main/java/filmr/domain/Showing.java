@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -30,12 +31,15 @@ public class Showing {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@NotNull
 	private Date showDateTime;
 	@ManyToOne
 	@JoinColumn(name = "movie_id")
+	@NotNull
 	private Movie movie;
 	@ManyToOne
 	@JoinColumn(name = "theater_id")
+	@NotNull
 	private Theater theater;
 	@OneToMany(mappedBy = "showing")
 	private List<Booking> bookings;

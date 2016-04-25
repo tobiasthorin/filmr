@@ -27,6 +27,10 @@ angular.module('filmr')
 			); // 
 		};
 		
+		this.createShowing = function(showing){
+			return $http.post(showingsBaseUrl, showing);
+		}
+		
 		
 		
 		

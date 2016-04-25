@@ -6,22 +6,15 @@ angular.module('filmr')
 	.service('MovieService', ['$http','$rootScope', function($http, $rootScope) {
 
 		
-		var showingsBaseUrl = $rootScope.API_baseUrl + "showings/";
+		var moviesBaseUrl = $rootScope.API_baseUrl + "movies/";
 		
-		this.getAllRelevantShowings = function(fromDate, toDate, mininumAvailableTickets, onlyForMovieWithId) {
-			
-			// set default values if all values where not provided
-			var fromDate = fromDate || (new Date());
-			var toDate = toDate; // TODO: add some time from today, 2-3 weeks?
-			var mininumAvailableTickets = mininumAvailableTickets || 2;
-			var onlyForMovieWithId = onlyForMovieWithId ? onlyForMovieWithId : ""; //TODO: this is kind of hack, we should fix so paramters is not send if not set instead of empty string
-			
+	this.getAllMovies = function(){
+		
 			return $http({ 
 
-					"url": showingsBaseUrl,
+					"url": moviesBaseUrl,
 					"params": {
-							   "only_for_movie_with_id":onlyForMovieWithId,
-							   "from_date":fromDate
+							 
 						}
 			}
 			); // 
