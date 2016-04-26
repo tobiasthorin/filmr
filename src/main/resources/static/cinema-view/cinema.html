@@ -1,0 +1,32 @@
+<div class="showings-wrapper">
+
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6">
+				<ul>
+					<li ng-repeat="movie in repertoire">
+						{{movie.title}}
+						- <a href="" ng-click="removeMovieFromRepertoire()"></a>
+					</li>
+					<li>
+						<form>
+							<select>
+								<option ng-repeat="movie in movies">
+									{{movie.title}}
+								</option>
+							</select>
+						</form>
+					</li>
+				</ul>
+			</div>
+			<div class="col-sm-6">
+				<a href="">Add theater</a>
+				<ul>
+					<li ng-repeat="theater in theaters">
+						{{theater.name}}
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

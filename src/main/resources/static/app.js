@@ -12,18 +12,27 @@
 			activeTab: 'Home',
 			templateUrl: 'home-view/home.html',
 		})
+		// booking
 		.when('/book', {
 			title: 'Book',
 			activeTab: 'Book',
 			templateUrl: 'booking-view/showings.html',
 			controller: 'bookingController'
 		})
-		// booking 
+		// booking_confirm 
 		.when('/booking_confirm/:id', {
 			title: 'Book',
 			activeTab: 'Book',
 			templateUrl: 'booking_confirmed-view/confirm.html',
 			controller: 'bookingConfirmedController'
+				
+		})
+		// Cinema 
+		.when('/cinema', {
+			title: 'Cinema',
+			activeTab: 'Cinema',
+			templateUrl: 'cinema-view/cinema.html',
+			controller: 'cinemaController'
 				
 		})
 		// admin
