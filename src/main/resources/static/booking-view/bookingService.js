@@ -26,11 +26,20 @@ angular.module('filmr')
 			}
 			); 
 		};
+
+		this.createShowing = function(showing){
+			return $http.post(showingsBaseUrl, showing);
+		}
 		
+
+		this.getShowing = function(id) {
+
+			var url = showingsBaseUrl+id;
+			console.log(url);
+			return $http.get(url);
+		}
 		
-		
-		
-		
+
 		
 		
 // end of service		

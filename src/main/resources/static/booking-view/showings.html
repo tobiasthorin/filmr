@@ -79,7 +79,7 @@
 				<br/> <!--    <-- temponarty hack -->
 				<ul class="list">
 					<li class="header">Showings</li>
-					<li ng-repeat="showing in relevantShowings" ng-click="goToConfirm()">
+					<li ng-repeat="showing in relevantShowings" ng-click="goToConfirm(showing.id)">
 						<div class="movie_title">{{showing.movie.title}}</div>
 						<!-- checkout https://docs.angularjs.org/api/ng/filter/date -->
 						<div class="showing_time">{{showing.showDateTime | date : 'dd MMM HH:mm'}}</div>

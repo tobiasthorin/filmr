@@ -1,0 +1,7 @@
+
+<form name="showingForm">
+	<select ng-options="theater as theater.name for theater in allTheaters" ng-model="selectedTheater" required></select>
+	<select ng-options="movie as movie.title for movie in allMovies" ng-model="selectedMovie" required></select>
+	<input type="datetime-local" name="date" ng-model="selectedDate" required>
+	<input type="button" ng-click="submitShowing()" value="Submit" ng-disabled="showingForm.$invalid">
+</form>

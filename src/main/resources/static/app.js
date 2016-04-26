@@ -19,11 +19,19 @@
 			controller: 'bookingController'
 		})
 		// booking 
-		.when('/book/confirm', {
+		.when('/booking_confirm/:id', {
 			title: 'Book',
 			activeTab: 'Book',
-			templateUrl: 'booking-view/book_confirmed.html', 
-			controller: 'bookingController'
+			templateUrl: 'booking_confirmed-view/confirm.html',
+			controller: 'bookingConfirmedController'
+				
+		})
+		// admin
+		.when('/admin', {
+			title: 'Admin',
+			activeTab: 'Admin',
+			templateUrl: 'admin-view/admin.html', 
+			controller: 'adminController'
 				
 		}).otherwise({redirectTo: "/"})
 	});
@@ -39,7 +47,10 @@
 	    	$rootScope.API_baseUrl = "/filmr/api/";
 	    	
 	    	$rootScope.title = current.$$route.title;
-	        $rootScope.activeTab = current.$$route.activeTab;  
+	        $rootScope.activeTab = current.$$route.activeTab;
+            $rootScope.errorHandler=function(error){
+                console.log("Error!", error);
+            }
 	        
 	    });
 	}]);
