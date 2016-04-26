@@ -12,4 +12,16 @@ public class Repertoire {
 
     @ManyToMany
 	private List<Movie> movies;
+
+    public Long getId() {
+        return id;
+    }
+
+    public List<Movie> getMovies() {
+        return movies;
+    }
+
+    public void setMovies(List<Movie> movies) {
+        this.movies = movies;
+    }
 }
