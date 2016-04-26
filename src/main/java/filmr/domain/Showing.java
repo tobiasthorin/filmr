@@ -1,5 +1,8 @@
 package filmr.domain;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import java.util.Date;
 import java.util.List;
 
@@ -80,5 +83,31 @@ public class Showing {
 		return id;
 	}
 	
-	
+	@Override
+	public boolean equals(Object object) {
+		if (object == null) {
+			return false;
+		}
+		if (!(object instanceof Showing)) {
+			return false;
+		}
+		final Showing showing = (Showing) object;
+		return new EqualsBuilder()
+				.append(id, showing.getId())
+				.append(showDateTime, showing.getShowDateTime())
+				.append(movie, showing.getMovie())
+				.append(theater, showing.getTheater())
+				.append(bookings, showing.getBookings())
+				.isEquals();
+	}
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder(17, 31)
+				.append(id)
+				.append(showDateTime)
+				.append(movie)
+				.append(theater)
+				.append(bookings)
+				.toHashCode();
+	}
 }

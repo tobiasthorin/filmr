@@ -10,6 +10,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.mockito.Mockito;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by luffarvante on 2016-04-25.
@@ -74,6 +76,7 @@ public class ShowingTest {
 
 		//TODO with current setup its not possible to send anything but an empty object
 		Showing s = new Showing();
+
 		ResponseEntity<Showing> responseEntity = restTemplate.postForEntity(showingApiBaseUrl, s, Showing.class);
 		Showing postedShowing = responseEntity.getBody();
 
