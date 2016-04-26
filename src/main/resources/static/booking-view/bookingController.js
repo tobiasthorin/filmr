@@ -1,17 +1,18 @@
 angular.module('filmr')
-.controller('bookingController', ['$window','$rootScope', '$scope', '$routeParams', 'BookingService', function($window,$rootScope, $scope, $routeParams, BookingService) {
+.controller('bookingController', ['$location','$rootScope', '$scope', '$routeParams', 'BookingService',
+    function($location,$rootScope, $scope, $routeParams, BookingService) {
 
 	$scope.relevantShowings = [];
 	$scope.movies = [];
 	$scope.relevantDates = [];
-	$scope.id = $routeParams.id;
+
 	
 
 	//TODO: Split these two logic (show many showings and book confirm paga) into own controllers.
  
 	// run this function as soon as page/view loads
 	getAllRelevantShowings(null,null,null,null);
-	getCurrentShowingToBookIfSet();
+
 
 	//---
 
@@ -28,7 +29,7 @@ angular.module('filmr')
 
 
 	$scope.goToConfirm = function(id) {
-		$window.location.href="/filmr/#/book/confirm/"+id;
+		$location.path("/booking_confirm/"+id);
 	}
 
 	function isDateFoundInShowings(date,showingsArray) {
@@ -44,16 +45,7 @@ angular.module('filmr')
 	}
 
 
-	function getCurrentShowingToBookIfSet() {
-		$scope.showing = BookingService.getShowing($routeParams.id).then(
-			function(response) {
-				$scope.showing = response.data;
-			}
-		);
 
-
-		console.log("----");
-	}
 
 	
 	// "private" functions. not visible on $scope.  
