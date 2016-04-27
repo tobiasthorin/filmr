@@ -25,7 +25,8 @@ import javax.validation.constraints.NotNull;
 							"WHERE " +
 							"(:fromDate is null OR s.showDateTime > :fromDate) AND " +
 							"(:toDate is null OR FUNCTION('DATE_FORMAT', s.showDateTime, '%Y-%m-%d') <= FUNCTION('DATE_FORMAT', :toDate, '%Y-%m-%d')) AND " + // only care about the date, not time
-							"(:onlyForMovieWithId is null OR s.movie.id = :onlyForMovieWithId) " +
+							"(:onlyForMovieWithId is null OR s.movie.id = :onlyForMovieWithId) AND " +
+							"(:onlyForTheaterWithId is null OR s.theater.id = :onlyForTheaterWithId) " +
 							"ORDER BY s.showDateTime ASC"
 				)
 		)

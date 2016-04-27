@@ -4,17 +4,14 @@
 		<div class="row">
 			<div class="col-sm-6">
 				<ul>
-					<li ng-repeat="movie in repertoire">
+					<li ng-repeat="movie in moviesInRepetoire">
 						{{movie.title}}
 						- <a href="" ng-click="removeMovieFromRepertoire()"></a>
 					</li>
 					<li>
 						<form>
-							<select>
-								<option ng-repeat="movie in addableMovies">
-									{{movie.title}}
-								</option>
-							</select>
+							<select ng-options="movie as movie.title for movie in addableMovies" ng-model="movieToAdd" required></select>
+							<input type="submit" ng-click="addMovieToRepertoire()" value="Add">
 						</form>
 					</li>
 				</ul>
