@@ -56,19 +56,17 @@ public class MovieTest {
 
     @Test
     public void testEquals() {
-        Showing s = new Showing();
-        Showing ss = new Showing();
-
         Movie m = new Movie();
         Movie mm = new Movie();
 
-        s.setMovie(m);
-        ss.setMovie(m);
+        m.setDescription("1");
+        mm.setDescription("1");
+        m.setTitle("2");
+        mm.setTitle("2");
+        m.setLengthInMinutes(new Long(3));
+        mm.setLengthInMinutes(new Long(3));
 
-
-        if (!s.equals(ss)) {
-            fail();
-        }
+        assertEquals(m, mm);
     }
 
     @Test
