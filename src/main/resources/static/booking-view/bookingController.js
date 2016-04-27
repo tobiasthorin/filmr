@@ -8,13 +8,8 @@ angular.module('filmr')
 
 	
 
-	//TODO: Split these two logic (show many showings and book confirm paga) into own controllers.
- 
 	// run this function as soon as page/view loads
 	getAllRelevantShowings(null,null,null,null);
-
-
-	//---
 
 	
 	// functions on $scope object will be available to pages/templates (html) that that use this controller (see routing in app.js)
