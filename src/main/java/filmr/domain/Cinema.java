@@ -1,6 +1,7 @@
 package filmr.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -9,8 +10,9 @@ public class Cinema {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private String name;
 
+    @NotNull
+	private String name;
     @OneToOne
 	private Repertoire repertoire;
     @OneToMany(mappedBy = "cinema")
