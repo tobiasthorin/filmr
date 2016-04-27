@@ -35,6 +35,7 @@
   			<li role="presentation" ng-class="{'active': activeTab == 'Home'}"><a href="#/">Home</a></li>
   			<li role="presentation" ng-class="{'active': activeTab == 'Book'}"><a href="#/book">Book</a></li>
   			<li role="presentation" ng-class="{'active': activeTab == 'Admin'}"><a href="#/admin">Create showing (Admin)</a></li>
+  			<li role="presentation" ng-class="{'active': activeTab == 'Cinema'}"><a href="#/cinema">Cinema</a></li>
 		</ul>
 
 	<h1>Biograf DEMO</h1>
@@ -54,15 +55,15 @@
 	<!-- Angular files here.. => faster loading?  -->
 	<script src="angular-dependencies/angular.min.js"></script>
 	<script src="angular-dependencies/angular-route.min.js"></script>
+	<script src="angular-dependencies/angular-resource.min.js"></script>
 	
 	<script src="app.js"></script>
 	<!-- services and controllers for our custom views -->
 	<!-- booking -->
 	<script src="booking-view/bookingController.js"></script>
 	<script src="booking-view/bookingService.js"></script>
-    <script src="booking_confirmed-view/bookingConfirmedController.js"></script>
-
-
+	<script src="booking_confirmed-view/bookingConfirmedController.js"></script>
+	<script src="cinema-view/cinemaController.js"></script>
 	<script src="admin-view/adminController.js"></script>
 	<script src="admin-view/theaterService.js"></script>
 	<script src="admin-view/movieService.js"></script>
