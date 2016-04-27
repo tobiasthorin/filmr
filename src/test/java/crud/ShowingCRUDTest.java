@@ -14,10 +14,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -29,7 +26,7 @@ import static org.junit.Assert.assertEquals;
 public class ShowingCRUDTest {
 
     //Variables
-     private static ConfigurableApplicationContext applicationContext;
+    private static ConfigurableApplicationContext applicationContext;
     private RestTemplate restTemplate;
     private String baseUrl;
     private String urlWithId;
