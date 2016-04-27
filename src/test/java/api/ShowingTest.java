@@ -1,15 +1,13 @@
 package api;
 
 import filmr.Application;
-import filmr.domain.Booking;
-import filmr.domain.Movie;
 import filmr.domain.Showing;
-import filmr.domain.Theater;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.mockito.Mockito;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +15,12 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
+import static org.junit.Assert.fail;
 
 /**
  * Created by luffarvante on 2016-04-25.
@@ -67,13 +64,11 @@ public class ShowingTest {
 		restTemplate = new RestTemplate();
 	}
 
-
 	@Test
 	public void testCreate() {
 		//ResponseEntity<Showing> responseEntity = restTemplate.postForEntity(showingApiBaseUrl, testShowing, Showing.class);
 
 		//TODO with current setup its not possible to send anything but an empty object
-		//TODO this test currently fails as null objects are not allowed
 		Showing s = new Showing();
 
 		ResponseEntity<Showing> responseEntity = restTemplate.postForEntity(showingApiBaseUrl, s, Showing.class);
