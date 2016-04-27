@@ -10,20 +10,20 @@
 		.when('/', {
 			title: 'Home',
 			activeTab: 'Home',
-			templateUrl: 'home-view/home.html',
+			templateUrl: 'views/home-view/home.html',
 		})
 		// booking
 		.when('/book', {
 			title: 'Book',
 			activeTab: 'Book',
-			templateUrl: 'booking-view/showings.html',
+			templateUrl: 'views/booking-view/showings.html',
 			controller: 'bookingController'
 		})
 		// booking_confirm 
 		.when('/booking_confirm/:id', {
 			title: 'Book',
 			activeTab: 'Book',
-			templateUrl: 'booking_confirmed-view/confirm.html',
+			templateUrl: 'views/booking_confirmed-view/confirm.html',
 			controller: 'bookingConfirmedController'
 				
 		})
@@ -31,7 +31,7 @@
 		.when('/cinema', {
 			title: 'Cinema',
 			activeTab: 'Cinema',
-			templateUrl: 'cinema-view/cinema.html',
+			templateUrl: 'views/cinema-view/cinema.html',
 			controller: 'cinemaController'
 				
 		})
@@ -39,7 +39,7 @@
 		.when('/admin', {
 			title: 'Admin',
 			activeTab: 'Admin',
-			templateUrl: 'admin-view/admin.html', 
+			templateUrl: 'views/admin-view/admin.html', 
 			controller: 'adminController'
 				
 		}).otherwise({redirectTo: "/"})
