@@ -23,6 +23,7 @@ public class ShowingService extends BaseServiceClass<Showing, Long> {
 			Date to_date, 
 			Integer mininum_available_tickets,
 			Long only_for_movie_with_id,
+			Long only_for_theater_with_id,
 			Integer limit) {
 		
 		
@@ -31,6 +32,7 @@ public class ShowingService extends BaseServiceClass<Showing, Long> {
 		query.setParameter("fromDate", from_date);
 		query.setParameter("toDate", to_date);
 		query.setParameter("onlyForMovieWithId", only_for_movie_with_id);
+		query.setParameter("onlyForTheaterWithId", only_for_theater_with_id);
 		query.setMaxResults(limit);
 		
 		List<Showing> matchingShowings = query.getResultList();

@@ -50,6 +50,7 @@ public class ShowingController {
     		@RequestParam(name="to_date", required=false) @DateTimeFormat(iso = ISO.DATE) Date to_date,
     		@RequestParam(name="mininum_available_tickets", required=false) Integer mininum_available_tickets,
     		@RequestParam(name="only_for_movie_with_id", required=false) Long only_for_movie_with_id,
+    		@RequestParam(name="only_for_theater_with_id", required=false) Long only_for_theater_with_id,
     		@RequestParam(name="limit", required=false, defaultValue = "50") Integer limit
     		) {
     	
@@ -59,7 +60,13 @@ public class ShowingController {
 		System.out.println("From date: " + from_date);
 		System.out.println("To date: " + to_date);
 		
-		List<Showing> retrievedShowings = showingService.getAllMatchingParams(from_date, to_date, mininum_available_tickets, only_for_movie_with_id, limit);
+		List<Showing> retrievedShowings = showingService.getAllMatchingParams(
+						from_date, 
+						to_date, 
+						mininum_available_tickets, 
+						only_for_movie_with_id,
+						only_for_theater_with_id,
+						limit);
 	
     	HttpHeaders customHeaders = null;
     	ResponseEntity<List<Showing>> responseEntity = null;
