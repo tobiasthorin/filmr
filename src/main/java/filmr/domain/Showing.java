@@ -34,7 +34,6 @@ public class Showing {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
 	@NotNull
 	private Date showDateTime;
 	@ManyToOne
@@ -47,6 +46,7 @@ public class Showing {
 	private Theater theater;
 	@OneToMany(mappedBy = "showing")
 	private List<Booking> bookings;
+	private Boolean isDisabled;
 	
 	public Showing() {}
 
@@ -103,6 +103,7 @@ public class Showing {
 				.append(movie, showing.getMovie())
 				.append(theater, showing.getTheater())
 				.append(bookings, showing.getBookings())
+				.append(isDisabled, showing.isDisabled)
 				.isEquals();
 	}
 	@Override
@@ -113,6 +114,17 @@ public class Showing {
 				.append(movie)
 				.append(theater)
 				.append(bookings)
+				.append(isDisabled)
 				.toHashCode();
 	}
+
+
+
+	@Override
+	public String toString() {
+		return "Showing [id=" + id + ", showDateTime=" + showDateTime + ", movie=" + movie + ", theater=" + theater
+				+ ", bookings=" + bookings + ", isDisabled=" + isDisabled + "]";
+	}
+	
+	
 }

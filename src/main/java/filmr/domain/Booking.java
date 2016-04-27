@@ -3,6 +3,10 @@ package filmr.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import java.util.List;
 
 @Entity
@@ -60,6 +64,43 @@ public class Booking {
 	public Long getId() {
 		return id;
 	}
+	
+	
+	@Override
+	public boolean equals(Object object) {
+		if (object == null) {
+			return false;
+		}
+		if (!(object instanceof Booking)) {
+			return false;
+		}
+		final Booking booking = (Booking) object;
+		return new EqualsBuilder()
+				.append(id, booking.getId())
+				.append(bookingReference, booking.getBookingReference())
+				.append(bookedSeats, booking.getBookedSeats())
+				.append(showing, booking.getShowing())
+				.append(phoneNumber, booking.getPhoneNumber())
+				.isEquals();
+	}
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder(17, 31)
+				.append(id)
+				.append(bookingReference)
+				.append(bookedSeats)
+				.append(showing)
+				.append(phoneNumber)
+				.toHashCode();
+	}
+
+	@Override
+	public String toString() {
+		return "Booking [id=" + id + ", bookingReference=" + bookingReference + ", bookedSeats=" + bookedSeats
+				+ ", showing=" + showing + ", phoneNumber=" + phoneNumber + "]";
+	}
+	
+	
 	
 	
 }
