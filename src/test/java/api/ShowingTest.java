@@ -70,7 +70,6 @@ public class ShowingTest {
 		restTemplate = new RestTemplate();
 	}
 
-
 	@Test
 	public void testCreate() {
 		//ResponseEntity<Showing> responseEntity = restTemplate.postForEntity(showingApiBaseUrl, testShowing, Showing.class);

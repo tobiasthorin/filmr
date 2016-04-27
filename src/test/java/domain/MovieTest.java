@@ -1,6 +1,7 @@
 package domain;
 
 import filmr.domain.Movie;
+import filmr.domain.Showing;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -11,6 +12,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -50,6 +52,23 @@ public class MovieTest {
         when(movie.getTitle()).thenReturn(movieTitle);
 
         assertEquals("test if getTitle in movie returns correct String", movieTitle, movie.getTitle());
+    }
+
+    @Test
+    public void testEquals() {
+        Showing s = new Showing();
+        Showing ss = new Showing();
+
+        Movie m = new Movie();
+        Movie mm = new Movie();
+
+        s.setMovie(m);
+        ss.setMovie(m);
+
+
+        if (!s.equals(ss)) {
+            fail();
+        }
     }
 
     @Test
