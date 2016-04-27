@@ -1,7 +1,4 @@
 /**
- *  (some) CRUD operations for movies
- * TODO: MOVE TO WHERE A MOVIE SERVICE SHOULD BE FOUND
- */
 
 angular.module('filmr')
 	.service('MovieService', ['$http','$rootScope', function($http, $rootScope) {
@@ -17,3 +14,8 @@ angular.module('filmr')
 	
 // end of service		
 }]);
+
+*/
+angular.module('filmr').factory('MovieServicee', function($resource) {
+  return $resource("/filmr/api/movies/");
+});

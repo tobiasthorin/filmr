@@ -1,6 +1,4 @@
-/**
- *  (some) CRUD operations for booking
- */
+
 
 angular.module('filmr')
 	.service('MovieService', ['$http','$rootScope', function($http, $rootScope) {
@@ -26,5 +24,6 @@ angular.module('filmr')
 		
 		
 		
-// end of service		
+
 }]);
+
