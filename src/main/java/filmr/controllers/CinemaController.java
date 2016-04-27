@@ -13,6 +13,8 @@ import java.util.List;
 /**
  * Created by Marco on 2016-04-26.
  */
+@RestController
+@RequestMapping(value="/api/cinemas")
 public class CinemaController {
     @Autowired
     private CinemaService cinemaService;
