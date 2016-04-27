@@ -49,9 +49,7 @@ public class Movie {
 
 	@Override
 	public boolean equals(Object object) {
-		System.out.println("test");
 		if (object == null) {
-			System.out.println("null!!");
 			return false;
 		}
 		if (!(object instanceof Movie)) {

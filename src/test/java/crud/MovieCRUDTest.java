@@ -18,7 +18,6 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
 
 /**
  * Created by Adrian on 2016-04-27.
@@ -119,7 +118,6 @@ public class MovieCRUDTest {
     public void testUpdate() {
         //Read an object
         ResponseEntity<Movie> responseEntity = restTemplate.getForEntity(urlWithId, Movie.class);
-        Movie readMovie = responseEntity.getBody();
         Movie toUpdate = responseEntity.getBody();
 
         String changeTitleTo = "Bobs bob";
@@ -133,7 +131,7 @@ public class MovieCRUDTest {
         Movie updatedMovie = responseEntity.getBody();
 
         //Assert
-        assertNotSame("check that the original movie differs from the updated read one", readMovie, updatedMovie);
+        assertEquals("check that the object is updated", toUpdate, updatedMovie);
         assertEquals("check that the updated field is correct", changeTitleTo, updatedMovie.getTitle());
     }
 
