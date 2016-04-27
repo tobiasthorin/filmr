@@ -76,4 +76,11 @@ public class Cinema {
                 .toHashCode();
     }
 
+	@Override
+	public String toString() {
+		return "Cinema [id=" + id + ", name=" + name + ", repertoire=" + repertoire + ", theaters=" + theaters + "]";
+	}
+    
+    
+
 }

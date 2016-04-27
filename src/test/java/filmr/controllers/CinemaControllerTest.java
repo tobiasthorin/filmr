@@ -115,6 +115,8 @@ public class CinemaControllerTest {
         Cinema updatedCinema = responseEntity.getBody();
 
         //Assert
+        System.out.println("comparing original cinema \n" + toUpdate);
+        System.out.println("with updated cinema \n" + updatedCinema);
         assertEquals("input same as result",toUpdate,updatedCinema);
 
     }
