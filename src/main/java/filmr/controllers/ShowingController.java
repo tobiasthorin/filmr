@@ -51,7 +51,9 @@ public class ShowingController {
     		@RequestParam(name="mininum_available_tickets", required=false) Integer mininum_available_tickets,
     		@RequestParam(name="only_for_movie_with_id", required=false) Long only_for_movie_with_id,
     		@RequestParam(name="only_for_theater_with_id", required=false) Long only_for_theater_with_id,
-    		@RequestParam(name="limit", required=false, defaultValue = "50") Integer limit
+    		@RequestParam(name="limit", required=false, defaultValue = "50") Integer limit,
+    		@RequestParam(name="show_disabled_showings", required=false, defaultValue = "false") Boolean show_disabled_showings
+    		
     		) {
     	
     	
@@ -66,7 +68,9 @@ public class ShowingController {
 						mininum_available_tickets, 
 						only_for_movie_with_id,
 						only_for_theater_with_id,
-						limit);
+						limit,
+						show_disabled_showings
+				);
 	
     	HttpHeaders customHeaders = null;
     	ResponseEntity<List<Showing>> responseEntity = null;

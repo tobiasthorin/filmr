@@ -24,11 +24,13 @@ public class ShowingService extends BaseServiceClass<Showing, Long> {
 			Integer mininum_available_tickets,
 			Long only_for_movie_with_id,
 			Long only_for_theater_with_id,
-			Integer limit) {
+			Integer limit, 
+			Boolean show_disabled_showings) {
 		
-		
+		System.out.println("show disabled showings: " + show_disabled_showings);
 		// named query, works with null values  - see Showing.java
 		Query query = entityManager.createNamedQuery("Showing.filteredAndOrdered", Showing.class);
+		query.setParameter("showDisabledShowings", show_disabled_showings);
 		query.setParameter("fromDate", from_date);
 		query.setParameter("toDate", to_date);
 		query.setParameter("onlyForMovieWithId", only_for_movie_with_id);
