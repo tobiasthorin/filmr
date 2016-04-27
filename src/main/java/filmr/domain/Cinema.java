@@ -51,15 +51,12 @@ public class Cinema {
 
     @Override
     public boolean equals(Object object){
-        System.out.println("check null");
         if (object == null) {
             return false;
         }
-        System.out.println("check instance of cinema");
         if(!(object instanceof Cinema)){
             return false;
         }
-        System.out.println("instance of true");
         final Cinema cinema = (Cinema)object;
         return new EqualsBuilder()
                 .append(id,cinema.getId())
