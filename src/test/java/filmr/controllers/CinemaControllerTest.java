@@ -5,21 +5,52 @@ import filmr.domain.Cinema;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.mockito.Mock;
 import static org.mockito.Mockito.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 import static org.junit.Assert.*;
 
 /**
  * Created by Marco on 2016-04-27.
  */
+@RunWith(Parameterized.class)
 public class CinemaControllerTest {
 
     private RestTemplate restTemplate;
     private String cinemaApiBaseUrl ="http://localhost:8080/filmr/api/cinemas";
+    private String urlWithId;
+
+    //Parameters
+    private Long id;
+
+    @Parameterized.Parameters
+    public static Collection<Object[]> ids() {
+        return Arrays.asList(new Object[][]{
+                {new Long(1)},
+                {new Long(2)},
+                {new Long(3)},
+                {new Long(4)},
+                {new Long(5)},
+                {new Long(6)},
+                {new Long(7)},
+                {new Long(8)},
+                {new Long(9)},
+                {new Long(10)},
+        });
+    }
+
+    public CinemaControllerTest(Long id) {
+        this.id = id;
+    }
 
     @BeforeClass // just do this once, for the whole test class (not for each method, like @Before)
     public static void testClassSetup(){
@@ -31,6 +62,7 @@ public class CinemaControllerTest {
     @Before
     public void setUp() throws Exception {
         restTemplate = new RestTemplate();
+        urlWithId = cinemaApiBaseUrl+"/"+id;
     }
 
     @Test
@@ -46,9 +78,9 @@ public class CinemaControllerTest {
         Cinema spyCinema = spy(cinema);
         when(spyCinema.getId()).thenReturn(postedCinema.getId());
 
-        System.out.println("Boolean equals "+postedCinema.equals(spyCinema));
-        assertEquals("cinema should have same values as postedCinema", postedCinema, spyCinema);
-
+        //Using Overriden equals method in real object
+        Boolean postedAndRetrievedObjectAreEqual = postedCinema.equals(spyCinema);
+        assertEquals("postedAndRetrievedObjectAreEqual expects true", true, postedAndRetrievedObjectAreEqual);
 
 
     }
@@ -56,11 +88,13 @@ public class CinemaControllerTest {
     @Test
     public void testReadCinema() throws Exception {
         //Get
-        ResponseEntity<Cinema> responseEntity = restTemplate.getForEntity(cinemaApiBaseUrl,Cinema.class);
+        ResponseEntity<Cinema> responseEntity = restTemplate.getForEntity(urlWithId,Cinema.class);
         Cinema cinema = responseEntity.getBody();
 
         //Assert
-   
+        assertEquals(id,cinema.getId());
+
+
     }
 
     @Test
@@ -70,11 +104,27 @@ public class CinemaControllerTest {
 
     @Test
     public void testUpdateCinema() throws Exception {
+        ResponseEntity<Cinema> responseEntity = restTemplate.getForEntity(urlWithId,Cinema.class);
+        Cinema toUpdate = responseEntity.getBody();
+
+        toUpdate.setName("Hagabion");
+
+        restTemplate.put(urlWithId,toUpdate);
+
+        responseEntity = restTemplate.getForEntity(urlWithId, Cinema.class);
+        Cinema updatedCinema = responseEntity.getBody();
+
+        //Assert
+        assertEquals("input same as result",toUpdate,updatedCinema);
 
     }
 
-    @Test
+    @Test(expected = HttpServerErrorException.class)
     public void testDeleteCinema() throws Exception {
+        //Delete object
+        restTemplate.delete(urlWithId, Cinema.class);
+
+        restTemplate.getForEntity(urlWithId, Cinema.class);
 
     }
 }
