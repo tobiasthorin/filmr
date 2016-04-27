@@ -1,9 +1,21 @@
 package filmr.domain;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -75,5 +87,31 @@ public class Showing {
 		return id;
 	}
 	
-	
+	@Override
+	public boolean equals(Object object) {
+		if (object == null) {
+			return false;
+		}
+		if (!(object instanceof Showing)) {
+			return false;
+		}
+		final Showing showing = (Showing) object;
+		return new EqualsBuilder()
+				.append(id, showing.getId())
+				.append(showDateTime, showing.getShowDateTime())
+				.append(movie, showing.getMovie())
+				.append(theater, showing.getTheater())
+				.append(bookings, showing.getBookings())
+				.isEquals();
+	}
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder(17, 31)
+				.append(id)
+				.append(showDateTime)
+				.append(movie)
+				.append(theater)
+				.append(bookings)
+				.toHashCode();
+	}
 }

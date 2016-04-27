@@ -5,6 +5,8 @@ import filmr.domain.Cinema;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Mock;
+import static org.mockito.Mockito.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
@@ -35,9 +37,17 @@ public class CinemaControllerTest {
     public void testCreateCinema() throws Exception {
 
         Cinema cinema = new Cinema();
+        cinema.setName("Bergakungen");
 
         ResponseEntity<Cinema> responseEntity = restTemplate.postForEntity(cinemaApiBaseUrl, cinema, Cinema.class);
-        Cinema postedCinema = responseEntity.getBody();
+        Cinema postedCinema = responseEntity.getBody();;
+
+        // Spy cinema with id from result
+        Cinema spyCinema = spy(cinema);
+        when(spyCinema.getId()).thenReturn(postedCinema.getId());
+
+        System.out.println("Boolean equals "+postedCinema.equals(spyCinema));
+        assertEquals("cinema should have same values as postedCinema", postedCinema, spyCinema);
 
 
 
@@ -45,7 +55,12 @@ public class CinemaControllerTest {
 
     @Test
     public void testReadCinema() throws Exception {
+        //Get
+        ResponseEntity<Cinema> responseEntity = restTemplate.getForEntity(cinemaApiBaseUrl,Cinema.class);
+        Cinema cinema = responseEntity.getBody();
 
+        //Assert
+   
     }
 
     @Test

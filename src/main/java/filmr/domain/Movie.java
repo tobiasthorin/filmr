@@ -1,5 +1,8 @@
 package filmr.domain;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -43,6 +46,32 @@ public class Movie {
 	public Long getId() {
 		return id;
 	}
-	
-	
+
+	@Override
+	public boolean equals(Object object) {
+		System.out.println("test");
+		if (object == null) {
+			System.out.println("null!!");
+			return false;
+		}
+		if (!(object instanceof Movie)) {
+			return false;
+		}
+		final Movie movie = (Movie) object;
+		return new EqualsBuilder()
+				.append(id, movie.getId())
+				.append(title, movie.getTitle())
+				.append(description, movie.getDescription())
+				.append(lengthInMinutes, movie.getLengthInMinutes())
+				.isEquals();
+	}
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder(17, 31)
+				.append(id)
+				.append(title)
+				.append(description)
+				.append(lengthInMinutes)
+				.toHashCode();
+	}
 }
