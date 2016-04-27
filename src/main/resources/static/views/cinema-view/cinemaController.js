@@ -1,18 +1,20 @@
 angular.module('filmr')
-.controller('cinemaController', ['$location','$rootScope', '$scope', '$routeParams', 'MovieService','$resource',
-	function($location,$rootScope, $scope, $routeParams, MovieService, $resource) {
+    .controller('cinemaController', ['$rootScope', '$scope', 'MovieService', 'TheaterService', '$resource',
+        function ($rootScope, $scope, MovieService, TheaterService, $resource) {
 
-	$scope.addableMovies = [];
+            $scope.addableMovies = [];
 
-	getAddableMovies();
+            getAddableMovies();
+            getListOfTheaters();
 
-	$scope.removeMovieFromRepertoire = function() {
+            function getAddableMovies() {
+                var moviesBaseUrl = $rootScope.API_baseUrl + "movies/";
+                $scope.addableMovies = MovieService.query();
+            }
 
-	}
+            function getListOfTheaters() {
+                var theatersBaseUrl = $rootScope.API_baseUrl + "theaters/";
+                $scope.theaters = TheaterService.query();
+            }
 
-	function getAddableMovies() {
-		var moviesBaseUrl = $rootScope.API_baseUrl + "movies/";
-		$scope.addableMovies = MovieService.query();
-
-	}
-}]);
+        }]);

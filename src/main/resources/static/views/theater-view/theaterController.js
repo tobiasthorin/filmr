@@ -1,25 +1,55 @@
 angular.module('filmr')
-    .controller('theaterController', ['$rootScope', '$scope', '$location', 'TheaterService',
-        function ($rootScope, $scope, $location, TheaterService) {
+    .controller('theaterController', ['$rootScope', '$scope', '$routeParams', '$location', 'TheaterService',
+        function ($rootScope, $scope, $routeParams, $location, TheaterService) {
+            console.log("Theater Controller");
 
-            $scope.submitTheater = function () {
-                console.log("Submitting theater...");
+            if ($routeParams.id == undefined) {
+                console.log("No id specified");
 
-                console.log($scope.selectedName);
-                console.log($scope.numberOfSeats);
+                $scope.submitTheater = function () {
+                    console.log("Submitting new theater...");
+                    console.log($scope.name);
 
-                var newTheater = new TheaterService();
-                console.log(newTheater);
+                    var newTheater = new TheaterService();
 
-                newTheater.name = $scope.selectedName;
-                newTheater.numberOfSeats = $scope.numberOfSeats;
-                newTheater.isDisabled = $scope.isDisabled;
+                    newTheater.name = $scope.name;
+                    newTheater.numberOfSeats = $scope.numberOfSeats;
+                    newTheater.isDisabled = $scope.isDisabled;
 
-                TheaterService.save(newTheater, function () {
-                    console.log("Saved!");
-                    $location.path('/cinema');
+                    TheaterService.save(newTheater, function () {
+                        console.log("Saved!");
+                        $location.path('/cinema');
+                    });
+
+                }
+
+            } else {
+                console.log("Id " + $routeParams.id + " specified.");
+
+                var existingTheater = TheaterService.get({id:$routeParams.id}, function(){
+                    console.log(existingTheater);
+                    $scope.name = existingTheater.name;
+                    $scope.numberOfSeats = existingTheater.seats;
+                    $scope.isDisabled = existingTheater.disabled;
                 });
 
+                $scope.submitTheater = function () {
+                    console.log("Submitting edited theater...");
+                    console.log($scope.name);
+
+                    var newTheater = new TheaterService();
+
+                    //newTheater.id = $routeParams.id;
+                    newTheater.name = $scope.name;
+                    newTheater.numberOfSeats = $scope.numberOfSeats;
+                    newTheater.isDisabled = $scope.isDisabled;
+
+                    TheaterService.save(newTheater, function () {
+                        console.log("Saved!");
+                        $location.path('/cinema');
+                    });
+
+                }
             }
 
         }]);
