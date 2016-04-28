@@ -26,12 +26,19 @@ angular.module('filmr')
             } else {
                 console.log("Id " + $routeParams.id + " specified.");
 
-                var existingTheater = TheaterService.get({id:$routeParams.id}, function(){
-                    console.log(existingTheater);
-                    $scope.name = existingTheater.name;
-                    $scope.numberOfSeats = existingTheater.numberOfSeats;
-                    $scope.isDisabled = existingTheater.disabled;
-                });
+				TheaterService.get({id: $routeParams.id}).$promise.then(
+					//Get success
+					function (result) {
+						console.log("Successfully retrieved data: ");
+						console.log(result);
+						$scope.name = result.name;
+						$scope.numberOfSeats = result.numberOfSeats;
+						$scope.isDisabled = result.disabled;
+					},
+					//Get error
+					function (err) {
+						$rootScope.errorHandler(err);
+					});
 
                 $scope.submitTheater = function () {
                     console.log("Submitting edited theater...");
@@ -42,7 +49,7 @@ angular.module('filmr')
                     newTheater.id = $routeParams.id;
                     newTheater.name = $scope.name;
                     newTheater.numberOfSeats = $scope.numberOfSeats;
-                    newTheater.isDisabled = $scope.isDisabled;
+                    newTheater.disabled = $scope.isDisabled;
 
                     TheaterService.update(newTheater, function () {
                         console.log("Updated!");
