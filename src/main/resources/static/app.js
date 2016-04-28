@@ -44,8 +44,13 @@
 
             })
             .when('/theater', {
-                title: 'Theater',
-                activeTab: 'Theater',
+                title: 'Create Theater',
+                templateUrl: 'views/theater-view/theater.html',
+                controller: 'theaterController'
+
+            })
+            .when('/theater/:id', {
+                title: 'Edit Theater',
                 templateUrl: 'views/theater-view/theater.html',
                 controller: 'theaterController'
 

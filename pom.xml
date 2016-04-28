@@ -12,7 +12,7 @@
 
     <groupId>io.filmr</groupId>
     <artifactId>application</artifactId>
-    <version>0.1-DEMO</version>
+    <version>0.2-ADMIN</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

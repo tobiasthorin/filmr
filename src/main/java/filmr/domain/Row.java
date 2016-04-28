@@ -79,7 +79,7 @@ public class Row {
 
 	@Override
 	public String toString() {
-		return "Row [id=" + id + ", seats=" + seats + ", theater=" + theater + ", rowLabel=" + rowLabel + "]";
+		return "Row [id=" + id + ", seats size=" + seats.size() + ", theater=" + theater + ", rowLabel=" + rowLabel + "]";
 	}
 	
 	
