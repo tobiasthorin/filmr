@@ -64,19 +64,20 @@ public class ShowingController {
 	
     	HttpHeaders customHeaders = null;
     	ResponseEntity<List<Showing>> responseEntity = null;
-		try {
-			customHeaders = buildCustomHeadersForReadAll(retrievedShowings);
-		} catch (JsonProcessingException e) {
-			System.out.println("Couldn't parse movie list into JSON");
-			e.printStackTrace();
-		} finally {
-			if(customHeaders == null) {
-				responseEntity = new ResponseEntity<List<Showing>>(retrievedShowings, HttpStatus.PARTIAL_CONTENT);
-			} else {				
-				responseEntity = ResponseEntity.ok().headers(customHeaders).body(retrievedShowings);
-			}
-		}
+//		try {
+//			customHeaders = buildCustomHeadersForReadAll(retrievedShowings);
+//		} catch (JsonProcessingException e) {
+//			System.out.println("Couldn't parse movie list into JSON");
+//			e.printStackTrace();
+//		} finally {
+//			if(customHeaders == null) {
+//				responseEntity = new ResponseEntity<List<Showing>>(retrievedShowings, HttpStatus.PARTIAL_CONTENT);
+//			} else {
+//				responseEntity = ResponseEntity.ok().headers(customHeaders).body(retrievedShowings);
+//			}
+//		}
 
+        responseEntity = new ResponseEntity<List<Showing>>(showingService.getAllMatchingParams(from_date, to_date, mininum_available_tickets, only_for_movie_with_id, limit), HttpStatus.OK);
     	return responseEntity;
     }
 
