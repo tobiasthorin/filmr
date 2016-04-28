@@ -20,7 +20,11 @@ public class Theater {
 
     @ManyToOne
     @JoinColumn(name="cinema_id")
+    @JsonIgnore
     private Cinema cinema;
+
+    @Transient
+    private String cinemaName;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "theater")
@@ -32,7 +36,11 @@ public class Theater {
 		return name;
 	}
 
-	public Cinema getCinema() {
+    public String getCinemaName() {
+        return cinema.getName();
+    }
+
+    public Cinema getCinema() {
 		return cinema;
 	}
 

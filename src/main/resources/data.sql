@@ -19,10 +19,10 @@ INSERT INTO movie (title, length_in_minutes, description)
 	
 /* THEATERS */
 
-INSERT INTO theater (name) VALUES ('Bergakungen sal 01');
-INSERT INTO theater (name) VALUES ('Bergakungen sal 04');
-INSERT INTO theater (name) VALUES ('Bergakungen sal 05');
-INSERT INTO theater (name) VALUES ('Bergakungen sal 08');
+INSERT INTO theater (name, cinema_id) VALUES ('Bergakungen sal 01',1);
+INSERT INTO theater (name, cinema_id) VALUES ('Bergakungen sal 04',1);
+INSERT INTO theater (name, cinema_id) VALUES ('Bergakungen sal 05',1);
+INSERT INTO theater (name, cinema_id) VALUES ('Bergakungen sal 08',1);
 
 
 /* SHOWINGS */
@@ -159,5 +159,6 @@ INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-30 1
 
 /* FILL REPETOIRE OF THE THE CINEMA WITH TWO MOVIES */
 INSERT INTO repertoire_movies (repertoire,movies) VALUES(1,1);
+INSERT INTO repertoire_movies (repertoire,movies) VALUES(1,2);
 INSERT INTO repertoire_movies (repertoire,movies) VALUES(1,2);
 

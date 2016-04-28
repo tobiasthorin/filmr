@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -117,6 +118,14 @@ public class CinemaControllerTest {
         //Assert
         assertEquals("input same as result",toUpdate,updatedCinema);
 
+    }
+
+    @Test(expected= HttpClientErrorException.class)
+    public void testUpdateNull(){
+        //Create object
+        Cinema cinema = new Cinema();
+        //Try put. Should throw exception
+        restTemplate.put(urlWithId,cinema);
     }
 
     @Test(expected = HttpServerErrorException.class)
