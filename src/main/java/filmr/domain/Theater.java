@@ -12,6 +12,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
+import java.util.List;
+
 @Entity
 public class Theater {
 	@Id
@@ -20,7 +26,11 @@ public class Theater {
 	private String name;
 	@OneToMany(mappedBy = "theater")
 	private List<Row> rows;
-	
+
+    @ManyToOne
+    @JoinColumn(name="cinema_id")
+    private Cinema cinema;
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "theater")
 	private List<Showing> showings;
@@ -29,6 +39,14 @@ public class Theater {
 
 	public String getName() {
 		return name;
+	}
+
+	public Cinema getCinema() {
+		return cinema;
+	}
+
+	public void setCinema(Cinema cinema) {
+		this.cinema = cinema;
 	}
 
 	public void setName(String name) {
@@ -55,30 +73,44 @@ public class Theater {
 		return id;
 	}
 	
+    @Override
+    public boolean equals(Object object){
+        if (object == null) {
+            return false;
+        }
+        if(!(object instanceof Theater)){
+            return false;
+        }
+        final Theater theater = (Theater)object;
+        return new EqualsBuilder()
+                .append(id,theater.getId())
+                .append(name,theater.getName())
+                .append(rows, theater.getRows())
+                .append(cinema, theater.getCinema())
+                .append(showings,theater.getShowings())
+                .isEquals();
+
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 31)
+                .append(id)
+                .append(name)
+                .append(rows)
+                .append(cinema)
+                .append(showings)
+                .toHashCode();
+    }
+
 	@Override
-	public boolean equals(Object object) {
-		if (object == null) {
-			return false;
-		}
-		if (!(object instanceof Theater)) {
-			return false;
-		}
-		final Theater theater = (Theater) object;
-		return new EqualsBuilder()
-				.append(id, theater.getId())
-				.append(name, theater.getName())
-				.append(rows, theater.getRows())
-				.append(showings, theater.getShowings())
-				.isEquals();
+	public String toString() {
+		return "Theater [id=" + id + ", name=" + name + ", rows=" + rows + ", cinema=" + cinema + ", showings="
+				+ showings + "]";
 	}
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder(17, 31)
-				.append(id)
-				.append(name)
-				.append(rows)
-				.append(showings)
-				.toHashCode();
-	}
+
+
+
+
 	
 }

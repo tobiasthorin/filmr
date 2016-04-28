@@ -72,4 +72,12 @@ public class Movie {
 				.append(lengthInMinutes)
 				.toHashCode();
 	}
+
+	@Override
+	public String toString() {
+		return "Movie [id=" + id + ", title=" + title + ", description=" + description + ", lengthInMinutes="
+				+ lengthInMinutes + "]";
+	}
+	
+	
 }

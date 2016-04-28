@@ -1,11 +1,9 @@
 package filmr.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Entity
 public class Seat {
@@ -30,6 +28,30 @@ public class Seat {
 	public Long getId() {
 		return id;
 	}
+	
+    @Override
+    public boolean equals(Object object){
+        if (object == null) {
+            return false;
+        }
+        if(!(object instanceof Seat)){
+            return false;
+        }
+        final Seat seat = (Seat)object;
+        return new EqualsBuilder()
+                .append(id,seat.getId())
+                .append(row,seat.getRow())
+                .isEquals();
+    }
+    
+	@Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 31)
+                .append(id)
+                .append(row)
+                .toHashCode();
+    }
+
 	
 	
 	

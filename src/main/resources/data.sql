@@ -1,3 +1,11 @@
+
+
+/* THE CINEMA AND ITS REPERTOIRE */
+INSERT INTO repertoire (id) VALUES(null);
+INSERT INTO cinema (name,repertoire) VALUES('Lasses Biograf',1);
+
+
+
 /* MOVIES*/
 
 INSERT INTO movie (title, length_in_minutes, description) 
@@ -147,3 +155,9 @@ INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-30 1
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-30 14:00', 3, 3);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-30 16:00', 3, 3);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-30 18:00', 3, 3);
+
+
+/* FILL REPETOIRE OF THE THE CINEMA WITH TWO MOVIES */
+INSERT INTO repertoire_movies (repertoire,movies) VALUES(1,1);
+INSERT INTO repertoire_movies (repertoire,movies) VALUES(1,2);
+

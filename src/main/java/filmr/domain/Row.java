@@ -1,14 +1,11 @@
 package filmr.domain;
 
-import java.util.List;
+import javax.persistence.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
+import java.util.List;
 
 @Entity
 public class Row {
@@ -43,6 +40,49 @@ public class Row {
 	public Long getId() {
 		return id;
 	}
+	
+	public Theater getTheater() {
+		return theater;
+	}
+	
+	public void setTheater(Theater theater) {
+		this.theater = theater;
+	}
+	
+    @Override
+    public boolean equals(Object object){
+        if (object == null) {
+            return false;
+        }
+        if(!(object instanceof Row)){
+            return false;
+        }
+        final Row row = (Row)object;
+        return new EqualsBuilder()
+                .append(id,row.getId())
+                .append(seats,row.getSeats())
+                .append(theater, row.getTheater())
+                .append(rowLabel, row.getRowLabel())
+                .isEquals();
+
+    }
+    
+	@Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 31)
+                .append(id)
+                .append(seats)
+                .append(theater)
+                .append(rowLabel)
+                .toHashCode();
+    }
+
+	@Override
+	public String toString() {
+		return "Row [id=" + id + ", seats=" + seats + ", theater=" + theater + ", rowLabel=" + rowLabel + "]";
+	}
+	
+	
 	
 	
 	

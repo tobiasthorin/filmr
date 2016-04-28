@@ -1,5 +1,7 @@
 package filmr.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import filmr.domain.Movie;
 import filmr.domain.Showing;
 import filmr.services.ShowingService;
@@ -11,9 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Date;
 import java.util.List;
@@ -51,7 +50,10 @@ public class ShowingController {
     		@RequestParam(name="to_date", required=false) @DateTimeFormat(iso = ISO.DATE) Date to_date,
     		@RequestParam(name="mininum_available_tickets", required=false) Integer mininum_available_tickets,
     		@RequestParam(name="only_for_movie_with_id", required=false) Long only_for_movie_with_id,
-    		@RequestParam(name="limit", required=false, defaultValue = "50") Integer limit
+    		@RequestParam(name="only_for_theater_with_id", required=false) Long only_for_theater_with_id,
+    		@RequestParam(name="limit", required=false, defaultValue = "50") Integer limit,
+    		@RequestParam(name="show_disabled_showings", required=false, defaultValue = "false") Boolean show_disabled_showings
+    		
     		) {
     	
     	
@@ -60,7 +62,15 @@ public class ShowingController {
 		System.out.println("From date: " + from_date);
 		System.out.println("To date: " + to_date);
 		
-		List<Showing> retrievedShowings = showingService.getAllMatchingParams(from_date, to_date, mininum_available_tickets, only_for_movie_with_id, limit);
+		List<Showing> retrievedShowings = showingService.getAllMatchingParams(
+						from_date, 
+						to_date, 
+						mininum_available_tickets, 
+						only_for_movie_with_id,
+						only_for_theater_with_id,
+						limit,
+						show_disabled_showings
+				);
 	
     	HttpHeaders customHeaders = null;
     	ResponseEntity<List<Showing>> responseEntity = null;
