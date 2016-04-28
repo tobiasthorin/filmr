@@ -4,3 +4,6 @@
 Eventuella tillägg på sök showing:
 Sök på ålder?
 Sök på salar?
+
+
+dubbelkolla så att alla dependecy är av samma version (1.5.5) tror resource kanske inte är det

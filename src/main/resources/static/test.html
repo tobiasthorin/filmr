@@ -1,0 +1,92 @@
+<link rel="shortcut icon" type="image/png" href="jasmine/lib/jasmine-2.4.1/jasmine_favicon.png">
+<link rel="stylesheet" type="text/css" href="jasmine/lib/jasmine-2.4.1/jasmine.css">
+
+<script type="text/javascript" src="jasmine/lib/jasmine-2.4.1/jasmine.js"></script>
+<script type="text/javascript" src="jasmine/lib/jasmine-2.4.1/jasmine-html.js"></script>
+<script type="text/javascript" src="jasmine/lib/jasmine-2.4.1/boot.js"></script>
+
+
+<!-- Angular files here.. => faster loading?  -->
+<script src="angular-dependencies/angular.min.js"></script>
+<script src="angular-dependencies/angular-route.min.js"></script>
+<script src="angular-dependencies/angular-resource.min.js"></script>
+<script src="angular-dependencies/angular-mocks.js"></script>
+<script src="app.js"></script>
+
+<!-- services and controllers for our custom views -->
+<!-- vievs -->
+<script src="views/booking-view/bookingController.js"></script>
+<script src="views/booking_confirmed-view/bookingConfirmedController.js"></script>
+<script src="views/cinema-view/cinemaController.js"></script>
+<script src="views/admin-view/adminController.js"></script>
+<script src="views/theater-view/theaterController.js"></script>
+<script src="views/showing-view/showingController.js"></script>
+
+<!-- services -->
+<script src="services/bookingService.js"></script>
+<script src="services/movieService.js"></script>
+<script src="services/theaterService.js"></script>
+<script src="services/movieService.js"></script>
+<script src="services/repertoireService.js"></script>
+<script src="services/cinemaService.js"></script>
+<script src="services/showingService.js"></script>
+
+
+
+<script>
+
+
+function returnNameLenghth(name) {
+	return name.length;
+}
+
+
+
+
+describe("cinemaController", function() {
+
+
+	// load the controller's module
+	beforeEach(module('filmr'));
+
+	// define the mocks
+	beforeEach(function() {
+		CinemaServiceMock = {
+			get: function(obj,f) {
+				f({repertoire:[]}); // A object with a empty list of repertoire
+			}
+		};
+	});
+
+	// set controller
+	beforeEach(inject(function(_$controller_){
+		// The injector unwraps the underscores (_) from around the parameter names when matching
+		$controller = _$controller_;
+	}));
+
+
+	it("Test so the cinema of the controller is equal to the object that service return on get", function () {
+
+		$scope = {};
+		controller = $controller('cinemaController', {
+			$scope: $scope, CinemaService: CinemaServiceMock
+		});
+
+		expect($scope.cinema).toEqual({repertoire:[]}); 
+
+	});
+
+
+	it("This is just a dummy test to test a method on a controllers return value",function(){
+		var $scope = {};
+		var controller = $controller('cinemaController', { $scope: $scope });
+		var t = $scope.removeMovieFromRepertoire();
+		expect(t).toBe(123);
+	});
+
+});
+
+
+
+</script>
+
