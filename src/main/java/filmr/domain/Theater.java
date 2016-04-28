@@ -123,7 +123,7 @@ public class Theater {
 
 	@Override
 	public String toString() {
-		return "Theater [id=" + id + ", name=" + name + ", rows size=" + rows.size() + ", cinema=" + cinema + ", showings size ="
+		return "Theater [id=" + id + ", name=" + name + ", rows size=" + rows.size() + ", cinema=" + cinema.getName() + ", showings size ="
 				+ showings.size() + "]";
 	}
 }
