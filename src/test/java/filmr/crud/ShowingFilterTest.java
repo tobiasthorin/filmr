@@ -1,6 +1,5 @@
-package crud;
+package filmr.crud;
 
-import com.sun.jndi.toolkit.url.Uri;
 import filmr.Application;
 import filmr.domain.Showing;
 import org.junit.Before;
@@ -15,7 +14,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

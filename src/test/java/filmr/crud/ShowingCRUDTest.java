@@ -1,4 +1,4 @@
-package crud;
+package filmr.crud;
 
 import filmr.Application;
 import filmr.domain.*;

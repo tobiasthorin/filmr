@@ -1,7 +1,5 @@
-package domain;
+package filmr.domain;
 
-import filmr.domain.Movie;
-import filmr.domain.Showing;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;

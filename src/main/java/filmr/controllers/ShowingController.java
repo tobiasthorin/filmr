@@ -52,8 +52,8 @@ public class ShowingController {
     		@RequestParam(name="only_for_movie_with_id", required=false) Long only_for_movie_with_id,
     		@RequestParam(name="only_for_theater_with_id", required=false) Long only_for_theater_with_id,
     		@RequestParam(name="limit", required=false, defaultValue = "50") Integer limit,
-    		@RequestParam(name="show_disabled_showings", required=false, defaultValue = "false") Boolean show_disabled_showings
-    		
+    		@RequestParam(name="show_disabled_showings", required=false, defaultValue = "false") Boolean show_disabled_showings,
+    		@RequestParam(name="include_distinct_movies_in_header", required=false, defaultValue = "false") Boolean include_distinct_movies_in_header
     		) {
     	
     	
@@ -73,22 +73,19 @@ public class ShowingController {
 				);
 	
     	HttpHeaders customHeaders = null;
-    	ResponseEntity<List<Showing>> responseEntity = null;
-//		try {
-//			customHeaders = buildCustomHeadersForReadAll(retrievedShowings);
-//		} catch (JsonProcessingException e) {
-//			System.out.println("Couldn't parse movie list into JSON");
-//			e.printStackTrace();
-//		} finally {
-//			if(customHeaders == null) {
-//				responseEntity = new ResponseEntity<List<Showing>>(retrievedShowings, HttpStatus.PARTIAL_CONTENT);
-//			} else {
-//				responseEntity = ResponseEntity.ok().headers(customHeaders).body(retrievedShowings);
-//			}
-//		}
 
-        responseEntity = new ResponseEntity<List<Showing>>(showingService.getAllMatchingParams(from_date, to_date, mininum_available_tickets, only_for_movie_with_id, only_for_theater_with_id, limit, show_disabled_showings), HttpStatus.OK);
-        return responseEntity;
+
+        if(include_distinct_movies_in_header) {
+            try {
+                customHeaders = buildCustomHeadersForReadAll(retrievedShowings);
+            } catch (JsonProcessingException e) {
+                System.out.println("Couldn't parse movie list into JSON");
+                e.printStackTrace();
+            } finally {
+                return ResponseEntity.ok().headers(customHeaders).body(retrievedShowings);
+            }
+        }
+        return new ResponseEntity<List<Showing>>(showingService.getAllMatchingParams(from_date, to_date, mininum_available_tickets, only_for_movie_with_id, only_for_theater_with_id, limit, show_disabled_showings), HttpStatus.OK);
     }
 
     @CrossOrigin
