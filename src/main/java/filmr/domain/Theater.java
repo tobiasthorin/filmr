@@ -11,12 +11,14 @@ import java.util.List;
 
 @Entity
 public class Theater {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-	private String name;
-	@OneToMany(mappedBy = "theater")
-	private List<Row> rows;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    private String name;
+    private int numberOfSeats;
+    private boolean disabled;
+    @OneToMany(mappedBy = "theater")
+    private List<Row> rows;
 
     @ManyToOne
     @JoinColumn(name="cinema_id")
@@ -32,45 +34,62 @@ public class Theater {
 	
 	public Theater() {}
 
-	public String getName() {
-		return name;
-	}
 
     public String getCinemaName() {
         return cinema.getName();
     }
 
-    public Cinema getCinema() {
-		return cinema;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setCinema(Cinema cinema) {
-		this.cinema = cinema;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public List<Row> getRows() {
+        return rows;
+    }
 
-	public List<Row> getRows() {
-		return rows;
-	}
+    public void setRows(List<Row> rows) {
+        this.rows = rows;
+    }
 
-	public void setRows(List<Row> rows) {
-		this.rows = rows;
-	}
+    public List<Showing> getShowings() {
+        return showings;
+    }
 
-	public List<Showing> getShowings() {
-		return showings;
-	}
-
-	public void setShowings(List<Showing> showings) {
-		this.showings = showings;
-	}
+    public void setShowings(List<Showing> showings) {
+        this.showings = showings;
+    }
 
 	public Long getId() {
 		return id;
 	}
+
+    public Cinema getCinema() {
+        return cinema;
+    }
+
+    public void setCinema(Cinema cinema) {
+        this.cinema = cinema;
+    }
+
+    public int getNumberOfSeats() {
+        return numberOfSeats;
+    }
+
+    public void setNumberOfSeats(int numberOfSeats) {
+        this.numberOfSeats = numberOfSeats;
+    }
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
 	
     @Override
     public boolean equals(Object object){
@@ -90,7 +109,7 @@ public class Theater {
                 .isEquals();
 
     }
-    
+
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 31)
@@ -107,9 +126,4 @@ public class Theater {
 		return "Theater [id=" + id + ", name=" + name + ", rows size=" + rows.size() + ", cinema=" + cinema + ", showings size ="
 				+ showings.size() + "]";
 	}
-    
-    
-	
-	 
-	
 }
