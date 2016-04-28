@@ -35,6 +35,14 @@
                 controller: 'cinemaController'
 
             })
+            //Showing
+            .when('/showing', {
+                title: 'Showing',
+                activeTab: 'Showing',
+                templateUrl: 'views/showing-view/showing.html',
+                controller: 'showingController'
+
+            })
             // admin
             .when('/admin', {
                 title: 'Admin',
@@ -44,8 +52,13 @@
 
             })
             .when('/theater', {
-                title: 'Theater',
-                activeTab: 'Theater',
+                title: 'Create Theater',
+                templateUrl: 'views/theater-view/theater.html',
+                controller: 'theaterController'
+
+            })
+            .when('/theater/:id', {
+                title: 'Edit Theater',
                 templateUrl: 'views/theater-view/theater.html',
                 controller: 'theaterController'
 

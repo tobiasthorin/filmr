@@ -1,0 +1,6 @@
+<div class="showings-wrapper">
+    <div class="container">
+        <select ng-options="movie as movie.title for movie in moviesInRepertoire" name="movies" ng-model="movieForShowing"></select>
+        <select ng-options="theater as theater.name for theater in theatersInCinema" name="theaters" ng-model="theaterForShowing"></select>
+    </div>
+</div>

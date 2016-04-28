@@ -1,14 +1,21 @@
 angular.module('filmr')
-.controller('cinemaController', ['$location','$rootScope', '$scope', '$routeParams', 'MovieService','$resource', 'RepertoireService','CinemaService',
-	function($location,$rootScope, $scope, $routeParams, MovieService, $resource, RepertoireService, CinemaService) {
+	.controller('cinemaController', ['$location', '$rootScope', '$scope', '$routeParams', 'MovieService', 'TheaterService', '$resource', 'RepertoireService', 'CinemaService',
+		function ($location, $rootScope, $scope, $routeParams, MovieService, TheaterService, $resource, RepertoireService, CinemaService) {
 
+	//VARIABLES
 	$scope.addableMovies = [];
 	$scope.moviesInRepetoire = [];
 	$scope.cinema = null;
 
-	getCurrentCinema();
-	getAddableMovies();
+	//INIT
+	getCurrentCinema(function(){
+		getMoviesInRepetoire();
+		getAddableMovies();
+	});
+		getListOfTheaters();
 
+
+	// PUBLIC
 	$scope.removeMovieFromRepertoire = function() {
 
 	}
@@ -17,29 +24,86 @@ angular.module('filmr')
 
 		console.log("---");
 		console.log("call add movie to repertoire");
-		console.log("movie to add "+$scope.movieToAdd);
+		console.log("movie to add:")
+		console.log($scope.movieToAdd);
+		console.log("repertoire:")
+		console.log($scope.cinema.repertoire);
 
-		var repertoire = new RepertoireService();
-		
-		repertoire.save();		
+
+		// Get a "entry-based" epertoire, Push movie to it and Save,
+		RepertoireService.get({id:$scope.cinema.repertoire.id}).$promise.then(
+
+			// success
+			function(result) {
+
+				repertoireEntry = result;
+
+				repertoireEntry.movies.push($scope.movieToAdd);
+				RepertoireService.save(repertoireEntry).$promise.then(
+
+					// success
+					function(result) {
+						console.log("movie added to repertoire");
+						getAddableMovies();
+						getMoviesInRepetoire();
+					},
+					// error
+					function(error){ 
+						$rootScope.errorHandler(error);
+					}
+				);
+			},
+			// error
+			function(error) {
+				$rootScope.errorHandler(error);
+			}
+		);
+		// -----
+
+
 	}
 
-	function getCurrentCinema() { //TODO:..and update movies in repetoir
+	// PRIVATE
+	function getCurrentCinema(callbackWhenDone) {
 		console.log("---");
 		console.log("call get current cinema");
 		var cinema = CinemaService.get({id:1}, function(){
 			console.log("current cinema: ");
 			$scope.cinema = cinema;
-			getMoviesInRepetoire();
+			callbackWhenDone();
 		});
 	}
 
 	function getAddableMovies() {
-		$scope.addableMovies = MovieService.query();
+
+		MovieService.query().$promise.then(
+			// success
+			function(result){
+				$scope.addableMovies = result;
+			},
+			// error
+			function(error) {
+				$rootScope.errorHandler(error);
+			}
+		);
 	}
 
 	function getMoviesInRepetoire() {
-		$scope.moviesInRepetoire = $scope.cinema.repertoire.movies;
+		RepertoireService.get({id:$scope.cinema.repertoire.id}).$promise.then(
+			// success
+			function(result) {
+				repertoireEntry = result;
+				$scope.moviesInRepetoire = repertoireEntry.movies;
+			},
+			// error
+			function(error) {
+				$rootScope.errorHandler(error);
+			}
+		);
 	}
 
+		function getListOfTheaters() {
+			$scope.theaters = TheaterService.query();
+		}
+	
 }]);

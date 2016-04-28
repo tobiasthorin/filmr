@@ -1,13 +1,8 @@
 package filmr.domain;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -16,16 +11,22 @@ import java.util.List;
 
 @Entity
 public class Theater {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-	private String name;
-	@OneToMany(mappedBy = "theater")
-	private List<Row> rows;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    private String name;
+    private int numberOfSeats;
+    private boolean disabled;
+    @OneToMany(mappedBy = "theater")
+    private List<Row> rows;
 
     @ManyToOne
     @JoinColumn(name="cinema_id")
+    @JsonIgnore
     private Cinema cinema;
+
+    @Transient
+    private String cinemaName;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "theater")
@@ -33,42 +34,63 @@ public class Theater {
 	
 	public Theater() {}
 
-	public String getName() {
-		return name;
-	}
 
-	public Cinema getCinema() {
-		return cinema;
-	}
+    public String getCinemaName() {
+        return cinema.getName();
+    }
 
-	public void setCinema(Cinema cinema) {
-		this.cinema = cinema;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public List<Row> getRows() {
-		return rows;
-	}
+    public List<Row> getRows() {
+        return rows;
+    }
 
-	public void setRows(List<Row> rows) {
-		this.rows = rows;
-	}
+    public void setRows(List<Row> rows) {
+        this.rows = rows;
+    }
 
-	public List<Showing> getShowings() {
-		return showings;
-	}
+    public List<Showing> getShowings() {
+        return showings;
+    }
 
-	public void setShowings(List<Showing> showings) {
-		this.showings = showings;
-	}
+    public void setShowings(List<Showing> showings) {
+        this.showings = showings;
+    }
 
 	public Long getId() {
 		return id;
 	}
-	
+
+    public Cinema getCinema() {
+        return cinema;
+    }
+
+    public void setCinema(Cinema cinema) {
+        this.cinema = cinema;
+    }
+
+    public int getNumberOfSeats() {
+        return numberOfSeats;
+    }
+
+    public void setNumberOfSeats(int numberOfSeats) {
+        this.numberOfSeats = numberOfSeats;
+    }
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
     @Override
     public boolean equals(Object object){
         if (object == null) {
@@ -101,12 +123,7 @@ public class Theater {
 
 	@Override
 	public String toString() {
-		return "Theater [id=" + id + ", name=" + name + ", rows=" + rows + ", cinema=" + cinema + ", showings="
-				+ showings + "]";
+		return "Theater [id=" + id + ", name=" + name + ", rows size=" + rows.size() + ", cinema=" + cinema.getName() + ", showings size ="
+				+ showings.size() + "]";
 	}
-
-
-
-
-	
 }

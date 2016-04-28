@@ -1,29 +1,26 @@
 <div class="showings-wrapper">
 
-	<div class="container">
-		<div class="row">
-			<div class="col-sm-6">
-				<ul>
-					<li ng-repeat="movie in moviesInRepetoire">
-						{{movie.title}}
-						- <a href="" ng-click="removeMovieFromRepertoire()"></a>
-					</li>
-					<li>
-						<form>
-							<select ng-options="movie as movie.title for movie in addableMovies" ng-model="movieToAdd" required></select>
-							<input type="submit" ng-click="addMovieToRepertoire()" value="Add">
-						</form>
-					</li>
-				</ul>
-			</div>
-			<div class="col-sm-6">
-				<a href="">Add theater</a>
-				<ul>
-					<li ng-repeat="theater in theaters">
-						{{theater.name}}
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+
+                <form>
+                    <select>
+                        <option ng-repeat="movie in addableMovies">
+                            {{movie.title}}
+                        </option>
+                    </select>
+                </form>
+
+            </div>
+            <div class="col-sm-6">
+                <a href="#/theater">Add theater</a>
+                <ul>
+                    <li ng-repeat="theater in theaters">
+                        <a href="#/theater/{{$index + 1}}">{{theater.name}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>

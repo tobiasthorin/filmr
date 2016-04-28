@@ -3,7 +3,9 @@
 /* THE CINEMA AND ITS REPERTOIRE */
 INSERT INTO repertoire (id) VALUES(null);
 INSERT INTO cinema (name,repertoire) VALUES('Lasses Biograf',1);
-
+/* ANOTHER CINEMA WITH REPERTOIRE */
+INSERT INTO repertoire (id) VALUES(null);
+INSERT INTO cinema (name,repertoire) VALUES('Lisas Biograf',2);
 
 
 /* MOVIES*/
@@ -19,10 +21,10 @@ INSERT INTO movie (title, length_in_minutes, description)
 	
 /* THEATERS */
 
-INSERT INTO theater (name) VALUES ('Bergakungen sal 01');
-INSERT INTO theater (name) VALUES ('Bergakungen sal 04');
-INSERT INTO theater (name) VALUES ('Bergakungen sal 05');
-INSERT INTO theater (name) VALUES ('Bergakungen sal 08');
+INSERT INTO theater (name, number_of_seats, cinema_id, disabled) VALUES ('Bergakungen sal 01', 20, 1, FALSE);
+INSERT INTO theater (name, number_of_seats, cinema_id, disabled) VALUES ('Bergakungen sal 04', 20, 1, FALSE);
+INSERT INTO theater (name, number_of_seats, cinema_id, disabled) VALUES ('Bergakungen sal 05', 20, 2, FALSE);
+INSERT INTO theater (name, number_of_seats, cinema_id, disabled) VALUES ('Bergakungen sal 08', 20, 2, FALSE);
 
 
 /* SHOWINGS */
@@ -157,7 +159,11 @@ INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-30 1
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-30 18:00', 3, 3);
 
 
-/* FILL REPETOIRE OF THE THE CINEMA WITH TWO MOVIES */
+/* FILL REPETOIRE OF LASSES CINEMA WITH TWO MOVIES */
 INSERT INTO repertoire_movies (repertoire,movies) VALUES(1,1);
 INSERT INTO repertoire_movies (repertoire,movies) VALUES(1,2);
+
+/* FILL REPETOIRE OF LISAS CINEMA WITH TWO MOVIES */
+INSERT INTO repertoire_movies (repertoire,movies) VALUES(1,3);
+INSERT INTO repertoire_movies (repertoire,movies) VALUES(1,4);
 
