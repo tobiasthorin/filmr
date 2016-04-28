@@ -87,8 +87,8 @@ public class ShowingController {
 //			}
 //		}
 
-        responseEntity = new ResponseEntity<List<Showing>>(showingService.getAllMatchingParams(from_date, to_date, mininum_available_tickets, only_for_movie_with_id, limit), HttpStatus.OK);
-    	return responseEntity;
+        responseEntity = new ResponseEntity<List<Showing>>(showingService.getAllMatchingParams(from_date, to_date, mininum_available_tickets, only_for_movie_with_id, only_for_theater_with_id, limit, show_disabled_showings), HttpStatus.OK);
+        return responseEntity;
     }
 
     @CrossOrigin
