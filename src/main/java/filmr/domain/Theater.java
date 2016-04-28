@@ -96,8 +96,8 @@ public class Theater {
 
 	@Override
 	public String toString() {
-		return "Theater [id=" + id + ", name=" + name + ", rows=" + rows + ", cinema=" + cinema + ", showings="
-				+ showings + "]";
+		return "Theater [id=" + id + ", name=" + name + ", rows size=" + rows.size() + ", cinema=" + cinema + ", showings size ="
+				+ showings.size() + "]";
 	}
     
     

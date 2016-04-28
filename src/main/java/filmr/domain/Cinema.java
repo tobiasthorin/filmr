@@ -78,7 +78,7 @@ public class Cinema {
 
 	@Override
 	public String toString() {
-		return "Cinema [id=" + id + ", name=" + name + ", repertoire=" + repertoire + ", theaters=" + theaters + "]";
+		return "Cinema [id=" + id + ", name=" + name + ", repertoire of size=" + repertoire.getMovies().size() + ", theaters=" + theaters + "]";
 	}
     
     
