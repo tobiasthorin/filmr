@@ -11,10 +11,10 @@ INSERT INTO movie (title, length_in_minutes, description)
 	
 /* THEATERS */
 
-INSERT INTO theater (name) VALUES ('Bergakungen sal 01');
-INSERT INTO theater (name) VALUES ('Bergakungen sal 04');
-INSERT INTO theater (name) VALUES ('Bergakungen sal 05');
-INSERT INTO theater (name) VALUES ('Bergakungen sal 08');
+INSERT INTO theater (name, number_of_seats, disabled) VALUES ('Bergakungen sal 01', 20, FALSE );
+INSERT INTO theater (name, number_of_seats, disabled) VALUES ('Bergakungen sal 04', 20, FALSE );
+INSERT INTO theater (name, number_of_seats, disabled) VALUES ('Bergakungen sal 05', 20, FALSE );
+INSERT INTO theater (name, number_of_seats, disabled) VALUES ('Bergakungen sal 08', 20, FALSE );
 
 
 /* SHOWINGS */

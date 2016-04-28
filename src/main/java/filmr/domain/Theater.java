@@ -12,47 +12,63 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Theater {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-	private String name;
-	@OneToMany(mappedBy = "theater")
-	private List<Row> rows;
-	
-	@JsonIgnore
-	@OneToMany(mappedBy = "theater")
-	private List<Showing> showings;
-	
-	public Theater() {}
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    private String name;
+    private int numberOfSeats;
+    private boolean disabled;
+    @OneToMany(mappedBy = "theater")
+    private List<Row> rows;
 
-	public String getName() {
-		return name;
-	}
+    @JsonIgnore
+    @OneToMany(mappedBy = "theater")
+    private List<Showing> showings;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public Theater() {
+    }
 
-	public List<Row> getRows() {
-		return rows;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setRows(List<Row> rows) {
-		this.rows = rows;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public List<Showing> getShowings() {
-		return showings;
-	}
+    public List<Row> getRows() {
+        return rows;
+    }
 
-	public void setShowings(List<Showing> showings) {
-		this.showings = showings;
-	}
+    public void setRows(List<Row> rows) {
+        this.rows = rows;
+    }
 
-	public Long getId() {
-		return id;
-	}
-	
-	 
-	
+    public List<Showing> getShowings() {
+        return showings;
+    }
+
+    public void setShowings(List<Showing> showings) {
+        this.showings = showings;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public int getNumberOfSeats() {
+        return numberOfSeats;
+    }
+
+    public void setNumberOfSeats(int numberOfSeats) {
+        this.numberOfSeats = numberOfSeats;
+    }
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
 }

@@ -29,23 +29,23 @@ angular.module('filmr')
                 var existingTheater = TheaterService.get({id:$routeParams.id}, function(){
                     console.log(existingTheater);
                     $scope.name = existingTheater.name;
-                    $scope.numberOfSeats = existingTheater.seats;
+                    $scope.numberOfSeats = existingTheater.numberOfSeats;
                     $scope.isDisabled = existingTheater.disabled;
                 });
 
                 $scope.submitTheater = function () {
                     console.log("Submitting edited theater...");
-                    console.log($scope.name);
+                    console.log($scope.name + ", id: " + $routeParams.id);
 
                     var newTheater = new TheaterService();
 
-                    //newTheater.id = $routeParams.id;
+                    newTheater.id = $routeParams.id;
                     newTheater.name = $scope.name;
                     newTheater.numberOfSeats = $scope.numberOfSeats;
                     newTheater.isDisabled = $scope.isDisabled;
 
-                    TheaterService.save(newTheater, function () {
-                        console.log("Saved!");
+                    TheaterService.update(newTheater, function () {
+                        console.log("Updated!");
                         $location.path('/cinema');
                     });
 
