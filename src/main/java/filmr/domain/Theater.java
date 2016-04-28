@@ -1,6 +1,7 @@
 package filmr.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 
@@ -22,7 +23,7 @@ public class Theater {
 
     @ManyToOne
     @JoinColumn(name="cinema_id")
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Cinema cinema;
 
     @Transient
@@ -36,7 +37,7 @@ public class Theater {
 
 
     public String getCinemaName() {
-        return cinema.getName();
+        return cinema != null ? cinema.getName() : "ingen biograf kopplad";
     }
 
     public String getName() {
