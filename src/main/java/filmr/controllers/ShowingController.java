@@ -48,9 +48,10 @@ public class ShowingController {
     public ResponseEntity<List<Showing>> readAllShowings(
     		@RequestParam(name="from_date", required=false) @DateTimeFormat(iso = ISO.DATE) Date from_date, // @DateTimeFormat(iso = ISO.DATE) seems to work when we retrieve javascript Date objects
     		@RequestParam(name="to_date", required=false) @DateTimeFormat(iso = ISO.DATE) Date to_date,
-    		@RequestParam(name="mininum_available_tickets", required=false) Integer mininum_available_tickets,
+    		@RequestParam(name="minimum_available_tickets", required=false) Integer minimum_available_tickets,
     		@RequestParam(name="only_for_movie_with_id", required=false) Long only_for_movie_with_id,
     		@RequestParam(name="only_for_theater_with_id", required=false) Long only_for_theater_with_id,
+    		@RequestParam(name="only_for_cinema_with_id", required=false) Long only_for_cinema_with_id,
     		@RequestParam(name="limit", required=false, defaultValue = "50") Integer limit,
     		@RequestParam(name="show_disabled_showings", required=false, defaultValue = "false") Boolean show_disabled_showings
     		
@@ -65,9 +66,10 @@ public class ShowingController {
 		List<Showing> retrievedShowings = showingService.getAllMatchingParams(
 						from_date, 
 						to_date, 
-						mininum_available_tickets, 
+						minimum_available_tickets, 
 						only_for_movie_with_id,
 						only_for_theater_with_id,
+						only_for_cinema_with_id,
 						limit,
 						show_disabled_showings
 				);
