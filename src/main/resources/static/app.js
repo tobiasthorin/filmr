@@ -35,6 +35,14 @@
                 controller: 'cinemaController'
 
             })
+            //Showing
+            .when('/showing', {
+                title: 'Showing',
+                activeTab: 'Showing',
+                templateUrl: 'views/showing-view/showing.html',
+                controller: 'showingController'
+
+            })
             // admin
             .when('/admin', {
                 title: 'Admin',

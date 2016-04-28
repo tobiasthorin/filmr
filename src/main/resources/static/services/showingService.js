@@ -1,3 +1,8 @@
 /**
- * Created by Marco on 2016-04-28.
+ * Crus operations for Showings
  */
+angular.module('filmr').factory('ShowingService', function($resource, $rootScope){
+    var showingBaseUrl = $rootScope.API_baseUrl + "showings/";
+    return $resource(showingBaseUrl+":id");
+    //End of service
+});
