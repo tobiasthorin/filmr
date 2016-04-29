@@ -3,31 +3,22 @@ package filmr.springboottest;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.IntStream;
 
-import org.hamcrest.core.Is;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.mock.http.MockHttpOutputMessage;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.context.WebApplicationContext;
-
-import com.fasterxml.jackson.databind.JsonMappingException;
 
 import filmr.Application;
 import filmr.domain.Movie;
@@ -35,8 +26,6 @@ import filmr.repositories.MovieRepository;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -97,7 +86,7 @@ public class TestsTheSpringBootWayQM {
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(jsonContentType))
 			.andExpect(jsonPath("$.title", is(savedMovie.getTitle())))
-			.andExpect(jsonPath("$.description", is(savedMovie.getDescription())))
+			.andExpect(jsonPath("$.description", is(savedMovie.getDescription()+"xox")))
 			// .intValue() is needed. unclear why. Json has no Longs?
 			.andExpect(jsonPath("$.lengthInMinutes", is(savedMovie.getLengthInMinutes().intValue())));
 			
@@ -156,9 +145,7 @@ public class TestsTheSpringBootWayQM {
 //
 //	}
 	
-	
-	
-	
+
 	// ugly methods that help everything else look nice. (along with static imports of cool methods)
 	
 	private HttpMessageConverter mappingJackson2HttpMessageConverter;

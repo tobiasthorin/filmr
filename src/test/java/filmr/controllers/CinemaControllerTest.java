@@ -4,152 +4,110 @@ import filmr.Application;
 import filmr.domain.Cinema;
 import filmr.domain.Repertoire;
 import filmr.domain.Theater;
+import filmr.repositories.CinemaRepository;
+import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.mockito.Mock;
-import static org.mockito.Mockito.*;
-import org.springframework.boot.SpringApplication;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.mock.http.MockHttpOutputMessage;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.context.WebApplicationContext;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 
-import static org.junit.Assert.*;
+import static junit.framework.TestCase.assertEquals;
+import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
-/**
- * Created by Marco on 2016-04-27.
- */
-@RunWith(Parameterized.class)
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = Application.class)
+@WebAppConfiguration
+@ActiveProfiles({"test"})
 public class CinemaControllerTest {
 
-    private RestTemplate restTemplate;
-    private String cinemaApiBaseUrl ="http://localhost:8080/filmr/api/cinemas";
-    private String urlWithId;
+    //Variables
+    private MediaType jsonContentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
+            MediaType.APPLICATION_JSON.getSubtype(),
+            Charset.forName("utf8"));
+    @Autowired
+    private WebApplicationContext webApplicationContext;
+    @Autowired
+	private CinemaRepository cinemaRepository;
+    private String baseUrl = "/api/cinemas/";
 
-    //Parameters
-    private Long id;
+    //Mock clone of project
+    private MockMvc mockMvc;
 
-    @Parameterized.Parameters
-    public static Collection<Object[]> ids() {
-        return Arrays.asList(new Object[][]{
-                {new Long(1)},
-                {new Long(2)},
-                {new Long(3)},
-                {new Long(4)},
-                {new Long(5)},
-                {new Long(6)},
-                {new Long(7)},
-                {new Long(8)},
-                {new Long(9)},
-                {new Long(10)},
-        });
-    }
-
-    public CinemaControllerTest(Long id) {
-        this.id = id;
-    }
-
-    @BeforeClass // just do this once, for the whole test class (not for each method, like @Before)
-    public static void testClassSetup(){
-		/* start application so that API is running */
-        SpringApplication.run(Application.class, new String[0]);
-
-    }
+    int size;
 
     @Before
-    public void setUp() throws Exception {
-        restTemplate = new RestTemplate();
-        urlWithId = cinemaApiBaseUrl+"/"+id;
+	public void resetDatabase(){
+        // this can't be done in a static @BeforeClass.
+		if(this.mockMvc == null) {
+			this.mockMvc = webAppContextSetup(webApplicationContext).build();
+		}
+        //clear everything
+        cinemaRepository.deleteAllInBatch();
+        //TODO on read test, make sure data.sql is not read
+
+        //TODO on further testing, we may need a test cinema here
+        size = cinemaRepository.findAll().size();
     }
 
     @Test
-    public void testCreateCinema() throws Exception {
-
-        String baseurl = "http://localhost:8080/filmr/api/";
-
-//        //read theaters and repetoaire
-//        ResponseEntity<Repertoire> repertoireResponseEntity = restTemplate.getForEntity(baseurl+"/repertoires/"+1, Repertoire.class);
-//        Repertoire repertoire = repertoireResponseEntity.getBody();
-//        ResponseEntity<Theater> theaterResponseEntity = restTemplate.getForEntity(baseurl+"/theaters/"+1, Theater.class);
-//        Theater theater = theaterResponseEntity.getBody();
-//        ArrayList<Theater> theaters = new ArrayList<>();
-//        theaters.add(theater);
-
+    public void testCreate() throws Exception {
+        //Create cinema with parameters
         Cinema cinema = new Cinema();
-        cinema.setName("Bergakungen");
-//        cinema.setRepertoire(repertoire);
-//        cinema.setTheaters(theaters);
+        cinema.setName("Bio Bio");
+        //Repetoaire shouldn be set here
+        ArrayList<Theater> theaters = new ArrayList<>();
+        cinema.setTheaters(theaters);
 
+        //Convert Cinema to JSON string
+        String jsonObject = json(cinema);
 
-        ResponseEntity<Cinema> responseEntity = restTemplate.postForEntity(cinemaApiBaseUrl, cinema, Cinema.class);
-        Cinema postedCinema = responseEntity.getBody();;
-
-        // Spy cinema with id from result
-        Cinema spyCinema = spy(cinema);
-        when(spyCinema.getId()).thenReturn(postedCinema.getId());
-
-        //Using Overriden equals method in real object
-        Boolean postedAndRetrievedObjectAreEqual = postedCinema.equals(spyCinema);
-        assertEquals("postedAndRetrievedObjectAreEqual expects true", true, postedAndRetrievedObjectAreEqual);
-
-
+        mockMvc.perform(post(baseUrl)
+                .contentType(jsonContentType)
+                .content(jsonObject)
+        )
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(jsonContentType));
+        assertEquals("Amount of cinemas should be +1", size+1, cinemaRepository.findAll().size());
     }
 
-    @Test
-    public void testReadCinema() throws Exception {
-        //Get
-        ResponseEntity<Cinema> responseEntity = restTemplate.getForEntity(urlWithId,Cinema.class);
-        Cinema cinema = responseEntity.getBody();
+    private HttpMessageConverter mappingJackson2HttpMessageConverter;
 
-        //Assert
-        assertEquals(id,cinema.getId());
+	@Autowired // ???
+	void setConverters(HttpMessageConverter<?>[] converters) {
 
+		this.mappingJackson2HttpMessageConverter = Arrays.asList(converters).stream().filter(
+				hmc -> hmc instanceof MappingJackson2HttpMessageConverter).findAny().get();
 
-    }
+		 Assert.assertNotNull("the JSON message converter must not be null",
+				this.mappingJackson2HttpMessageConverter);
+	}
 
-    @Test
-    public void testReadAllMovies() throws Exception {
-
-    }
-
-    @Test
-    public void testUpdateCinema() throws Exception {
-        ResponseEntity<Cinema> responseEntity = restTemplate.getForEntity(urlWithId,Cinema.class);
-        Cinema toUpdate = responseEntity.getBody();
-
-        toUpdate.setName("Hagabion");
-
-        restTemplate.put(urlWithId,toUpdate);
-
-        responseEntity = restTemplate.getForEntity(urlWithId, Cinema.class);
-        Cinema updatedCinema = responseEntity.getBody();
-
-        //Assert
-        assertEquals("input same as result",toUpdate,updatedCinema);
-
-    }
-
-    @Test(expected= HttpClientErrorException.class)
-    public void testUpdateNull(){
-        //Create object
-        Cinema cinema = new Cinema();
-        //Try put. Should throw exception
-        restTemplate.put(urlWithId,cinema);
-    }
-
-    @Test(expected = HttpServerErrorException.class)
-    public void testDeleteCinema() throws Exception {
-        //Delete object
-        restTemplate.delete(urlWithId, Cinema.class);
-
-        restTemplate.getForEntity(urlWithId, Cinema.class);
-
+    protected String json(Object o) throws IOException {
+        MockHttpOutputMessage mockHttpOutputMessage = new MockHttpOutputMessage();
+        this.mappingJackson2HttpMessageConverter.write(
+                    o, MediaType.APPLICATION_JSON, mockHttpOutputMessage);
+        return mockHttpOutputMessage.getBodyAsString();
     }
 }
