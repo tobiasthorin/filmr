@@ -1,14 +1,15 @@
 package filmr.controllers;
 
 /**
- * Created by Adrian och Erik on 2016-04-29.
+ * Created by Adrian and Erik on 2016-04-29.
  */
 
 import filmr.Application;
-import filmr.domain.Cinema;
+import filmr.domain.Movie;
+import filmr.domain.Repertoire;
 import filmr.domain.Theater;
-import filmr.repositories.CinemaRepository;
-import filmr.repositories.TheaterRepository;
+import filmr.repositories.MovieRepository;
+import filmr.repositories.RepertoireRepository;
 import filmr.testfactories.EntityFactory;
 import org.junit.Assert;
 import org.junit.Before;
@@ -25,14 +26,22 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestContextManager;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.ResultHandler;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -46,7 +55,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @WebAppConfiguration
 @ActiveProfiles({"test"})
 
-public class TheaterControllerTest {
+public class RepertoireControllerTest {
 
     //Used instead of SpringJunit4ClassRunner in @RunWith
     private TestContextManager testContextManager;
@@ -55,14 +64,14 @@ public class TheaterControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
     @Autowired
-	private TheaterRepository theaterRepository;
+	private RepertoireRepository repertoireRepository;
     @Autowired
-    private CinemaRepository cinemaRepository;
+    private MovieRepository movieRepository;
     private String baseUrl;
     //Variables for testing values
     private int tableSize;
-    private Theater savedTheater;
-    private Cinema savedCinema;
+    private Repertoire savedRepertoire;
+    private Movie savedMovie;
 
     //Mock clone of project
     private MockMvc mockMvc;
@@ -78,12 +87,12 @@ public class TheaterControllerTest {
         });
     }
 
-    public TheaterControllerTest(Long id) {
+    public RepertoireControllerTest(Long id) {
         this.id = id;
         jsonContentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
                 MediaType.APPLICATION_JSON.getSubtype(),
                 Charset.forName("utf8"));
-        baseUrl = "/api/theaters/";
+        baseUrl = "/api/repertoires/";
     }
 
     @Before
@@ -97,24 +106,24 @@ public class TheaterControllerTest {
 			this.mockMvc = webAppContextSetup(webApplicationContext).build();
 		}
         //clear everything
-        theaterRepository.deleteAllInBatch();
-        cinemaRepository.deleteAllInBatch();
+        repertoireRepository.deleteAllInBatch();
+        movieRepository.deleteAllInBatch();
         //TODO on read test, make sure data.sql is not read
 
-        //Create cinema and theater with parameters
-        Cinema cinema = EntityFactory.createCinema("Global Test Cinema");
-        savedCinema = cinemaRepository.save(cinema);
-        Theater theater = EntityFactory.createTheater("Global Test Theater", savedCinema);
-        savedTheater = theaterRepository.save(theater);
+        //Create repertoire with parameters
+        Repertoire repertoire = EntityFactory.createRepertoire();
+        savedRepertoire = repertoireRepository.save(repertoire);
+        Movie movie = EntityFactory.createMovie("Global Test Movie", "A movie about pigs", new Long(120));
+        savedMovie = movieRepository.save(movie);
 
-        tableSize = theaterRepository.findAll().size();
+        tableSize = repertoireRepository.findAll().size();
     }
 
     @Test
     public void testCreate() throws Exception {
-        Theater theater = EntityFactory.createTheater("testCreate Theater", savedCinema);
+        Repertoire repertoire = EntityFactory.createRepertoire();
 
-        String jsonObject = getAsJsonString(theater);
+        String jsonObject = getAsJsonString(repertoire);
 
          mockMvc.perform(post(baseUrl)
                 .contentType(jsonContentType)
@@ -122,11 +131,29 @@ public class TheaterControllerTest {
         )
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(jsonContentType))
-                .andExpect(jsonPath("$.name", is(theater.getName())));
-        assertEquals("Amount of theaters should be +1", tableSize +1, theaterRepository.findAll().size());
+                .andExpect(jsonPath("$.movies", is(repertoire.getMovies())));
+        assertEquals("Amount of repertoires should be +1", tableSize +1, repertoireRepository.findAll().size());
     }
 
-    //TODO put in help man class
+    @Test
+    public void testAddMovieToRepertoire() throws Exception {
+        List<Movie> movies = savedRepertoire.getMovies();
+        int oldSize = movies.size();
+        movies.add(savedMovie);
+        savedRepertoire.setMovies(movies);
+        String jsonObject = getAsJsonString(savedRepertoire);
+
+        mockMvc.perform(
+                put(baseUrl + savedRepertoire.getId())
+                .contentType(jsonContentType)
+                .content(jsonObject)
+        )
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(jsonContentType))
+                .andExpect(jsonPath("$.movies", hasSize(savedRepertoire.getMovies().size()))); //TODO we get the wrong object from $.movies. hasSize works
+        assertEquals("Amount of movies in repertoire should be +1", oldSize+1, savedRepertoire.getMovies().size());
+    }
+
     private HttpMessageConverter mappingJackson2HttpMessageConverter;
 
 	@Autowired // ???

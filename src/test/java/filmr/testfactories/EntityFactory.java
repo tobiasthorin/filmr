@@ -1,9 +1,6 @@
 package filmr.testfactories;
 
-import filmr.domain.Cinema;
-import filmr.domain.Row;
-import filmr.domain.Showing;
-import filmr.domain.Theater;
+import filmr.domain.*;
 
 import java.util.ArrayList;
 
@@ -50,5 +47,20 @@ public class EntityFactory {
         theater.setCinema(cinema);
         theater.setShowings(showings);
         return theater;
+    }
+
+    public static Repertoire createRepertoire() {
+        Repertoire repertoire = new Repertoire();
+        ArrayList<Movie> movies = new ArrayList<>();
+        repertoire.setMovies(movies);
+        return repertoire;
+    }
+
+    public static Movie createMovie(String title, String description, Long lenght) {
+        Movie movie = new Movie();
+        movie.setTitle(title);
+        movie.setDescription(description);
+        movie.setLengthInMinutes(lenght);
+        return movie;
     }
 }

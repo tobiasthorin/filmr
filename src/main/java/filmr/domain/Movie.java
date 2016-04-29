@@ -77,6 +77,7 @@ public class Movie {
 	public String toString() {
 		return "Movie [id=" + id + ", title=" + title + ", description=" + description + ", lengthInMinutes="
 				+ lengthInMinutes + "]";
+//		return "{id=1, title=Global Test Movie, description=A movie about pigs, lengthInMinutes=120}";
 	}
 	
 	

@@ -2,7 +2,6 @@ package filmr.controllers;
 
 import filmr.Application;
 import filmr.domain.Cinema;
-import filmr.domain.Theater;
 import filmr.repositories.CinemaRepository;
 import filmr.testfactories.EntityFactory;
 import org.junit.Assert;
@@ -24,7 +23,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -46,14 +44,12 @@ public class CinemaControllerTest {
     //Used instead of SpringJunit4ClassRunner in @RunWith
     private TestContextManager testContextManager;
     //Variables
-    private MediaType jsonContentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
-            MediaType.APPLICATION_JSON.getSubtype(),
-            Charset.forName("utf8"));
+    private MediaType jsonContentType;
     @Autowired
     private WebApplicationContext webApplicationContext;
     @Autowired
 	private CinemaRepository cinemaRepository;
-    private String baseUrl = "/api/cinemas/";
+    private String baseUrl;
     //Variables for testing values
     private int tableSize;
     private Cinema savedCinema;
@@ -75,6 +71,10 @@ public class CinemaControllerTest {
 
     public CinemaControllerTest(Long id) {
         this.id = id;
+        jsonContentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
+                MediaType.APPLICATION_JSON.getSubtype(),
+                Charset.forName("utf8"));
+        baseUrl = "/api/cinemas/";
     }
 
     @Before
@@ -104,7 +104,7 @@ public class CinemaControllerTest {
         Cinema cinema = EntityFactory.createCinema("testCreate Cinema");
 
         //Convert Cinema to JSON string
-        String jsonObject = json(cinema);
+        String jsonObject = getAsJsonString(cinema);
 
         mockMvc.perform(post(baseUrl)
                 .contentType(jsonContentType)
@@ -116,22 +116,22 @@ public class CinemaControllerTest {
         assertEquals("Amount of cinemas should be +1", tableSize +1, cinemaRepository.findAll().size());
     }
 
+    //TODO in help class keep 'this' and it will work?!
     private HttpMessageConverter mappingJackson2HttpMessageConverter;
 
-	@Autowired // ???
-	void setConverters(HttpMessageConverter<?>[] converters) {
+     @Autowired // ???
+    void setConverters(HttpMessageConverter<?>[] converters) {
+        this.mappingJackson2HttpMessageConverter = Arrays.asList(converters).stream().filter(
+                hmc -> hmc instanceof MappingJackson2HttpMessageConverter).findAny().get();
 
-		this.mappingJackson2HttpMessageConverter = Arrays.asList(converters).stream().filter(
-				hmc -> hmc instanceof MappingJackson2HttpMessageConverter).findAny().get();
+        Assert.assertNotNull("the JSON message converter must not be null",
+                this.mappingJackson2HttpMessageConverter);
+    }
 
-		 Assert.assertNotNull("the JSON message converter must not be null",
-				this.mappingJackson2HttpMessageConverter);
-	}
-
-    protected String json(Object o) throws IOException {
+    public String getAsJsonString(Object o) throws IOException {
         MockHttpOutputMessage mockHttpOutputMessage = new MockHttpOutputMessage();
         this.mappingJackson2HttpMessageConverter.write(
-                    o, MediaType.APPLICATION_JSON, mockHttpOutputMessage);
+                o, MediaType.APPLICATION_JSON, mockHttpOutputMessage);
         return mockHttpOutputMessage.getBodyAsString();
     }
 }
