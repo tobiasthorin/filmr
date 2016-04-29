@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import org.hamcrest.core.Is;
 import org.junit.Assert;
@@ -91,7 +92,7 @@ public class TestsTheSpringBootWayQM {
 	@Test
 	public void testReadOne() throws Exception {
 		
-		// each .andExpect  is like an assert, so each can give a "expected x, got y"-error.
+		// each .andExpect  is like an assert, so each can give its own "expected x, got y"-error.
 		mockMvc.perform(get(movieBaseUrl + savedMovie.getId()))
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(jsonContentType))
@@ -101,6 +102,26 @@ public class TestsTheSpringBootWayQM {
 			.andExpect(jsonPath("$.lengthInMinutes", is(savedMovie.getLengthInMinutes().intValue())));
 			
 	}
+	
+	@Test
+	public void testReadAll() throws Exception {
+		
+		// create 10 more movies, for a total of 11
+		for(int i = 0; i<10; i++) {
+			Movie m = new Movie();
+			m.setTitle("Neverending story " + i);
+			movieRepo.save(m);
+		}
+		Integer expextedTotal = movieRepo.findAll().size();
+		
+		// each .andExpect  is like an assert, so each can give a "expected x, got y"-error.
+		mockMvc.perform(get(movieBaseUrl))
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(jsonContentType))
+			.andExpect(jsonPath("$", hasSize(expextedTotal)));
+			
+	}
+	
 	
 	@Test
 	public void testUpdateOne() throws Exception {
@@ -121,7 +142,7 @@ public class TestsTheSpringBootWayQM {
 	}
 	
 	
-	
+	// this was harder. maybe "throws Exception" is messing with @Test(expected=...) ?
 //	@Test(expected = JsonMappingException.class)
 //	public void testDeleteOne() throws Exception {
 //		
