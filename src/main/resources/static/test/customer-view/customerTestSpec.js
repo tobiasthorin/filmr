@@ -2,7 +2,7 @@ describe("Tests for customerController.js", function () {
 
 	beforeEach(module('filmr'));
 
-	var $controller, $scope, MockedCinemaService;
+	var $controller, $scope, MockedCinemaService, mockedSavedCinema;
 
 	//Mocks
 	var mockedCinemas = [
@@ -28,6 +28,7 @@ describe("Tests for customerController.js", function () {
 						then: function (success, fail) {
 							if (typeof params != 'undefined') {
 								success();
+								mockedSavedCinema = params;
 							} else {
 								fail();
 							}
@@ -54,6 +55,9 @@ describe("Tests for customerController.js", function () {
 	});
 
 	it("Stores the input data in an object when submit is clicked", function(){
+		$scope.name = "testname";
+		$scope.disabled = false;
+
 		$scope.submitCinema();
 
 		expect($scope.newCinema.name).toBeDefined();
@@ -61,20 +65,27 @@ describe("Tests for customerController.js", function () {
 	});
 
 	it("Sends the data object to the API via POST", function(){
-		spyOn(MockedCinemaService, 'save');
+		$scope.name = "testname";
+		$scope.disabled = false;
 
-		$scope.submitCinema(mockedCinemas[0]);
+		$scope.submitCinema();
 
-		expect(MockedCinemaService.save).toHaveBeenCalledWith(mockedCinemas[0]);
+		expect(mockedSavedCinema).toEqual({name: "testname", disabled: false});
 	});
 
 	it("Logs a success message if the POST is successful", function(){
+		spyOn($scope, 'alert');
+
+		$scope.name = "Cinema name";
+		$scope.disabled = false;
+
 		$scope.submitCinema();
-		expect($scope.logMessage).toEqual("Success!");
+		expect($scope.alert).toHaveBeenCalledWith("Success!");
 	});
 
 	it("Logs an error message if the POST is unsuccessful", function(){
+		spyOn($scope, 'alert');
 		$scope.submitCinema();
-		expect($scope.logMessage).toEqual("Error!");
+		expect($scope.alert).toHaveBeenCalledWith("Error!");
 	});
 });
