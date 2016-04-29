@@ -164,6 +164,6 @@ INSERT INTO repertoire_movies (repertoire,movies) VALUES(1,1);
 INSERT INTO repertoire_movies (repertoire,movies) VALUES(1,2);
 
 /* FILL REPETOIRE OF LISAS CINEMA WITH TWO MOVIES */
-INSERT INTO repertoire_movies (repertoire,movies) VALUES(1,3);
-INSERT INTO repertoire_movies (repertoire,movies) VALUES(1,4);
+INSERT INTO repertoire_movies (repertoire,movies) VALUES(2,3);
+INSERT INTO repertoire_movies (repertoire,movies) VALUES(2,4);
 

@@ -12,12 +12,12 @@ angular.module('filmr')
 		getMoviesInRepetoire();
 		getAddableMovies();
 	});
-		getListOfTheaters();
+	getListOfTheaters();
 
 
 	// PUBLIC
 	$scope.removeMovieFromRepertoire = function() {
-
+		return 123; // TODO: just a dummy from test
 	}
 
 	$scope.addMovieToRepertoire = function() {
@@ -67,7 +67,7 @@ angular.module('filmr')
 	function getCurrentCinema(callbackWhenDone) {
 		console.log("---");
 		console.log("call get current cinema");
-		var cinema = CinemaService.get({id:1}, function(){
+		CinemaService.get({id:1}, function(cinema){
 			console.log("current cinema: ");
 			$scope.cinema = cinema;
 			callbackWhenDone();
