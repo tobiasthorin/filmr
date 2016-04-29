@@ -2,6 +2,8 @@ package filmr.controllers;
 
 import filmr.Application;
 import filmr.domain.Cinema;
+import filmr.domain.Repertoire;
+import filmr.domain.Theater;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -15,6 +17,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -69,8 +72,21 @@ public class CinemaControllerTest {
     @Test
     public void testCreateCinema() throws Exception {
 
+        String baseurl = "http://localhost:8080/filmr/api/";
+
+//        //read theaters and repetoaire
+//        ResponseEntity<Repertoire> repertoireResponseEntity = restTemplate.getForEntity(baseurl+"/repertoires/"+1, Repertoire.class);
+//        Repertoire repertoire = repertoireResponseEntity.getBody();
+//        ResponseEntity<Theater> theaterResponseEntity = restTemplate.getForEntity(baseurl+"/theaters/"+1, Theater.class);
+//        Theater theater = theaterResponseEntity.getBody();
+//        ArrayList<Theater> theaters = new ArrayList<>();
+//        theaters.add(theater);
+
         Cinema cinema = new Cinema();
         cinema.setName("Bergakungen");
+//        cinema.setRepertoire(repertoire);
+//        cinema.setTheaters(theaters);
+
 
         ResponseEntity<Cinema> responseEntity = restTemplate.postForEntity(cinemaApiBaseUrl, cinema, Cinema.class);
         Cinema postedCinema = responseEntity.getBody();;
