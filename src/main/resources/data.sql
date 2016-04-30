@@ -29,40 +29,40 @@ INSERT INTO theater (name, number_of_seats, cinema_id, disabled) VALUES ('Bergak
 
 /* SHOWINGS */
 /*# for movie 1, theater 1*/
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-22 12:00', 1, 1);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-22 15:00', 1, 1);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-22 19:00', 1, 1);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-22 21:00', 1, 1);
-
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-24 12:00', 1, 1);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-24 15:00', 1, 1);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-24 19:00', 1, 1);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-24 21:00', 1, 1);
-
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-25 12:00', 1, 1);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-25 15:00', 1, 1);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-25 19:00', 1, 1);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-25 21:00', 1, 1);
-
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-26 12:00', 1, 1);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-26 15:00', 1, 1);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-26 19:00', 1, 1);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-26 21:00', 1, 1);
-
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-27 12:00', 1, 1);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-27 15:00', 1, 1);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-27 19:00', 1, 1);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-27 21:00', 1, 1);
-
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-28 12:00', 1, 1);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-28 15:00', 1, 1);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-28 19:00', 1, 1);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-28 21:00', 1, 1);
-
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-29 12:00', 1, 1);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-29 15:00', 1, 1);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-29 19:00', 1, 1);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-29 21:00', 1, 1);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-05-01 12:00', 1, 1);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-05-01 15:00', 1, 1);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-05-01 19:00', 1, 1);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-05-01 21:00', 1, 1);
+                                                                            
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-05-04 12:00', 1, 1);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-05-04 15:00', 1, 1);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-05-04 19:00', 1, 1);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-05-04 21:00', 1, 1);
+                                                                           
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-05-05 12:00', 1, 1);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-05-05 15:00', 1, 1);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-05-05 19:00', 1, 1);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-05-05 21:00', 1, 1);
+                                                                           
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-05-06 12:00', 1, 1);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-05-06 15:00', 1, 1);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-05-06 19:00', 1, 1);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-05-06 21:00', 1, 1);
+                                                                          
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-05-07 12:00', 1, 1);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-05-07 15:00', 1, 1);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-05-07 19:00', 1, 1);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-05-07 21:00', 1, 1);
+                                                                           
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-05-08 12:00', 1, 1);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-05-08 15:00', 1, 1);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-05-08 19:00', 1, 1);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-05-08 21:00', 1, 1);
+                                                                            
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-05-09 12:00', 1, 1);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-05-09 15:00', 1, 1);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-05-09 19:00', 1, 1);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-05-09 21:00', 1, 1);
 
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-30 12:00', 1, 1);
 /* INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES ('2016-04-30 15:00', 1, 1);

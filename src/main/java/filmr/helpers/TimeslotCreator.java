@@ -74,9 +74,16 @@ public class TimeslotCreator {
     			
     			// create empty movie, to make .getShowingEndtime return something in frontend
     			Movie m = new Movie();
-    			m.setTitle("Available time slot - " + s1.getTheater().getName());
-    			m.setDescription("Available time slot - " + s1.getTheater().getName());
     			m.setLengthInMinutes(actualTimeSlotInMinutes);
+    			
+    			String timeslotInfo = ""
+    					+ "Available timeslot ("
+    					+ actualTimeSlotInMinutes
+    					+ " minutes) - "
+    					+ s1.getTheater().getName();
+    			
+    			m.setTitle(timeslotInfo);
+    			m.setDescription(timeslotInfo);
     			
     			emptyShowing.setMovie(m);
     			emptyShowings.add(emptyShowing);
