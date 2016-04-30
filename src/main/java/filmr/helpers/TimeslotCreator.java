@@ -20,20 +20,25 @@ import filmr.domain.Theater;
 public class TimeslotCreator {
     
 	/**
-	 * Used to facilitate scheduling of showings. An admin can easily see what time periods are available, as those Showings (not real ones) will look different to the rest
-	 * @param showings
-	 * @param minimumTimeSlotLengthInMinutes
-	 * @return
+	 * Used to facilitate scheduling of showings. An admin can easily see what time periods are available, 
+	 * as those Showings (not real ones) will look different compared to the scheduled ones
+	 * 
+	 * @param showings list to modify. Any filtering of the list should already have been done.
+	 * @param minimumTimeSlotLengthInMinutes represents the length of the movie that we want to schedule a showing for
+	 * @return sorted list, by date ASC, with added empty showings, spanning the whole available time-gap between two showings
 	 */
     public static List<Showing> createExtendedShowingsListWithEmptyTimeSlots(List<Showing> showings, Long minimumTimeSlotLengthInMinutes) {
     	// guard
     	if(showings.size() <= 1) return showings;
     		
     	List<Showing> extendedListOfShowings = new ArrayList<>();
-    	Map<Theater, List<Showing>> showingsListsByTheater = getShowingsListGroupedByShowingTheater(showings);
+    	
+    	// to find actual empty timeslots, the showings we are comparing must be
+    	// from the same theater. So first split into lists grouped by theater
+    	Map<Long, List<Showing>> showingsListsByTheater = getShowingsListGroupedByShowingTheater(showings);
     	
     	// get the modified list for each of the grouped lists, and add all the modified lists to the same extendedListOfShowings.
-    	showingsListsByTheater.forEach((theaterKey, listOfTheaterSpecificShowings) -> 
+    	showingsListsByTheater.forEach((theaterIdKey, listOfTheaterSpecificShowings) -> 
     	{
     		List<Showing> extendedListForSpecificTheater = addEmptyTimeSlotShowings(listOfTheaterSpecificShowings, minimumTimeSlotLengthInMinutes);
     		extendedListOfShowings.addAll(extendedListForSpecificTheater);
@@ -44,7 +49,7 @@ public class TimeslotCreator {
     	return extendedListOfShowings;
     }
     
-    // return is only meaningful if the showings list contains only showings from the same theater.
+    // NOTE: the return is only meaningful if the showings list contains only showings from the same theater.
     private static List<Showing> addEmptyTimeSlotShowings(List<Showing> showings, Long minimumTimeSlotLength) {
     	if(showings.size() <= 1) return showings;
 		
@@ -58,7 +63,7 @@ public class TimeslotCreator {
     		// get two showings to compare the time gap between them
     		Showing s1 = showings.get(i -1);
     		Showing s2 = showings.get(i);
-    		Long actualTimeSlotInMinutes = lengthInMinutesBetweenShowingMovieEndtimeAndNextShowingStartTime(s1, s2);
+    		Long actualTimeSlotInMinutes = getTimegapInMinutes(s1, s2);
     		
     		if(actualTimeSlotInMinutes > minimumTimeSlotLength) {
     			
@@ -85,24 +90,29 @@ public class TimeslotCreator {
     	return showings;
     }
     
-    private static Long lengthInMinutesBetweenShowingMovieEndtimeAndNextShowingStartTime(Showing showingWithMovieEndTime, Showing showingWithStartTime){
+    private static Long getTimegapInMinutes(
+    		Showing showingWithMovieEndTimeStartingTheTimegap, 
+    		Showing showingWithMovieStartTimeEndingTheTimegap){
     	
     	Long ONE_MINUTE_IN_MILLIS = new Long(60000);
     	
-    	Long millisBetween = 
-    			showingWithStartTime.getShowDateTime().getTime() // the one further into the future
-    			- showingWithMovieEndTime.getShowingEndtime().getTime();
-    	return Math.floorDiv(millisBetween, ONE_MINUTE_IN_MILLIS);
+    	Long potentialTimeGapStart = showingWithMovieEndTimeStartingTheTimegap.getShowingEndtime().getTime();
+    	Long potentialTimeGapEnd =  showingWithMovieStartTimeEndingTheTimegap.getShowDateTime().getTime();
+    	
+    	Long timegapInMillis = potentialTimeGapEnd - potentialTimeGapStart;
+    	Long timegapInMinutes = Math.floorDiv(timegapInMillis, ONE_MINUTE_IN_MILLIS);
+    	
+    	return timegapInMinutes;
     }
     
     
     
     
-    private static Map<Theater,List<Showing>> getShowingsListGroupedByShowingTheater(List<Showing> showings) {
+    private static Map<Long,List<Showing>> getShowingsListGroupedByShowingTheater(List<Showing> showings) {
     	
-    	Map<Theater,List<Showing>> mapOfLists = 
+    	Map<Long,List<Showing>> mapOfLists = 
     			showings.stream()
-    			.collect(Collectors.groupingBy(showing -> showing.getTheater()));
+    			.collect(Collectors.groupingBy(showing -> showing.getTheater().getId()));
     	
     	return mapOfLists;
     }
