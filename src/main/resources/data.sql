@@ -169,3 +169,22 @@ INSERT INTO repertoire_movies (repertoire,movies) VALUES(1,2);
 INSERT INTO repertoire_movies (repertoire,movies) VALUES(2,3);
 INSERT INTO repertoire_movies (repertoire,movies) VALUES(2,4);
 
+
+/* SOME "DYNAMIC" DATA THAT GUARANTIES THAT THERE ARE ALWAYS A FEW SHOWINGS TODAY (now()). GETS THEIR OWN THEATERS SO THEY CAN'T INTERFERE WITH OTHER SHOWINGS ABOVE */
+/* theater will get id 5 and 6 */
+INSERT INTO theater (name, number_of_seats, cinema_id, disabled) VALUES ('sal 98', 20, 2, FALSE);
+INSERT INTO theater (name, number_of_seats, cinema_id, disabled) VALUES ('sal 99', 20, 2, FALSE);
+
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 10:00'), 3, 5);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 13:00'), 3, 5);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 16:00'), 3, 5);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 19:00'), 3, 5);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 22:00'), 3, 5);
+
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 09:00'), 2, 6);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 12:00'), 2, 6);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 15:00'), 2, 6);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 18:00'), 2, 6);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 21:00'), 2, 6);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 23:30'), 2, 6);
+
