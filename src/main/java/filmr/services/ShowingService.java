@@ -9,7 +9,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 
@@ -35,8 +34,8 @@ public class ShowingService extends BaseServiceClass<Showing, Long> {
 		// named query, works with null values  - see Showing.java
 		Query query = entityManager.createNamedQuery("Showing.filteredAndOrdered", Showing.class);
 		query.setParameter("showDisabledShowings", show_disabled_showings);
-		query.setParameter("fromDate", null); // TODO: remove null
-		query.setParameter("toDate", null);
+		query.setParameter("fromDate", from_date);
+		query.setParameter("toDate", to_date);
 		query.setParameter("onlyForMovieWithId", only_for_movie_with_id);
 		query.setParameter("onlyForTheaterWithId", only_for_theater_with_id);
 		query.setParameter("onlyForCinemaWithId", only_for_cinema_with_id);
