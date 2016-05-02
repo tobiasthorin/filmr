@@ -2,6 +2,7 @@ package filmr.testfactories;
 
 import filmr.domain.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -66,7 +67,7 @@ public class EntityFactory {
         return movie;
     }
 
-    public static Showing createShowing(Date showDateTime, Movie savedMovie, Theater savedTheater, List<Booking> savedBookings) {
+    public static Showing createShowing(LocalDateTime showDateTime, Movie savedMovie, Theater savedTheater, List<Booking> savedBookings) {
         Showing showing = new Showing();
         showing.setShowDateTime(showDateTime);
         showing.setMovie(savedMovie);

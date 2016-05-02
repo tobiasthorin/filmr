@@ -1,5 +1,7 @@
 package filmr.helpers;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -69,8 +71,7 @@ public class TimeslotCreator {
     			
     			// create an empty showing, spanning the whole gap
     			Showing emptyShowing = new Showing();
-    			Date endOfS1movie = s1.getShowingEndtime();
-    			emptyShowing.setShowDateTime(new Date(endOfS1movie.getTime()));
+    			emptyShowing.setShowDateTime(s1.getShowingEndtime());
     			
     			// create empty movie, to make .getShowingEndtime return something in frontend
     			Movie m = new Movie();
@@ -101,13 +102,14 @@ public class TimeslotCreator {
     		Showing showingWithMovieEndTimeStartingTheTimegap, 
     		Showing showingWithMovieStartTimeEndingTheTimegap){
     	
-    	Long ONE_MINUTE_IN_MILLIS = new Long(60000);
-    	
-    	Long potentialTimeGapStart = showingWithMovieEndTimeStartingTheTimegap.getShowingEndtime().getTime();
-    	Long potentialTimeGapEnd =  showingWithMovieStartTimeEndingTheTimegap.getShowDateTime().getTime();
-    	
-    	Long timegapInMillis = potentialTimeGapEnd - potentialTimeGapStart;
-    	Long timegapInMinutes = Math.floorDiv(timegapInMillis, ONE_MINUTE_IN_MILLIS);
+    	long timegapInMinutes = 
+    			showingWithMovieEndTimeStartingTheTimegap.getShowingEndtime()
+    			.until(showingWithMovieStartTimeEndingTheTimegap.getShowDateTime(), ChronoUnit.MINUTES);
+//    	Long potentialTimeGapStart = showingWithMovieEndTimeStartingTheTimegap.getShowingEndtime().getTime();
+//    	Long potentialTimeGapEnd =  showingWithMovieStartTimeEndingTheTimegap.getShowDateTime().getTime();
+//    	
+//    	Long timegapInMillis = potentialTimeGapEnd - potentialTimeGapStart;
+//    	Long timegapInMinutes = Math.floorDiv(timegapInMillis, ONE_MINUTE_IN_MILLIS);
     	
     	return timegapInMinutes;
     }
