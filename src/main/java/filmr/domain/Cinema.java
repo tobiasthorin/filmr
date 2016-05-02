@@ -76,10 +76,10 @@ public class Cinema {
                 .toHashCode();
     }
 
-	@Override
+	/*@Override
 	public String toString() {
-		return "Cinema [id=" + id + ", name=" + name + ", repertoire of size=" + repertoire.getMovies().size() + ", theaters=" + theaters + "]";
-	}
+		return "Cinema [id=" + id + ", name=" + name + ", repertoire of size=" + repertoire.getMovies().size() + ", theaters=" + theaters+ "]";
+	}*/
     
     
 
