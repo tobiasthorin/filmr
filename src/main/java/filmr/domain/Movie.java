@@ -73,11 +73,11 @@ public class Movie {
 				.toHashCode();
 	}
 
-	@Override
+	/*@Override
 	public String toString() {
 		return "Movie [id=" + id + ", title=" + title + ", description=" + description + ", lengthInMinutes="
 				+ lengthInMinutes + "]";
-	}
+	}*/
 	
 	
 }

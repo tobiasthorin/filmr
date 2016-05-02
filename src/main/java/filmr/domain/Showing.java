@@ -2,7 +2,6 @@ package filmr.domain;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.util.Date;
 import java.util.List;
@@ -159,17 +158,16 @@ public class Showing implements Comparable<Showing> {
 
 
 
-	@Override
+	/*@Override
 	public String toString() {
 		return "Showing [id=" + id + ", showDateTime=" + showDateTime + ", movie=" + movie.getTitle() + ", theater=" + theater.getName()
 				+ ", bookings size =" + bookings.size() + ", isDisabled=" + isDisabled + "]";
-	}
-
+	} */
+	
 	@Override
 	public int compareTo(Showing o) {
 		// Showings are by default sorted by date, so we can use the Date's compareTo-method
 		return this.showDateTime.compareTo(o.getShowDateTime());
 	}
-	
 	
 }
