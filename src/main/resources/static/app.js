@@ -1,5 +1,4 @@
 // wrapped in a IIFE, good habit. (doensn't pollute global name-space)
-(function () {
     var app = angular.module('filmr', ['ngRoute', 'ngResource']); // name  [dependencies] , name is referenced in html tag
 
 
@@ -89,6 +88,4 @@
 
         });
     }]);
-
-})(); // run at once
 

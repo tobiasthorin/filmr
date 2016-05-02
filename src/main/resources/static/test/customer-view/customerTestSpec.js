@@ -56,12 +56,13 @@ describe("Tests for customerController.js", function () {
 
 	it("Stores the input data in an object when submit is clicked", function(){
 		$scope.add_cinema_name = "testname";
-		$scope.add_cinema_disabled = false;
+
+		expect($scope.add_cinema_disabled).toBeUndefined();
 
 		$scope.submitCinema();
 
 		expect($scope.newCinema.name).toBeDefined();
-		expect($scope.newCinema.add_cinema_disabled).toBeDefined();
+		expect($scope.newCinema.disabled).toBeDefined();
 	});
 
 	it("Sends the data object to the API via POST", function(){
@@ -70,7 +71,7 @@ describe("Tests for customerController.js", function () {
 
 		$scope.submitCinema();
 
-		expect(mockedSavedCinema).toEqual({add_cinema_name: "testname", add_cinema_disabled: false});
+		expect(mockedSavedCinema).toEqual({name: "testname", disabled: false});
 	});
 
 	it("Logs a success message if the POST is successful", function(){
@@ -88,4 +89,11 @@ describe("Tests for customerController.js", function () {
 		$scope.submitCinema();
 		expect($scope.alert).toHaveBeenCalledWith("Error!");
 	});
+
+	it("Resets the input fields", function () {
+		$scope.resetFields();
+
+		expect($scope.add_cinema_name).toEqual("");
+		expect($scope.add_cinema_disabled).toEqual(false);
+	})
 });
