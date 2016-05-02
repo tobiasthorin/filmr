@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import filmr.domain.Movie;
 import filmr.domain.Showing;
+import filmr.domain.Theater;
+import filmr.helpers.TimeslotCreator;
 import filmr.services.ShowingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -14,8 +16,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -54,7 +61,8 @@ public class ShowingController {
     		@RequestParam(name="only_for_cinema_with_id", required=false) Long only_for_cinema_with_id,
     		@RequestParam(name="limit", required=false, defaultValue = "50") Integer limit,
     		@RequestParam(name="show_disabled_showings", required=false, defaultValue = "false") Boolean show_disabled_showings,
-    		@RequestParam(name="include_distinct_movies_in_header", required=false, defaultValue = "false") Boolean include_distinct_movies_in_header
+    		@RequestParam(name="include_distinct_movies_in_header", required=false, defaultValue = "false") Boolean include_distinct_movies_in_header,
+    		@RequestParam(name="include_empty_slots_for_movie_of_length", required=false) Long include_empty_slots_for_movie_of_length
     		) {
     	
     	
@@ -87,7 +95,13 @@ public class ShowingController {
                 return ResponseEntity.ok().headers(customHeaders).body(retrievedShowings);
             }
         }
-        return new ResponseEntity<List<Showing>>(showingService.getAllMatchingParams(from_date, to_date, minimum_available_tickets, only_for_movie_with_id, only_for_theater_with_id, only_for_cinema_with_id, limit, show_disabled_showings), HttpStatus.OK);
+        
+        // TODO: remove after testing new methods
+        if(include_empty_slots_for_movie_of_length != null) {
+        	retrievedShowings = 
+        			TimeslotCreator.createExtendedShowingsListWithEmptyTimeSlots(retrievedShowings, include_empty_slots_for_movie_of_length);        	
+        }
+        return new ResponseEntity<List<Showing>>(retrievedShowings, HttpStatus.OK);
     }
 
     @CrossOrigin
@@ -122,6 +136,7 @@ public class ShowingController {
     	return httpHeaders;
     }
     
+    
     private List<Movie> getDistinctMovieListForShowings(List<Showing> showings) {
     	
     	List<Movie> movies = 
@@ -132,5 +147,6 @@ public class ShowingController {
     			
     	return movies;
     }
+   
 
 }

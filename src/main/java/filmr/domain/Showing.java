@@ -2,7 +2,6 @@ package filmr.domain;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.util.Date;
 import java.util.List;
@@ -34,7 +33,7 @@ import javax.validation.constraints.NotNull;
 							"ORDER BY s.showDateTime ASC"
 				)
 		)
-public class Showing {
+public class Showing implements Comparable<Showing> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -108,6 +107,25 @@ public class Showing {
 		return id;
 	}
 	
+	public Date getShowingEndtime() {
+		long ONE_MINUTE_IN_MILLIS = 60000;
+		long movieInMillis = movie.getLengthInMinutes() * ONE_MINUTE_IN_MILLIS;
+		long startDateInMillis = showDateTime.getTime();
+		
+		Date movieEndtime = new Date(startDateInMillis + movieInMillis);
+		return movieEndtime;
+	}
+	
+	//TODO: remove. just testing stuff
+	public String getShowingStartTimeAsString() {
+		return showDateTime.toString();
+	}
+	
+	//TODO: remove. just testing stuff
+	public String getShowingEndTimeAsString() {
+		return getShowingEndtime().toString();
+	}
+	
 	@Override
 	public boolean equals(Object object) {
 		if (object == null) {
@@ -140,11 +158,16 @@ public class Showing {
 
 
 
-	@Override
+	/*@Override
 	public String toString() {
 		return "Showing [id=" + id + ", showDateTime=" + showDateTime + ", movie=" + movie.getTitle() + ", theater=" + theater.getName()
 				+ ", bookings size =" + bookings.size() + ", isDisabled=" + isDisabled + "]";
-	}
+	} */
 	
+	@Override
+	public int compareTo(Showing o) {
+		// Showings are by default sorted by date, so we can use the Date's compareTo-method
+		return this.showDateTime.compareTo(o.getShowDateTime());
+	}
 	
 }

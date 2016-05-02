@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Customer</title>
+</head>
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+
+		<h2>Cinemas</h2>
+		<ul>
+			<li ng-repeat="cinema in cinemas">
+				{{cinema.name}}
+			</li>
+		</ul>
+
+		<h2>Add new Cinema</h2>
+                <form>
+			<table>
+				<tr>
+					<th>Name</th><td><input type="text" ng-model="add_cinema_name"></td>
+				</tr>
+				<tr>
+					<th>Disabled</th><td><input type="checkbox" ng-model="add_cinema_disabled"></td>
+				</tr>
+				<tr>
+					<th></th><td><input type="submit" ng-click="submitCinema()"></td>
+				</tr>
+			</table>
+                </form>
+
+            </div>
+	</div>
+
+</body>
+</html>

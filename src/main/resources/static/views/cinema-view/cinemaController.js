@@ -1,7 +1,8 @@
-angular.module('filmr')
+app
 	.controller('cinemaController', ['$location', '$rootScope', '$scope', '$routeParams', 'MovieService', 'TheaterService', '$resource', 'RepertoireService', 'CinemaService',
 		function ($location, $rootScope, $scope, $routeParams, MovieService, TheaterService, $resource, RepertoireService, CinemaService) {
 
+/*
 	//VARIABLES
 	$scope.addableMovies = [];
 	$scope.moviesInRepetoire = [];
@@ -105,5 +106,5 @@ angular.module('filmr')
 		function getListOfTheaters() {
 			$scope.theaters = TheaterService.query();
 		}
-	
+	*/
 }]);

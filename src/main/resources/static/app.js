@@ -1,6 +1,5 @@
 // wrapped in a IIFE, good habit. (doensn't pollute global name-space)
-(function () {
-    var app = angular.module('filmr', ['ngRoute', 'ngResource','ngMock']); // name  [dependencies] , name is referenced in html tag
+    var app = angular.module('filmr', ['ngRoute', 'ngResource']); // name  [dependencies] , name is referenced in html tag
 
 
     // ROUTING - what should happen when url changes to path x
@@ -62,6 +61,12 @@
                 templateUrl: 'views/theater-view/theater.html',
                 controller: 'theaterController'
 
+            })
+            .when('/customer', {
+                title: 'Customer Settings',
+                templateUrl: 'views/customer-view/customer.html',
+                controller: 'customerController'
+
             }).otherwise({redirectTo: "/"})
     });
 
@@ -83,6 +88,4 @@
 
         });
     }]);
-
-})(); // run at once
 

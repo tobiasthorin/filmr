@@ -94,11 +94,11 @@ public class Booking {
 				.toHashCode();
 	}
 
-	@Override
+	/*@Override
 	public String toString() {
 		return "Booking [id=" + id + ", bookingReference=" + bookingReference + ", bookedSeats=" + bookedSeats
 				+ ", showing=" + showing + ", phoneNumber=" + phoneNumber + "]";
-	}
+	}*/
 	
 	
 	
