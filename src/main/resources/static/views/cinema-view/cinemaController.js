@@ -2,6 +2,29 @@ app
 	.controller('cinemaController', ['$location', '$rootScope', '$scope', '$routeParams', 'MovieService', 'TheaterService', '$resource', 'RepertoireService', 'CinemaService',
 		function ($location, $rootScope, $scope, $routeParams, MovieService, TheaterService, $resource, RepertoireService, CinemaService) {
 
+	var moviesInRepertoire;
+
+	fetchMoviesInRepertorie();
+
+	$scope.getMoviesInRepertoire = function() {
+		return moviesInRepertoire;
+	}
+
+	function fetchMoviesInRepertorie() {
+
+		MovieService.query().$promise.then(
+			// success
+			function(result){
+				moviesInRepertoire = result;
+			},
+			// error
+			function(error) {
+				$rootScope.errorHandler(error);
+			}
+		);
+	}
+
+
 /*
 	//VARIABLES
 	$scope.addableMovies = [];
