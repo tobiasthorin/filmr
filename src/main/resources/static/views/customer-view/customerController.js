@@ -13,14 +13,27 @@ angular.module('filmr', [])
 					});
 			};
 
-			$scope.submitCinema = function (cinema) {
+			$scope.submitCinema = function () {
 				console.log("Saving...");
-				CinemaService.save(cinema).$promise.then(function () {
-						$scope.logMessage = "Success!";
-				},
-				function () {
 
-				});
-			}
+				if(!$scope.name) {
+					$scope.alert("Error!");
+					return;
+				}
+
+				$scope.newCinema = {name: $scope.name, disabled:$scope.disabled};
+
+				CinemaService.save($scope.newCinema).$promise.then(
+					function () {
+						$scope.alert("Success!");
+					},
+					function () {
+						$scope.alert("Error!");
+					});
+			};
+
+			$scope.alert = function(message){
+				//print message
+			};
 
 		}]);
