@@ -140,11 +140,11 @@ public class Showing {
 
 
 
-	@Override
+	/*@Override
 	public String toString() {
 		return "Showing [id=" + id + ", showDateTime=" + showDateTime + ", movie=" + movie.getTitle() + ", theater=" + theater.getName()
 				+ ", bookings size =" + bookings.size() + ", isDisabled=" + isDisabled + "]";
-	}
+	}*/
 	
 	
 }

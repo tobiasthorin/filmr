@@ -52,10 +52,10 @@ public class Repertoire {
                 .toHashCode();
     }
 
-	@Override
+	/*@Override
 	public String toString() {
 		return "Repertoire [id=" + id + ", movies=" + movies + "]";
-	}
+	}*/
     
     
     
