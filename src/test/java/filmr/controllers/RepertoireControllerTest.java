@@ -26,11 +26,16 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestContextManager;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultHandler;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.result.JsonPathResultMatchers;
 import org.springframework.web.context.WebApplicationContext;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -40,7 +45,9 @@ import java.util.Collection;
 import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -71,7 +78,6 @@ public class RepertoireControllerTest {
     private int tableSize;
     private Repertoire savedRepertoire;
     private Movie savedMovie;
-    private Movie savedMovie2;
 
     //Mock clone of project
     private MockMvc mockMvc;
@@ -113,11 +119,8 @@ public class RepertoireControllerTest {
         //Create repertoire with parameters
         Repertoire repertoire = EntityFactory.createRepertoire();
         savedRepertoire = repertoireRepository.save(repertoire);
-
         Movie movie = EntityFactory.createMovie("Global Test Movie", "A movie about pigs", new Long(120));
         savedMovie = movieRepository.save(movie);
-        Movie m = EntityFactory.createMovie("Tost mov", "a mov", new Long(30));
-        savedMovie2 = movieRepository.save(m);
 
         tableSize = repertoireRepository.findAll().size();
     }
@@ -143,11 +146,10 @@ public class RepertoireControllerTest {
         List<Movie> movies = savedRepertoire.getMovies();
         int oldSize = movies.size();
         movies.add(savedMovie);
-        movies.add(savedMovie2);
         savedRepertoire.setMovies(movies);
         String jsonObject = getAsJsonString(savedRepertoire);
 
-        mockMvc.perform(
+        ResultActions resultAction = mockMvc.perform(
                 put(baseUrl + savedRepertoire.getId())
                 .contentType(jsonContentType)
                 .content(jsonObject)
@@ -161,6 +163,15 @@ public class RepertoireControllerTest {
 
         //TODO check that added movie is added to repertoire properly
         assertEquals("Amount of movies in repertoire should be +1", oldSize+1, savedRepertoire.getMovies().size());
+
+        // pick out the response data.
+        MvcResult result = resultAction.andReturn();
+        String resultString = result.getResponse().getContentAsString();
+        System.out.println("json is" + resultString);
+
+        List<Movie> updatedMovieList = (List<Movie>) JsonPath.read(resultString, "$.movies");
+        assertEquals("Movies in updated repertoire should be same as the ones sent to API", savedRepertoire.getMovies(), updatedMovieList);
+        // TODO: figure out why the casting fails. Seems to be specific to Repertoire?
     }
 
     private HttpMessageConverter mappingJackson2HttpMessageConverter;
