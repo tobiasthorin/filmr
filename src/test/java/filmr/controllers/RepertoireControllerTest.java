@@ -29,6 +29,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultHandler;
 import org.springframework.test.web.servlet.ResultMatcher;
+import org.springframework.test.web.servlet.result.JsonPathResultMatchers;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
@@ -39,9 +40,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.Is.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -72,6 +71,7 @@ public class RepertoireControllerTest {
     private int tableSize;
     private Repertoire savedRepertoire;
     private Movie savedMovie;
+    private Movie savedMovie2;
 
     //Mock clone of project
     private MockMvc mockMvc;
@@ -113,8 +113,11 @@ public class RepertoireControllerTest {
         //Create repertoire with parameters
         Repertoire repertoire = EntityFactory.createRepertoire();
         savedRepertoire = repertoireRepository.save(repertoire);
+
         Movie movie = EntityFactory.createMovie("Global Test Movie", "A movie about pigs", new Long(120));
         savedMovie = movieRepository.save(movie);
+        Movie m = EntityFactory.createMovie("Tost mov", "a mov", new Long(30));
+        savedMovie2 = movieRepository.save(m);
 
         tableSize = repertoireRepository.findAll().size();
     }
@@ -140,6 +143,7 @@ public class RepertoireControllerTest {
         List<Movie> movies = savedRepertoire.getMovies();
         int oldSize = movies.size();
         movies.add(savedMovie);
+        movies.add(savedMovie2);
         savedRepertoire.setMovies(movies);
         String jsonObject = getAsJsonString(savedRepertoire);
 
@@ -150,7 +154,12 @@ public class RepertoireControllerTest {
         )
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(jsonContentType))
-                .andExpect(jsonPath("$.movies", hasSize(savedRepertoire.getMovies().size()))); //TODO we get the wrong object from $.movies. hasSize works
+                .andExpect(jsonPath("$.movies").isArray())
+                .andExpect(jsonPath("$.movies", hasSize(savedRepertoire.getMovies().size())))
+            //    .andExpect(jsonPath("$.movies", contains(movies)));//TODO this should work but the item(s) are of the wrong type
+        ;
+
+        //TODO check that added movie is added to repertoire properly
         assertEquals("Amount of movies in repertoire should be +1", oldSize+1, savedRepertoire.getMovies().size());
     }
 
