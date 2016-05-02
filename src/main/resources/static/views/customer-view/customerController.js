@@ -1,39 +1,38 @@
-angular.module('filmr', [])
-	.controller('customerController', ['$scope', 'CinemaService',
-		function ($scope, CinemaService) {
-			console.log('In Customer Controller');
+angular.module('filmr', []).controller('customerController', ['$scope', 'CinemaService',
+	function ($scope, CinemaService) {
+		console.log('In Customer Controller');
 
-			$scope.fetchCinemas = function () {
-				console.log("Fetching cinemas");
-				CinemaService.query().$promise.then(function (result) {
-						$scope.cinemas = result;
-					},
-					function () {
+		fetchCinemas();
 
-					});
-			};
+		$scope.fetchCinemas = function () {
+			console.log("Fetching cinemas");
+			CinemaService.query().$promise.then(function (result) {
+					$scope.cinemas = result;
+				},
+				function () {
+				});
+		};
 
-			$scope.submitCinema = function () {
-				console.log("Saving...");
+		$scope.submitCinema = function () {
+			console.log("Saving...");
+			if(!$scope.add_cinema_name) {
+				$scope.alert("Error!");
+				return;
+			}
 
-				if(!$scope.name) {
+			$scope.newCinema = {name: $scope.add_cinema_name, disabled:$scope.add_cinema_disabled};
+
+			CinemaService.save($scope.newCinema).$promise.then(
+				function () {
+					$scope.alert("Success!");
+				},
+				function () {
 					$scope.alert("Error!");
-					return;
-				}
+				});
+		};
 
-				$scope.newCinema = {name: $scope.name, disabled:$scope.disabled};
+		$scope.alert = function(message){
+			//print message
+		};
 
-				CinemaService.save($scope.newCinema).$promise.then(
-					function () {
-						$scope.alert("Success!");
-					},
-					function () {
-						$scope.alert("Error!");
-					});
-			};
-
-			$scope.alert = function(message){
-				//print message
-			};
-
-		}]);
+	}]);
