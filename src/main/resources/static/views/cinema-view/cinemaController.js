@@ -3,27 +3,76 @@ app
 		function ($location, $rootScope, $scope, $routeParams, MovieService, TheaterService, $resource, RepertoireService, CinemaService) {
 
 	var moviesInRepertoire;
+	var addableMovies;
+	var currentCinema;
 
-	fetchMoviesInRepertorie();
+	fetchAddableMovies();
+	fetchCurrentCinema();
 
 	$scope.getMoviesInRepertoire = function() {
 		return moviesInRepertoire;
 	}
 
+	$scope.getAddableMovies = function() {
+		return addableMovies;
+	}
+
 	function fetchMoviesInRepertorie() {
 
-		MovieService.query().$promise.then(
+
+		var id = currentCinema.repertoire.id;
+		RepertoireService.get({"id":id}).$promise.then(
 			// success
 			function(result){
-				moviesInRepertoire = result;
+				moviesInRepertoire = result.movies;
 			},
 			// error
 			function(error) {
 				$rootScope.errorHandler(error);
 			}
 		);
+		
+
+	};
+
+	function fetchCurrentCinema() {
+
+		var id = $routeParams.id;
+		
+
+		CinemaService.get({"id":id}).$promise.then(
+
+			function(result) {
+				console.log("current cinema: ");
+				currentCinema = result;
+				fetchMoviesInRepertorie();
+			},
+			function() {
+
+			});
 	}
 
+	function fetchAddableMovies() {
+
+
+		
+		MovieService.query().$promise.then(
+			// success
+			function(result){
+
+				addableMovies = result;
+			},
+			// error
+			function(error) {
+				$rootScope.errorHandler(error);
+			}
+		);
+	};
+
+	$scope.addMovieToRepertoire = function() {
+		console.log($scope.add_movie_to_repertoire_select);
+
+	}
 
 /*
 	//VARIABLES
