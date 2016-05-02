@@ -5,6 +5,8 @@ import javax.persistence.*;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 @Entity
@@ -14,14 +16,17 @@ public class Repertoire {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+ // updating movie list is done through PUT /api/reperoires/{id}/?add_movie_with_id&remove_movie_with_id
     @ManyToMany
-	private List<Movie> movies;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private List<Movie> movies;
 
     public Long getId() {
         return id;
     }
 
     public List<Movie> getMovies() {
+    	System.out.println("movies are: " + movies);
         return movies;
     }
 
