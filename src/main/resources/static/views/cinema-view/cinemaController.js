@@ -70,8 +70,18 @@ app
 	};
 
 	$scope.addMovieToRepertoire = function() {
-		console.log($scope.add_movie_to_repertoire_select);
+		//TODO: PUT, and have repeteroie id
+		var id = $scope.add_movie_to_repertoire_select.id;
+		RepertoireService.query({"add_movie_with_id":id}).$promise.then(
+			function(result){
+				console.log("succes:");
+				console.log(result);
+			},
+			function(){
+				//TODO: add error from rootScope
 
+			}
+		);
 	}
 
 /*
