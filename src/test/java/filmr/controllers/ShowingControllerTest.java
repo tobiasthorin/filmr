@@ -27,6 +27,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static junit.framework.TestCase.assertEquals;
@@ -106,7 +107,7 @@ public class ShowingControllerTest {
         //TODO on read test, make sure data.sql is not read
 
         //Create showing and everything that belongs in it
-        Date date = new Date();
+        LocalDateTime date = LocalDateTime.now();
         Movie movie = EntityFactory.createMovie("Global Test Movie", "A movie about things", new Long(120));
         savedMovie = movieRepository.save(movie);
         Cinema cinema = EntityFactory.createCinema("Global Test Cinema");
@@ -122,7 +123,7 @@ public class ShowingControllerTest {
 
     @Test
     public void testCreate() throws Exception {
-        Showing showing = EntityFactory.createShowing(new Date(), savedMovie, savedTheater, new ArrayList<>());
+        Showing showing = EntityFactory.createShowing(LocalDateTime.now(), savedMovie, savedTheater, new ArrayList<>());
 
         String jsonObject = getAsJsonString(showing);
 
