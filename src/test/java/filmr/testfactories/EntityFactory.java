@@ -3,6 +3,8 @@ package filmr.testfactories;
 import filmr.domain.*;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by luffarvante on 2016-04-29.
@@ -62,5 +64,14 @@ public class EntityFactory {
         movie.setDescription(description);
         movie.setLengthInMinutes(lenght);
         return movie;
+    }
+
+    public static Showing createShowing(Date showDateTime, Movie savedMovie, Theater savedTheater, List<Booking> savedBookings) {
+        Showing showing = new Showing();
+        showing.setShowDateTime(showDateTime);
+        showing.setMovie(savedMovie);
+        showing.setTheater(savedTheater);
+        showing.setBookings(savedBookings);
+        return showing;
     }
 }
