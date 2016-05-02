@@ -2,7 +2,7 @@ angular.module('filmr', []).controller('customerController', ['$scope', 'CinemaS
 	function ($scope, CinemaService) {
 		console.log('In Customer Controller');
 
-		fetchCinemas();
+
 
 		$scope.fetchCinemas = function () {
 			console.log("Fetching cinemas");
@@ -20,7 +20,7 @@ angular.module('filmr', []).controller('customerController', ['$scope', 'CinemaS
 				return;
 			}
 
-			$scope.newCinema = {name: $scope.add_cinema_name, disabled:$scope.add_cinema_disabled};
+			$scope.newCinema = {name: $scope.add_cinema_name, repertoire: {id:1}}; //TODO no harcoded repertoire, use disabled flag?
 
 			CinemaService.save($scope.newCinema).$promise.then(
 				function () {
@@ -34,5 +34,7 @@ angular.module('filmr', []).controller('customerController', ['$scope', 'CinemaS
 		$scope.alert = function(message){
 			//print message
 		};
+
+		$scope.fetchCinemas();
 
 	}]);

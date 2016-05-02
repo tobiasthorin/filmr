@@ -55,29 +55,29 @@ describe("Tests for customerController.js", function () {
 	});
 
 	it("Stores the input data in an object when submit is clicked", function(){
-		$scope.name = "testname";
-		$scope.disabled = false;
+		$scope.add_cinema_name = "testname";
+		$scope.add_cinema_disabled = false;
 
 		$scope.submitCinema();
 
 		expect($scope.newCinema.name).toBeDefined();
-		expect($scope.newCinema.disabled).toBeDefined();
+		expect($scope.newCinema.add_cinema_disabled).toBeDefined();
 	});
 
 	it("Sends the data object to the API via POST", function(){
-		$scope.name = "testname";
-		$scope.disabled = false;
+		$scope.add_cinema_name = "testname";
+		$scope.add_cinema_disabled = false;
 
 		$scope.submitCinema();
 
-		expect(mockedSavedCinema).toEqual({name: "testname", disabled: false});
+		expect(mockedSavedCinema).toEqual({add_cinema_name: "testname", add_cinema_disabled: false});
 	});
 
 	it("Logs a success message if the POST is successful", function(){
 		spyOn($scope, 'alert');
 
-		$scope.name = "Cinema name";
-		$scope.disabled = false;
+		$scope.add_cinema_name = "Cinema name";
+		$scope.add_cinema_disabled = false;
 
 		$scope.submitCinema();
 		expect($scope.alert).toHaveBeenCalledWith("Success!");
