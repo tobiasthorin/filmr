@@ -77,10 +77,10 @@ public class Row {
                 .toHashCode();
     }
 
-	@Override
+	/*@Override
 	public String toString() {
 		return "Row [id=" + id + ", seats size=" + seats.size() + ", theater=" + theater + ", rowLabel=" + rowLabel + "]";
-	}
+	}*/
 	
 	
 	

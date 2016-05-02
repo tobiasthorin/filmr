@@ -89,7 +89,7 @@ public class CinemaControllerTest {
 
 
         ResponseEntity<Cinema> responseEntity = restTemplate.postForEntity(cinemaApiBaseUrl, cinema, Cinema.class);
-        Cinema postedCinema = responseEntity.getBody();;
+        Cinema postedCinema = responseEntity.getBody();
 
         // Spy cinema with id from result
         Cinema spyCinema = spy(cinema);
