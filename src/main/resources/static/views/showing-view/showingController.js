@@ -17,20 +17,22 @@ angular.module('filmr')
             $scope.createShowing = function() {
                 console.log("---");
                 console.log("call add showing to theater");
-                console.log($scope.movie);
-                console.log($scope.theater);
-                console.log($scope.date);
                 var newShowing = new ShowingService();
                 newShowing.movie = $scope.movie;
                 newShowing.theater =$scope.theater;
                 newShowing.showDateTime = $scope.date;
 
-                ShowingService.save(newShowing, function(){
+                ShowingService.save(newShowing, function(result){
                     console.log("Saved!");
+                    console.log(result);
                     getAllShowings();
+                },
+                function(error){
+                    console.log(error);
                 });
 
-                console.log("showing to add"+ newShowing);
+                console.log("showing to add");
+                console.log(newShowing);
             }
 
             function getTheatersAndRepertoireInCinema() {
