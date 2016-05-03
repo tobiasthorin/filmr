@@ -9,7 +9,9 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 
 		//Execute on page load
 		fetchAddableMovies();
-		fetchCurrentCinema();
+		fetchCurrentCinema(function() {
+			fetchMoviesInRepertorie();
+		});
 
 		//Publicly accessible variables and functions
 		$scope.newTheater = {};
@@ -46,7 +48,8 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 				},
 				function () {
 					$scope.alert("Error!");
-				});
+				}
+			);
 		};
 
 		$scope.alert = function (message) {
@@ -115,17 +118,17 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 				});
 		}
 
-		function fetchCurrentCinema() {
+		function fetchCurrentCinema(callbackWhenDone) {
 
 			var id = $routeParams.id;
 
 			CinemaService.get({"id": id}).$promise.then(
 				function (result) {
 					currentCinema = result;
-					fetchMoviesInRepertorie();
+					callbackWhenDone();
 				},
-				function () {
-
+				function (error) {
+					$rootScope.errorHandler(error);
 				});
 		}
 		
