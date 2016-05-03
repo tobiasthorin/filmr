@@ -49,7 +49,7 @@ describe("cinemaController.js", function () {
 				return {
 					'$promise': {
 						then: function (success, fail) {
-							if (params.name && params.numberOfSeats && params.cinemaId) {
+							if (params.name && params.numberOfSeats && params.cinema.id) {
 								success();
 								mockedSavedTheater = params;
 							} else {
@@ -196,7 +196,7 @@ describe("cinemaController.js", function () {
 			expect($scope.newTheater.name).toBe("sal03");
 			expect($scope.newTheater.disabled).toBe(false);
 			expect($scope.newTheater.numberOfSeats).toBe(100);
-			expect($scope.newTheater.cinemaId).toEqual(1);
+			expect($scope.newTheater.cinema.id).toEqual(1);
 		});
 
 		it("Sends the theater object to the API via POST", function () {
@@ -205,7 +205,7 @@ describe("cinemaController.js", function () {
 			$scope.add_theater_disabled = false;
 			$scope.submitTheater();
 
-			expect(mockedSavedTheater).toEqual({cinemaId: 1, name: "sal04", disabled: false, numberOfSeats: 100});
+			expect(mockedSavedTheater).toEqual({cinema: {id:1}, name: "sal04", disabled: false, numberOfSeats: 100});
 		});
 
 
