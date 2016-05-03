@@ -17,6 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestContextManager;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
@@ -132,11 +133,22 @@ public class UltimateMovieControllerTest {
         assertEquals("check that the updated field is correct", changeTitleTo, updatedMovie.getTitle());
     }
 
+
+    //TODO wont throw proper errors?
+
     @Test(expected = HttpClientErrorException.class)
     public void testUpdateNull() {
         //Create object
         Movie movie = new Movie();
         //Try to put. Should throw HttpClientErrorException 400 Bad Request
         restTemplate.put(urlWithId, movie);
+    }
+
+    @Test (expected = HttpServerErrorException.class)
+    public void testDelete() {
+        //Delete object
+        restTemplate.delete(urlWithId, Movie.class);
+        //Try to read it (should not exist)
+        restTemplate.getForEntity(urlWithId, Movie.class);
     }
 }
