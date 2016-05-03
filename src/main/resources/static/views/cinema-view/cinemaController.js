@@ -2,6 +2,88 @@ app
 	.controller('cinemaController', ['$location', '$rootScope', '$scope', '$routeParams', 'MovieService', 'TheaterService', '$resource', 'RepertoireService', 'CinemaService',
 		function ($location, $rootScope, $scope, $routeParams, MovieService, TheaterService, $resource, RepertoireService, CinemaService) {
 
+	var moviesInRepertoire;
+	var addableMovies;
+	var currentCinema;
+
+	fetchAddableMovies();
+	fetchCurrentCinema();
+
+	$scope.getMoviesInRepertoire = function() {
+		return moviesInRepertoire;
+	}
+
+	$scope.getAddableMovies = function() {
+		return addableMovies;
+	}
+
+	function fetchMoviesInRepertorie() {
+
+
+		var id = currentCinema.repertoire.id;
+		RepertoireService.get({"id":id}).$promise.then(
+			// success
+			function(result){
+				moviesInRepertoire = result.movies;
+			},
+			// error
+			function(error) {
+				$rootScope.errorHandler(error);
+			}
+		);
+		
+
+	};
+
+	function fetchCurrentCinema() {
+
+		var id = $routeParams.id;
+		
+
+		CinemaService.get({"id":id}).$promise.then(
+
+			function(result) {
+				console.log("current cinema: ");
+				currentCinema = result;
+				fetchMoviesInRepertorie();
+			},
+			function() {
+
+			});
+	}
+
+	function fetchAddableMovies() {
+
+
+		
+		MovieService.query().$promise.then(
+			// success
+			function(result){
+
+				addableMovies = result;
+			},
+			// error
+			function(error) {
+				$rootScope.errorHandler(error);
+			}
+		);
+	};
+
+	$scope.addMovieToRepertoire = function() {
+		//TODO: PUT, and have repeteroie id
+		var id = $scope.add_movie_to_repertoire_select.id;
+		RepertoireService.query({"add_movie_with_id":id}).$promise.then(
+			function(result){
+				console.log("succes:");
+				console.log(result);
+			},
+			function(){
+				//TODO: add error from rootScope
+
+			}
+		);
+	}
+
 /*
 	//VARIABLES
 	$scope.addableMovies = [];

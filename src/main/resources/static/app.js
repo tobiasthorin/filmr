@@ -27,7 +27,7 @@
 
             })
             // Cinema 
-            .when('/cinema', {
+            .when('/cinema/:id', {
                 title: 'Cinema',
                 activeTab: 'Cinema',
                 templateUrl: 'views/cinema-view/cinema.html',

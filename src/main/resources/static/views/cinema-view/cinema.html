@@ -3,15 +3,16 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-6">
-
-                <form>
-                    <select>
-                        <option ng-repeat="movie in addableMovies">
-                            {{movie.title}}
-                        </option>
-                    </select>
-                </form>
-
+		<form>
+			<ul>
+				<li ng-repeat="movie in getMoviesInRepertoire()">
+					{{movie.title}}
+				</li>
+			</ul>
+			<select ng-options="movie as movie.title for movie in getAddableMovies()" ng-model="add_movie_to_repertoire_select" required>
+			</select>
+			<input type="submit" ng-click="addMovieToRepertoire()">
+		</form>
             </div>
             <div class="col-sm-6">
                 <a href="#/theater">Add theater</a>
@@ -20,19 +21,6 @@
                         <a href="#/theater/{{$index + 1}}">{{theater.name}}</a>
                     </li>
                 </ul>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-
-            	<form name="cinemaform">
-                    <fieldset>
-                        <legend>Create Cinema: </legend>
-                        <label>Name: </label>
-                        <input type="text" name="cinemaname" ng-model="cinemaName" required>
-                        <button type="button" name="submitCinema" ng-click="createCinema">Submit</button>
-                    </fieldset>
-                </form>
             </div>
         </div>
     </div>
