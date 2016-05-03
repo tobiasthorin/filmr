@@ -3,7 +3,11 @@ package filmr.domain;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import java.util.Date;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import filmr.helpers.CustomJsonDateDeserializer;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -16,6 +20,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 
@@ -38,7 +44,8 @@ public class Showing implements Comparable<Showing> {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	@NotNull
-	private Date showDateTime;
+	@JsonDeserialize(using=CustomJsonDateDeserializer.class)
+	private LocalDateTime showDateTime;
 	@ManyToOne
 	@JoinColumn(name = "movie_id")
 	@NotNull
@@ -63,11 +70,11 @@ public class Showing implements Comparable<Showing> {
 	
 
 
-	public Date getShowDateTime() {
+	public LocalDateTime getShowDateTime() {
 		return showDateTime;
 	}
 
-	public void setShowDateTime(Date showDateTime) {
+	public void setShowDateTime(LocalDateTime showDateTime) {
 		this.showDateTime = showDateTime;
 	}
 
@@ -107,13 +114,9 @@ public class Showing implements Comparable<Showing> {
 		return id;
 	}
 	
-	public Date getShowingEndtime() {
-		long ONE_MINUTE_IN_MILLIS = 60000;
-		long movieInMillis = movie.getLengthInMinutes() * ONE_MINUTE_IN_MILLIS;
-		long startDateInMillis = showDateTime.getTime();
-		
-		Date movieEndtime = new Date(startDateInMillis + movieInMillis);
-		return movieEndtime;
+	public LocalDateTime getShowingEndtime() {
+		LocalDateTime movieEndTime = showDateTime.plusMinutes(movie.getLengthInMinutes()); 
+		return movieEndTime;
 	}
 	
 	//TODO: remove. just testing stuff

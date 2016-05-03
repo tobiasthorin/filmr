@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +21,8 @@ public class ShowingService extends BaseServiceClass<Showing, Long> {
 	private EntityManager entityManager;
 	
 	public List<Showing> getAllMatchingParams(
-			Date from_date, 
+			//TODO: see if LocalDateTime breaks JPQL
+			LocalDateTime from_date, 
 			Date to_date, 
 			Integer minimum_available_tickets,
 			Long only_for_movie_with_id,
