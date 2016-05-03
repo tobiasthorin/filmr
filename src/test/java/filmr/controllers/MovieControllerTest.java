@@ -1,15 +1,9 @@
 package filmr.controllers;
 
-/**
- * Created by Adrian and Erik on 2016-04-29.
- */
-
 import filmr.Application;
+import filmr.domain.Cinema;
 import filmr.domain.Movie;
-import filmr.domain.Repertoire;
-import filmr.domain.Theater;
 import filmr.repositories.MovieRepository;
-import filmr.repositories.RepertoireRepository;
 import filmr.testfactories.EntityFactory;
 import org.junit.Assert;
 import org.junit.Before;
@@ -26,28 +20,16 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestContextManager;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.ResultHandler;
-import org.springframework.test.web.servlet.ResultMatcher;
-import org.springframework.test.web.servlet.result.JsonPathResultMatchers;
 import org.springframework.web.context.WebApplicationContext;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayway.jsonpath.JsonPath;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
+import java.util.Date;
 
 import static junit.framework.TestCase.assertEquals;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.hasSize;
+import static junit.framework.TestCase.assertNull;
 import static org.hamcrest.core.Is.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -55,13 +37,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
-
 @RunWith(Parameterized.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 @ActiveProfiles({"test"})
-
-public class RepertoireControllerTest {
+public class MovieControllerTest {
 
     //Used instead of SpringJunit4ClassRunner in @RunWith
     private TestContextManager testContextManager;
@@ -70,13 +50,10 @@ public class RepertoireControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
     @Autowired
-	private RepertoireRepository repertoireRepository;
-    @Autowired
     private MovieRepository movieRepository;
     private String baseUrl;
     //Variables for testing values
     private int tableSize;
-    private Repertoire savedRepertoire;
     private Movie savedMovie;
 
     //Mock clone of project
@@ -85,7 +62,7 @@ public class RepertoireControllerTest {
     //Parameters
     private Long id;
 
-    //ID, ?
+    //ID, ? TODO parameters for null test?
     @Parameterized.Parameters
     public static Collection<Object[]> parameters() {
         return Arrays.asList(new Object[][]{
@@ -93,12 +70,12 @@ public class RepertoireControllerTest {
         });
     }
 
-    public RepertoireControllerTest(Long id) {
+    public MovieControllerTest(Long id) {
         this.id = id;
         jsonContentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
                 MediaType.APPLICATION_JSON.getSubtype(),
                 Charset.forName("utf8"));
-        baseUrl = "/api/repertoires/";
+        baseUrl = "/api/movies/";
     }
 
     @Before
@@ -112,67 +89,57 @@ public class RepertoireControllerTest {
 			this.mockMvc = webAppContextSetup(webApplicationContext).build();
 		}
         //clear everything
-        repertoireRepository.deleteAllInBatch();
         movieRepository.deleteAllInBatch();
         //TODO on read test, make sure data.sql is not read
 
-        //Create repertoire with parameters
-        Repertoire repertoire = EntityFactory.createRepertoire();
-        savedRepertoire = repertoireRepository.save(repertoire);
-        Movie movie = EntityFactory.createMovie("Global Test Movie", "A movie about pigs", new Long(120));
+        //Create showing and everything that belongs in it
+        Movie movie = EntityFactory.createMovie("Global Test Movie", "A movie about things", new Long(120));
         savedMovie = movieRepository.save(movie);
 
-        tableSize = repertoireRepository.findAll().size();
+        tableSize = movieRepository.findAll().size();
     }
 
     @Test
     public void testCreate() throws Exception {
-        Repertoire repertoire = EntityFactory.createRepertoire();
+        Movie movie = EntityFactory.createMovie("testCreate Movie", "A movie about testing", new Long(110));
 
-        String jsonObject = getAsJsonString(repertoire);
+        String jsonObject = getAsJsonString(movie);
 
-         mockMvc.perform(post(baseUrl)
+        mockMvc.perform(post(baseUrl)
                 .contentType(jsonContentType)
                 .content(jsonObject)
         )
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(jsonContentType))
-                .andExpect(jsonPath("$.movies", is(repertoire.getMovies())));
-        assertEquals("Amount of repertoires should be +1", tableSize +1, repertoireRepository.findAll().size());
+                .andExpect(jsonPath("$.title", is(movie.getTitle())))
+                .andExpect(jsonPath("$.description", is(movie.getDescription())))
+                .andExpect(jsonPath("$.lengthInMinutes", is(movie.getLengthInMinutes()))); //TODO same horrible error
+        assertEquals("Assert that amount of movies is +1", tableSize +1, movieRepository.findAll().size());
     }
 
     @Test
-    public void testAddMovieToRepertoire() throws Exception {
-        List<Movie> movies = savedRepertoire.getMovies();
-        int oldSize = movies.size();
-        movies.add(savedMovie);
-        savedRepertoire.setMovies(movies);
-        String jsonObject = getAsJsonString(savedRepertoire);
+    public void testRead() throws Exception {
+        String getUrl = baseUrl+id;
 
-        ResultActions resultAction = mockMvc.perform(
-                put(baseUrl + savedRepertoire.getId())
+        mockMvc.perform(get(getUrl)
                 .contentType(jsonContentType)
-                .content(jsonObject)
         )
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(jsonContentType))
-                .andExpect(jsonPath("$.movies").isArray())
-                .andExpect(jsonPath("$.movies", hasSize(savedRepertoire.getMovies().size())))
-            //    .andExpect(jsonPath("$.movies", contains(movies)));//TODO this should work but the item(s) are of the wrong type
-        ;
+                .andExpect(jsonPath("$.id", is(id))); //TODO here we go again
+        assertEquals("Assert that the read movie has the same ID as the supplied one", 1, 1); //TODO wait not here
+    }
 
-        //TODO check that added movie is added to repertoire properly
-        assertEquals("Amount of movies in repertoire should be +1", oldSize+1, savedRepertoire.getMovies().size());
+    @Test
+    public void testUpdate() throws Exception {
+        String putUrl = baseUrl+id;
 
-        // pick out the response data.
-        MvcResult result = resultAction.andReturn();
-        String resultString = result.getResponse().getContentAsString();
-        System.out.println("json is" + resultString);
-
-        List<Movie> updatedMovieList = (List<Movie>) JsonPath.read(resultString, "$.movies");
-        assertEquals("Movies in updated repertoire should be same as the ones sent to API", savedRepertoire.getMovies(), updatedMovieList);
-        // TODO: figure out why the casting fails. Seems to be specific to Repertoire?
-        //TODO similar problem in showing //adrian
+        mockMvc.perform(put(putUrl)
+                .contentType(jsonContentType)
+        )
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(jsonContentType));
+        //TODO what to test
     }
 
     private HttpMessageConverter mappingJackson2HttpMessageConverter;
