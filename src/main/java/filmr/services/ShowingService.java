@@ -40,7 +40,6 @@ public class ShowingService extends BaseServiceClass<Showing, Long> {
 		query.setParameter("onlyForTheaterWithId", only_for_theater_with_id);
 		query.setParameter("onlyForCinemaWithId", only_for_cinema_with_id);
 		query.setMaxResults(limit != null ? limit : 50);
-		
 		List<Showing> matchingShowings = query.getResultList();
 		
 		System.out.println("ShowingService returning " + matchingShowings.size() + " showings, by named query Showing.filteredAndOrdered:");

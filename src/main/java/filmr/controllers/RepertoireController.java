@@ -1,7 +1,9 @@
 package filmr.controllers;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -82,11 +84,14 @@ public class RepertoireController {
     
     private Repertoire updateRepertoireMoviesIfNeeded(Repertoire repertoire, Long add_movie_with_id, Long remove_movie_with_id) {
         
+    	// TODO: throw error if id is not set?
+    	System.out.println("Updating repertoire with id: " + repertoire.getId());
     	
     	if(repertoire.getMovies() == null) repertoire.setMovies(new ArrayList<Movie>());
     	
     	if(add_movie_with_id != null) {
         	Movie movieToAdd = movieService.readEntity(add_movie_with_id);
+        	System.out.println("adding movie: " + movieToAdd);
         	repertoire.getMovies().add(movieToAdd);
         }
         if(remove_movie_with_id != null) {
