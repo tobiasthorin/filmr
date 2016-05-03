@@ -18,11 +18,18 @@ public class CustomJsonDateDeserializer extends JsonDeserializer<LocalDateTime> 
 	 @Override
     public LocalDateTime deserialize(JsonParser jp, DeserializationContext ctxt)
             throws IOException, JsonProcessingException {
- 
+
 		System.out.println("!! in custom deserializer!! ");
         ObjectCodec oc = jp.getCodec();
         TextNode node = (TextNode) oc.readTree(jp);
         String dateString = node.textValue();
+
+//         "2016-05-02T16:14:38";
+//         "2016-05-02T16:14:3800Z";
+         if (dateString.length() < 20 && !dateString.contains("Z")) {
+             dateString += "00Z";
+         }
+
         System.out.println("raw javascript Date string in custom deserializer: " + dateString);
  
         Instant instant = Instant.parse(dateString);
