@@ -7,6 +7,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -28,6 +29,9 @@ public class Repertoire {
 
     public List<Movie> getMovies() {
     	System.out.println("movies are: " + movies);
+        if (movies == null) {
+            movies = new ArrayList<>(); //TODO this is kinda stupid?
+        }
         return movies;
     }
 

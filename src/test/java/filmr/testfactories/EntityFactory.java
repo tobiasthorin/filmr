@@ -54,8 +54,8 @@ public class EntityFactory {
 
     public static Repertoire createRepertoire() {
         Repertoire repertoire = new Repertoire();
-        ArrayList<Movie> movies = new ArrayList<>();
-        repertoire.setMovies(movies);
+//        ArrayList<Movie> movies = null;
+//        repertoire.setMovies(movies);
         return repertoire;
     }
 
@@ -72,7 +72,7 @@ public class EntityFactory {
         showing.setShowDateTime(showDateTime);
         showing.setMovie(savedMovie);
         showing.setTheater(savedTheater);
-        showing.setBookings(savedBookings);
+        //showing.setBookings(savedBookings);
         return showing;
     }
 }
