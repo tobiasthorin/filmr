@@ -1,9 +1,12 @@
-app.controller('cinemaController', ['$scope', '$rootScope', 'MovieService', 'TheaterService', 'RepertoireService', 'CinemaService',
-	function ($scope, $rootScope, MovieService, TheaterService, RepertoireService, CinemaService) {
+app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'MovieService', 'TheaterService', 'RepertoireService', 'CinemaService',
+	function ($scope, $rootScope, $routeParams, MovieService, TheaterService, RepertoireService, CinemaService) {
 
 		var moviesInRepertoire;
+		var theaters;
+		var currentCinemaId;
 
 		fetchMoviesInRepertoire();
+		setCurrentCinemaId();
 
 		$scope.newTheater = {};
 
@@ -12,11 +15,35 @@ app.controller('cinemaController', ['$scope', '$rootScope', 'MovieService', 'The
 		};
 
 		$scope.getTheaters = function () {
-			return null;
+			TheaterService.query().$promise.then(function (result) {
+					//success
+					theaters = result;
+				},
+				function () {
+					//fail
+				});
+
+			return theaters;
 		};
 
 		$scope.submitTheater = function () {
-			return null;
+
+			if (!$scope.add_theater_disabled) {
+				$scope.add_theater_disabled = false;
+			}
+
+			$scope.newTheater.cinemaId = currentCinemaId;
+			$scope.newTheater.name = $scope.add_theater_name;
+			$scope.newTheater.disabled = $scope.add_theater_disabled;
+			$scope.newTheater.numberOfSeats = $scope.add_theater_seats;
+
+			TheaterService.save($scope.newTheater).$promise.then(function () {
+					$scope.alert("Success!");
+					$scope.resetFields();
+				},
+				function () {
+					$scope.alert("Error!");
+				});
 		};
 
 		$scope.alert = function (message) {
@@ -24,7 +51,13 @@ app.controller('cinemaController', ['$scope', '$rootScope', 'MovieService', 'The
 		};
 
 		$scope.resetFields = function () {
-			
+			$scope.add_theater_name = '';
+			$scope.add_theater_disabled = false;
+			$scope.add_theater_seats = 0;
+		};
+
+		$scope.getCurrentCinemaId = function () {
+			return currentCinemaId;
 		};
 
 		function fetchMoviesInRepertoire() {
@@ -41,6 +74,9 @@ app.controller('cinemaController', ['$scope', '$rootScope', 'MovieService', 'The
 			);
 		}
 
+		 function setCurrentCinemaId() {
+			currentCinemaId = $routeParams.id;
+		}
 
 		/*
 		 //VARIABLES
@@ -49,7 +85,7 @@ app.controller('cinemaController', ['$scope', '$rootScope', 'MovieService', 'The
 		 $scope.cinema = null;
 
 		 //INIT
-		 getCurrentCinema(function(){
+		 getCurrentCinemaId(function(){
 		 getMoviesInRepetoire();
 		 getAddableMovies();
 		 });
@@ -103,18 +139,11 @@ app.controller('cinemaController', ['$scope', '$rootScope', 'MovieService', 'The
 
 
 		 }
+		 */
+		// PRIVATE
 
-		 // PRIVATE
-		 function getCurrentCinema(callbackWhenDone) {
-		 console.log("---");
-		 console.log("call get current cinema");
-		 CinemaService.get({id:1}, function(cinema){
-		 console.log("current cinema: ");
-		 $scope.cinema = cinema;
-		 callbackWhenDone();
-		 });
-		 }
 
+		/*
 		 function getAddableMovies() {
 
 		 MovieService.query().$promise.then(
