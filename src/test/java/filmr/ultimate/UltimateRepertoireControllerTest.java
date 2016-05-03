@@ -18,11 +18,16 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestContextManager;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNotSame;
+import static junit.framework.Assert.assertNull;
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
 @SpringApplicationConfiguration(Application.class)
@@ -94,9 +99,9 @@ public class UltimateRepertoireControllerTest {
         ResponseEntity<Repertoire> responseEntity = restTemplate.postForEntity(baseUrl, repertoire, Repertoire.class);
         Repertoire postedRepertoire = responseEntity.getBody();
 
-        //TODO 400 bad request. Why?
-
         //Assert
+        assertNotNull("", postedRepertoire.getId());
+        assertNull("", postedRepertoire.getMovies());
         assertEquals("Assert that amount of repertoires is +1", tableSize +1, repertoireRepository.findAll().size());
     }
 

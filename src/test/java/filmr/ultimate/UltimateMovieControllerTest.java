@@ -65,7 +65,7 @@ public class UltimateMovieControllerTest {
         testContextManager.prepareTestInstance(this);
 
         //Initialize restTemplate
-        restTemplate = new RestTemplate(); //TODO TestRestTemplate broken
+        restTemplate = new RestTemplate();
 
         //clear everything
         movieRepository.deleteAllInBatch();
