@@ -1,9 +1,9 @@
-app
-	.controller('cinemaController', ['$location', '$rootScope', '$scope', '$routeParams', 'MovieService', 'TheaterService', '$resource', 'RepertoireService', 'CinemaService',
-		function ($location, $rootScope, $scope, $routeParams, MovieService, TheaterService, $resource, RepertoireService, CinemaService) {
+app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'MovieService', 'TheaterService', 'RepertoireService', 'CinemaService',
+	function ($scope, $rootScope, $routeParams, MovieService, TheaterService, RepertoireService, CinemaService) {
 
 	var moviesInRepertoire;
 	var addableMovies;
+		var theaters;
 	var currentCinema;
 
 	fetchAddableMovies();
@@ -12,6 +12,48 @@ app
 	$scope.getMoviesInRepertoire = function() {
 		return moviesInRepertoire;
 	}
+
+		$scope.getTheaters = function () {
+			TheaterService.query().$promise.then(function (result) {
+					//success
+					theaters = result;
+				},
+				function () {
+					//fail
+				});
+
+			return theaters;
+		};
+
+		$scope.submitTheater = function () {
+
+			if (!$scope.add_theater_disabled) {
+				$scope.add_theater_disabled = false;
+			}
+
+			$scope.newTheater.cinemaId = currentCinemaId;
+			$scope.newTheater.name = $scope.add_theater_name;
+			$scope.newTheater.disabled = $scope.add_theater_disabled;
+			$scope.newTheater.numberOfSeats = $scope.add_theater_seats;
+
+			TheaterService.save($scope.newTheater).$promise.then(function () {
+					$scope.alert("Success!");
+					$scope.resetFields();
+				},
+				function () {
+					$scope.alert("Error!");
+				});
+		};
+
+		$scope.alert = function (message) {
+			console.log(message);
+		};
+
+		$scope.resetFields = function () {
+			$scope.add_theater_name = '';
+			$scope.add_theater_disabled = false;
+			$scope.add_theater_seats = 0;
+		};
 
 	$scope.getAddableMovies = function() {
 		return addableMovies;
@@ -51,6 +93,10 @@ app
 
 			});
 	}
+
+		$scope.getCurrentCinemaId = function () {
+			return currentCinema.id;
+		};
 
 	function fetchAddableMovies() {
 

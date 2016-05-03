@@ -1,10 +1,34 @@
-describe("Tests for cinemaController.js", function () {
+describe("cinemaController.js", function () {
 
 	beforeEach(module('filmr'));
 
 	beforeEach(function () {
 
-		MockedTheaterService = {};
+		MockedTheaterService = {
+			'query': function (params) {
+				return {
+					'$promise': {
+						then: function (success, fail) {
+							success(mockedTheaters);
+						}
+					}
+				}
+			},
+			'save': function (params) {
+				return {
+					'$promise': {
+						then: function (success, fail) {
+							if (params.name && params.numberOfSeats && params.cinemaId) {
+								success();
+								mockedSavedTheater = params;
+							} else {
+								fail();
+							}
+						}
+					}
+				}
+			}
+		};
 
 
 		MockedMovieService = {
@@ -76,6 +100,8 @@ describe("Tests for cinemaController.js", function () {
 
 	// MOCKS
 
+	var mockedSavedTheater = {};
+
 
 	var mockedMoviesInRepertoire = [
 		{name: "Lion king"},
@@ -88,13 +114,13 @@ describe("Tests for cinemaController.js", function () {
 	}
 
 	var mockedAddableMovies = [
-		{name:"Mars Attacks"},
-		{name:"Deer Hunter"}
+		{name: "Mars Attacks"},
+		{name: "Deer Hunter"}
 	];
 
 	var mockedTheaters = [
-		{name:"sal01"},
-		{name:"sal02"}
+		{name: "sal01"},
+		{name: "sal02"}
 	];
 
 	var mockedCinema = {id: 1, name:"Lasses Biograf", repertoire:{id:567}};
@@ -107,6 +133,8 @@ describe("Tests for cinemaController.js", function () {
 
 
 	//  - movies / repertoire
+	describe("Repertoire", function () {
+		
 
 
 	it("Check getter for all movies in repertoires is working on start", function(){
@@ -150,62 +178,74 @@ describe("Tests for cinemaController.js", function () {
 //		expect($scope.getMoviesInRepertoire()).toEqual([{name: "Lion king"},{name: "Lion queen"}]);
 //		expect($scope.getAddableMovies()).toEqual([{name:"Mars Attacks"},{name:"Deer Hunter"},{name:"Alien"}]);
 
+		 });
+		 
 	});
 
 
 	//  - theaters
 
-	it("Check getter for all theaters is working on start", function(){
-		expect($scope.getTheaters()).toEqual(mockedTheaters);
+	describe("Theaters", function () {
+		it("Gets all theaters", function () {
+			expect($scope.getTheaters()).toEqual(mockedTheaters);
+		});
+
+		it("Gets the id of the current cinema", function () {
+			expect($scope.getCurrentCinemaId()).toEqual(1);
+		});
+
+		it("Stores the theater data in an object when submit is clicked", function () {
+			$scope.add_theater_name = "sal03";
+			$scope.add_theater_seats = 100;
+
+			expect($scope.add_theater_disabled).toBeUndefined();
+
+			$scope.submitTheater();
+
+			expect($scope.newTheater.name).toBe("sal03");
+			expect($scope.newTheater.disabled).toBe(false);
+			expect($scope.newTheater.numberOfSeats).toBe(100);
+			expect($scope.newTheater.cinemaId).toEqual(1);
+		});
+
+		it("Sends the theater object to the API via POST", function () {
+			$scope.add_theater_name = "sal04";
+			$scope.add_theater_seats = 100;
+			$scope.add_theater_disabled = false;
+			$scope.submitTheater();
+
+			expect(mockedSavedTheater).toEqual({cinemaId: 1, name: "sal04", disabled: false, numberOfSeats: 100});
+		});
+
+
+		it("Logs a success message if the add theater-API call is successful", function () {
+			spyOn($scope, 'alert');
+
+			$scope.add_theater_name = "sal04";
+			$scope.add_theater_seats = 100;
+			$scope.add_theater_disabled = false;
+			$scope.submitTheater();
+
+			expect($scope.alert).toHaveBeenCalledWith("Success!");
+		});
+
+		it("Logs an error message if the add theater-API call is unsuccessful", function () {
+			spyOn($scope, 'alert');
+			$scope.submitTheater();
+
+			expect($scope.alert).toHaveBeenCalledWith("Error!");
+
+		});
+
+		it("Resets the input fields after add theater", function () {
+			$scope.resetFields();
+
+			expect($scope.add_theater_name).toEqual("");
+			expect($scope.add_theater_disabled).toEqual(false);
+			expect($scope.add_theater_seats).toEqual(0);
+
+		})
 	});
 
-
-	it("Stores the theater data in an object when submit is clicked", function(){
-		$scope.add_theater_name = "sal03";
-
-		expect($scope.add_theater_disabled).toBeUndefined();
-
-		$scope.submitTheater();
-
-		expect($scope.newTheater.name).toBe("sal03");
-		expect($scope.newTheater.disabled).toBe(false);
-	});
-
-	it("Sends the theater object to the API via POST", function(){
-		$scope.add_theater_name = "sal04";
-		$scope.add_theater_disabled = false;
-		$scope.submitTheater();
-
-		expect(mockedSavedTheater).toEqual({name: "sal04", disabled: false});
-	});
-
-
-	it("Logs a success message if the add theater is to API successful", function(){
-		spyOn($scope, 'alert');
-
-		$scope.add_theater_name = "sal04";
-		$scope.add_theater_disabled = false;
-		$scope.submitTheater();
-
-		$scope.submitCinema();
-		expect($scope.alert).toHaveBeenCalledWith("Success!");
-	});
-
-	it("Logs an error message if the add theater is to API unsuccessful", function(){
-		spyOn($scope, 'alert');
-		$scope.submitTheater();
-
-		$scope.submitCinema();
-		expect($scope.alert).toHaveBeenCalledWith("Error!");
-
-	});
-
-	it("Resets the input fields after add theater", function () {
-		$scope.resetFields();
-
-		expect($scope.add_theater_name).toEqual("");
-		expect($scope.add_theater_disabled).toEqual(false);
-
-	})
 
 });
