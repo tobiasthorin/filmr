@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
 @SpringApplicationConfiguration(Application.class)
@@ -50,6 +51,22 @@ public class UltimateMovieControllerTest {
     @Parameterized.Parameters
     public static Collection<Object[]> parameters() {
         return Arrays.asList(new Object[][]{
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
                 {new Long(1)},
         });
     }
@@ -90,6 +107,7 @@ public class UltimateMovieControllerTest {
         Movie postedMovie = responseEntity.getBody();
 
         //Assert
+        assertTrue("Make sure the http was successfull", responseEntity.getStatusCode().is2xxSuccessful());
         assertEquals("The movie titles should be the same or POST is broken", movie.getTitle(), postedMovie.getTitle());
         assertEquals("Assert that movie descriptions are the same", movie.getDescription(), postedMovie.getDescription());
         assertEquals("Assert that movie lenght is the same", movie.getLengthInMinutes(), postedMovie.getLengthInMinutes());

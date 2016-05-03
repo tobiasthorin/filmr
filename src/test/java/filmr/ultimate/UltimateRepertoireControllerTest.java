@@ -18,14 +18,11 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestContextManager;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNotSame;
-import static junit.framework.Assert.assertNull;
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -58,6 +55,20 @@ public class UltimateRepertoireControllerTest {
     public static Collection<Object[]> parameters() {
         return Arrays.asList(new Object[][]{
                 {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
         });
     }
 
@@ -72,7 +83,7 @@ public class UltimateRepertoireControllerTest {
         testContextManager.prepareTestInstance(this);
 
         //Initialize restTemplate
-        restTemplate = new RestTemplate(); //TODO TestRestTemplate broken
+        restTemplate = new RestTemplate();
 
         //clear everything
         repertoireRepository.deleteAllInBatch();
@@ -100,8 +111,9 @@ public class UltimateRepertoireControllerTest {
         Repertoire postedRepertoire = responseEntity.getBody();
 
         //Assert
-        assertNotNull("", postedRepertoire.getId());
-        assertNull("", postedRepertoire.getMovies());
+        assertTrue("Make sure the http was successfull", responseEntity.getStatusCode().is2xxSuccessful());
+        assertNotNull("Make sure repertoire id is not null", postedRepertoire.getId());
+        assertNotNull("Make sure repertoire movie list is not null", postedRepertoire.getMovies());
         assertEquals("Assert that amount of repertoires is +1", tableSize +1, repertoireRepository.findAll().size());
     }
 
@@ -112,9 +124,9 @@ public class UltimateRepertoireControllerTest {
         repertoireMovies.add(savedMovie);
         savedRepertoire.setMovies(repertoireMovies);
 
-        restTemplate.put(urlWithId, savedRepertoire);
+        restTemplate.put(urlWithId+"?add_movie_with_id="+savedMovie.getId(), savedRepertoire);
 
-        ResponseEntity<Repertoire> responseEntity = restTemplate.getForEntity(baseUrl, Repertoire.class);
+        ResponseEntity<Repertoire> responseEntity = restTemplate.getForEntity(urlWithId, Repertoire.class);
         Repertoire updatedRepertoire = responseEntity.getBody();
 
         //Assert

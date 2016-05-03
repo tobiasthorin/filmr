@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
 @SpringApplicationConfiguration(Application.class)
@@ -54,6 +55,17 @@ public class UltimateTheaterControllerTest {
     @Parameterized.Parameters
     public static Collection<Object[]> parameters() {
         return Arrays.asList(new Object[][]{
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
+                {new Long(1)},
                 {new Long(1)},
         });
     }
@@ -97,6 +109,7 @@ public class UltimateTheaterControllerTest {
         Theater postedTheater = responseEntity.getBody();
 
         //Assert
+        assertTrue("Make sure the http was successfull", responseEntity.getStatusCode().is2xxSuccessful());
         //TODO not allowed to read cinema
         assertEquals("Assert Theater Name", theater.getName(), postedTheater.getName());
 

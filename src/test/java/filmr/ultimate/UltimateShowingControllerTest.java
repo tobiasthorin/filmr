@@ -1,8 +1,8 @@
 package filmr.ultimate;
 
 import filmr.Application;
-import filmr.domain.Cinema;
-import filmr.repositories.CinemaRepository;
+import filmr.domain.*;
+import filmr.repositories.*;
 import filmr.testfactories.EntityFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,10 +15,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestContextManager;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.ThemeResolver;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+import static junit.framework.Assert.assertNotNull;
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -26,18 +30,28 @@ import static org.junit.Assert.assertTrue;
 @SpringApplicationConfiguration(Application.class)
 @WebIntegrationTest
 @ActiveProfiles({"test"})
-public class UltimateCinemaControllerTest {
+public class UltimateShowingControllerTest {
 
     //Used instead of SpringJunit4ClassRunner in @RunWith
     private TestContextManager testContextManager;
     //Variables
     @Autowired
+    private ShowingRepository showingRepository;
+    @Autowired
+    private MovieRepository movieRepository;
+    @Autowired
+    private TheaterRepository theaterRepository;
+    @Autowired
     private CinemaRepository cinemaRepository;
+
     private RestTemplate restTemplate;
     private String baseUrl;
     private String urlWithId;
     //Variables for testing values
     private int tableSize;
+    private Showing savedShowing;
+    private Movie savedMovie;
+    private Theater savedTheater;
     private Cinema savedCinema;
 
     //Parameters
@@ -48,25 +62,11 @@ public class UltimateCinemaControllerTest {
     public static Collection<Object[]> parameters() {
         return Arrays.asList(new Object[][]{
                 {new Long(1)},
-                {new Long(1)},
-                {new Long(1)},
-                {new Long(1)},
-                {new Long(1)},
-                {new Long(1)},
-                {new Long(1)},
-                {new Long(1)},
-                {new Long(1)},
-                {new Long(1)},
-                {new Long(1)},
-                {new Long(1)},
-                {new Long(1)},
-                {new Long(1)},
-                {new Long(1)},
         });
     }
 
-    public UltimateCinemaControllerTest(Long id) {
-        baseUrl = "http://localhost:8080/filmr/api/cinemas/";
+    public UltimateShowingControllerTest(Long id) {
+        baseUrl = "http://localhost:8080/filmr/api/showings/";
     }
 
     @Before
@@ -76,34 +76,44 @@ public class UltimateCinemaControllerTest {
         testContextManager.prepareTestInstance(this);
 
         //Initialize restTemplate
-        restTemplate = new RestTemplate(); //TODO TestRestTemplate broken
+        restTemplate = new RestTemplate();
 
         //clear everything
+        showingRepository.deleteAllInBatch();
+        movieRepository.deleteAllInBatch();
+        theaterRepository.deleteAllInBatch();
         cinemaRepository.deleteAllInBatch();
 
         //Create showing and everything that belongs in it
+        Movie movie = EntityFactory.createMovie("Global Test Movie", "A Movie About Cows Murdering cute bunnies", new Long(120));
+        savedMovie = movieRepository.save(movie);
         Cinema cinema = EntityFactory.createCinema("Global Test Cinema");
         savedCinema = cinemaRepository.save(cinema);
+        Theater theater = EntityFactory.createTheater("Global Test Theater", savedCinema);
+        savedTheater = theaterRepository.save(theater);
+        Showing showing = EntityFactory.createShowing(LocalDateTime.now().minusDays(1), savedMovie, savedTheater, new ArrayList<>());
+        savedShowing = showingRepository.save(showing);
 
         //Setup id for this run
-        id = savedCinema.getId();
+        id = savedShowing.getId();
         urlWithId = baseUrl+id;
 
-        tableSize = cinemaRepository.findAll().size();
+        tableSize = showingRepository.findAll().size();
     }
 
     @Test
     public void testCreate() throws Exception {
-        Cinema cinema = EntityFactory.createCinema("testCreate Cinema");
+        Showing showing = EntityFactory.createShowing(LocalDateTime.now(), savedMovie, savedTheater, new ArrayList<>());
 
         //Post
-        ResponseEntity<Cinema> responseEntity = restTemplate.postForEntity(baseUrl, cinema, Cinema.class);
-        Cinema postedCinema = responseEntity.getBody();
+        ResponseEntity<Showing> responseEntity = restTemplate.postForEntity(baseUrl, showing, Showing.class);
+        Showing postedShowing = responseEntity.getBody();
 
         //Assert
-        assertTrue("Make sure the http was successfull", responseEntity.getStatusCode().is2xxSuccessful());
-        assertEquals("The cinema name should be the same or POST is broken", cinema.getName(), postedCinema.getName());
-
-        assertEquals("Assert that amount of cinemas is +1", tableSize +1, cinemaRepository.findAll().size());
+        //assertTrue("Make sure the http was successfull", responseEntity.getStatusCode().is2xxSuccessful());
+        assertEquals("Compare times", showing.getShowDateTime(), postedShowing.getShowDateTime());
+        assertEquals("Compare movies", showing.getMovie(), postedShowing.getMovie());
+        assertEquals("Compare theaters", showing.getTheater(), postedShowing.getTheater());
+        assertEquals("Compare bookings", showing.getBookings(), postedShowing.getBookings());
     }
 }
