@@ -14,6 +14,7 @@ import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestContextManager;
+import org.springframework.util.SystemPropertyUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
@@ -90,6 +91,8 @@ public class UltimateShowingControllerTest {
         Theater theater = EntityFactory.createTheater("Global Test Theater", savedCinema);
         savedTheater = theaterRepository.save(theater);
         Showing showing = EntityFactory.createShowing(LocalDateTime.now().minusDays(1), savedMovie, savedTheater, new ArrayList<>());
+        
+        System.out.println("!! Saving showing through repo, in @Before \n");
         savedShowing = showingRepository.save(showing);
 
         //Setup id for this run
@@ -97,10 +100,13 @@ public class UltimateShowingControllerTest {
         urlWithId = baseUrl+id;
 
         tableSize = showingRepository.findAll().size();
+        System.out.println("Table size: " + tableSize);
     }
 
     @Test
     public void testCreate() throws Exception {
+    	
+    	System.out.println("!! In test create. \n");
         Showing showing = EntityFactory.createShowing(LocalDateTime.now(), savedMovie, savedTheater, new ArrayList<>());
 
         //Post
@@ -117,6 +123,8 @@ public class UltimateShowingControllerTest {
 
     @Test
     public void testRead() {
+    	
+    	System.out.println("!! In testRead \n");
         //Get
         ResponseEntity<Showing> responseEntity = restTemplate.getForEntity(urlWithId, Showing.class);
         Showing showing = responseEntity.getBody();

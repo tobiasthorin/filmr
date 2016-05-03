@@ -15,7 +15,7 @@ spring:
     driverClassName: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/filmr
     username: root 
-    password: 1234
+    password: 
   jackson:
     serialization:
       fail-on-empty-beans: false
