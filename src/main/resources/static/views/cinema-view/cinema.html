@@ -6,7 +6,7 @@
 		<form>
 			<ul>
 				<li ng-repeat="movie in getMoviesInRepertoire()">
-					{{movie.title}}
+					{{movie.id}} - {{movie.title}} <input type="button" ng-click="removeMovieFromRepertoire(movie.id)" value="Delete">
 				</li>
 			</ul>
 			<select ng-options="movie as movie.title for movie in getAddableMovies()" ng-model="add_movie_to_repertoire_select" required>
