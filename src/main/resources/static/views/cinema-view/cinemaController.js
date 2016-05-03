@@ -1,17 +1,22 @@
 app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'MovieService', 'TheaterService', 'RepertoireService', 'CinemaService',
 	function ($scope, $rootScope, $routeParams, MovieService, TheaterService, RepertoireService, CinemaService) {
 
-	var moviesInRepertoire;
-	var addableMovies;
+		//Local variables
+		var moviesInRepertoire;
+		var addableMovies;
 		var theaters;
-	var currentCinema;
+		var currentCinema;
 
-	fetchAddableMovies();
-	fetchCurrentCinema();
+		//Execute on page load
+		fetchAddableMovies();
+		fetchCurrentCinema();
 
-	$scope.getMoviesInRepertoire = function() {
-		return moviesInRepertoire;
-	}
+		//Publicly accessible variables and functions
+		$scope.newTheater = {};
+
+		$scope.getMoviesInRepertoire = function () {
+			return moviesInRepertoire;
+		};
 
 		$scope.getTheaters = function () {
 			TheaterService.query().$promise.then(function (result) {
@@ -21,7 +26,6 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 				function () {
 					//fail
 				});
-
 			return theaters;
 		};
 
@@ -31,7 +35,7 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 				$scope.add_theater_disabled = false;
 			}
 
-			$scope.newTheater.cinemaId = currentCinemaId;
+			$scope.newTheater.cinemaId = currentCinema.id;
 			$scope.newTheater.name = $scope.add_theater_name;
 			$scope.newTheater.disabled = $scope.add_theater_disabled;
 			$scope.newTheater.numberOfSeats = $scope.add_theater_seats;
@@ -55,211 +59,87 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 			$scope.add_theater_seats = 0;
 		};
 
-	$scope.getAddableMovies = function() {
-		return addableMovies;
-	}
-
-	function fetchMoviesInRepertorie() {
-
-
-		var id = currentCinema.repertoire.id;
-		RepertoireService.get({"id":id}).$promise.then(
-			// success
-			function(result){
-				moviesInRepertoire = result.movies;
-			},
-			// error
-			function(error) {
-				$rootScope.errorHandler(error);
-			}
-		);
-		
-
-	};
-
-	function fetchCurrentCinema() {
-
-		var id = $routeParams.id;
-		
-
-		CinemaService.get({"id":id}).$promise.then(
-
-			function(result) {
-				console.log("current cinema: ");
-				currentCinema = result;
-				fetchMoviesInRepertorie();
-			},
-			function() {
-
-			});
-	}
+		$scope.getAddableMovies = function () {
+			return addableMovies;
+		};
 
 		$scope.getCurrentCinemaId = function () {
 			return currentCinema.id;
 		};
 
-	function fetchAddableMovies() {
+		$scope.addMovieToRepertoire = function () {
 
+			var repertoireId = currentCinema.repertoire.id;
+			var movieId = $scope.add_movie_to_repertoire_select.id;
 
-		
-		MovieService.query().$promise.then(
-			// success
-			function(result){
+			var updateParams = {"id": repertoireId, "add_movie_with_id": movieId};
+			var updateBody = {"id": repertoireId};
 
-				addableMovies = result;
-			},
-			// error
-			function(error) {
-				$rootScope.errorHandler(error);
-			}
-		);
-	};
+			RepertoireService.update(updateParams, updateBody).$promise.then(
+				function (result) {
+					moviesInRepertoire = result.movies;
+				},
+				function () {
+					$rootScope.errorHandler(error);
+				}
+			);
+		};
 
-	$scope.addMovieToRepertoire = function() {
+		$scope.removeMovieFromRepertoire = function (movieId) {
 
+			var repertoireId = currentCinema.repertoire.id;
+			var updateParams = {"id": repertoireId, "remove_movie_with_id": movieId};
+			var updateBody = {"id": repertoireId};
 
-		var repertoireId = currentCinema.repertoire.id;
-		var movieId = $scope.add_movie_to_repertoire_select.id;
+			RepertoireService.update(updateParams, updateBody).$promise.then(
+				function (result) {
+					moviesInRepertoire = result.movies;
+				},
+				function () {
+					$rootScope.errorHandler(error);
+				}
+			);
+		};
 
+		function fetchMoviesInRepertorie() {
 
-		var updateParams = {"id":repertoireId,"add_movie_with_id":movieId};
-		var updateBody = {"id":repertoireId};
-
-
-		RepertoireService.update(updateParams,updateBody).$promise.then(
-			function(result){
-				moviesInRepertoire = result.movies;
-			},
-			function(){
-				$rootScope.errorHandler(error);
-			}
-		);
-	}
-
-	$scope.removeMovieFromRepertoire = function(movieId) {
-		
-
-		var repertoireId = currentCinema.repertoire.id;
-
-
-		var updateParams = {"id":repertoireId,"remove_movie_with_id":movieId};
-		var updateBody = {"id":repertoireId};
-
-
-		RepertoireService.update(updateParams,updateBody).$promise.then(
-			function(result){
-				moviesInRepertoire = result.movies;
-			},
-			function(){
-				$rootScope.errorHandler(error);
-			}
-		);
-
-	}
-
-/*
-	//VARIABLES
-	$scope.addableMovies = [];
-	$scope.moviesInRepetoire = [];
-	$scope.cinema = null;
-
-	//INIT
-	getCurrentCinema(function(){
-		getMoviesInRepetoire();
-		getAddableMovies();
-	});
-	getListOfTheaters();
-
-
-	// PUBLIC
-	$scope.removeMovieFromRepertoire = function() {
-		return 123; // TODO: just a dummy from test
-	}
-
-	$scope.addMovieToRepertoire = function() {
-
-		console.log("---");
-		console.log("call add movie to repertoire");
-		console.log("movie to add:")
-		console.log($scope.movieToAdd);
-		console.log("repertoire:")
-		console.log($scope.cinema.repertoire);
-
-
-		// Get a "entry-based" epertoire, Push movie to it and Save,
-		RepertoireService.get({id:$scope.cinema.repertoire.id}).$promise.then(
-
-			// success
-			function(result) {
-
-				repertoireEntry = result;
-
-				repertoireEntry.movies.push($scope.movieToAdd);
-				RepertoireService.save(repertoireEntry).$promise.then(
-
-					// success
-					function(result) {
-						console.log("movie added to repertoire");
-						getAddableMovies();
-						getMoviesInRepetoire();
-					},
-					// error
-					function(error){ 
-						$rootScope.errorHandler(error);
-					}
-				);
-			},
-			// error
-			function(error) {
-				$rootScope.errorHandler(error);
-			}
-		);
-		// -----
-
-
-	}
-
-	// PRIVATE
-	function getCurrentCinema(callbackWhenDone) {
-		console.log("---");
-		console.log("call get current cinema");
-		CinemaService.get({id:1}, function(cinema){
-			console.log("current cinema: ");
-			$scope.cinema = cinema;
-			callbackWhenDone();
-		});
-	}
-
-	function getAddableMovies() {
-
-		MovieService.query().$promise.then(
-			// success
-			function(result){
-				$scope.addableMovies = result;
-			},
-			// error
-			function(error) {
-				$rootScope.errorHandler(error);
-			}
-		);
-	}
-
-	function getMoviesInRepetoire() {
-		RepertoireService.get({id:$scope.cinema.repertoire.id}).$promise.then(
-			// success
-			function(result) {
-				repertoireEntry = result;
-				$scope.moviesInRepetoire = repertoireEntry.movies;
-			},
-			// error
-			function(error) {
-				$rootScope.errorHandler(error);
-			}
-		);
-	}
-
-		function getListOfTheaters() {
-			$scope.theaters = TheaterService.query();
+			var id = currentCinema.repertoire.id;
+			RepertoireService.get({"id": id}).$promise.then(
+				// success
+				function (result) {
+					moviesInRepertoire = result.movies;
+				},
+				// error
+				function (error) {
+					$rootScope.errorHandler(error);
+				});
 		}
-	*/
-}]);
+
+		function fetchCurrentCinema() {
+
+			var id = $routeParams.id;
+
+			CinemaService.get({"id": id}).$promise.then(
+				function (result) {
+					currentCinema = result;
+					fetchMoviesInRepertorie();
+				},
+				function () {
+
+				});
+		}
+		
+		function fetchAddableMovies() {
+
+			MovieService.query().$promise.then(
+				// success
+				function (result) {
+
+					addableMovies = result;
+				},
+				// error
+				function (error) {
+					$rootScope.errorHandler(error);
+				});
+		}
+	}]);

@@ -1,7 +1,38 @@
 describe("cinemaController.js", function () {
 
+	//Specify module
 	beforeEach(module('filmr'));
 
+	// Mocked data
+	var mockedSavedTheater = {};
+
+	var mockedMoviesInRepertoire = [
+		{name: "Lion king"},
+		{name: "Lion queen"},
+		{name: "Alien"}
+	];
+
+	var mockedRepertoire = {
+		movies: mockedMoviesInRepertoire
+	};
+
+	var mockedAddableMovies = [
+		{name: "Mars Attacks"},
+		{name: "Deer Hunter"}
+	];
+
+	var mockedTheaters = [
+		{name: "sal01"},
+		{name: "sal02"}
+	];
+
+	var mockedCinema = {id: 1, name: "Lasses Biograf", repertoire: {id: 567}};
+
+	var mockedLastUpdateRepertoirHeader = null;
+	var mockedLastUpdateRepertoirBody = null;
+	var mockedRepetoireUpdateSuccessResult = {movies: [{name: 'Lion king'}, {name: 'Lion queen'}, {name: 'Alien'}, {name: 'Mars Attacks'}]};
+
+	//Mocked services
 	beforeEach(function () {
 
 		MockedTheaterService = {
@@ -32,7 +63,7 @@ describe("cinemaController.js", function () {
 
 
 		MockedMovieService = {
-			'query': function(params){
+			'query': function (params) {
 				return {
 					'$promise': {
 						then: function (success, fail) {
@@ -40,20 +71,20 @@ describe("cinemaController.js", function () {
 						}
 					}
 				}
-			},
+			}
 		};
 
 		MockedRepertoireService = {
-			'get': function(){
+			'get': function () {
 				return {
 					'$promise': {
 						then: function (success, fail) {
 							success(mockedRepertoire);
 						}
-					}					
+					}
 				}
 			},
-			'update': function(header,body){
+			'update': function (header, body) {
 				return {
 					'$promise': {
 						then: function (success, fail) {
@@ -61,19 +92,19 @@ describe("cinemaController.js", function () {
 							mockedLastUpdateRepertoirBody = body;
 							success(mockedRepetoireUpdateSuccessResult);
 						}
-					}					
+					}
 				}
-			},
+			}
 		};
 
 		MockedCinemaService = {
-			'get': function(){
+			'get': function () {
 				return {
 					'$promise': {
 						then: function (success, fail) {
 							success(mockedCinema);
 						}
-					}					
+					}
 				}
 			}
 		};
@@ -84,107 +115,67 @@ describe("cinemaController.js", function () {
 
 	});
 
-	//Injections
+	//Injections, defining which mocked services to use instead of the real ones
 	beforeEach(inject(function (_$controller_) {
 		$controller = _$controller_;
 		$scope = {};
 
-
-		$controller('cinemaController', {$scope : $scope, $routeParams:Mocked$routeParams,
-						MovieService:MockedMovieService, TheaterService:MockedTheaterService, 
-						RepertoireService:MockedRepertoireService, CinemaService:MockedCinemaService
-
+		$controller('cinemaController', {
+			$scope: $scope, $routeParams: Mocked$routeParams,
+			MovieService: MockedMovieService, TheaterService: MockedTheaterService,
+			RepertoireService: MockedRepertoireService, CinemaService: MockedCinemaService
 		});
 	}));
 
+	/* Test specifications */
 
-	// MOCKS
-
-	var mockedSavedTheater = {};
-
-
-	var mockedMoviesInRepertoire = [
-		{name: "Lion king"},
-		{name: "Lion queen"},
-		{name: "Alien"}
-	];
-
-	var mockedRepertoire = {
-		movies: mockedMoviesInRepertoire
-	}
-
-	var mockedAddableMovies = [
-		{name: "Mars Attacks"},
-		{name: "Deer Hunter"}
-	];
-
-	var mockedTheaters = [
-		{name: "sal01"},
-		{name: "sal02"}
-	];
-
-	var mockedCinema = {id: 1, name:"Lasses Biograf", repertoire:{id:567}};
-
-	var mockedLastUpdateRepertoirHeader = null;
-	var mockedLastUpdateRepertoirBody = null;
-	var mockedRepetoireUpdateSuccessResult = {movies:[ { name: 'Lion king' }, { name: 'Lion queen' }, { name: 'Alien' }, { name: 'Mars Attacks' } ]};
-
-	//TESTS
-
-
-	//  - movies / repertoire
+	// Repertoire tests
 	describe("Repertoire", function () {
-		
 
+		it("Check getter for all movies in repertoires is working on start", function () {
+			expect($scope.getMoviesInRepertoire()).toEqual(mockedMoviesInRepertoire);
+		});
 
-	it("Check getter for all movies in repertoires is working on start", function(){
-		expect($scope.getMoviesInRepertoire()).toEqual(mockedMoviesInRepertoire);
+		it("Check getter for all movies that can be addable to repertoire is working on start", function () {
+			expect($scope.getAddableMovies()).toEqual(mockedAddableMovies);
+		});
+
+		it("Check save is called with correct params when add movie to repertoire (both movies-in-repertoire and movies-can-be-added must be refreshed after call)", function () {
+			$scope.add_movie_to_repertoire_select = {id: 123, name: "Mars Attacks"};
+			$scope.addMovieToRepertoire();
+
+			expect(mockedLastUpdateRepertoirHeader).toEqual({"id": 567, "add_movie_with_id": 123});
+			expect(mockedLastUpdateRepertoirBody).toEqual({"id": 567});
+
+			expect($scope.getMoviesInRepertoire()).toEqual(mockedRepetoireUpdateSuccessResult.movies);
+
+			//TODO: add check on refresh addable movies list
+			/*
+			 expect(mockedSavedRepertoire).toEqual([{name: "Lion king"},{name: "Lion queen"},{name: "Alien"},{name:"Mars Attacks"}]);
+			 expect($scope.getMoviesInRepertoire()).toEqual([{name: "Lion king"},{name: "Lion queen"},{name: "Alien"},{name:"Mars Attacks"}]);
+			 expect($scope.getAddableMovies()).toEqual([{name:"Deer Hunter"}]);
+			 */
+		});
+
+		it("Check remove movie from repertoire (both movies-in-repertoire and movies-can-be-added must be refreshed after call)", function () {
+			$scope.removeMovieFromRepertoire(178);
+
+			expect(mockedLastUpdateRepertoirHeader).toEqual({"id": 567, "remove_movie_with_id": 178});
+			expect(mockedLastUpdateRepertoirBody).toEqual({"id": 567});
+
+			expect($scope.getMoviesInRepertoire()).toEqual(mockedRepetoireUpdateSuccessResult.movies); //note/confusing: the mockedRepetoireUpdateSuccessResult is based on a list of added movies. The same list work here since we are just compareing(toEqual) and mocked service do not actual modify list in a correct way
+
+			//TODO: add check on refresh addable movies list
+			/*
+			 expect(mockedSavedRepertoire).toEqual([{name: "Lion king"},{name: "Lion queen"}]);
+			 expect($scope.getMoviesInRepertoire()).toEqual([{name: "Lion king"},{name: "Lion queen"}]);
+			 expect($scope.getAddableMovies()).toEqual([{name:"Mars Attacks"},{name:"Deer Hunter"},{name:"Alien"}]);
+			 */
+		});
+
 	});
 
-	it("Check getter for all movies that can be addable to repertoire is working on start", function(){
-		expect($scope.getAddableMovies()).toEqual(mockedAddableMovies);
-	});
-
-	it("Check save is called with correct params when add movie to repertoire (both movies-in-repertoire and movies-can-be-added must be refreshed after call)", function(){
-		$scope.add_movie_to_repertoire_select = {id: 123, name:"Mars Attacks"};
-		$scope.addMovieToRepertoire();
-
-		expect(mockedLastUpdateRepertoirHeader).toEqual({"id":567,"add_movie_with_id":123});
-		expect(mockedLastUpdateRepertoirBody).toEqual({"id":567});
-
-		expect($scope.getMoviesInRepertoire()).toEqual(mockedRepetoireUpdateSuccessResult.movies);
-
-		/*
-
-		TODO: add check on refresh addable movies list
-
-		expect(mockedSavedRepertoire).toEqual([{name: "Lion king"},{name: "Lion queen"},{name: "Alien"},{name:"Mars Attacks"}]);
-		expect($scope.getMoviesInRepertoire()).toEqual([{name: "Lion king"},{name: "Lion queen"},{name: "Alien"},{name:"Mars Attacks"}]);
-		expect($scope.getAddableMovies()).toEqual([{name:"Deer Hunter"}]);
-		*/
-	});
-
-	it("Check remove movie from repertoire (both movies-in-repertoire and movies-can-be-added must be refreshed after call)", function(){
-		$scope.removeMovieFromRepertoire(178);
-
-		expect(mockedLastUpdateRepertoirHeader).toEqual({"id":567,"remove_movie_with_id":178});
-		expect(mockedLastUpdateRepertoirBody).toEqual({"id":567});
-
-		expect($scope.getMoviesInRepertoire()).toEqual(mockedRepetoireUpdateSuccessResult.movies); //note/confusing: the mockedRepetoireUpdateSuccessResult is based on a list of added movies. The same list work here since we are just compareing(toEqual) and mocked service do not actual modify list in a correct way
-
-		//TODO: add check on refresh addable movies list
-
-///		expect(mockedSavedRepertoire).toEqual([{name: "Lion king"},{name: "Lion queen"}]);
-//		expect($scope.getMoviesInRepertoire()).toEqual([{name: "Lion king"},{name: "Lion queen"}]);
-//		expect($scope.getAddableMovies()).toEqual([{name:"Mars Attacks"},{name:"Deer Hunter"},{name:"Alien"}]);
-
-		 });
-		 
-	});
-
-
-	//  - theaters
-
+	// Theater tests
 	describe("Theaters", function () {
 		it("Gets all theaters", function () {
 			expect($scope.getTheaters()).toEqual(mockedTheaters);
@@ -246,6 +237,4 @@ describe("cinemaController.js", function () {
 
 		})
 	});
-
-
 });
