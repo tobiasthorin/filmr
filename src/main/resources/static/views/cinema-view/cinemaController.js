@@ -70,18 +70,45 @@ app
 	};
 
 	$scope.addMovieToRepertoire = function() {
-		//TODO: PUT, and have repeteroie id
-		var id = $scope.add_movie_to_repertoire_select.id;
-		RepertoireService.query({"add_movie_with_id":id}).$promise.then(
+
+
+		var repertoireId = currentCinema.repertoire.id;
+		var movieId = $scope.add_movie_to_repertoire_select.id;
+
+
+		var updateParams = {"id":repertoireId,"add_movie_with_id":movieId};
+		var updateBody = {"id":repertoireId};
+
+
+		RepertoireService.update(updateParams,updateBody).$promise.then(
 			function(result){
-				console.log("succes:");
-				console.log(result);
+				moviesInRepertoire = result.movies;
 			},
 			function(){
-				//TODO: add error from rootScope
-
+				$rootScope.errorHandler(error);
 			}
 		);
+	}
+
+	$scope.removeMovieFromRepertoire = function(movieId) {
+		
+
+		var repertoireId = currentCinema.repertoire.id;
+
+
+		var updateParams = {"id":repertoireId,"remove_movie_with_id":movieId};
+		var updateBody = {"id":repertoireId};
+
+
+		RepertoireService.update(updateParams,updateBody).$promise.then(
+			function(result){
+				moviesInRepertoire = result.movies;
+			},
+			function(){
+				$rootScope.errorHandler(error);
+			}
+		);
+
 	}
 
 /*
