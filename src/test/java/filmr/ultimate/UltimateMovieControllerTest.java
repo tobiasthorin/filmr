@@ -43,13 +43,10 @@ public class UltimateMovieControllerTest {
     private int tableSize;
     private Movie savedMovie;
 
-    //Mock clone of project
-    private MockMvc mockMvc;
-
     //Parameters
     private Long id;
 
-    //ID, ? TODO parameters for null test?
+    //ID, ? TODO parameters pointless for this test
     @Parameterized.Parameters
     public static Collection<Object[]> parameters() {
         return Arrays.asList(new Object[][]{
@@ -58,9 +55,7 @@ public class UltimateMovieControllerTest {
     }
 
     public UltimateMovieControllerTest(Long id) {
-        this.id = id;
         baseUrl = "http://localhost:8080/filmr/api/movies/";
-        urlWithId = baseUrl+id;
     }
 
     @Before
@@ -70,17 +65,16 @@ public class UltimateMovieControllerTest {
         testContextManager.prepareTestInstance(this);
 
         //Initialize restTemplate
-        restTemplate = new TestRestTemplate();
+        restTemplate = new RestTemplate(); //TODO TestRestTemplate broken
 
         //clear everything
         movieRepository.deleteAllInBatch();
-        //TODO on read test, make sure data.sql is not read
 
         //Create showing and everything that belongs in it
         Movie movie = EntityFactory.createMovie("Global Test Movie", "A movie about things", new Long(120));
         savedMovie = movieRepository.save(movie);
 
-        //TODO set id here; figure out the best way to do this later
+        //Setup id for this run
         id = savedMovie.getId();
         urlWithId = baseUrl+id;
 
@@ -94,8 +88,6 @@ public class UltimateMovieControllerTest {
         //Post
         ResponseEntity<Movie> responseEntity = restTemplate.postForEntity(baseUrl, movie, Movie.class);
         Movie postedMovie = responseEntity.getBody();
-
-        //TODO spy id?
 
         //Assert
         assertEquals("The movie titles should be the same or POST is broken", movie.getTitle(), postedMovie.getTitle());
@@ -112,7 +104,7 @@ public class UltimateMovieControllerTest {
         Movie movie = responseEntity.getBody();
 
         //Assert
-        assertEquals("Assert that the id of the read object is the same as we asked to get", id, movie.getId()); //TODO on multiple parameters with id not 0 this will break?
+        assertEquals("Assert that the id of the read object is the same as we asked to get", id, movie.getId());
         assertEquals("Assert that the read object is the same as the one created in @Before", savedMovie, movie);
     }
 
@@ -124,7 +116,7 @@ public class UltimateMovieControllerTest {
         //Update object in database
         restTemplate.put(urlWithId, savedMovie);
 
-        //Movie updatedMovie = movieRepository.getOne(savedMovie.getId()); TODO this throws a lazy exception; session close after a commited transaction?
+        //Movie updatedMovie = movieRepository.getOne(savedMovie.getId()); //TODO this throws a lazy exception; session close after a commited transaction?
         ResponseEntity<Movie> responseEntity = restTemplate.getForEntity(urlWithId, Movie.class);
         Movie updatedMovie = responseEntity.getBody();
 
@@ -132,9 +124,6 @@ public class UltimateMovieControllerTest {
         assertEquals("Assert that the object is updated", savedMovie, updatedMovie);
         assertEquals("check that the updated field is correct", changeTitleTo, updatedMovie.getTitle());
     }
-
-
-    //TODO wont throw proper errors?
 
     @Test(expected = HttpClientErrorException.class)
     public void testUpdateNull() {
