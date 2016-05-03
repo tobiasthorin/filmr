@@ -15,14 +15,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestContextManager;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.ThemeResolver;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static junit.framework.Assert.assertNotNull;
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -110,10 +108,22 @@ public class UltimateShowingControllerTest {
         Showing postedShowing = responseEntity.getBody();
 
         //Assert
-        //assertTrue("Make sure the http was successfull", responseEntity.getStatusCode().is2xxSuccessful());
+        assertTrue("Make sure the http was successfull", responseEntity.getStatusCode().is2xxSuccessful());
         assertEquals("Compare times", showing.getShowDateTime(), postedShowing.getShowDateTime());
         assertEquals("Compare movies", showing.getMovie(), postedShowing.getMovie());
         assertEquals("Compare theaters", showing.getTheater(), postedShowing.getTheater());
         assertEquals("Compare bookings", showing.getBookings(), postedShowing.getBookings());
+    }
+
+    @Test
+    public void testRead() {
+        //Get
+        ResponseEntity<Showing> responseEntity = restTemplate.getForEntity(urlWithId, Showing.class);
+        Showing showing = responseEntity.getBody();
+
+        //Assert
+        assertTrue("Make sure the call was succesfull", responseEntity.getStatusCode().is2xxSuccessful());
+        assertEquals("Assert that the id of the read object is the same as we asked to get", id, showing.getId());
+        assertEquals("Assert that the read object is the same as the one created in @Before", savedShowing, showing);
     }
 }

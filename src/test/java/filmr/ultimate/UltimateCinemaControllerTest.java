@@ -48,20 +48,6 @@ public class UltimateCinemaControllerTest {
     public static Collection<Object[]> parameters() {
         return Arrays.asList(new Object[][]{
                 {new Long(1)},
-                {new Long(1)},
-                {new Long(1)},
-                {new Long(1)},
-                {new Long(1)},
-                {new Long(1)},
-                {new Long(1)},
-                {new Long(1)},
-                {new Long(1)},
-                {new Long(1)},
-                {new Long(1)},
-                {new Long(1)},
-                {new Long(1)},
-                {new Long(1)},
-                {new Long(1)},
         });
     }
 

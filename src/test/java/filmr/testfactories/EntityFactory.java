@@ -72,7 +72,7 @@ public class EntityFactory {
         showing.setShowDateTime(showDateTime);
         showing.setMovie(savedMovie);
         showing.setTheater(savedTheater);
-        showing.setBookings(savedBookings);
+        //showing.setBookings(savedBookings);
         return showing;
     }
 }
