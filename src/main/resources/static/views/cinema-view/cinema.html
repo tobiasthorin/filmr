@@ -4,6 +4,7 @@
         <div class="row">
             <div class="col-sm-6">
 		<form>
+			<h2>Movies</h2>
 			<ul>
 				<li ng-repeat="movie in getMoviesInRepertoire()">
 					{{movie.id}} - {{movie.title}} <input type="button" ng-click="removeMovieFromRepertoire(movie.id)" value="Delete">
@@ -15,12 +16,22 @@
 		</form>
             </div>
             <div class="col-sm-6">
-                <a href="#/theater">Add theater</a>
+				<h2>Theaters</h2>
                 <ul>
-                    <li ng-repeat="theater in theaters">
-                        <a href="#/theater/{{$index + 1}}">{{theater.name}}</a>
+                    <li ng-repeat="theater in getTheaters()">
+                        {{theater.name}}
                     </li>
                 </ul>
+				<div class="add-theater">
+					<h3>New theater</h3>
+					<form>
+						<input type="text" placeholder="name" ng-model="add_theater_name">
+						<input type="number" placeholder="Number of seats" ng-model="add_theater_seats">
+						<label for="disabledCheckbox">Disabled</label>
+						<input type="checkbox" ng-model="add_theater_disabled" id="disabledCheckbox">
+						<button ng-click="submitTheater()">Submit</button>
+					</form>
+				</div>
             </div>
         </div>
     </div>
