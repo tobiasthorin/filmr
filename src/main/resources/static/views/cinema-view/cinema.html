@@ -1,19 +1,19 @@
-<div class="showings-wrapper">
+<div class="showings-wrapper" xmlns="http://www.w3.org/1999/html">
 
     <div class="container">
         <div class="row">
             <div class="col-sm-6">
-		<form>
-			<h2>Movies</h2>
-			<ul>
-				<li ng-repeat="movie in getMoviesInRepertoire()">
-					{{movie.id}} - {{movie.title}} <input type="button" ng-click="removeMovieFromRepertoire(movie.id)" value="Delete">
-				</li>
-			</ul>
-			<select ng-options="movie as movie.title for movie in getAddableMovies()" ng-model="add_movie_to_repertoire_select" required>
-			</select>
-			<input type="submit" ng-click="addMovieToRepertoire()">
-		</form>
+				<form>
+					<h2>Movies</h2>
+					<ul>
+						<li ng-repeat="movie in getMoviesInRepertoire()">
+							{{movie.id}} - {{movie.title}} <input type="button" ng-click="removeMovieFromRepertoire(movie.id)" value="Delete">
+						</li>
+					</ul>
+					<select ng-options="movie as movie.title for movie in getAddableMovies()" ng-model="add_movie_to_repertoire_select" required>
+					</select>
+					<input type="submit" ng-click="addMovieToRepertoire()">
+				</form>
             </div>
             <div class="col-sm-6">
 				<h2>Theaters</h2>
@@ -34,5 +34,16 @@
 				</div>
             </div>
         </div>
+		<div class="row">
+			<div class="col-sm-6">
+				<h2>Bio: {{cinema_name}}</h2>
+				<div class="edit-cinema-name">
+					<form>
+						<input type="text" ng-model="edited_cinema_name">
+						<button ng-click="updateCinemaName()">Change Name</button>
+					</form>
+				</div>
+			</div>
+		</div>
     </div>
 </div>

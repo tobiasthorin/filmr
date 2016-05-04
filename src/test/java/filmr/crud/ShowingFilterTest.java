@@ -84,7 +84,7 @@ public class ShowingFilterTest {
     public void testFilteredShowing() {
         String fromDate = "from_date";
         String toDate = "to_date";
-        String minimumAvailableTickets = "minium_available_tickets";
+        String minimumAvailableTickets = "minimum_available_tickets";
         String onlyForMovieWithId = "only_for_movie_with_id";
         String onlyForTheaterWithId = "only_for_theater_with_id";
         String limit = "limit";
