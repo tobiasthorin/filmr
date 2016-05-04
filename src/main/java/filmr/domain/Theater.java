@@ -11,116 +11,123 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.List;
 
 @Entity
+@NamedQueries(
+		@NamedQuery(name = "Theater.filterByCinema",
+				query = "SELECT t FROM Theater t " +
+						"WHERE t.cinema.id = :cinemaId")
+)
+
 public class Theater {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private String name;
-    private int numberOfSeats;
-    private boolean disabled;
-    @OneToMany(mappedBy = "theater")
-    private List<Row> rows;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+	private String name;
+	private int numberOfSeats;
+	private boolean disabled;
+	@OneToMany(mappedBy = "theater")
+	private List<Row> rows;
 
-    @ManyToOne
-    @JoinColumn(name="cinema_id")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Cinema cinema;
+	@ManyToOne
+	@JoinColumn(name = "cinema_id")
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	private Cinema cinema;
 
-    @Transient
-    private String cinemaName;
+	@Transient
+	private String cinemaName;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "theater")
 	private List<Showing> showings;
 	
-	public Theater() {}
+	public Theater() {
+	}
 
 
-    public String getCinemaName() {
-        return cinema != null ? cinema.getName() : "ingen biograf kopplad";
-    }
+	public String getCinemaName() {
+		return cinema != null ? cinema.getName() : "ingen biograf kopplad";
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public List<Row> getRows() {
-        return rows;
-    }
+	public List<Row> getRows() {
+		return rows;
+	}
 
-    public void setRows(List<Row> rows) {
-        this.rows = rows;
-    }
+	public void setRows(List<Row> rows) {
+		this.rows = rows;
+	}
 
-    public List<Showing> getShowings() {
-        return showings;
-    }
+	public List<Showing> getShowings() {
+		return showings;
+	}
 
-    public void setShowings(List<Showing> showings) {
-        this.showings = showings;
-    }
+	public void setShowings(List<Showing> showings) {
+		this.showings = showings;
+	}
 
 	public Long getId() {
 		return id;
 	}
 
-    public Cinema getCinema() {
-        return cinema;
-    }
+	public Cinema getCinema() {
+		return cinema;
+	}
 
-    public void setCinema(Cinema cinema) {
-        this.cinema = cinema;
-    }
+	public void setCinema(Cinema cinema) {
+		this.cinema = cinema;
+	}
 
-    public int getNumberOfSeats() {
-        return numberOfSeats;
-    }
+	public int getNumberOfSeats() {
+		return numberOfSeats;
+	}
 
-    public void setNumberOfSeats(int numberOfSeats) {
-        this.numberOfSeats = numberOfSeats;
-    }
+	public void setNumberOfSeats(int numberOfSeats) {
+		this.numberOfSeats = numberOfSeats;
+	}
 
-    public boolean isDisabled() {
-        return disabled;
-    }
+	public boolean isDisabled() {
+		return disabled;
+	}
 
-    public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
-    }
+	public void setDisabled(boolean disabled) {
+		this.disabled = disabled;
+	}
 
-    @Override
-    public boolean equals(Object object){
-        if (object == null) {
-            return false;
-        }
-        if(!(object instanceof Theater)){
-            return false;
-        }
-        final Theater theater = (Theater)object;
-        return new EqualsBuilder()
-                .append(id,theater.getId())
-                .append(name,theater.getName())
-                .append(rows, theater.getRows())
-                .append(cinema, theater.getCinema())
-                .append(showings,theater.getShowings())
-                .isEquals();
+	@Override
+	public boolean equals(Object object) {
+		if (object == null) {
+			return false;
+		}
+		if (!(object instanceof Theater)) {
+			return false;
+		}
+		final Theater theater = (Theater) object;
+		return new EqualsBuilder()
+				.append(id, theater.getId())
+				.append(name, theater.getName())
+				.append(rows, theater.getRows())
+				.append(cinema, theater.getCinema())
+				.append(showings, theater.getShowings())
+				.isEquals();
 
-    }
+	}
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 31)
-                .append(id)
-                .append(name)
-                .append(rows)
-                .append(cinema)
-                .append(showings)
-                .toHashCode();
-    }
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder(17, 31)
+				.append(id)
+				.append(name)
+				.append(rows)
+				.append(cinema)
+				.append(showings)
+				.toHashCode();
+	}
 
 	@Override
 	public String toString() {

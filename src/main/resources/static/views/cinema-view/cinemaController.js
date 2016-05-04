@@ -21,13 +21,6 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 		};
 
 		$scope.getTheaters = function () {
-			TheaterService.query().$promise.then(function (result) {
-					//success
-					theaters = result;
-				},
-				function () {
-					//fail
-				});
 			return theaters;
 		};
 
@@ -37,7 +30,7 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 				$scope.add_theater_disabled = false;
 			}
 
-			$scope.newTheater.cinemaId = currentCinema.id;
+			$scope.newTheater.cinema = {id:currentCinema.id};
 			$scope.newTheater.name = $scope.add_theater_name;
 			$scope.newTheater.disabled = $scope.add_theater_disabled;
 			$scope.newTheater.numberOfSeats = $scope.add_theater_seats;
@@ -45,11 +38,11 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 			TheaterService.save($scope.newTheater).$promise.then(function () {
 					$scope.alert("Success!");
 					$scope.resetFields();
+					fetchTheaters();
 				},
 				function () {
 					$scope.alert("Error!");
-				}
-			);
+				});
 		};
 
 		$scope.alert = function (message) {
@@ -148,4 +141,21 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 					$rootScope.errorHandler(error);
 				});
 		}
+
+		function fetchTheaters() {
+			console.log("Getting theaters...");
+			TheaterService.query({cinema_id:currentCinema.id}).$promise.then(function (result) {
+					theaters = result;
+				},
+				function (error) {
+					$rootScope.errorHandler(error);
+				});
+		}
+
+		//Execute on page load
+		fetchAddableMovies();
+		fetchCurrentCinema(function() {
+			fetchMoviesInRepertorie();
+			fetchTheaters();
+		});
 	}]);
