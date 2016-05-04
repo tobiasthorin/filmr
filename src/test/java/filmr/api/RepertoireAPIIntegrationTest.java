@@ -1,4 +1,4 @@
-package filmr.ultimate;
+package filmr.api;
 
 import filmr.Application;
 import filmr.domain.Movie;
@@ -30,7 +30,7 @@ import static org.junit.Assert.assertTrue;
 @SpringApplicationConfiguration(Application.class)
 @WebIntegrationTest
 @ActiveProfiles({"test"})
-public class UltimateRepertoireControllerTest {
+public class RepertoireAPIIntegrationTest {
 
     //Used instead of SpringJunit4ClassRunner in @RunWith
     private TestContextManager testContextManager;
@@ -58,7 +58,7 @@ public class UltimateRepertoireControllerTest {
         });
     }
 
-    public UltimateRepertoireControllerTest(Long id) {
+    public RepertoireAPIIntegrationTest(Long id) {
         baseUrl = "http://localhost:8080/filmr/api/repertoires/";
     }
 

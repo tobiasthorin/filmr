@@ -1,11 +1,9 @@
-package filmr.ultimate;
+package filmr.api;
 
 import filmr.Application;
 import filmr.domain.Cinema;
-import filmr.domain.Movie;
 import filmr.domain.Theater;
 import filmr.repositories.CinemaRepository;
-import filmr.repositories.MovieRepository;
 import filmr.repositories.TheaterRepository;
 import filmr.testfactories.EntityFactory;
 import org.junit.Before;
@@ -18,7 +16,6 @@ import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestContextManager;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
@@ -31,7 +28,7 @@ import static org.junit.Assert.assertTrue;
 @SpringApplicationConfiguration(Application.class)
 @WebIntegrationTest
 @ActiveProfiles({"test"})
-public class UltimateTheaterControllerTest {
+public class TheaterAPIIntegrationTest {
 
     //Used instead of SpringJunit4ClassRunner in @RunWith
     private TestContextManager testContextManager;
@@ -59,7 +56,7 @@ public class UltimateTheaterControllerTest {
         });
     }
 
-    public UltimateTheaterControllerTest(Long id) {
+    public TheaterAPIIntegrationTest(Long id) {
         baseUrl = "http://localhost:8080/filmr/api/theaters/";
     }
 

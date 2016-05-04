@@ -1,4 +1,4 @@
-package filmr.ultimate;
+package filmr.api;
 
 import filmr.Application;
 import filmr.domain.Cinema;
@@ -26,7 +26,7 @@ import static org.junit.Assert.assertTrue;
 @SpringApplicationConfiguration(Application.class)
 @WebIntegrationTest
 @ActiveProfiles({"test"})
-public class UltimateCinemaControllerTest {
+public class CinemaAPIIntegrationTest {
 
     //Used instead of SpringJunit4ClassRunner in @RunWith
     private TestContextManager testContextManager;
@@ -51,7 +51,7 @@ public class UltimateCinemaControllerTest {
         });
     }
 
-    public UltimateCinemaControllerTest(Long id) {
+    public CinemaAPIIntegrationTest(Long id) {
         baseUrl = "http://localhost:8080/filmr/api/cinemas/";
     }
 

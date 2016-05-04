@@ -52,8 +52,22 @@ public class CustomJsonDateDeserializer extends JsonDeserializer<LocalDateTime> 
 
 		System.out.println(nodeString.substring(nodeString.length()-5));
 
-		//If somehow the string isnt proper jsonified (ie from a test), add this to the string
-		if (!nodeString.substring(nodeString.length()-5).equals(".000Z")) {
+		//Convert the string as needed
+		if (nodeString.contains(",")){
+			String[] datenumbers = nodeString.split(",");
+			String format = "%s-%02d-%02dT%02d:%02d:%02d.000Z";
+			String dateString =
+				String.format(format,
+					datenumbers[0],
+					Integer.parseInt(datenumbers[1]),
+					Integer.parseInt(datenumbers[2]),
+					Integer.parseInt(datenumbers[3]),
+					Integer.parseInt(datenumbers[4]),
+					Integer.parseInt(datenumbers[5]));
+			System.out.println("Formatted dateString from array values: " + dateString);
+			nodeString = dateString;//TODO probably a new variable for both
+		}
+		else if (!nodeString.substring(nodeString.length()-5).equals(".000Z")) {
 			nodeString += ".000Z";
 		}
 

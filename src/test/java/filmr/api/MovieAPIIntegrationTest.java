@@ -1,4 +1,4 @@
-package filmr.ultimate;
+package filmr.api;
 
 import filmr.Application;
 import filmr.domain.Movie;
@@ -10,12 +10,10 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.TestRestTemplate;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestContextManager;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -30,7 +28,7 @@ import static org.junit.Assert.assertTrue;
 @SpringApplicationConfiguration(Application.class)
 @WebIntegrationTest
 @ActiveProfiles({"test"})
-public class UltimateMovieControllerTest {
+public class MovieAPIIntegrationTest {
 
     //Used instead of SpringJunit4ClassRunner in @RunWith
     private TestContextManager testContextManager;
@@ -55,7 +53,7 @@ public class UltimateMovieControllerTest {
         });
     }
 
-    public UltimateMovieControllerTest(Long id) {
+    public MovieAPIIntegrationTest(Long id) {
         baseUrl = "http://localhost:8080/filmr/api/movies/";
     }
 

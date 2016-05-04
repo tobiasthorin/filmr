@@ -104,9 +104,9 @@ public class Theater {
         return new EqualsBuilder()
                 .append(id,theater.getId())
                 .append(name,theater.getName())
-                .append(rows, theater.getRows())
-                .append(cinema, theater.getCinema())
-                .append(showings,theater.getShowings())
+                //.append(rows, theater.getRows()) //TODO breaks everything boo
+                //.append(cinema, theater.getCinema())
+                //.append(showings,theater.getShowings())
                 .isEquals();
 
     }
@@ -116,15 +116,15 @@ public class Theater {
         return new HashCodeBuilder(17, 31)
                 .append(id)
                 .append(name)
-                .append(rows)
-                .append(cinema)
-                .append(showings)
+                //.append(rows)
+                //.append(cinema)
+                //.append(showings)
                 .toHashCode();
     }
 
 	@Override
 	public String toString() {
-		return "Theater [id=" + id + ", name=" + name + ", rows size=" + rows.size() + ", cinema=" + cinema.getName() + ", showings size ="
-				+ showings.size() + "]";
+		return "Theater [id=" + id + ", name=" + name + ", rows size=" + "rows.size()" + ", cinema=" + "cinema.getName()" + ", showings size ="
+				+ "showings.size()" + "]";
 	}
 }
