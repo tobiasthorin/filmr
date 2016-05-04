@@ -19,7 +19,7 @@
 				<h2>Theaters</h2>
                 <ul>
                     <li ng-repeat="theater in getTheaters()">
-                        {{theater.name}}
+                        <a href="#/cinema/{{getCurrentCinemaId()}}/theater/{{theater.id}}">{{theater.name}}</a>
                     </li>
                 </ul>
 				<div class="add-theater">

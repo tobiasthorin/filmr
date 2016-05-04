@@ -9,11 +9,30 @@ angular.module('filmr')
             $scope.theatersInCinema = [];
             $scope.allShowings = [];
 
+
+
+            //Showing Filter Parameters
+
+            $scope.theater = {};
+            $scope.movie = {};
+
+
+
+
             //INIT
             getTheatersAndRepertoireInCinema();
-            getAllShowings();
+            getShowingsWithParams();
 
             //PUBLIC
+
+            $scope.updateShowings = function() {
+                console.log("---");
+                console.log("updating Showings List");
+
+
+                getShowingsWithParams();
+            }
+
             $scope.createShowing = function() {
                 console.log("---");
                 console.log("call add showing to theater");
@@ -34,6 +53,8 @@ angular.module('filmr')
                 console.log("showing to add");
                 console.log(newShowing);
             }
+
+
 
             function getTheatersAndRepertoireInCinema() {
                 console.log("---");
@@ -68,6 +89,26 @@ angular.module('filmr')
                 )
             }
 
-
+            function getShowingsWithParams(){
+                var params = {
+                    "only_for_theater_with_id" : $scope.theater.id,
+                    "only_for_movie_with_id" : $scope.movie.id,
+                    "from_date" : $scope.fromDate,
+                    "to_date" : $scope.toDate,
+                    "include_empty_slots_for_movie_of_length" : $scope.movie.lengthInMinutes
+                }
+                console.log(params);
+                console.log("Get Showings with Params");
+                ShowingService.query(params).$promise.then(
+                    function (result){
+                        console.log("in showings with params");
+                        console.log(result);
+                        $scope.allShowings = result;
+                    },
+                    function (error) {
+                        $rootScope.errorHandler(error);
+                    }
+                )
+            }
 
         }]);
