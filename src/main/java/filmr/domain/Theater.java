@@ -114,6 +114,8 @@ public class Theater {
                 //.append(rows, theater.getRows()) //TODO breaks everything boo
                 //.append(cinema, theater.getCinema())
                 //.append(showings,theater.getShowings())
+                .append(numberOfSeats, theater.numberOfSeats)
+                .append(disabled, theater.isDisabled())
                 .isEquals();
 
 	}
@@ -126,6 +128,8 @@ public class Theater {
                 //.append(rows)
                 //.append(cinema)
                 //.append(showings)
+                .append(numberOfSeats)
+                .append(numberOfSeats)
                 .toHashCode();
     }
 

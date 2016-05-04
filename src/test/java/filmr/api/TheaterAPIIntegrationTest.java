@@ -101,4 +101,25 @@ public class TheaterAPIIntegrationTest {
 
         assertEquals("Assert that amount of theaters is +1", tableSize +1, theaterRepository.findAll().size());
     }
+    
+    @Test
+    public void testUpdate() throws Exception {
+    	
+    	// setup values to update to
+    	String updatedTheaterName = "Test updated theater name";
+    	int updatedNumberOfSeats = 666;
+    	
+    	// make the changes to the local, but previously saved, java object
+    	savedTheater.setName(updatedTheaterName);
+    	savedTheater.setNumberOfSeats(updatedNumberOfSeats);
+    	
+    	// actually do the PUT request
+    	restTemplate.put(urlWithId, savedTheater);
+    	
+    	// get the (hopefully) updated theater from repo
+    	Theater updatedTheater = theaterRepository.findOne(id);
+    	
+    	// test if the local changes (savedTheater) matches the actual ones (updatedTheater)
+    	assertEquals("Assert that the updated theater matches the changes we made", savedTheater, updatedTheater);
+    }
 }

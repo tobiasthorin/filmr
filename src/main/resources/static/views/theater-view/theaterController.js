@@ -1,33 +1,19 @@
 angular.module('filmr')
-    .controller('theaterController', ['$rootScope', '$scope', '$routeParams', '$location', 'TheaterService',
-        function ($rootScope, $scope, $routeParams, $location, TheaterService) {
-            console.log("Theater Controller");
+	.controller('theaterController', ['$rootScope', '$scope', '$routeParams', '$location', 'TheaterService',
+		function ($rootScope, $scope, $routeParams, $location, TheaterService) {
+			console.log("Theater Controller");
 
-            if ($routeParams.id == undefined) {
-                console.log("No id specified");
+			//Scoped functions
 
-                $scope.submitTheater = function () {
-                    console.log("Submitting new theater...");
-                    console.log($scope.name);
+			$scope.redirect = function (path) {
 
-                    var newTheater = new TheaterService();
+			};
 
-                    newTheater.name = $scope.name;
-                    newTheater.numberOfSeats = $scope.numberOfSeats;
-                    newTheater.isDisabled = $scope.isDisabled;
+			$scope.fetchTheater = function () {
+				console.log("Id " + $routeParams.theater_id + " specified.");
 
-                    TheaterService.save(newTheater, function () {
-                        console.log("Saved!");
-                        $location.path('/cinema');
-                    });
-
-                }
-
-            } else {
-                console.log("Id " + $routeParams.id + " specified.");
-
-				TheaterService.get({id: $routeParams.id}).$promise.then(
-					//Get success
+				TheaterService.get({id: $routeParams.theater_id}).$promise.then(
+					//success
 					function (result) {
 						console.log("Successfully retrieved data: ");
 						console.log(result);
@@ -35,28 +21,41 @@ angular.module('filmr')
 						$scope.numberOfSeats = result.numberOfSeats;
 						$scope.isDisabled = result.disabled;
 					},
-					//Get error
+					//fail
 					function (err) {
 						$rootScope.errorHandler(err);
 					});
+			};
 
-                $scope.submitTheater = function () {
-                    console.log("Submitting edited theater...");
-                    console.log($scope.name + ", id: " + $routeParams.id);
+			$scope.submitTheater = function () {
+				console.log("Submitting edited theater...");
+				console.log($scope.name + ", id: " + $routeParams.theater_id);
+				
+				$scope.newTheater = {};
 
-                    var newTheater = new TheaterService();
+				$scope.newTheater.id = $routeParams.theater_id;
+				$scope.newTheater.name = $scope.name;
+				$scope.newTheater.numberOfSeats = $scope.numberOfSeats;
+				$scope.newTheater.disabled = $scope.isDisabled;
+				$scope.newTheater.cinema = {id: $routeParams.cinema_id};
 
-                    newTheater.id = $routeParams.id;
-                    newTheater.name = $scope.name;
-                    newTheater.numberOfSeats = $scope.numberOfSeats;
-                    newTheater.disabled = $scope.isDisabled;
+				TheaterService.update($scope.newTheater).$promise.then(
+					function () {
+						//success
+						console.log("Updated!");
+						$location.path('/cinema/' + $routeParams.cinema_id);
+					},
+					function () {
+						//fail
+					});
+			};
 
-                    TheaterService.update(newTheater, function () {
-                        console.log("Updated!");
-                        $location.path('/cinema');
-                    });
+			//Run on load
+			if ($routeParams.theater_id == undefined) {
+				console.log("No id specified");
 
-                }
-            }
+			} else {
+				$scope.fetchTheater();
+			}
 
-        }]);
+		}]);

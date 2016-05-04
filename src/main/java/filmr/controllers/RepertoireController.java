@@ -1,6 +1,7 @@
 package filmr.controllers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -87,7 +88,7 @@ public class RepertoireController {
     	// TODO: throw error if id is not set?
     	System.out.println("Updating repertoire with id: " + repertoire.getId());
     	
-    	if(repertoire.getMovies() == null) repertoire.setMovies(new ArrayList<Movie>());
+    	if(repertoire.getMovies() == null) repertoire.setMovies(new HashSet<Movie>());
     	
     	if(add_movie_with_id != null) {
         	Movie movieToAdd = movieService.readEntity(add_movie_with_id);
