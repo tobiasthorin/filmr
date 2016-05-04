@@ -21,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.TestCase.assertEquals;
@@ -105,7 +106,7 @@ public class RepertoireAPIIntegrationTest {
 
     @Test
     public void addMovieToRepertoire() {
-        List<Movie> repertoireMovies = savedRepertoire.getMovies();
+        Set<Movie> repertoireMovies = savedRepertoire.getMovies();
         int repertoireMovieListSize = repertoireMovies.size();
         repertoireMovies.add(savedMovie);
         savedRepertoire.setMovies(repertoireMovies);
