@@ -2,6 +2,7 @@ package filmr.testfactories;
 
 import filmr.domain.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -53,8 +54,8 @@ public class EntityFactory {
 
     public static Repertoire createRepertoire() {
         Repertoire repertoire = new Repertoire();
-        ArrayList<Movie> movies = new ArrayList<>();
-        repertoire.setMovies(movies);
+//        ArrayList<Movie> movies = null;
+//        repertoire.setMovies(movies);
         return repertoire;
     }
 
@@ -66,12 +67,12 @@ public class EntityFactory {
         return movie;
     }
 
-    public static Showing createShowing(Date showDateTime, Movie savedMovie, Theater savedTheater, List<Booking> savedBookings) {
+    public static Showing createShowing(LocalDateTime showDateTime, Movie savedMovie, Theater savedTheater, List<Booking> savedBookings) {
         Showing showing = new Showing();
         showing.setShowDateTime(showDateTime);
         showing.setMovie(savedMovie);
         showing.setTheater(savedTheater);
-        showing.setBookings(savedBookings);
+        //showing.setBookings(savedBookings);
         return showing;
     }
 }
