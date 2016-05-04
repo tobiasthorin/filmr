@@ -114,12 +114,13 @@ public class Showing implements Comparable<Showing> {
 		return id;
 	}
 	
-	public LocalDateTime getShowingEndtime() {
+	public LocalDateTime getShowingEndTime() {
         if(movie==null){
             return null;
         }
 		LocalDateTime movieEndTime = showDateTime.plusMinutes(movie.getLengthInMinutes()); 
 		return movieEndTime;
+
 	}
 
 //	//TODO: remove. just testing stuff
@@ -129,7 +130,7 @@ public class Showing implements Comparable<Showing> {
 //
 //	//TODO: remove. just testing stuff
 //	public String getShowingEndTimeAsString() {
-//		return getShowingEndtime().toString();
+//		return getShowingEndTime().toString();
 //	}
 
 	@Override

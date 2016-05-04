@@ -1,17 +1,14 @@
 package filmr.helpers;
 
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import filmr.domain.Movie;
 import filmr.domain.Showing;
-import filmr.domain.Theater;
 
 /**
  * 
@@ -71,22 +68,19 @@ public class TimeslotCreator {
     			
     			// create an empty showing, spanning the whole gap
     			Showing emptyShowing = new Showing();
-    			emptyShowing.setShowDateTime(s1.getShowingEndtime());
+    			emptyShowing.setShowDateTime(s1.getShowingEndTime());
     			
-    			// create empty movie, to make .getShowingEndtime return something in frontend
+    			// create empty movie, to make .getShowingEndTime return something in frontend
     			Movie m = new Movie();
     			m.setLengthInMinutes(actualTimeSlotInMinutes);
     			
-    			String timeslotInfo = ""
-    					+ "Available timeslot ("
-    					+ actualTimeSlotInMinutes
-    					+ " minutes) - "
-    					+ s1.getTheater().getName();
+    			String timeslotInfo = "---// Available timeslot //---";
     			
     			m.setTitle(timeslotInfo);
     			m.setDescription(timeslotInfo);
     			
     			emptyShowing.setMovie(m);
+                emptyShowing.setTheater(s1.getTheater());
     			emptyShowings.add(emptyShowing);
     			
     		}
@@ -103,9 +97,9 @@ public class TimeslotCreator {
     		Showing showingWithMovieStartTimeEndingTheTimegap){
     	
     	long timegapInMinutes = 
-    			showingWithMovieEndTimeStartingTheTimegap.getShowingEndtime()
+    			showingWithMovieEndTimeStartingTheTimegap.getShowingEndTime()
     			.until(showingWithMovieStartTimeEndingTheTimegap.getShowDateTime(), ChronoUnit.MINUTES);
-//    	Long potentialTimeGapStart = showingWithMovieEndTimeStartingTheTimegap.getShowingEndtime().getTime();
+//    	Long potentialTimeGapStart = showingWithMovieEndTimeStartingTheTimegap.getShowingEndTime().getTime();
 //    	Long potentialTimeGapEnd =  showingWithMovieStartTimeEndingTheTimegap.getShowDateTime().getTime();
 //    	
 //    	Long timegapInMillis = potentialTimeGapEnd - potentialTimeGapStart;

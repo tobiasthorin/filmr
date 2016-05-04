@@ -1,31 +1,53 @@
 <div class="showings-wrapper">
-    <div class="container">
-        <form name="showingForm">
-            <label>Movies in Repertoire</label>
-            <select ng-options="movie as movie.title for movie in moviesInRepertoire"
-                    name="movies" ng-model="movie" required></select>
-            <label>Theaters in Cinema</label>
-            <select ng-options="theater as theater.name for theater in theatersInCinema"
-                    name="theaters" ng-model="theater" required></select>
-            <input type="datetime-local" name="date" id="date" ng-model="date" required>
-            <button type="button" name="submit" id="submit" ng-click="createShowing()" ng-disabled="showingForm.$invalid">Add showing</button>
-        </form>
+    <div class="row">
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <div class="container">
+                <label>From:</label>
+                <input type="date" name="from_date" ng-model="fromDate" ng-change="updateShowings()">
+                <label>To:</label>
+                <input type="date" name="to_date" ng-model="toDate" ng-change="updateShowings()">
+                <label>Movie:</label>
+                <select ng-options="movie as movie.title for movie in moviesInRepertoire"
+                        name="movies" ng-model="movie" ng-change="updateShowings()" required></select>
+                <label>Theater:</label>
+                <select ng-options="theater as theater.name for theater in theatersInCinema"
+                        name="theaters" ng-model="theater" ng-change="updateShowings()" required></select>
 
-    </div>
-    <div class="container">
-        <table class="table table-hover">
-        	<thead>
-                <th> Date and Time </th>
-                <th> Movie </th>
-                <th> Theater </th>
-            </thead>
-            <tbody ng-repeat="showing in allShowings">
-            <tr >
-                <td>{{showing.showDateTime | date : 'dd MMM HH:mm'}}</td>
-                <td>{{showing.movie.title}}</td>
-                <td>{{showing.theater.name}}</td>
-            </tr>
-            </tbody>
-        </table>
+            </div>
+            <table class="table table-hover">
+                <thead>
+                <th>Date and Time</th>
+                <th>Movie</th>
+                <th>Theater</th>
+                </thead>
+                <tbody ng-repeat="showing in allShowings">
+                <tr>
+                    <td>{{showing.showDateTime | date : 'dd MMM HH:mm'}} - {{showing.showingEndTime | date : 'HH:mm'}}</td>
+                    <td>{{showing.movie.title}}</td>
+                    <td>{{showing.theater.name}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <form name="showingForm">
+                <div class="form-group">
+                    <label>Movies in Repertoire</label>
+                    <select ng-options="movie as movie.title for movie in moviesInRepertoire"
+                            name="movies" ng-model="movie" ng-change="updateShowings()" required></select>
+                </div>
+                <div class="form-group">
+                    <label>Theaters in Cinema</label>
+                    <select ng-options="theater as theater.name for theater in theatersInCinema"
+                            name="theaters" ng-model="theater" ng-change="updateShowings()" required></select>
+                </div>
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="datetime-local" name="date" id="date" ng-model="date" required>
+                </div>
+                <button class="btn" type="button" name="submit" id="submit" ng-click="createShowing()" ng-disabled="showingForm.$invalid">Add showing</button>
+            </form>
+        </div>
     </div>
 </div>

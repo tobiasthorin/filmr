@@ -69,31 +69,13 @@ public class ShowingService extends BaseServiceClass<Showing, Long> {
 
         return true;
 
-
-
-
-
-
-
-//        //Compare pairs of showings
-//        for(int i= 1; i<surroundingShowings.size();i++){
-//            LocalDateTime firstShowingEndTime = surroundingShowings.get(i-1).getShowingEndtime();
-//            LocalDateTime followingShowingStartTime = surroundingShowings.get(i).getShowDateTime();
-//
-//            if(showingFitsBetweenShowings(firstShowingEndTime, followingShowingStartTime, showing)){
-//                return true;
-//            }
-//
-//        }
-//        return false;
-
     }
 
     private boolean notConflictingTime(Showing existingShowing, Showing showingToSave) {
         LocalDateTime otherShowingStartTime = existingShowing.getShowDateTime();
-        LocalDateTime otherShowingEndTime = existingShowing.getShowingEndtime();
+        LocalDateTime otherShowingEndTime = existingShowing.getShowingEndTime();
 
-        if(otherShowingStartTime.isAfter(showingToSave.getShowingEndtime())){
+        if(otherShowingStartTime.isAfter(showingToSave.getShowingEndTime())){
             return true;
         }else if(otherShowingEndTime.isBefore(showingToSave.getShowDateTime())){
             return true;
@@ -102,7 +84,7 @@ public class ShowingService extends BaseServiceClass<Showing, Long> {
 
     private boolean showingFitsBetweenShowings(LocalDateTime firstShowingEndtime, LocalDateTime secondShowingstartTime, Showing showingToFit ){
         LocalDateTime showingToFitStartTime = showingToFit.getShowDateTime();
-        LocalDateTime showingToFitEndTime = showingToFit.getShowingEndtime();
+        LocalDateTime showingToFitEndTime = showingToFit.getShowingEndTime();
         return showingToFitStartTime.isAfter(firstShowingEndtime) && showingToFitEndTime.isBefore(secondShowingstartTime);
     }
 
