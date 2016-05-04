@@ -67,6 +67,8 @@ describe("cinemaController.js", function () {
 				return {
 					'$promise': {
 						then: function (success, fail) {
+
+							expect(params.not_in_repertoire_with_id).toBe(mockedCinema.repertoire.id)
 							success(mockedAddableMovies);
 						}
 					}

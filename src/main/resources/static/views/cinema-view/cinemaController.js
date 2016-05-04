@@ -8,9 +8,9 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 		var currentCinema;
 
 		//Execute on page load
-		fetchAddableMovies();
 		fetchCurrentCinema(function() {
 			fetchMoviesInRepertorie();
+			fetchAddableMovies();
 		});
 
 		//Publicly accessible variables and functions
@@ -81,8 +81,9 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 			RepertoireService.update(updateParams, updateBody).$promise.then(
 				function (result) {
 					moviesInRepertoire = result.movies;
+					fetchAddableMovies();
 				},
-				function () {
+				function (error) {
 					$rootScope.errorHandler(error);
 				}
 			);
@@ -97,6 +98,7 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 			RepertoireService.update(updateParams, updateBody).$promise.then(
 				function (result) {
 					moviesInRepertoire = result.movies;
+					fetchAddableMovies();
 				},
 				function () {
 					$rootScope.errorHandler(error);
@@ -111,6 +113,7 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 				// success
 				function (result) {
 					moviesInRepertoire = result.movies;
+					fetchAddableMovies();
 				},
 				// error
 				function (error) {
@@ -134,7 +137,7 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 		
 		function fetchAddableMovies() {
 
-			MovieService.query().$promise.then(
+			MovieService.query({"not_in_repertoire_with_id": currentCinema.repertoire.id}).$promise.then(
 				// success
 				function (result) {
 
