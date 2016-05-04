@@ -6,6 +6,7 @@ import filmr.domain.Movie;
 import filmr.domain.Showing;
 import filmr.domain.Theater;
 import filmr.helpers.TimeslotCreator;
+import filmr.repositories.TheaterRepository;
 import filmr.services.ShowingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -16,6 +17,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -38,8 +41,17 @@ public class ShowingController {
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Showing> createShowing(@RequestBody Showing showing) {
-        Showing savedShowing = showingService.saveEntity(showing);
-        return new ResponseEntity<Showing>(savedShowing, HttpStatus.OK);
+        System.out.println(showing.getMovie());
+        Boolean showingTimeisValid = showingService.showingTimeIsValid(showing);
+
+        if(showingTimeisValid){
+            Showing savedShowing = showingService.saveEntity(showing);
+            return new ResponseEntity<Showing>(savedShowing, HttpStatus.OK);
+        }
+        System.out.println("Not valid time");
+        return new ResponseEntity<Showing>(new Showing(), HttpStatus.PRECONDITION_FAILED);
+
+
     }
 
     @CrossOrigin
@@ -53,8 +65,8 @@ public class ShowingController {
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Showing>> readAllShowings(
-    		@RequestParam(name="from_date", required=false) @DateTimeFormat(iso = ISO.DATE) Date from_date, // @DateTimeFormat(iso = ISO.DATE) seems to work when we retrieve javascript Date objects
-    		@RequestParam(name="to_date", required=false) @DateTimeFormat(iso = ISO.DATE) Date to_date,
+    		@RequestParam(name="from_date", required=false) @DateTimeFormat(iso = ISO.DATE_TIME) LocalDateTime from_date, // @DateTimeFormat(iso = ISO.DATE) seems to work when we retrieve javascript Date objects
+    		@RequestParam(name="to_date", required=false) @DateTimeFormat(iso = ISO.DATE_TIME) LocalDateTime to_date,
     		@RequestParam(name="minimum_available_tickets", required=false) Integer minimum_available_tickets,
     		@RequestParam(name="only_for_movie_with_id", required=false) Long only_for_movie_with_id,
     		@RequestParam(name="only_for_theater_with_id", required=false) Long only_for_theater_with_id,
@@ -67,7 +79,7 @@ public class ShowingController {
     	
     	
 		// default values that are hard to code as strings.. If not null -> use the value, else provide a default value
-		from_date = from_date != null ? from_date : new Date();
+		from_date = from_date != null ? from_date : LocalDateTime.now();
 		System.out.println("From date: " + from_date);
 		System.out.println("To date: " + to_date);
 		

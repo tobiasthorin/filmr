@@ -14,6 +14,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
@@ -74,7 +75,7 @@ public class ShowingCRUDTest {
         Showing showing = new Showing();
 
         //Showing properties
-        Date date = new Date();
+        LocalDateTime date = LocalDateTime.now();
         Movie movie;
         Theater theater;
         ArrayList<Booking> bookings;
