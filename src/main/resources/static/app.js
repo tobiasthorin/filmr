@@ -50,13 +50,7 @@
                 controller: 'adminController'
 
             })
-            .when('/theater', {
-                title: 'Create Theater',
-                templateUrl: 'views/theater-view/theater.html',
-                controller: 'theaterController'
-
-            })
-            .when('/theater/:id', {
+            .when('/cinema/:cinema_id/theater/:theater_id', {
                 title: 'Edit Theater',
                 templateUrl: 'views/theater-view/theater.html',
                 controller: 'theaterController'
