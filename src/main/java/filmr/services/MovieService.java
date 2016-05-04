@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.persistence.Query;
 import java.util.ArrayList;
 
+import java.util.Set;
+import java.util.HashSet;
+
 @Service
 public class MovieService extends BaseServiceClass<Movie, Long> {
 
@@ -28,7 +31,7 @@ public class MovieService extends BaseServiceClass<Movie, Long> {
 		List<Movie> matchingShowing = new ArrayList<Movie>();
 
 		List<Movie> allMovies = readAllEntities();
-		List<Movie> repertoireMovies = repertoireService.readEntity(repertoire_id).getMovies();
+		Set<Movie> repertoireMovies = repertoireService.readEntity(repertoire_id).getMovies();
 
 		for(Movie movie : allMovies) {
 			if(!repertoireMovies.contains(movie)) matchingShowing.add(movie);
