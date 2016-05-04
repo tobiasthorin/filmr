@@ -20,8 +20,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 
@@ -122,15 +120,6 @@ public class Showing implements Comparable<Showing> {
 		return movieEndTime;
 	}
 
-//	//TODO: remove. just testing stuff
-//	public String getShowingStartTimeAsString() {
-//		return showDateTime.toString();
-//	}
-//
-//	//TODO: remove. just testing stuff
-//	public String getShowingEndTimeAsString() {
-//		return getShowingEndtime().toString();
-//	}
 
 	@Override
 	public boolean equals(Object object) {
