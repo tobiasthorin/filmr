@@ -99,39 +99,39 @@ public class Theater {
 		this.disabled = disabled;
 	}
 
-	@Override
-	public boolean equals(Object object) {
-		if (object == null) {
-			return false;
-		}
-		if (!(object instanceof Theater)) {
-			return false;
-		}
-		final Theater theater = (Theater) object;
-		return new EqualsBuilder()
-				.append(id, theater.getId())
-				.append(name, theater.getName())
-				.append(rows, theater.getRows())
-				.append(cinema, theater.getCinema())
-				.append(showings, theater.getShowings())
-				.isEquals();
+    @Override
+    public boolean equals(Object object){
+        if (object == null) {
+            return false;
+        }
+        if(!(object instanceof Theater)){
+            return false;
+        }
+        final Theater theater = (Theater)object;
+        return new EqualsBuilder()
+                .append(id,theater.getId())
+                .append(name,theater.getName())
+                //.append(rows, theater.getRows()) //TODO breaks everything boo
+                //.append(cinema, theater.getCinema())
+                //.append(showings,theater.getShowings())
+                .isEquals();
 
 	}
 
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder(17, 31)
-				.append(id)
-				.append(name)
-				.append(rows)
-				.append(cinema)
-				.append(showings)
-				.toHashCode();
-	}
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 31)
+                .append(id)
+                .append(name)
+                //.append(rows)
+                //.append(cinema)
+                //.append(showings)
+                .toHashCode();
+    }
 
 	@Override
 	public String toString() {
-		return "Theater [id=" + id + ", name=" + name + ", rows size=" + rows.size() + ", cinema=" + cinema.getName() + ", showings size ="
-				+ showings.size() + "]";
+		return "Theater [id=" + id + ", name=" + name + ", rows size=" + "rows.size()" + ", cinema=" + "cinema.getName()" + ", showings size ="
+				+ "showings.size()" + "]";
 	}
 }

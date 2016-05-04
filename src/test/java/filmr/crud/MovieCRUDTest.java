@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.test.TestRestTemplate;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
@@ -65,7 +66,7 @@ public class MovieCRUDTest {
     //This is done before every method
     @Before
 	public void setup() {
-		restTemplate = new RestTemplate();
+		restTemplate = new TestRestTemplate();
         baseUrl = "http://localhost:8080/filmr/api/movies";
         urlWithId = baseUrl+"/"+id;
 	}
@@ -142,7 +143,7 @@ public class MovieCRUDTest {
     @Test(expected = HttpClientErrorException.class)
     public void testUpdateNull() {
         //Create object
-        Movie movie = new Movie();
+        Movie movie = null;
         //Try to put. Should throw HttpClientErrorException 400 Bad Request
         restTemplate.put(urlWithId, movie);
     }

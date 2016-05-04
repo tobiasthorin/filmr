@@ -3,7 +3,11 @@ package filmr.domain;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import java.util.Date;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import filmr.helpers.CustomJsonDateDeserializer;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -26,7 +30,7 @@ import javax.validation.constraints.NotNull;
 							"WHERE " +
 							"( (:showDisabledShowings = TRUE) OR (s.isDisabled = FALSE OR s.isDisabled is null) )  AND " + // (s.isDisabled = false) will only be evaluated if showDisabledShowings = false, and will only evaluate to true if s is not disabled
 							"(:fromDate is null OR s.showDateTime > :fromDate) AND " +
-							"(:toDate is null OR FUNCTION('DATE_FORMAT', s.showDateTime, '%Y-%m-%d') <= FUNCTION('DATE_FORMAT', :toDate, '%Y-%m-%d')) AND " + // only care about the date, not time
+							"(:toDate is null OR s.showDateTime <= :toDate) AND " + // only care about the date, not time
 							"(:onlyForMovieWithId is null OR s.movie.id = :onlyForMovieWithId) AND " +
 							"(:onlyForTheaterWithId is null OR s.theater.id = :onlyForTheaterWithId) AND " +
 							"(:onlyForCinemaWithId is null OR s.theater.cinema.id = :onlyForCinemaWithId) " +
@@ -38,7 +42,8 @@ public class Showing implements Comparable<Showing> {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	@NotNull
-	private Date showDateTime;
+	@JsonDeserialize(using=CustomJsonDateDeserializer.class)
+	private LocalDateTime showDateTime;
 	@ManyToOne
 	@JoinColumn(name = "movie_id")
 	@NotNull
@@ -63,11 +68,11 @@ public class Showing implements Comparable<Showing> {
 	
 
 
-	public Date getShowDateTime() {
+	public LocalDateTime getShowDateTime() {
 		return showDateTime;
 	}
 
-	public void setShowDateTime(Date showDateTime) {
+	public void setShowDateTime(LocalDateTime showDateTime) {
 		this.showDateTime = showDateTime;
 	}
 
@@ -107,25 +112,15 @@ public class Showing implements Comparable<Showing> {
 		return id;
 	}
 	
-	public Date getShowingEndtime() {
-		long ONE_MINUTE_IN_MILLIS = 60000;
-		long movieInMillis = movie.getLengthInMinutes() * ONE_MINUTE_IN_MILLIS;
-		long startDateInMillis = showDateTime.getTime();
-		
-		Date movieEndtime = new Date(startDateInMillis + movieInMillis);
-		return movieEndtime;
+	public LocalDateTime getShowingEndtime() {
+        if(movie==null){
+            return null;
+        }
+		LocalDateTime movieEndTime = showDateTime.plusMinutes(movie.getLengthInMinutes()); 
+		return movieEndTime;
 	}
-	
-	//TODO: remove. just testing stuff
-	public String getShowingStartTimeAsString() {
-		return showDateTime.toString();
-	}
-	
-	//TODO: remove. just testing stuff
-	public String getShowingEndTimeAsString() {
-		return getShowingEndtime().toString();
-	}
-	
+
+
 	@Override
 	public boolean equals(Object object) {
 		if (object == null) {
