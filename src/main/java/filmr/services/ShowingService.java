@@ -16,6 +16,9 @@ import java.util.List;
 @Service
 public class ShowingService extends BaseServiceClass<Showing, Long> {
 	
+	
+	private static final int ASSUMED_MAX_H_LENGTH_OF_ANY_MOVIE = 4;
+	
 	@PersistenceContext
 	@Autowired
 	private EntityManager entityManager;
@@ -53,12 +56,10 @@ public class ShowingService extends BaseServiceClass<Showing, Long> {
     //Presupposes no previous conflicts
     public boolean showingTimeIsValid(Showing showingToSave) {
 
-        List<Showing> surroundingShowings = getSurroundingShowings(showingToSave);
-        System.out.println("Showings surrounding: "+surroundingShowings.size());
-        if(surroundingShowings.size()==0){
-            System.out.println("No surrounding showing");
-            return true;
-        }
+        List<Showing> surroundingShowings = 
+        		getSurroundingShowings(showingToSave, ASSUMED_MAX_H_LENGTH_OF_ANY_MOVIE);
+        System.out.println("nr of showings surrounding proposed new showing: "+surroundingShowings.size());
+
         for(Showing existingShowing : surroundingShowings){
             if(!notConflictingTime(existingShowing, showingToSave)){
                 //Time conflict found
@@ -70,6 +71,7 @@ public class ShowingService extends BaseServiceClass<Showing, Long> {
 
     }
 
+    //TODO: do we need to deal with cases where dates are neither before nor after (same date/time)
     private boolean notConflictingTime(Showing existingShowing, Showing showingToSave) {
         LocalDateTime otherShowingStartTime = existingShowing.getShowDateTime();
         LocalDateTime otherShowingEndTime = existingShowing.getShowingEndTime();
@@ -79,20 +81,21 @@ public class ShowingService extends BaseServiceClass<Showing, Long> {
         }else if(otherShowingEndTime.isBefore(showingToSave.getShowDateTime())){
             return true;
         }else return false;
+        // TODO: can this be simplified? to
+        // return otherShowingStartTime.isAfter(showingToSave.getShowingEndTime() || otherShowingEndTime.isBefore(showingToSave.getShowDateTime()
+        // too dense?
     }
+    
 
-    private boolean showingFitsBetweenShowings(LocalDateTime firstShowingEndtime, LocalDateTime secondShowingstartTime, Showing showingToFit ){
-        LocalDateTime showingToFitStartTime = showingToFit.getShowDateTime();
-        LocalDateTime showingToFitEndTime = showingToFit.getShowingEndTime();
-        return showingToFitStartTime.isAfter(firstShowingEndtime) && showingToFitEndTime.isBefore(secondShowingstartTime);
-    }
-
-    private List<Showing> getSurroundingShowings(Showing showing) {
+    private List<Showing> getSurroundingShowings(Showing showing, int hourMarginBeforeAndAfter) {
+    	
         LocalDateTime selectedDateTime = showing.getShowDateTime();
-        LocalDateTime startOfDate = selectedDateTime.minusHours(4);
-        LocalDateTime endOfDate = selectedDateTime.plusHours(4);
+        LocalDateTime startOfDate = selectedDateTime.minusHours(hourMarginBeforeAndAfter);
+        LocalDateTime endOfDate = selectedDateTime.plusHours(hourMarginBeforeAndAfter);
+        
         Long theaterId = showing.getTheater().getId();
         List<Showing>potentialConflicts = getAllMatchingParams(startOfDate,endOfDate,null,null,theaterId,null,null,false);
+        
         Collections.sort(potentialConflicts);
         return potentialConflicts;
     }
