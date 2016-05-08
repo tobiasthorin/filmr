@@ -8,6 +8,7 @@ angular.module('filmr')
             $scope.moviesInRepertoire = [];
             $scope.theatersInCinema = [];
             $scope.allShowings = [];
+            $scope.allCinemas = [];
 
 
 
@@ -15,22 +16,42 @@ angular.module('filmr')
 
             $scope.theater = {};
             $scope.movie = {};
+            $scope.cinema={};
 
 
 
 
             //INIT
+            getCinemas();
             getTheatersAndRepertoireInCinema();
             getShowingsWithParams();
 
             //PUBLIC
-
             $scope.updateShowings = function() {
                 console.log("---");
                 console.log("updating Showings List");
-
-
                 getShowingsWithParams();
+            }
+
+            $scope.disableShowing = function(showing){
+                console.log("---");
+                console.log("disable showing");
+                console.log("Showinh has id: "+showing.id);
+                showing.isDisabled = !showing.isDisabled;
+                showing.showDateTime = new Date(showing.showDateTime);
+                console.log("Showing has time: "+showing.showDateTime);
+                ShowingService.update(showing).$promise.then(
+                    function(result){
+                        console.log("showing enabled/disabled");
+                        console.log(result);
+                        getShowingsWithParams();
+                },
+                function(error){
+                    $rootScope.errorHandler(error);
+                })
+
+
+
             }
 
             $scope.createShowing = function() {
@@ -40,11 +61,12 @@ angular.module('filmr')
                 newShowing.movie = $scope.movie;
                 newShowing.theater =$scope.theater;
                 newShowing.showDateTime = $scope.date;
+                console.log("Date is: "+newShowing.showDateTime);
 
                 ShowingService.save(newShowing, function(result){
                     console.log("Saved!");
                     console.log(result);
-                    getAllShowings();
+                    getShowingsWithParams();
                 },
                 function(error){
                     console.log(error);
@@ -54,7 +76,15 @@ angular.module('filmr')
                 console.log(newShowing);
             }
 
-
+            function getCinemas() {
+                CinemaService.query().$promise.then(
+                    function(result) {
+                        console.log("in getCinemas");
+                        console.log(result);
+                        $scope.allCinemas = result;
+                    }
+                )
+            }
 
             function getTheatersAndRepertoireInCinema() {
                 console.log("---");
@@ -75,22 +105,10 @@ angular.module('filmr')
 
             }
 
-            function getAllShowings(){
-                console.log("Get Showings")
-                ShowingService.query().$promise.then(
-                    function (result) {
-                        console.log("in all showings ");
-                        console.log(result);
-                        $scope.allShowings = result;
-                    },
-                    function(error){
-                        $rootScope.errorHandler(error);
-                    }
-                )
-            }
 
             function getShowingsWithParams(){
                 var params = {
+                    "only_for_cinema_with_id" : $scope.cinema.id,
                     "only_for_theater_with_id" : $scope.theater.id,
                     "only_for_movie_with_id" : $scope.movie.id,
                     "from_date" : $scope.fromDate,
