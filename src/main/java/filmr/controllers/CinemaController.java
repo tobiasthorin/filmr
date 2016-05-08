@@ -1,8 +1,10 @@
 package filmr.controllers;
 
 import filmr.domain.Cinema;
+import filmr.domain.Repertoire;
 import filmr.services.CinemaService;
 import filmr.services.CinemaService;
+import filmr.services.RepertoireService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +20,18 @@ import java.util.List;
 public class CinemaController {
     @Autowired
     private CinemaService cinemaService;
+    @Autowired
+    private RepertoireService repertoireService;
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Cinema> createCinema(@RequestBody Cinema cinema) {
+        Repertoire repertoire = new Repertoire();
+        Repertoire savedRepertoire = repertoireService.saveEntity(repertoire);
+
+        cinema.setRepertoire(repertoire);
         Cinema savedCinema = cinemaService.saveEntity(cinema);
+
         return new ResponseEntity<Cinema>(savedCinema, HttpStatus.OK);
     }
 
