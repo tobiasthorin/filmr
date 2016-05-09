@@ -66,14 +66,21 @@ public class CustomJsonDateDeserializer extends JsonDeserializer<LocalDateTime> 
 					Integer.parseInt(datenumbers[5]));
 			System.out.println("Formatted dateString from array values: " + dateString);
 			nodeString = dateString;//TODO probably a new variable for both
-		}
+		}else if(nodeString.length()<17){
+            System.out.println("In if");
+            //nodeString+=":00.000Z";
+            System.out.println("Formatted string: "+nodeString);
+            dateTime = LocalDateTime.parse(nodeString);
+            return dateTime;
+        }
 		else if (!nodeString.substring(nodeString.length()-5).equals(".000Z")) {
 			nodeString += ".000Z";
 		}
 
 		Instant instant = Instant.parse(nodeString);
 		dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-		System.out.println("\nTime in custom deserializer TEST: " + dateTime);
+        System.out.println("Returned String dateTime:" + dateTime.toString());
+        System.out.println("\nTime in custom deserializer TEST: " + dateTime);
 
 
 		return dateTime;

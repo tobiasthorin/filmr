@@ -35,11 +35,12 @@ angular.module('filmr')
 
             $scope.disableShowing = function(showing){
                 console.log("---");
-                console.log("disable showing");
-                console.log("Showinh has id: "+showing.id);
+                console.log("Disable showing with id: "+showing.id);
+
                 showing.isDisabled = !showing.isDisabled;
-                showing.showDateTime = new Date(showing.showDateTime);
-                console.log("Showing has time: "+showing.showDateTime);
+
+                console.log("Showing has datestring: "+showing.showDateTime);
+
                 ShowingService.update(showing).$promise.then(
                     function(result){
                         console.log("showing enabled/disabled");
@@ -48,6 +49,7 @@ angular.module('filmr')
                 },
                 function(error){
                     $rootScope.errorHandler(error);
+                    showing.isDisabled = !showing.isDisabled;
                 })
 
 
@@ -113,6 +115,7 @@ angular.module('filmr')
                     "only_for_movie_with_id" : $scope.movie.id,
                     "from_date" : $scope.fromDate,
                     "to_date" : $scope.toDate,
+                    "show_disabled_showings" : $scope.showingIsDisabled,
                     "include_empty_slots_for_movie_of_length" : $scope.movie.lengthInMinutes
                 }
                 console.log(params);

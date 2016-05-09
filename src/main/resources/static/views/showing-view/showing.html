@@ -15,6 +15,9 @@
                 <label>Theater:</label>
                 <select ng-options="theater as theater.name for theater in theatersInCinema"
                         name="theaters" ng-model="theater" ng-change="updateShowings()" required></select>
+                <label>Show disabled:</label>
+                <input type="checkbox" value="" name="disabledCheckbox" ng-model="showingIsDisabled" ng-change="updateShowings()"
+                       ng-true-value="true" ng-false-value="false" ng-checked="disabledCheckbox == true">
 
             <table class="table table-hover">
                 <thead>
@@ -29,8 +32,8 @@
                     <td>{{showing.movie.title}}</td>
                     <td>{{showing.theater.name}}</td>
                     <td>
-                        <button ng-if="showing.isDisabled" class="btn" type="button" name="disable" ng-click="disableShowing(showing)" >Enable</button>
-                        <button ng-if="!showing.isDisabled" class="btn" type="button" name="disable" ng-click="disableShowing(showing)" >Disable</button>
+                        <button ng-if="showing.isDisabled" class="btn is_enabled" type="button" name="disable" ng-click="disableShowing(showing)" >Enable</button>
+                        <button ng-if="!showing.isDisabled" class="btn is_disabled" type="button" name="disable" ng-click="disableShowing(showing)" >Disable</button>
                     </td>
                 </tr>
                 </tbody>
