@@ -1,35 +1,48 @@
-<div class="showings-wrapper" xmlns="http://www.w3.org/1999/html">
+<div class="showings-wrapper">
 
     <div class="container">
+
+	<div class="row">
+		<div class="col-sm-12 module-container">
+			<h2>Cinema: {{getCurrentCinema().name}}</h2>
+		</div>
+	</div>
+
         <div class="row">
             <div class="col-sm-6">
-				<form>
-					<h2>Movies</h2>
-					<ul>
-						<li ng-repeat="movie in getMoviesInRepertoire()">
-							{{movie.id}} - {{movie.title}} <input type="button" ng-click="removeMovieFromRepertoire(movie.id)" value="Delete">
-						</li>
-					</ul>
-					<select ng-options="movie as movie.title for movie in getAddableMovies()" ng-model="add_movie_to_repertoire_select" required>
-					</select>
-					<input type="submit" ng-click="addMovieToRepertoire()">
-				</form>
+
+		<div class="table">
+			<h2>Movies in repertoire</h2>
+			<table>
+				<tr ng-repeat="movie in getMoviesInRepertoire()">
+					<td>{{movie.title}}</td><td style="text-align:right"><input type="button" ng-click="removeMovieFromRepertoire(movie.id)" value="Delete from repertoire"></td>
+				</tr>
+			</table>
+		</div>
+		<form>
+			<select ng-options="movie as movie.title for movie in getAddableMovies()" ng-model="add_movie_to_repertoire_select" required>
+			</select>
+			<input type="submit" ng-click="addMovieToRepertoire()" value="Add movie to repertoire">
+		</form>
             </div>
             <div class="col-sm-6">
+		<div class="table">
 				<h2>Theaters</h2>
                 <ul>
                     <li ng-repeat="theater in getTheaters()">
-                        {{theater.name}}
+                        <a href="#/cinema/{{getCurrentCinema().id}}/theater/{{theater.id}}">{{theater.name}}</a>
                     </li>
                 </ul>
+		</div>
 				<div class="add-theater">
-					<h3>New theater</h3>
 					<form>
-						<input type="text" placeholder="name" ng-model="add_theater_name">
-						<input type="number" placeholder="Number of seats" ng-model="add_theater_seats">
-						<label for="disabledCheckbox">Disabled</label>
-						<input type="checkbox" ng-model="add_theater_disabled" id="disabledCheckbox">
-						<button ng-click="submitTheater()">Submit</button>
+						<h2>Add new Theater</h2>
+						<table>
+							<tr><th>Name:</th><td><input type="text" ng-model="add_theater_name"><td></tr>
+							<tr><th>Number of seats:</th><td><input type="number" ng-model="add_theater_seats"><td></tr>
+							<tr><th>Disabled:</th><td><input type="checkbox" ng-model="add_theater_disabled" id="disabledCheckbox"><td></tr>
+							<tr><th></th><td><input type="submit" ng-click="submitTheater()" value="Add theater"></td></tr>
+						</table>
 					</form>
 				</div>
             </div>
@@ -43,7 +56,7 @@
 						<button ng-click="updateCinemaName()">Change Name</button>
 					</form>
 				</div>
-			</div>
-		</div>
+            </div>
+        </div>
     </div>
 </div>

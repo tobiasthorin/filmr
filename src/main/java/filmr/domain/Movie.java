@@ -20,7 +20,17 @@ public class Movie {
 	private String description;
 	@NotNull
 	private Long lengthInMinutes;
+	@NotNull
+	private Double defaultPrice;
 	
+	public Double getDefaultPrice() {
+		return defaultPrice;
+	}
+
+	public void setDefaultPrice(Double defaultPrice) {
+		this.defaultPrice = defaultPrice;
+	}
+
 	public Movie() {}
 
 	public String getTitle() {

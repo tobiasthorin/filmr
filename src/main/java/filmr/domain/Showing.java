@@ -112,13 +112,15 @@ public class Showing implements Comparable<Showing> {
 		return id;
 	}
 	
-	public LocalDateTime getShowingEndtime() {
+	public LocalDateTime getShowingEndTime() {
         if(movie==null){
             return null;
         }
 		LocalDateTime movieEndTime = showDateTime.plusMinutes(movie.getLengthInMinutes()); 
 		return movieEndTime;
+
 	}
+
 
 
 	@Override
@@ -162,7 +164,13 @@ public class Showing implements Comparable<Showing> {
 	@Override
 	public int compareTo(Showing o) {
 		// Showings are by default sorted by date, so we can use the Date's compareTo-method
-		return this.showDateTime.compareTo(o.getShowDateTime());
+		int compareResult = this.showDateTime.compareTo(o.getShowDateTime());
+		// showings that have the same time should be further sorted according to their title.
+		// otherwise the same list of showings can re-order itself, which looks confusing in frontend.
+		if(compareResult == 0) {
+			compareResult = getMovie().getTitle().compareTo(o.getMovie().getTitle());
+		}
+		return compareResult;
 	}
 	
 }

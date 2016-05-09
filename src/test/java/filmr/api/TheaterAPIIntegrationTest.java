@@ -115,15 +115,23 @@ public class TheaterAPIIntegrationTest {
     }
 
     @Test
-    public void testUpdate() {
-        String changeTheaterNameTo = "Bobs Sal";
-        savedTheater.setName(changeTheaterNameTo);
+    public void testUpdate() throws Exception {
 
-        restTemplate.put(urlWithId, savedTheater);
+    	// setup values to update to
+    	String updatedTheaterName = "Test updated theater name";
+    	int updatedNumberOfSeats = 666;
 
-        Theater updatedTheater = theaterRepository.findOne(id);//TODO findOne works, getOne breaks
+    	// make the changes to the local, but previously saved, java object
+    	savedTheater.setName(updatedTheaterName);
+    	savedTheater.setNumberOfSeats(updatedNumberOfSeats);
 
-        assertEquals("Assert that the object is updated", savedTheater, updatedTheater);
-        assertEquals("Make sure the value is properly updated", changeTheaterNameTo, updatedTheater.getName());
+    	// actually do the PUT request
+    	restTemplate.put(urlWithId, savedTheater);
+
+    	// get the (hopefully) updated theater from repo
+    	Theater updatedTheater = theaterRepository.findOne(id);
+
+    	// test if the local changes (savedTheater) matches the actual ones (updatedTheater)
+    	assertEquals("Assert that the updated theater matches the changes we made", savedTheater, updatedTheater);
     }
 }

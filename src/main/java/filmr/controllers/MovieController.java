@@ -32,9 +32,16 @@ public class MovieController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<Movie>> readAllMovies() {
-        List<Movie> retrievedMovies = movieService.readAllEntities();
+    public ResponseEntity<List<Movie>> readAllMovies(
+        @RequestParam(name="not_in_repertoire_with_id", required=false) Long not_in_repertoire_with_id
+    ) {
+        if(not_in_repertoire_with_id==null) {
+            List<Movie> retrievedMovies = movieService.readAllEntities();
+            return new ResponseEntity<List<Movie>>(retrievedMovies, HttpStatus.OK);
+        }
+	List<Movie> retrievedMovies = movieService.getAllMoviesNotInRepertoire(not_in_repertoire_with_id);
         return new ResponseEntity<List<Movie>>(retrievedMovies, HttpStatus.OK);
+
     }
 
     @CrossOrigin

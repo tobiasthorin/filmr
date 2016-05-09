@@ -3,6 +3,7 @@ package filmr.api;
 import filmr.Application;
 import filmr.domain.Cinema;
 import filmr.domain.Movie;
+import filmr.domain.Repertoire;
 import filmr.repositories.CinemaRepository;
 import filmr.testfactories.EntityFactory;
 import org.junit.Before;
@@ -90,6 +91,10 @@ public class CinemaAPIIntegrationTest {
         //Assert
         assertTrue("Make sure the http was successfull", responseEntity.getStatusCode().is2xxSuccessful());
         assertEquals("The cinema name should be the same or POST is broken", cinema.getName(), postedCinema.getName());
+
+        Repertoire postedCinemaRepertoire = postedCinema.getRepertoire();
+        assertTrue("Assert that cinema have a repertoire on create", postedCinemaRepertoire!=null);
+        assertTrue("Assert that cinemas repertoire is empty", postedCinemaRepertoire.getMovies().size()==0);
 
         assertEquals("Assert that amount of cinemas is +1", tableSize +1, cinemaRepository.findAll().size());
     }

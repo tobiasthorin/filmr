@@ -31,7 +31,7 @@ import static org.junit.Assert.assertTrue;
 @SpringApplicationConfiguration(Application.class)
 @WebIntegrationTest
 @ActiveProfiles({"test"})
-public class RepertoireAPIIntegrationTest {
+public class MovieAPI2IntegrationTest {
 
     //Used instead of SpringJunit4ClassRunner in @RunWith
     private TestContextManager testContextManager;
@@ -41,10 +41,11 @@ public class RepertoireAPIIntegrationTest {
     @Autowired
     private MovieRepository movieRepository;
     private RestTemplate restTemplate;
-    private String baseUrl;
+    private String repetoireBaseUrl;
+    private String movieBaseUrl;
     private String urlWithId;
     //Variables for testing values
-    private int tableSize;
+
     private Repertoire savedRepertoire;
     private Movie savedMovie;
 
@@ -59,8 +60,9 @@ public class RepertoireAPIIntegrationTest {
         });
     }
 
-    public RepertoireAPIIntegrationTest(Long id) {
-        baseUrl = "http://localhost:8080/filmr/api/repertoires/";
+    public MovieAPI2IntegrationTest(Long id) {
+        repetoireBaseUrl = "http://localhost:8080/filmr/api/repertoires/";
+	movieBaseUrl = "http://localhost:8080/filmr/api/movies/";
     }
 
     @Before
@@ -84,28 +86,24 @@ public class RepertoireAPIIntegrationTest {
 
         //Setup id for this run
         id = savedRepertoire.getId();
-        urlWithId = baseUrl+id;
+        urlWithId = repetoireBaseUrl+id;
 
-        tableSize = repertoireRepository.findAll().size();
     }
 
     @Test
-    public void testCreate() throws Exception {
-        Repertoire repertoire = EntityFactory.createRepertoire();
-
-        //Post
-        ResponseEntity<Repertoire> responseEntity = restTemplate.postForEntity(baseUrl, repertoire, Repertoire.class);
-        Repertoire postedRepertoire = responseEntity.getBody();
-
-        //Assert
-        assertTrue("Make sure the http was successfull", responseEntity.getStatusCode().is2xxSuccessful());
-        assertNotNull("Make sure repertoire id is not null", postedRepertoire.getId());
-        assertNotNull("Make sure repertoire movie list is not null", postedRepertoire.getMovies());
-        assertEquals("Assert that amount of repertoires is +1", tableSize +1, repertoireRepository.findAll().size());
+    public void testReadAll() {
+        ResponseEntity<Movie[]> responseEntity = restTemplate.getForEntity(movieBaseUrl, Movie[].class);
+	Movie[] movies = responseEntity.getBody();
+        assertEquals("Assert that movie service return list of movies", movies.length, 1);
     }
 
+
     @Test
-    public void addMovieToRepertoire() {
+    public void testReadAllWithFilterOnRepetoire() {
+
+	Movie[] moviesBeforeAddToRepetoire = restTemplate.getForEntity(movieBaseUrl+"?not_in_repertoire_with_id="+id, Movie[].class).getBody();
+        assertEquals("Assert that query has movie before test of add movie to repetoire", moviesBeforeAddToRepetoire.length, 1);
+
         Set<Movie> repertoireMovies = savedRepertoire.getMovies();
         int repertoireMovieListSize = repertoireMovies.size();
         repertoireMovies.add(savedMovie);
@@ -113,11 +111,8 @@ public class RepertoireAPIIntegrationTest {
 
         restTemplate.put(urlWithId+"?add_movie_with_id="+savedMovie.getId(), savedRepertoire);
 
-        ResponseEntity<Repertoire> responseEntity = restTemplate.getForEntity(urlWithId, Repertoire.class);
-        Repertoire updatedRepertoire = responseEntity.getBody();
+	Movie[] moviesAfterAddToRepetoire = restTemplate.getForEntity(movieBaseUrl+"?not_in_repertoire_with_id="+id, Movie[].class).getBody();
+        assertEquals("Assert that query is empty since now the movie is already in repetoire", moviesAfterAddToRepetoire.length, 0);
 
-        //Assert
-        assertEquals("Assert that the repertoire updated properly", savedRepertoire, updatedRepertoire);
-        assertEquals("Assert that amount of movies in repertoire is +1", repertoireMovieListSize+1, updatedRepertoire.getMovies().size());
     }
 }

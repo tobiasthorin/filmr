@@ -7,12 +7,23 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 		var theaters;
 		var currentCinema;
 
+		//Execute on page load
+		fetchCurrentCinema(function() {
+			fetchMoviesInRepertorie();
+			fetchAddableMovies();
+			fetchTheaters();
+		});
+
 		//Publicly accessible variables and functions
 		$scope.newTheater = {};
 
 		$scope.getMoviesInRepertoire = function () {
 			return moviesInRepertoire;
 		};
+
+		$scope.getCurrentCinema = function() {
+			return currentCinema;
+		}
 
 		$scope.getTheaters = function () {
 			return theaters;
@@ -68,8 +79,9 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 			RepertoireService.update(updateParams, updateBody).$promise.then(
 				function (result) {
 					moviesInRepertoire = result.movies;
+					fetchAddableMovies();
 				},
-				function () {
+				function (error) {
 					$rootScope.errorHandler(error);
 				}
 			);
@@ -84,6 +96,7 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 			RepertoireService.update(updateParams, updateBody).$promise.then(
 				function (result) {
 					moviesInRepertoire = result.movies;
+					fetchAddableMovies();
 				},
 				function () {
 					$rootScope.errorHandler(error);
@@ -111,6 +124,7 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 				// success
 				function (result) {
 					moviesInRepertoire = result.movies;
+					fetchAddableMovies();
 				},
 				// error
 				function (error) {
@@ -126,6 +140,7 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 				function (result) {
 					currentCinema = result;
 					callbackWhenDone();
+					$scope.title = "hej";
 				},
 				function (error) {
 					$rootScope.errorHandler(error);
@@ -134,7 +149,7 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 		
 		function fetchAddableMovies() {
 
-			MovieService.query().$promise.then(
+			MovieService.query({"not_in_repertoire_with_id": currentCinema.repertoire.id}).$promise.then(
 				// success
 				function (result) {
 

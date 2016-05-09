@@ -1,11 +1,24 @@
 <div>
-    <h1>Theater</h1>
+	<div class="row">
+		<div class="col-sm-12 module-container">
+			<h2>Theater: {{name}}</h2>
+		</div>
+	</div>
 
-    <form name="showingForm">
-        <input type="text" placeholder="Name" ng-model="name" >
-        <input type="number" ng-model="numberOfSeats">
-        <input type="checkbox" ng-model="isDisabled">
-        <input type="button" ng-click="submitTheater()" value="Submit">
-    </form>
+        <div class="row">
+            <div class="col-sm-6">
 
+			    <form name="showingForm">
+					<h2>Edit theater</h2>
+					<table>
+						<tr><th>Name:</th><td><input type="text" placeholder="Name" ng-model="name" ></td></tr>
+						<tr><th>Number of seats:</th><td><input type="number" ng-model="numberOfSeats"></td></tr>
+						<tr><th>Disabled:</th><td><input type="checkbox" ng-model="isDisabled"></td></tr>
+						<tr><th></th><td><input type="submit" ng-click="submitTheater()" value="Update"></td></tr>
+					</table>
+				</form>
+			</div>
+            <div class="col-sm-6">
+		</div>
+	</div>
 </div>
