@@ -1,10 +1,7 @@
 package filmr.controllers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,9 +19,6 @@ import filmr.domain.Repertoire;
 import filmr.services.MovieService;
 import filmr.services.RepertoireService;
 
-/**
- * Created by Marco on 2016-04-26.
- */
 @RestController
 @RequestMapping(value = "/api/repertoires")
 public class RepertoireController {

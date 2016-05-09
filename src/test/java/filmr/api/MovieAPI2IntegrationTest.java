@@ -62,7 +62,7 @@ public class MovieAPI2IntegrationTest {
 
     public MovieAPI2IntegrationTest(Long id) {
         repetoireBaseUrl = "http://localhost:8080/filmr/api/repertoires/";
-	movieBaseUrl = "http://localhost:8080/filmr/api/movies/";
+	    movieBaseUrl = "http://localhost:8080/filmr/api/movies/";
     }
 
     @Before
@@ -81,7 +81,7 @@ public class MovieAPI2IntegrationTest {
         //Create showing and everything that belongs in it
         Repertoire repertoire = EntityFactory.createRepertoire();
         savedRepertoire = repertoireRepository.save(repertoire);
-        Movie movie = EntityFactory.createMovie("Global Test Movie", "Global test Movie Description", new Long(120));
+        Movie movie = EntityFactory.createMovie("Global Test Movie", "Global test Movie Description", new Long(120), new Double(100));
         savedMovie = movieRepository.save(movie);
 
         //Setup id for this run
@@ -93,7 +93,7 @@ public class MovieAPI2IntegrationTest {
     @Test
     public void testReadAll() {
         ResponseEntity<Movie[]> responseEntity = restTemplate.getForEntity(movieBaseUrl, Movie[].class);
-	Movie[] movies = responseEntity.getBody();
+	    Movie[] movies = responseEntity.getBody();
         assertEquals("Assert that movie service return list of movies", movies.length, 1);
     }
 
@@ -101,7 +101,7 @@ public class MovieAPI2IntegrationTest {
     @Test
     public void testReadAllWithFilterOnRepetoire() {
 
-	Movie[] moviesBeforeAddToRepetoire = restTemplate.getForEntity(movieBaseUrl+"?not_in_repertoire_with_id="+id, Movie[].class).getBody();
+	    Movie[] moviesBeforeAddToRepetoire = restTemplate.getForEntity(movieBaseUrl+"?not_in_repertoire_with_id="+id, Movie[].class).getBody();
         assertEquals("Assert that query has movie before test of add movie to repetoire", moviesBeforeAddToRepetoire.length, 1);
 
         Set<Movie> repertoireMovies = savedRepertoire.getMovies();

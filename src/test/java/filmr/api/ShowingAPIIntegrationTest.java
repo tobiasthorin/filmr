@@ -87,7 +87,7 @@ public class ShowingAPIIntegrationTest {
         cinemaRepository.deleteAllInBatch();
 
         //Create showing and everything that belongs in it
-        Movie movie = EntityFactory.createMovie("Global Test Movie", "A Movie About Cows Murdering cute bunnies", new Long(120));
+        Movie movie = EntityFactory.createMovie("Global Test Movie", "A Movie About Cows Murdering cute bunnies", new Long(120), new Double(100));
         savedMovie = movieRepository.save(movie);
         Cinema cinema = EntityFactory.createCinema("Global Test Cinema");
         savedCinema = cinemaRepository.save(cinema);
@@ -117,7 +117,6 @@ public class ShowingAPIIntegrationTest {
         //Assert
         assertTrue("Make sure the http was successfull", responseEntity.getStatusCode().is2xxSuccessful());
         //assertEquals("Compare times", showing.getShowDateTime(), postedShowing.getShowDateTime()); //TODO the returned date has passed through deserializer and therefore is slightly different
-        //showing.getShowDateTime().
         assertEquals("Compare movies", showing.getMovie(), postedShowing.getMovie());
         assertEquals("Compare theaters", showing.getTheater(), postedShowing.getTheater());
         assertEquals("Compare bookings", showing.getBookings(), postedShowing.getBookings());
@@ -132,7 +131,7 @@ public class ShowingAPIIntegrationTest {
         //Assert
         assertTrue("Make sure the call was succesfull", responseEntity.getStatusCode().is2xxSuccessful());
         assertEquals("Assert that the id of the read object is the same as we asked to get", id, showing.getId());
-        assertEquals("Assert that the read object is the same as the one created in @Before", savedShowing, showing); //TODO not same due to repo stoff
+        assertEquals("Assert that the read object is the same as the one created in @Before", savedShowing, showing);
     }
 
     //2 birds with one stone; update and disable check
@@ -143,7 +142,7 @@ public class ShowingAPIIntegrationTest {
 
         restTemplate.put(urlWithId, savedShowing);
 
-        Showing updatedShowing = showingRepository.findOne(id); //TODO what, here this works
+        Showing updatedShowing = showingRepository.findOne(id);
 
         assertEquals("Assert that the object is updated", savedShowing, updatedShowing);
         assertEquals("Make sure the showing is disabled", updatedShowing.getIsDisabled(), new Boolean(true));

@@ -4,9 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import filmr.domain.Movie;
 import filmr.domain.Showing;
-import filmr.domain.Theater;
 import filmr.helpers.TimeslotCreator;
-import filmr.repositories.TheaterRepository;
 import filmr.services.ShowingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -17,20 +15,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
-/**
- * Created by Marco on 2016-04-21.
- */
 @RestController
 @RequestMapping(value = "/api/showings")
 public class ShowingController {

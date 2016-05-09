@@ -3,7 +3,6 @@ package filmr.controllers;
 import filmr.domain.Cinema;
 import filmr.domain.Repertoire;
 import filmr.services.CinemaService;
-import filmr.services.CinemaService;
 import filmr.services.RepertoireService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,9 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * Created by Marco on 2016-04-26.
- */
 @RestController
 @RequestMapping(value="/api/cinemas")
 public class CinemaController {

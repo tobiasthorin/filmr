@@ -70,7 +70,7 @@ public class MovieAPIIntegrationTest {
         movieRepository.deleteAllInBatch();
 
         //Create showing and everything that belongs in it
-        Movie movie = EntityFactory.createMovie("Global Test Movie", "A movie about things", new Long(120));
+        Movie movie = EntityFactory.createMovie("Global Test Movie", "A movie about things", new Long(120), new Double(100));
         savedMovie = movieRepository.save(movie);
 
         //Setup id for this run
@@ -82,7 +82,7 @@ public class MovieAPIIntegrationTest {
 
     @Test
     public void testCreate() throws Exception {
-        Movie movie = EntityFactory.createMovie("testCreate Movie", "A movie about testing", new Long(110));
+        Movie movie = EntityFactory.createMovie("testCreate Movie", "A movie about testing", new Long(110), new Double(100));
 
         //Post
         ResponseEntity<Movie> responseEntity = restTemplate.postForEntity(baseUrl, movie, Movie.class);
@@ -116,9 +116,9 @@ public class MovieAPIIntegrationTest {
         //Update object in database
         restTemplate.put(urlWithId, savedMovie);
 
-        //Movie updatedMovie = movieRepository.getOne(savedMovie.getId()); //TODO this throws a lazy exception; session close after a commited transaction?
-        ResponseEntity<Movie> responseEntity = restTemplate.getForEntity(urlWithId, Movie.class);
-        Movie updatedMovie = responseEntity.getBody();
+        Movie updatedMovie = movieRepository.findOne(id);
+//        ResponseEntity<Movie> responseEntity = restTemplate.getForEntity(urlWithId, Movie.class);
+//        Movie updatedMovie = responseEntity.getBody();
 
         //Assert
         assertEquals("Assert that the object is updated", savedMovie, updatedMovie);

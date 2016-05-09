@@ -16,8 +16,6 @@ import java.util.HashSet;
 @Service
 public class MovieService extends BaseServiceClass<Movie, Long> {
 
-
-	
 	@PersistenceContext
 	@Autowired
 	private EntityManager entityManager;
@@ -38,6 +36,5 @@ public class MovieService extends BaseServiceClass<Movie, Long> {
 		}
 		return matchingShowing;
 	}
-
 
 }
