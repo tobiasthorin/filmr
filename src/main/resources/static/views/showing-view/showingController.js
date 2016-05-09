@@ -18,9 +18,6 @@ angular.module('filmr')
             $scope.movie = {};
             $scope.cinema={};
 
-
-
-
             //INIT
             getCinemas();
             getTheatersAndRepertoireInCinema();

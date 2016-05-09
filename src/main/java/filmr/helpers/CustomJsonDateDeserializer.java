@@ -66,10 +66,9 @@ public class CustomJsonDateDeserializer extends JsonDeserializer<LocalDateTime> 
 					Integer.parseInt(datenumbers[5]));
 			System.out.println("Formatted dateString from array values: " + dateString);
 			nodeString = dateString;//TODO probably a new variable for both
-		}else if(nodeString.length()<17){
-            System.out.println("In if");
-            //nodeString+=":00.000Z";
-            System.out.println("Formatted string: "+nodeString);
+		}
+        //If string is less than 17, return as LocalDateTime, Timezone has been handled when creating
+        else if(nodeString.length()<17){
             dateTime = LocalDateTime.parse(nodeString);
             return dateTime;
         }
