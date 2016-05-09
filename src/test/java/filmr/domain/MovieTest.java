@@ -6,6 +6,7 @@ import org.junit.runners.Parameterized;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -48,6 +49,10 @@ public class MovieTest {
 
     @Test
     public void testGetTitle() {
+
+        LocalDateTime l = LocalDateTime.now();
+        System.out.println(l);
+
         when(movie.getTitle()).thenReturn(movieTitle);
 
         assertEquals("test if getTitle in movie returns correct String", movieTitle, movie.getTitle());

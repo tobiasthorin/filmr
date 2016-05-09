@@ -62,7 +62,7 @@ public class Cinema {
                 .append(id,cinema.getId())
                 .append(name,cinema.getName())
                 .append(repertoire,cinema.getRepertoire())
-                .append(theaters, cinema.getTheaters())
+                //.append(theaters, cinema.getTheaters()) TODO this breaks equals method
                 .isEquals();
 
     }
@@ -72,7 +72,7 @@ public class Cinema {
                 .append(id)
                 .append(name)
                 .append(repertoire)
-                .append(theaters)
+                //.append(theaters)
                 .toHashCode();
     }
 

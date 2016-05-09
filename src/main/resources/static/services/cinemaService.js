@@ -3,6 +3,8 @@
  */
 angular.module('filmr').factory('CinemaService', function($resource,$rootScope) {
 	var cinemasBaseUrl = $rootScope.API_baseUrl + "cinemas/";
-	return $resource(cinemasBaseUrl + ":id");
+	return $resource(cinemasBaseUrl + ":id", { id : '@id' }, {
+	update: {method: 'PUT'}
+	});
 // end of service		
 });

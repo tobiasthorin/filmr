@@ -2,6 +2,7 @@ package filmr.api;
 
 import filmr.Application;
 import filmr.domain.Cinema;
+import filmr.domain.Movie;
 import filmr.domain.Repertoire;
 import filmr.repositories.CinemaRepository;
 import filmr.testfactories.EntityFactory;
@@ -96,5 +97,30 @@ public class CinemaAPIIntegrationTest {
         assertTrue("Assert that cinemas repertoire is empty", postedCinemaRepertoire.getMovies().size()==0);
 
         assertEquals("Assert that amount of cinemas is +1", tableSize +1, cinemaRepository.findAll().size());
+    }
+
+    @Test
+    public void testRead() {
+        ResponseEntity<Cinema> responseEntity = restTemplate.getForEntity(urlWithId, Cinema.class);
+        Cinema cinema = responseEntity.getBody();
+
+        assertTrue("Confirm that the status code is successful", responseEntity.getStatusCode().is2xxSuccessful());
+        assertEquals("Assert that the id of the read object is the one we requested", id, cinema.getId());
+        assertEquals("Assert that the read object is the same as the one created in @Before", savedCinema, cinema);
+    }
+
+    @Test
+    public void testUpdate() {
+        String changeNameTo = "Bobs Bio";
+        savedCinema.setName(changeNameTo);
+
+        restTemplate.put(urlWithId, savedCinema);
+
+        //Cinema updatedCinema = cinemaRepository.getOne(id); TODO lazy error
+        ResponseEntity<Cinema> responseEntity = restTemplate.getForEntity(urlWithId, Cinema.class);
+        Cinema updatedCinema = responseEntity.getBody();
+
+        //TODO no status code?
+        assertEquals("Assert that the object is updated properly", savedCinema, updatedCinema);
     }
 }

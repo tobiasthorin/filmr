@@ -56,13 +56,18 @@ public class Showing implements Comparable<Showing> {
 	private List<Booking> bookings;
 	
 	private Boolean isDisabled;
+	private Double price; // by default this will be same as movie.defaultPrice
 	
+
 	public Showing() {}
 	
 	@PrePersist // a way to set default values for properties (for entities created non-manually, i.e. not through sql inserts)
 	private void prePersist() {
 		if(isDisabled == null) {
 			isDisabled = false;
+		}
+		if(price == null) {
+			price = movie.getDefaultPrice();
 		}
 	}
 	
@@ -121,6 +126,13 @@ public class Showing implements Comparable<Showing> {
 
 	}
 
+	public Double getPrice() {
+		return price != null ? price : movie.getDefaultPrice();
+	}
+	
+	public void setPrice(Double price) {
+		this.price = price;
+	}
 
 
 	@Override
@@ -134,10 +146,10 @@ public class Showing implements Comparable<Showing> {
 		final Showing showing = (Showing) object;
 		return new EqualsBuilder()
 				.append(id, showing.getId())
-				.append(showDateTime, showing.getShowDateTime())
+//				.append(showDateTime, showing.getShowDateTime()) TODO breaks equals, also so dateserializer, it broke so commented out
 				.append(movie, showing.getMovie())
 				.append(theater, showing.getTheater())
-				.append(bookings, showing.getBookings())
+//				.append(bookings, showing.getBookings())
 				.append(isDisabled, showing.isDisabled)
 				.isEquals();
 	}
@@ -145,10 +157,10 @@ public class Showing implements Comparable<Showing> {
 	public int hashCode() {
 		return new HashCodeBuilder(17, 31)
 				.append(id)
-				.append(showDateTime)
+//				.append(showDateTime)
 				.append(movie)
 				.append(theater)
-				.append(bookings)
+//				.append(bookings)
 				.append(isDisabled)
 				.toHashCode();
 	}
@@ -164,7 +176,13 @@ public class Showing implements Comparable<Showing> {
 	@Override
 	public int compareTo(Showing o) {
 		// Showings are by default sorted by date, so we can use the Date's compareTo-method
-		return this.showDateTime.compareTo(o.getShowDateTime());
+		int compareResult = this.showDateTime.compareTo(o.getShowDateTime());
+		// showings that have the same time should be further sorted according to their title.
+		// otherwise the same list of showings can re-order itself, which looks confusing in frontend.
+		if(compareResult == 0) {
+			compareResult = getMovie().getTitle().compareTo(o.getMovie().getTitle());
+		}
+		return compareResult;
 	}
 	
 }

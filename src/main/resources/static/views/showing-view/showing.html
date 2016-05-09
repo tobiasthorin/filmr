@@ -1,6 +1,8 @@
 <div class="showings-wrapper">
     <div class="row">
         <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <h3>Showings</h3>
+            <hr>
 
                 <label>Cinema:</label>
                 <select ng-options="cinema as cinema.name for cinema in allCinemas"
@@ -15,6 +17,9 @@
                 <label>Theater:</label>
                 <select ng-options="theater as theater.name for theater in theatersInCinema"
                         name="theaters" ng-model="theater" ng-change="updateShowings()" required></select>
+                <label>Show disabled:</label>
+                <input type="checkbox" value="" name="disabledCheckbox" ng-model="showingIsDisabled" ng-change="updateShowings()"
+                       ng-true-value="true" ng-false-value="false" ng-checked="disabledCheckbox == true">
 
             <table class="table table-hover">
                 <thead>
@@ -29,8 +34,8 @@
                     <td>{{showing.movie.title}}</td>
                     <td>{{showing.theater.name}}</td>
                     <td>
-                        <button ng-if="showing.isDisabled" class="btn" type="button" name="disable" ng-click="disableShowing(showing)" >Enable</button>
-                        <button ng-if="!showing.isDisabled" class="btn" type="button" name="disable" ng-click="disableShowing(showing)" >Disable</button>
+                        <button ng-if="showing.isDisabled" class="btn is_enabled" type="button" name="disable" ng-click="disableShowing(showing)" >Enable</button>
+                        <button ng-if="!showing.isDisabled" class="btn is_disabled" type="button" name="disable" ng-click="disableShowing(showing)" >Disable</button>
                     </td>
                 </tr>
                 </tbody>
@@ -38,6 +43,8 @@
         </div>
 
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <h3>Schedule new showing</h3>
+            <hr>
             <form name="showingForm">
                 <div class="form-group">
                     <label>Cinema</label>

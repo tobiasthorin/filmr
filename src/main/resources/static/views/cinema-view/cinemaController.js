@@ -64,6 +64,9 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 			return addableMovies;
 		};
 
+		$scope.getCurrentCinemaId = function () {
+			return currentCinema.id;
+		};
 
 		$scope.addMovieToRepertoire = function () {
 
@@ -99,6 +102,19 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 					$rootScope.errorHandler(error);
 				}
 			);
+		};
+
+		$scope.getCurrentCinema = function () {
+			return currentCinema;
+		};
+
+		$scope.updateCinemaName = function () {
+			currentCinema.name = $scope.edited_cinema_name;
+			CinemaService.update(currentCinema).$promise.then(function () {
+				setCinemaName();
+			}, function (error) {
+				$rootScope.errorHandler(error);
+			});
 		};
 
 		function fetchMoviesInRepertorie() {
@@ -155,4 +171,17 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 				});
 		}
 
+		function setCinemaName() {
+			$scope.cinema_name = currentCinema.name;
+			$scope.edited_cinema_name = currentCinema.name;
+		}
+
+		//Execute on page load
+		fetchCurrentCinema(function() {
+			fetchAddableMovies();
+			fetchMoviesInRepertorie();
+			fetchTheaters();
+			setCinemaName();
+
+		});
 	}]);
