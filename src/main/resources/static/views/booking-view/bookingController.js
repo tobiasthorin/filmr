@@ -9,12 +9,12 @@ angular.module('filmr')
 	
 
 	// run this function as soon as page/view loads
-	getAllRelevantShowings(null,null,null,null);
+	getAllRelevantShowings();
 
 	
 	// functions on $scope object will be available to pages/templates (html) that that use this controller (see routing in app.js)
 	$scope.updateAvailableShowings = function(onlyForMovieWithId,date) {
-		getAllRelevantShowings(date,date,null,onlyForMovieWithId);
+		getAllRelevantShowings(date,date,undefined,onlyForMovieWithId);
 	}
 	
 	$scope.functionForBtnClick = function() {
@@ -54,7 +54,7 @@ angular.module('filmr')
 				// on success
 				function(response) {
 					
-					
+					console.log(response.data);
 
 					// new meta data in response
 					var distinctMovieArray = JSON.parse(response.headers().distinct_movies);

@@ -41,7 +41,7 @@
 			<div class="col-sm-6">
 				<ul class="list movies">
 					<li class="header">Movies</li>
-					<li ng-repeat="movie in movies" ng-click="updateAvailableShowings(movie.id,null)">
+					<li ng-repeat="movie in movies" ng-click="updateAvailableShowings(movie.id)">
 						<div class="movie_title">{{movie.title}}</div>
 						<div class="showing_time">{{movie.lengthInMinutes}}</div>
 						<div class="at_theater">- {{movie.description}}</div>
@@ -60,7 +60,7 @@
 				<div class="calendar">
 					April
 					<ul>
-						<li ng-repeat="date in relevantDates" ng-style="{'background-color':date.color}" ng-click="updateAvailableShowings(null,date.date)">
+						<li ng-repeat="date in relevantDates" ng-style="{'background-color':date.color}" ng-click="updateAvailableShowings(undefined,date.date)">
 							{{date.day}}
 						</li>
 					</ul>
