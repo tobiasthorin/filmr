@@ -135,6 +135,7 @@ public class ShowingAPIIntegrationTest {
         assertEquals("Assert that the read object is the same as the one created in @Before", savedShowing, showing); //TODO not same due to repo stoff
     }
 
+    //2 birds with one stone; update and disable check
     @Test
     public void testUpdate() {
         Boolean changeDisabledTo = true;

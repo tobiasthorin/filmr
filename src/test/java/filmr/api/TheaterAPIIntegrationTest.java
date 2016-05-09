@@ -101,4 +101,29 @@ public class TheaterAPIIntegrationTest {
 
         assertEquals("Assert that amount of theaters is +1", tableSize +1, theaterRepository.findAll().size());
     }
+
+    @Test
+    public void testRead() {
+        ResponseEntity<Theater> responseEntity = restTemplate.getForEntity(urlWithId, Theater.class);
+        Theater theater = responseEntity.getBody();
+
+
+        //Assert
+        assertTrue("Make sure the call was succesfull", responseEntity.getStatusCode().is2xxSuccessful());
+        assertEquals("Assert that the id of the read object is the same as we asked to get", id, theater.getId());
+        assertEquals("Assert that the read object is the same as the one created in @Before", savedTheater, theater);
+    }
+
+    @Test
+    public void testUpdate() {
+        String changeTheaterNameTo = "Bobs Sal";
+        savedTheater.setName(changeTheaterNameTo);
+
+        restTemplate.put(urlWithId, savedTheater);
+
+        Theater updatedTheater = theaterRepository.findOne(id);//TODO findOne works, getOne breaks
+
+        assertEquals("Assert that the object is updated", savedTheater, updatedTheater);
+        assertEquals("Make sure the value is properly updated", changeTheaterNameTo, updatedTheater.getName());
+    }
 }
