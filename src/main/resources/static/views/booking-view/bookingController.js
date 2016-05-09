@@ -50,10 +50,12 @@ angular.module('filmr')
 		
 		// TODO: gather relevant variables to limit showings:  fromDate, toDate, mininumAvailableTickets, onlyForMovieWithId
 		
-		BookingService.getAllRelevantShowings(fromDate, toDate, mininumAvailableTickets, onlyForMovieWithId).then(
+		BookingService.getAllRelevantShowings(fromDate, toDate, mininumAvailableTickets, onlyForMovieWithId, true).then(
 				// on success
 				function(response) {
 					
+					
+
 					// new meta data in response
 					var distinctMovieArray = JSON.parse(response.headers().distinct_movies);
 					console.log("distinct movies", distinctMovieArray);
@@ -65,7 +67,6 @@ angular.module('filmr')
 						var movie = distinctMovieArray[i];
 						$scope.movies.push(movie);
 					}
-
 
 					$scope.relevantDates = [];
 					for(i=20; i<31; i++) {

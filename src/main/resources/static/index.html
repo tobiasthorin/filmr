@@ -16,6 +16,7 @@
 			  integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="
 			  crossorigin="anonymous"></script>
 			  
+
 	
 	<!-- Bootstrap -->
 	<!-- Latest compiled and minified CSS -->
@@ -23,6 +24,8 @@
 
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+	<link rel="stylesheet" href="styles/admin.css">
 	
 </head>
 
@@ -30,21 +33,18 @@
 
 	<div id="contentWrapper" class="container">
 
-	<!-- activeTab is set in app.js in the routing -->
+		<!-- activeTab is set in app.js in the routing -->
 		<ul class="nav nav-tabs">
-  			<li role="presentation" ng-class="{'active': activeTab == 'Home'}"><a href="#/">Home</a></li>
+			<li role="presentation" ng-class="{'active': activeTab == 'Customer'}"><a href="#/customer">Admin Home</a></li>
   			<li role="presentation" ng-class="{'active': activeTab == 'Book'}"><a href="#/book">Book</a></li>
-  			<li role="presentation" ng-class="{'active': activeTab == 'Admin'}"><a href="#/admin">Create showing (Admin)</a></li>
-  			<li role="presentation" ng-class="{'active': activeTab == 'Cinema'}"><a href="#/cinema">Cinema</a></li>
-			<li role="presentation" ng-class="{'active': activeTab == 'Customer'}"><a href="#/customer">Customer</a></li>
-			<li role="presentation" ng-class="{'active': activeTab == 'Showing'}"><a href="#/showing">Showings</a></li>
+  			<li role="presentation" ng-class="{'active': activeTab == 'Showing'}"><a href="#/showing">Showings</a></li>
 		</ul>
 
-	<h1>Biograf DEMO</h1>
+		<h1>filmr</h1>
 	
 	
-	<!-- page specific content loads in this view. see routing in app.js  -->
-	<div ng-view></div>
+		<!-- page specific content loads in this view. see routing in app.js  -->
+		<div ng-view></div>
 	
 	
 	
