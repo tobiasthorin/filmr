@@ -6,6 +6,7 @@ import filmr.domain.Repertoire;
 import filmr.repositories.MovieRepository;
 import filmr.repositories.RepertoireRepository;
 import filmr.testfactories.EntityFactory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -119,5 +120,12 @@ public class RepertoireAPIIntegrationTest {
         //Assert
         assertEquals("Assert that the repertoire updated properly", savedRepertoire, updatedRepertoire);
         assertEquals("Assert that amount of movies in repertoire is +1", repertoireMovieListSize+1, updatedRepertoire.getMovies().size());
+    }
+
+    @After
+    public void clearDatabase() throws Exception {
+        //clear everything
+        repertoireRepository.deleteAllInBatch();
+        movieRepository.deleteAllInBatch();
     }
 }

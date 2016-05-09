@@ -6,6 +6,7 @@ import filmr.domain.Theater;
 import filmr.repositories.CinemaRepository;
 import filmr.repositories.TheaterRepository;
 import filmr.testfactories.EntityFactory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -135,5 +136,12 @@ public class TheaterAPIIntegrationTest {
 
     	// test if the local changes (savedTheater) matches the actual ones (updatedTheater)
     	assertEquals("Assert that the updated theater matches the changes we made", savedTheater, updatedTheater);
+    }
+
+    @After
+    public void clearDatabase() throws Exception {
+        //clear everything
+        theaterRepository.deleteAllInBatch();
+        cinemaRepository.deleteAllInBatch();
     }
 }

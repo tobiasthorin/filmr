@@ -6,6 +6,7 @@ import filmr.domain.Movie;
 import filmr.domain.Repertoire;
 import filmr.repositories.CinemaRepository;
 import filmr.testfactories.EntityFactory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -119,5 +120,11 @@ public class CinemaAPIIntegrationTest {
         Cinema updatedCinema = cinemaRepository.findOne(id);
 
         assertEquals("Assert that the object is updated properly", savedCinema, updatedCinema);
+    }
+
+    @After
+    public void clearDatabase() throws Exception {
+        //clear everything
+        cinemaRepository.deleteAllInBatch();
     }
 }

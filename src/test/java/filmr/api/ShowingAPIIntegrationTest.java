@@ -4,6 +4,7 @@ import filmr.Application;
 import filmr.domain.*;
 import filmr.repositories.*;
 import filmr.testfactories.EntityFactory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -116,7 +117,7 @@ public class ShowingAPIIntegrationTest {
 
         //Assert
         assertTrue("Make sure the http was successfull", responseEntity.getStatusCode().is2xxSuccessful());
-        //assertEquals("Compare times", showing.getShowDateTime(), postedShowing.getShowDateTime()); //TODO the returned date has passed through deserializer and therefore is slightly different
+       // assertEquals("Compare times", showing.getShowDateTime(), postedShowing.getShowDateTime()); //TODO the returned date has passed through deserializer and therefore is slightly different
         assertEquals("Compare movies", showing.getMovie(), postedShowing.getMovie());
         assertEquals("Compare theaters", showing.getTheater(), postedShowing.getTheater());
         assertEquals("Compare bookings", showing.getBookings(), postedShowing.getBookings());
@@ -146,5 +147,14 @@ public class ShowingAPIIntegrationTest {
 
         assertEquals("Assert that the object is updated", savedShowing, updatedShowing);
         assertEquals("Make sure the showing is disabled", updatedShowing.getIsDisabled(), new Boolean(true));
+    }
+
+    @After
+    public void clearDatabase() throws Exception {
+        //clear everything
+        showingRepository.deleteAllInBatch();
+        movieRepository.deleteAllInBatch();
+        theaterRepository.deleteAllInBatch();
+        cinemaRepository.deleteAllInBatch();
     }
 }
