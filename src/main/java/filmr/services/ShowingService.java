@@ -12,10 +12,8 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
-
 @Service
 public class ShowingService extends BaseServiceClass<Showing, Long> {
-	
 	
 	private static final int ASSUMED_MAX_H_LENGTH_OF_ANY_MOVIE = 4;
 	
