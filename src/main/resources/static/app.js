@@ -6,11 +6,6 @@
     app.config(function ($routeProvider) {
 
         $routeProvider
-            .when('/', {
-                title: 'Home',
-                activeTab: 'Home',
-                templateUrl: 'views/home-view/home.html',
-            })
             // booking
             .when('/book', {
                 title: 'Book',
@@ -61,7 +56,7 @@
                 templateUrl: 'views/customer-view/customer.html',
                 controller: 'customerController'
 
-            }).otherwise({redirectTo: "/"})
+            }).otherwise({redirectTo: "/customer"})
     });
 
 
