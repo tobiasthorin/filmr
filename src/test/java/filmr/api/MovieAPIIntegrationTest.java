@@ -24,6 +24,8 @@ import java.util.Collection;
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+//TODO this is broken
+
 @RunWith(Parameterized.class)
 @SpringApplicationConfiguration(Application.class)
 @WebIntegrationTest
@@ -70,7 +72,7 @@ public class MovieAPIIntegrationTest {
         movieRepository.deleteAllInBatch();
 
         //Create showing and everything that belongs in it
-        Movie movie = EntityFactory.createMovie("Global Test Movie", "A movie about things", new Long(120));
+        Movie movie = EntityFactory.createMovie("Global Test Movie", "A movie about things", new Long(120), new Double(100));
         savedMovie = movieRepository.save(movie);
 
         //Setup id for this run
@@ -82,7 +84,7 @@ public class MovieAPIIntegrationTest {
 
     @Test
     public void testCreate() throws Exception {
-        Movie movie = EntityFactory.createMovie("testCreate Movie", "A movie about testing", new Long(110));
+        Movie movie = EntityFactory.createMovie("testCreate Movie", "A movie about testing", new Long(110), new Double(100));
 
         //Post
         ResponseEntity<Movie> responseEntity = restTemplate.postForEntity(baseUrl, movie, Movie.class);

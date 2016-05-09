@@ -87,7 +87,7 @@ public class ShowingAPIIntegrationTest {
         cinemaRepository.deleteAllInBatch();
 
         //Create showing and everything that belongs in it
-        Movie movie = EntityFactory.createMovie("Global Test Movie", "A Movie About Cows Murdering cute bunnies", new Long(120));
+        Movie movie = EntityFactory.createMovie("Global Test Movie", "A Movie About Cows Murdering cute bunnies", new Long(120), new Double(100));
         savedMovie = movieRepository.save(movie);
         Cinema cinema = EntityFactory.createCinema("Global Test Cinema");
         savedCinema = cinemaRepository.save(cinema);
