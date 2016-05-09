@@ -5,32 +5,29 @@ describe("cinemaController.js", function () {
 
 	// Mocked data
 	var mockedSavedTheater = {};
-
 	var mockedMoviesInRepertoire = [
 		{name: "Lion king"},
 		{name: "Lion queen"},
 		{name: "Alien"}
 	];
-
 	var mockedRepertoire = {
 		movies: mockedMoviesInRepertoire
 	};
-
 	var mockedAddableMovies = [
 		{name: "Mars Attacks"},
 		{name: "Deer Hunter"}
 	];
-
 	var mockedTheaters = [
 		{name: "sal01"},
 		{name: "sal02"}
 	];
-
 	var mockedCinema = {id: 1, name: "Lasses Biograf", repertoire: {id: 567}};
+	var mockedRepetoireUpdateSuccessResult = {movies: [{name: 'Lion king'}, {name: 'Lion queen'}, {name: 'Alien'}, {name: 'Mars Attacks'}]};
+    var mockedAddableMoviesAfterRepertoireUpdate =  {movies: [{name: 'Lion queen'}, {name: 'Alien'}, {name: 'Mars Attacks'}]};
 
+    // Save mocked events tracker
 	var mockedLastUpdateRepertoirHeader = null;
 	var mockedLastUpdateRepertoirBody = null;
-	var mockedRepetoireUpdateSuccessResult = {movies: [{name: 'Lion king'}, {name: 'Lion queen'}, {name: 'Alien'}, {name: 'Mars Attacks'}]};
 
 	//Mocked services
 	beforeEach(function () {
@@ -92,6 +89,7 @@ describe("cinemaController.js", function () {
 						then: function (success, fail) {
 							mockedLastUpdateRepertoirHeader = header;
 							mockedLastUpdateRepertoirBody = body;
+                            mockedAddableMovies = mockedAddableMoviesAfterRepertoireUpdate;
 							success(mockedRepetoireUpdateSuccessResult);
 						}
 					}
@@ -150,13 +148,7 @@ describe("cinemaController.js", function () {
 			expect(mockedLastUpdateRepertoirBody).toEqual({"id": 567});
 
 			expect($scope.getMoviesInRepertoire()).toEqual(mockedRepetoireUpdateSuccessResult.movies);
-
-			//TODO: add check on refresh addable movies list
-			/*
-			 expect(mockedSavedRepertoire).toEqual([{name: "Lion king"},{name: "Lion queen"},{name: "Alien"},{name:"Mars Attacks"}]);
-			 expect($scope.getMoviesInRepertoire()).toEqual([{name: "Lion king"},{name: "Lion queen"},{name: "Alien"},{name:"Mars Attacks"}]);
-			 expect($scope.getAddableMovies()).toEqual([{name:"Deer Hunter"}]);
-			 */
+			expect($scope.getAddableMovies()).toEqual(mockedAddableMoviesAfterRepertoireUpdate);
 		});
 
 		it("Check remove movie from repertoire (both movies-in-repertoire and movies-can-be-added must be refreshed after call)", function () {
@@ -166,13 +158,7 @@ describe("cinemaController.js", function () {
 			expect(mockedLastUpdateRepertoirBody).toEqual({"id": 567});
 
 			expect($scope.getMoviesInRepertoire()).toEqual(mockedRepetoireUpdateSuccessResult.movies); //note/confusing: the mockedRepetoireUpdateSuccessResult is based on a list of added movies. The same list work here since we are just compareing(toEqual) and mocked service do not actual modify list in a correct way
-
-			//TODO: add check on refresh addable movies list
-			/*
-			 expect(mockedSavedRepertoire).toEqual([{name: "Lion king"},{name: "Lion queen"}]);
-			 expect($scope.getMoviesInRepertoire()).toEqual([{name: "Lion king"},{name: "Lion queen"}]);
-			 expect($scope.getAddableMovies()).toEqual([{name:"Mars Attacks"},{name:"Deer Hunter"},{name:"Alien"}]);
-			 */
+			expect($scope.getAddableMovies()).toEqual(mockedAddableMoviesAfterRepertoireUpdate);
 		});
 
 	});
