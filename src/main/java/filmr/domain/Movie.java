@@ -2,7 +2,7 @@ package filmr.domain;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.Entity;
@@ -16,11 +16,9 @@ public class Movie {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	@NotNull
-	@NotEmpty
+	@NotBlank
 	private String title;
-	@NotNull
-	@NotEmpty
+	@NotBlank
 	private String description;
 	@NotNull
 	@Range(min=1)

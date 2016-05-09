@@ -2,6 +2,7 @@ package filmr.domain;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.validator.constraints.Range;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
@@ -56,6 +57,8 @@ public class Showing implements Comparable<Showing> {
 	private List<Booking> bookings;
 	
 	private Boolean isDisabled;
+	
+	@Range(min=0)
 	private Double price; // by default this will be same as movie.defaultPrice
 	
 

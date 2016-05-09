@@ -37,7 +37,9 @@ public class ShowingController {
             return new ResponseEntity<Showing>(savedShowing, HttpStatus.OK);
         }
         System.out.println("Not valid time");
-        return new ResponseEntity<Showing>(new Showing(), HttpStatus.PRECONDITION_FAILED);
+        // TODO: throw custom error. an empty doesn't serialize into json, so 
+        // HttpStatus.PRECONDITION_FAILED does not reach the api consumer
+        return new ResponseEntity<Showing>(new Showing(), HttpStatus.PRECONDITION_FAILED); 
 
 
     }
