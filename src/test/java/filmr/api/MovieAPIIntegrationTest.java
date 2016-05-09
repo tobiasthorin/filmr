@@ -4,6 +4,7 @@ import filmr.Application;
 import filmr.domain.Movie;
 import filmr.repositories.MovieRepository;
 import filmr.testfactories.EntityFactory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -139,5 +140,11 @@ public class MovieAPIIntegrationTest {
         restTemplate.delete(urlWithId, Movie.class);
         //Try to read it (should not exist)
         restTemplate.getForEntity(urlWithId, Movie.class);
+    }
+
+    @After
+    public void clearDatabase() throws Exception {
+        //clear everything
+        movieRepository.deleteAllInBatch();
     }
 }

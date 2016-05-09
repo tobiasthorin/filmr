@@ -38,8 +38,8 @@
 					<form>
 						<h2>Add new Theater</h2>
 						<table>
-							<tr><th>Name:</th><td><input type="text" ng-model="add_theater_name"><td></tr>
-							<tr><th>Number of seats:</th><td><input type="number" ng-model="add_theater_seats"><td></tr>
+							<tr><th>Name:</th><td><input type="text" ng-model="add_theater_name" placeholder="Name"><td></tr>
+							<tr><th>Number of seats:</th><td><input type="number" ng-model="add_theater_seats" placeholder="0 or more"><td></tr>
 							<tr><th>Disabled:</th><td><input type="checkbox" ng-model="add_theater_disabled" id="disabledCheckbox"><td></tr>
 							<tr><th></th><td><input type="submit" ng-click="submitTheater()" value="Add theater"></td></tr>
 						</table>
@@ -48,14 +48,24 @@
             </div>
         </div>
 		<div class="row">
-			<div class="col-sm-6">
-				<h2>Bio: {{cinema_name}}</h2>
-				<div class="edit-cinema-name">
-					<form>
-						<input type="text" ng-model="edited_cinema_name">
-						<button ng-click="updateCinemaName()">Change Name</button>
-					</form>
-				</div>
+		    <div class="col-sm-6">
+                <form>
+    			    <h2>Edit cinema</h2>
+    		        <div class="edit-cinema-name">
+				        <form>
+                            <table>
+                                <tr>
+					                <th>Name:</th><td><input type="text" ng-model="edited_cinema_name"></td>
+                                </tr>
+                                <tr>
+					                <th></th><td><input ng-click="updateCinemaName()" type="submit" value="Update"></td>
+                                </tr>
+                            </table>
+				        </form>
+			        </div>
+                </form>
+            </div>
+		    <div class="col-sm-6">
             </div>
         </div>
     </div>

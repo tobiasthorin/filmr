@@ -4,6 +4,7 @@ import filmr.Application;
 import filmr.domain.*;
 import filmr.repositories.*;
 import filmr.testfactories.EntityFactory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -91,34 +92,37 @@ public class ShowingFilterTest {
     @Parameterized.Parameters
     public static Collection<Object[]> parameters() {
         return Arrays.asList(new Object[][]{
-                {"", null, "", false, false, false, "", "", "", ""},
-                {"2016-05-04T14:14:04", null, "", false, false, false, "", "", "", ""},
-                //{"", "2016-05-10T14:14:04", "", false, false, false, "", "", "", ""},
-                {"", LocalDateTime.now().plusDays(2), "", false, false, false, "", "", "", ""},
-                {"", null, "0", false, false, false, "", "", "", ""},
-                {"", null, "", true, false, false, "", "", "", ""}, //TODO currently disabled
-                {"", null, "", false, true, false, "", "", "", ""},
-               // {"", null, "", false, false, true, "", "", "", ""}, //TODO disabled, se further down for info
-                {"", null, "", false, false, false, "10", "", "", ""},
-                {"", null, "", false, false, false, "", "true", "", ""},
-               // {"", null, "", false, false, false, "", "", "", ""}, //TODO disabled until time to test these filter options
-               // {"", null, "", false, false, false, "", "", "", ""}, //end single
+                {null, null, "", false, false, false, "", "", "", ""}, //empty filter
+                {LocalDateTime.now().minusHours(3), null, "", false, false, false, "", "", "", ""},
+                {null, LocalDateTime.now().plusDays(2), "", false, false, false, "", "", "", ""},
+                {null, null, "0", false, false, false, "", "", "", ""},
+                {null, null, "", true, false, false, "", "", "", ""}, //TODO currently disabled
+                {null, null, "", false, true, false, "", "", "", ""},
+               // {null, null, "", false, false, true, "", "", "", ""}, //TODO disabled, se further down for info
+                {null, null, "", false, false, false, "10", "", "", ""},
+                {null, null, "", false, false, false, "", "true", "", ""},
+                {null, null, "", false, false, false, "", "false", "", ""},
+               // {null, null, "", false, false, false, "", "", "", ""}, //TODO disabled until time to test these filter options
+               // {null, null, "", false, false, false, "", "", "", ""}, //end single
+                {LocalDateTime.now().minusHours(4), LocalDateTime.now().plusDays(4), "0", true, true, false, "10", "true", "", ""}, //multiple
+                {LocalDateTime.now().minusHours(5), null, "0", false, true, false, "", "true", "", ""},
+                {null, LocalDateTime.now().plusDays(4), "", true, false, false, "20", "false", "", ""},
         });
     }
 
-    public ShowingFilterTest(String fromDateParameter, LocalDateTime toDateParameter, String availableTicketsParameter, boolean useMovie, boolean useTheater, boolean useCinema, String limitParameter, String showDisabledParameter, String inludeDistinctHeadersParameter, String includeEmptySlotsParameter) {
+    public ShowingFilterTest(LocalDateTime fromDateParameter, LocalDateTime toDateParameter, String availableTicketsParameter, boolean useMovie, boolean useTheater, boolean useCinema, String limitParameter, String showDisabledParameter, String inludeDistinctHeadersParameter, String includeEmptySlotsParameter) {
         baseUrl = "http://localhost:8080/filmr/api/showings/";
-        this.fromDateParameter = fromDateParameter;
-       // this.toDateParameter = toDateParameter;
-        //TODO ugly fix
+        if (fromDateParameter != null) {
+            this.fromDateParameter = fromDateParameter.toString().substring(0, fromDateParameter.toString().length()-4);
+        }
+        else
+            this.fromDateParameter = "";
         if (toDateParameter != null) {
             this.toDateParameter = toDateParameter.toString();
-            this.toDateParameter = this.toDateParameter.substring(0, this.toDateParameter.length()-4);
+            this.toDateParameter = this.toDateParameter.substring(0, this.toDateParameter.length()-4); //TODO there should be a smoother way to do this (deserializer forces this)
         }
         else
             this.toDateParameter = "";
-        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-        System.out.println("parsed date: "+this.toDateParameter);
         this.availableTickets = availableTicketsParameter;
         this.useMovie = useMovie;
         this.useTheater = useTheater;
@@ -220,8 +224,10 @@ public class ShowingFilterTest {
                 assertTrue("Assert amount did not surpass limit", showings.length <= limit);
             }
             if (!params.get(showDisabledShowings).equals("")) {
-                Boolean showDisabled = Boolean.parseBoolean(showDisabledParameter);
-                assertEquals("Make sure show disabled filter works right", showDisabled, !showing.getIsDisabled());
+                Boolean showDisabled = Boolean.parseBoolean(showDisabledParameter); //TODO breaks when parameter is set to 'true'
+                //when false, only show not disabled
+                if (!showDisabled)
+                    assertEquals("Make sure show disabled filter works right", false, showing.getIsDisabled());
             }
             else {
                 assertEquals("Disabled shouldnt be showed", false, showing.getIsDisabled());
@@ -259,5 +265,14 @@ public class ShowingFilterTest {
         params.put(includeEmptySlotsForMovieOfLenght, includeEmptySlots);
 
         return params;
+    }
+
+    @After
+    public void clearDatabase() throws Exception {
+        //clear everything
+        showingRepository.deleteAllInBatch();
+        movieRepository.deleteAllInBatch();
+        theaterRepository.deleteAllInBatch();
+        cinemaRepository.deleteAllInBatch();
     }
 }

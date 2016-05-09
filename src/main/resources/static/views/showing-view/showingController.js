@@ -5,37 +5,46 @@ angular.module('filmr')
         function($location,$rootScope, $scope, $routeParams, MovieService, $resource, RepertoireService, CinemaService, ShowingService) {
 
             //Variables
+
+
+
+
+            //Execute on page load
+            getCinemas(function(){
+                $scope.cinema = $scope.allCinemas[0];
+                getTheatersAndRepertoireInCinema();
+                getShowingsWithParams();
+            });
+            //getTheatersAndRepertoireInCinema();
+            //getShowingsWithParams();
+
+            //Publicly accessible variables and functions
             $scope.moviesInRepertoire = [];
             $scope.theatersInCinema = [];
             $scope.allShowings = [];
             $scope.allCinemas = [];
 
-
-
-            //Showing Filter Parameters
-
             $scope.theater = {};
             $scope.movie = {};
-            $scope.cinema={};
+            $scope.cinema= $scope.allCinemas[0];
 
-            //INIT
-            getCinemas();
-            getTheatersAndRepertoireInCinema();
-            getShowingsWithParams();
-
-            //PUBLIC
             $scope.updateShowings = function() {
                 console.log("---");
                 console.log("updating Showings List");
                 getShowingsWithParams();
             }
 
+            $scope.updateCinemaScope = function() {
+                console.log("---");
+                console.log("Set Cinema, get movies and theaters");
+                getTheatersAndRepertoireInCinema();
+                getShowingsWithParams();
+            }
+
             $scope.disableShowing = function(showing){
                 console.log("---");
                 console.log("Disable showing with id: "+showing.id);
-
                 showing.isDisabled = !showing.isDisabled;
-
                 console.log("Showing has datestring: "+showing.showDateTime);
 
                 ShowingService.update(showing).$promise.then(
@@ -46,6 +55,7 @@ angular.module('filmr')
                 },
                 function(error){
                     $rootScope.errorHandler(error);
+                    //Reset value of isDisabled for correct representation in gui
                     showing.isDisabled = !showing.isDisabled;
                 })
 
@@ -60,27 +70,26 @@ angular.module('filmr')
                 newShowing.movie = $scope.movie;
                 newShowing.theater =$scope.theater;
                 newShowing.showDateTime = $scope.date;
+                newShowing.price = $scope.price;
                 console.log("Date is: "+newShowing.showDateTime);
 
                 ShowingService.save(newShowing, function(result){
-                    console.log("Saved!");
-                    console.log(result);
+                    console.log("Saved showing: "+ result);
                     getShowingsWithParams();
                 },
                 function(error){
-                    console.log(error);
+                    $rootScope.errorHandler(error);
                 });
 
-                console.log("showing to add");
-                console.log(newShowing);
             }
 
-            function getCinemas() {
+            function getCinemas(callbackWhenDone) {
                 CinemaService.query().$promise.then(
                     function(result) {
                         console.log("in getCinemas");
                         console.log(result);
                         $scope.allCinemas = result;
+                        callbackWhenDone();
                     }
                 )
             }
@@ -88,7 +97,7 @@ angular.module('filmr')
             function getTheatersAndRepertoireInCinema() {
                 console.log("---");
                 console.log("call get cinema");
-                CinemaService.get({id:1}).$promise.then(
+                CinemaService.get({id:$scope.cinema.id}).$promise.then(
                     function(result){
                         var cinema = result;
                         console.log("Set Movies and Theaters lists")
@@ -99,11 +108,8 @@ angular.module('filmr')
                     function(error){
                         $rootScope.errorHandler(error);
                     }
-
                 )
-
             }
-
 
             function getShowingsWithParams(){
                 var params = {
