@@ -18,6 +18,8 @@ input[type=submit]{color:#eee;background: #30007a;}
 .table tr input{background:0; color: #00b; border:0; text-decoration:underline}
 .table tr td{background:#eee; padding:3px}
 .table tr:nth-child(odd) td{background:#e6e6e6;}
+.is_enabled{background-color: #5cb85c; border-color: #4cae4c;}
+.is_disabled{background-color: #d9534f; border-color: #d43f3a;}
 
 .nav-tabs>li:hover>a{background-color:transparent}
 .nav-tabs>li.active>a{background-color:transparent;}
