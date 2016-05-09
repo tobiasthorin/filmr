@@ -32,7 +32,7 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 		$scope.submitTheater = function () {
 
 			if (!$scope.add_theater_disabled) {
-				$scope.add_theater_disabled = false;
+                $scope.add_theater_disabled = false;
 			}
 
 			$scope.newTheater.cinema = {id:currentCinema.id};
