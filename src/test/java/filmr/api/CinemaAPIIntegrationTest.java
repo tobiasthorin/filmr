@@ -64,7 +64,7 @@ public class CinemaAPIIntegrationTest {
         testContextManager.prepareTestInstance(this);
 
         //Initialize restTemplate
-        restTemplate = new RestTemplate(); //TODO TestRestTemplate broken
+        restTemplate = new RestTemplate();
 
         //clear everything
         cinemaRepository.deleteAllInBatch();
@@ -116,11 +116,8 @@ public class CinemaAPIIntegrationTest {
 
         restTemplate.put(urlWithId, savedCinema);
 
-        //Cinema updatedCinema = cinemaRepository.getOne(id); TODO lazy error
-        ResponseEntity<Cinema> responseEntity = restTemplate.getForEntity(urlWithId, Cinema.class);
-        Cinema updatedCinema = responseEntity.getBody();
+        Cinema updatedCinema = cinemaRepository.findOne(id);
 
-        //TODO no status code?
         assertEquals("Assert that the object is updated properly", savedCinema, updatedCinema);
     }
 }

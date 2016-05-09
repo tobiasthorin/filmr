@@ -1,0 +1,13 @@
+ul.list {display:block; margin:0; padding:0}
+ul.list li{display:block; padding: 10px; margin:0; background: #eee; border-bottom: 1px solid #bbb}
+ul.list li.header{font-size:18px; font-weight:bold;  color: #eee; background: #000}
+ul.movies li.header{background: #008BAD;}
+ul.list .movie_title{font-size:16px; font-weight:bold}
+ul.list .showing_time{font-size:12px; font-weight:bold; float:left }
+ul.list .at_theater{font-size:12px; font-weight:bold; float:left}
+.end{clear:both}
+.calendar {border: 1px solid #222; text-align: center}
+.calendar ul{display:block;padding:0;margin:0}
+.calendar li{display:block;padding:3px;margin:2px; border: 1px solid #333; text-align: center; font-size: 18px }
+.row{margin-bottom: 50px}
+

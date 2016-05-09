@@ -59,11 +59,12 @@ public class EntityFactory {
         return repertoire;
     }
 
-    public static Movie createMovie(String title, String description, Long lenght) {
+    public static Movie createMovie(String title, String description, Long lenght, Double defaultPrice) {
         Movie movie = new Movie();
         movie.setTitle(title);
         movie.setDescription(description);
         movie.setLengthInMinutes(lenght);
+        movie.setDefaultPrice(defaultPrice);
         return movie;
     }
 

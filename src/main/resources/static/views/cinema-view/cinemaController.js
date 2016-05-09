@@ -12,6 +12,7 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 			fetchMoviesInRepertorie();
 			fetchAddableMovies();
 			fetchTheaters();
+			setCinemaName();
 		});
 
 		//Publicly accessible variables and functions
@@ -102,7 +103,7 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 					$rootScope.errorHandler(error);
 				}
 			);
-		};
+};
 
 		$scope.getCurrentCinema = function () {
 			return currentCinema;
@@ -140,7 +141,6 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 				function (result) {
 					currentCinema = result;
 					callbackWhenDone();
-					$scope.title = "hej";
 				},
 				function (error) {
 					$rootScope.errorHandler(error);
@@ -176,12 +176,4 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 			$scope.edited_cinema_name = currentCinema.name;
 		}
 
-		//Execute on page load
-		fetchCurrentCinema(function() {
-			fetchAddableMovies();
-			fetchMoviesInRepertorie();
-			fetchTheaters();
-			setCinemaName();
-
-		});
 	}]);
