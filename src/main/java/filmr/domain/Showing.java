@@ -56,13 +56,18 @@ public class Showing implements Comparable<Showing> {
 	private List<Booking> bookings;
 	
 	private Boolean isDisabled;
+	private Double price; // by default this will be same as movie.defaultPrice
 	
+
 	public Showing() {}
 	
 	@PrePersist // a way to set default values for properties (for entities created non-manually, i.e. not through sql inserts)
 	private void prePersist() {
 		if(isDisabled == null) {
 			isDisabled = false;
+		}
+		if(price == null) {
+			price = movie.getDefaultPrice();
 		}
 	}
 	
@@ -121,6 +126,13 @@ public class Showing implements Comparable<Showing> {
 
 	}
 
+	public Double getPrice() {
+		return price != null ? price : movie.getDefaultPrice();
+	}
+	
+	public void setPrice(Double price) {
+		this.price = price;
+	}
 
 
 	@Override
