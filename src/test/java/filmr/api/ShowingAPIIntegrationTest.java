@@ -15,11 +15,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestContextManager;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -89,7 +93,7 @@ public class ShowingAPIIntegrationTest {
         savedCinema = cinemaRepository.save(cinema);
         Theater theater = EntityFactory.createTheater("Global Test Theater", savedCinema);
         savedTheater = theaterRepository.save(theater);
-        Showing showing = EntityFactory.createShowing(LocalDateTime.now().minusDays(1), savedMovie, savedTheater, new ArrayList<>());
+        Showing showing = EntityFactory.createShowing(LocalDateTime.now().plusDays(1), savedMovie, savedTheater, new ArrayList<>());
         
         System.out.println("!! Saving showing through repo, in @Before \n");
         savedShowing = showingRepository.save(showing);
@@ -121,8 +125,6 @@ public class ShowingAPIIntegrationTest {
 
     @Test
     public void testRead() {
-    	
-    	System.out.println("!! In testRead \n");
         //Get
         ResponseEntity<Showing> responseEntity = restTemplate.getForEntity(urlWithId, Showing.class);
         Showing showing = responseEntity.getBody();
@@ -130,6 +132,20 @@ public class ShowingAPIIntegrationTest {
         //Assert
         assertTrue("Make sure the call was succesfull", responseEntity.getStatusCode().is2xxSuccessful());
         assertEquals("Assert that the id of the read object is the same as we asked to get", id, showing.getId());
-        //assertEquals("Assert that the read object is the same as the one created in @Before", savedShowing, showing); //TODO not same due to repo stoff
+        assertEquals("Assert that the read object is the same as the one created in @Before", savedShowing, showing); //TODO not same due to repo stoff
+    }
+
+    //2 birds with one stone; update and disable check
+    @Test
+    public void testUpdate() {
+        Boolean changeDisabledTo = true;
+        savedShowing.setIsDisabled(changeDisabledTo);
+
+        restTemplate.put(urlWithId, savedShowing);
+
+        Showing updatedShowing = showingRepository.findOne(id); //TODO what, here this works
+
+        assertEquals("Assert that the object is updated", savedShowing, updatedShowing);
+        assertEquals("Make sure the showing is disabled", updatedShowing.getIsDisabled(), new Boolean(true));
     }
 }

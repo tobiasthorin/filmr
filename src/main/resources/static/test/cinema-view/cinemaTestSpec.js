@@ -239,4 +239,11 @@ describe("cinemaController.js", function () {
 
 		})
 	});
+
+	//Cinema test
+	describe("Cinema", function () {
+		it("Prints the cinema name", function() {
+			expect($scope.cinema_name).toEqual($scope.getCurrentCinema().name);
+		});
+	});
 });

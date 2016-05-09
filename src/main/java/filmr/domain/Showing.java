@@ -146,10 +146,10 @@ public class Showing implements Comparable<Showing> {
 		final Showing showing = (Showing) object;
 		return new EqualsBuilder()
 				.append(id, showing.getId())
-				.append(showDateTime, showing.getShowDateTime())
+//				.append(showDateTime, showing.getShowDateTime()) TODO breaks equals, also so dateserializer, it broke so commented out
 				.append(movie, showing.getMovie())
 				.append(theater, showing.getTheater())
-				.append(bookings, showing.getBookings())
+//				.append(bookings, showing.getBookings())
 				.append(isDisabled, showing.isDisabled)
 				.isEquals();
 	}
@@ -157,10 +157,10 @@ public class Showing implements Comparable<Showing> {
 	public int hashCode() {
 		return new HashCodeBuilder(17, 31)
 				.append(id)
-				.append(showDateTime)
+//				.append(showDateTime)
 				.append(movie)
 				.append(theater)
-				.append(bookings)
+//				.append(bookings)
 				.append(isDisabled)
 				.toHashCode();
 	}
