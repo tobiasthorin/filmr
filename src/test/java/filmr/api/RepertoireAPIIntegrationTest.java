@@ -27,6 +27,9 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+//TODO broken
+
+
 @RunWith(Parameterized.class)
 @SpringApplicationConfiguration(Application.class)
 @WebIntegrationTest
@@ -79,7 +82,7 @@ public class RepertoireAPIIntegrationTest {
         //Create showing and everything that belongs in it
         Repertoire repertoire = EntityFactory.createRepertoire();
         savedRepertoire = repertoireRepository.save(repertoire);
-        Movie movie = EntityFactory.createMovie("Global Test Movie", "Global test Movie Description", new Long(120));
+        Movie movie = EntityFactory.createMovie("Global Test Movie", "Global test Movie Description", new Long(120), new Double(100));
         savedMovie = movieRepository.save(movie);
 
         //Setup id for this run
