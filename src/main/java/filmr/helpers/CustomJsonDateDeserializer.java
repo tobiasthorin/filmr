@@ -52,6 +52,7 @@ public class CustomJsonDateDeserializer extends JsonDeserializer<LocalDateTime> 
 
 		System.out.println(nodeString.substring(nodeString.length()-5));
 
+		int timeZoneIndex = nodeString.length()-5;
 		//Convert the string as needed
 		if (nodeString.contains(",")){
 			String[] datenumbers = nodeString.split(",");
@@ -67,9 +68,12 @@ public class CustomJsonDateDeserializer extends JsonDeserializer<LocalDateTime> 
 			System.out.println("Formatted dateString from array values: " + dateString);
 			nodeString = dateString;//TODO probably a new variable for both
 		}
-		else if (!nodeString.substring(nodeString.length()-5).equals(".000Z")) {
+		else if (!nodeString.substring(timeZoneIndex).equals(".000Z")) {
 			nodeString += ".000Z";
 		}
+//		else if (nodeString.length() < 17) { TODO breaks test
+//			nodeString += ".00.000Z";
+//		}
 
 		Instant instant = Instant.parse(nodeString);
 		dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());

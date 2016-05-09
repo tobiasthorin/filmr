@@ -132,6 +132,19 @@ public class ShowingAPIIntegrationTest {
         //Assert
         assertTrue("Make sure the call was succesfull", responseEntity.getStatusCode().is2xxSuccessful());
         assertEquals("Assert that the id of the read object is the same as we asked to get", id, showing.getId());
-        //assertEquals("Assert that the read object is the same as the one created in @Before", savedShowing, showing); //TODO not same due to repo stoff
+        assertEquals("Assert that the read object is the same as the one created in @Before", savedShowing, showing); //TODO not same due to repo stoff
+    }
+
+    @Test
+    public void testUpdate() {
+        Boolean changeDisabledTo = true;
+        savedShowing.setIsDisabled(changeDisabledTo);
+
+        restTemplate.put(urlWithId, savedShowing);
+
+        Showing updatedShowing = showingRepository.findOne(id); //TODO what, here this works
+
+        assertEquals("Assert that the object is updated", savedShowing, updatedShowing);
+        assertEquals("Make sure the showing is disabled", updatedShowing.getIsDisabled(), new Boolean(true));
     }
 }
