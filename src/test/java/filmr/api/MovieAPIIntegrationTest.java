@@ -24,8 +24,6 @@ import java.util.Collection;
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-//TODO this is broken
-
 @RunWith(Parameterized.class)
 @SpringApplicationConfiguration(Application.class)
 @WebIntegrationTest
@@ -118,9 +116,9 @@ public class MovieAPIIntegrationTest {
         //Update object in database
         restTemplate.put(urlWithId, savedMovie);
 
-        //Movie updatedMovie = movieRepository.getOne(savedMovie.getId()); //TODO this throws a lazy exception; session close after a commited transaction?
-        ResponseEntity<Movie> responseEntity = restTemplate.getForEntity(urlWithId, Movie.class);
-        Movie updatedMovie = responseEntity.getBody();
+        Movie updatedMovie = movieRepository.findOne(id);
+//        ResponseEntity<Movie> responseEntity = restTemplate.getForEntity(urlWithId, Movie.class);
+//        Movie updatedMovie = responseEntity.getBody();
 
         //Assert
         assertEquals("Assert that the object is updated", savedMovie, updatedMovie);

@@ -27,9 +27,6 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-//TODO broken
-
-
 @RunWith(Parameterized.class)
 @SpringApplicationConfiguration(Application.class)
 @WebIntegrationTest

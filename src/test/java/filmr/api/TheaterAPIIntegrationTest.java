@@ -24,6 +24,8 @@ import java.util.Collection;
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+//TODO when run after other tests it breaks (showing api integration test)
+
 @RunWith(Parameterized.class)
 @SpringApplicationConfiguration(Application.class)
 @WebIntegrationTest
@@ -67,7 +69,7 @@ public class TheaterAPIIntegrationTest {
         testContextManager.prepareTestInstance(this);
 
         //Initialize restTemplate
-        restTemplate = new RestTemplate(); //TODO TestRestTemplate broken
+        restTemplate = new RestTemplate();
 
         //clear everything
         theaterRepository.deleteAllInBatch();
