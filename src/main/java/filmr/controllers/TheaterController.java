@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * Created by Marco on 2016-04-25.
- */
 @RestController
 @RequestMapping(value = "/api/theaters")
 public class TheaterController {
