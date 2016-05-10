@@ -75,7 +75,8 @@ angular.module('filmr')
                     getShowingsWithParams();
                 },
                 function(error){
-                    $rootScope.errorHandler(error);
+                    $rootScope.errorHandler(error); //TODO better response here
+                    alert("Something went wrong. Either you have left a required field empty or you are trying to create a showing on a time that is occupied.");
                 });
 
             };
