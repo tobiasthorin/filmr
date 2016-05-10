@@ -1,85 +1,76 @@
 <!DOCTYPE html>
 <html ng-app="filmr">
 <head>
-	<meta charset="utf-8">
-	
-	<title>filmr</title>
-	
-  	<!-- Mobile-friendly viewport -->
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
 
-   	<!-- Style sheet link -->
-	
-	<!-- jQuery  - should be loaded before angular (loading in body) -->
-	<script
-			  src="https://code.jquery.com/jquery-2.2.3.min.js"
-			  integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="
-			  crossorigin="anonymous"></script>
-			  
+    <title>filmr</title>
 
-	
-	<!-- Bootstrap -->
-	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- Mobile-friendly viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<!-- Latest compiled and minified JavaScript -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <!-- jQuery  - should be loaded before angular (loading in body) -->
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"
+            integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
 
-	<link rel="stylesheet" href="styles/admin.css">
-	
+    <!-- Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+            crossorigin="anonymous"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles/admin.css">
+
 </head>
 
 <body>
 
-	<div id="contentWrapper" class="container">
+<div id="contentWrapper" class="container">
 
-		<!-- activeTab is set in app.js in the routing -->
-		<ul class="nav nav-tabs">
-			<li role="presentation" ng-class="{'active': activeTab == 'Customer'}"><a href="#/customer">Admin Home</a></li>
-  			<li role="presentation" ng-class="{'active': activeTab == 'Book'}"><a href="#/book">Book</a></li>
-  			<li role="presentation" ng-class="{'active': activeTab == 'Showing'}"><a href="#/showing">Showings</a></li>
-		</ul>
+    <!-- activeTab is set in app.js in the routing -->
+    <ul class="nav nav-tabs">
+        <li role="presentation" ng-class="{'active': activeTab == 'Customer'}"><a href="#/customer">Admin Home</a></li>
+        <li role="presentation" ng-class="{'active': activeTab == 'Book'}"><a href="#/book">Book</a></li>
+        <li role="presentation" ng-class="{'active': activeTab == 'Showing'}"><a href="#/showing">Showings</a></li>
+    </ul>
 
-		<h1>filmr</h1>
-	
-	
-		<!-- page specific content loads in this view. see routing in app.js  -->
-		<div ng-view></div>
-	
-	
-	
-	
-	
-	<!-- End of wrapper div -->
-	</div>
-	
-	
-	<!-- Angular files here.. => faster loading?  -->
-	<script src="angular-dependencies/angular.min.js"></script>
-	<script src="angular-dependencies/angular-route.min.js"></script>
-	<script src="angular-dependencies/angular-resource.min.js"></script>
-	
-	<script src="app.js"></script>
+    <h1>filmr</h1>
 
-	<!-- services and controllers for our custom views -->
-	<!-- vievs -->
-	<script src="views/booking-view/bookingController.js"></script>
-	<script src="views/booking_confirmed-view/bookingConfirmedController.js"></script>
-	<script src="views/cinema-view/cinemaController.js"></script>
-	<script src="views/admin-view/adminController.js"></script>
-	<script src="views/theater-view/theaterController.js"></script>
-    <script src="views/showing-view/showingController.js"></script>
-	<script src="views/customer-view/customerController.js"></script>
+    <!-- page specific content loads in this view. see routing in app.js  -->
+    <div ng-view></div>
 
-	<!-- services -->
-	<script src="services/bookingService.js"></script>
-	<script src="services/movieService.js"></script>
-	<script src="services/theaterService.js"></script>
-	<script src="services/movieService.js"></script>
-	<script src="services/repertoireService.js"></script>
-	<script src="services/cinemaService.js"></script>
-    <script src="services/showingService.js"></script>
-	
+    <!-- End of wrapper div -->
+</div>
+
+<!-- Angular files here.. => faster loading?  -->
+<script src="angular-dependencies/angular.min.js"></script>
+<script src="angular-dependencies/angular-route.min.js"></script>
+<script src="angular-dependencies/angular-resource.min.js"></script>
+
+<script src="app.js"></script>
+
+<!-- services and controllers for our custom views -->
+<!-- vievs -->
+<script src="views/booking-view/bookingController.js"></script>
+<script src="views/booking_confirmed-view/bookingConfirmedController.js"></script>
+<script src="views/cinema-view/cinemaController.js"></script>
+<script src="views/admin-view/adminController.js"></script>
+<script src="views/theater-view/theaterController.js"></script>
+<script src="views/showing-view/showingController.js"></script>
+<script src="views/customer-view/customerController.js"></script>
+
+<!-- services -->
+<script src="services/bookingService.js"></script>
+<script src="services/movieService.js"></script>
+<script src="services/theaterService.js"></script>
+<script src="services/movieService.js"></script>
+<script src="services/repertoireService.js"></script>
+<script src="services/cinemaService.js"></script>
+<script src="services/showingService.js"></script>
 
 </body>
 
