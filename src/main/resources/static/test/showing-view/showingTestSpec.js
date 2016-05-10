@@ -5,12 +5,32 @@ describe("Tests for showingController.js", function () {
     var $controller, $scope, MovieService, RepertoireService, CinemaService, ShowingService;
 
     //Mocks
+    var createdShowing = {};
+    var allCinemas = [
+        {},
+        {
+            name: "cinema1",
+            id:1,
+            theaters: [{
+                id:1,
+                name: "grand hall"
+            }],
+            repertoire: {
+                id: 99,
+                movies: [{
+                    id: 20,
+                    name: "Tron"
+                }]
+            }
+        }
+    ];
+
     CinemaService = {
         "query": function () {
             return {
                 "$promise": {
                     then: function (success, fail) {
-
+                        success(allCinemas);
                     }
                 }
             }
@@ -19,7 +39,7 @@ describe("Tests for showingController.js", function () {
             return {
                 "$promise": {
                     then: function (success, fail) {
-
+                        success(allCinemas[params.id])
                     }
                 }
             }
@@ -55,7 +75,16 @@ describe("Tests for showingController.js", function () {
 
     //TESTS
 
-    it("Fails", function () {
-        fail("yes");
+    it("Loads all cinemas", function () {
+        expect($scope.allCinemas).toEqual(allCinemas);
     });
+
+    it("Loads the theaters", function () {
+        expect($scope.moviesInRepertoire).toEqual(allCinemas[1].repertoire.movies);
+    });
+
+    it("Loads the repertoire", function () {
+        expect($scope.allCinemas).toEqual(allCinemas);
+    });
+
 });
