@@ -1,3 +1,4 @@
+
 angular.module('filmr')
     .controller('showingController',
         ['$location', '$rootScope', '$scope', '$routeParams', '$resource', 'CinemaService', 'ShowingService',
@@ -69,7 +70,8 @@ angular.module('filmr')
                             getShowingsWithParams();
                         },
                         function (error) {
-                            console.log(error);
+                            console.log(error); //TODO better response here
+                            alert("Something went wrong. Either you have left a required field empty or you are trying to create a showing on a time that is occupied.");
                         });
 
                     console.log("showing to add");
@@ -101,7 +103,6 @@ angular.module('filmr')
                             $rootScope.errorHandler(error);
                         }
                     )
-
                 }
 
 

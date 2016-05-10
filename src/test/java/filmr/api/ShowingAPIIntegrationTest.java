@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestContextManager;
 import org.springframework.web.client.RestTemplate;
@@ -121,6 +122,18 @@ public class ShowingAPIIntegrationTest {
         assertEquals("Compare movies", showing.getMovie(), postedShowing.getMovie());
         assertEquals("Compare theaters", showing.getTheater(), postedShowing.getTheater());
         assertEquals("Compare bookings", showing.getBookings(), postedShowing.getBookings());
+    }
+
+    @Test(expected = HttpMessageNotWritableException.class)
+    public void testCreateWithNullMovie() {
+        //TODO this is made for phun! not really but anyway
+        Showing showing = EntityFactory.createShowing(LocalDateTime.now(), null, savedTheater, new ArrayList<>());
+
+        ResponseEntity<Showing> responseEntity = restTemplate.postForEntity(baseUrl, showing, Showing.class);
+        Showing postedShowing = responseEntity.getBody();
+
+        System.out.println("DA COD" + responseEntity.getStatusCode());
+        //assertTrue("Make sure its a fail")
     }
 
     @Test
