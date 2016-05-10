@@ -8,7 +8,7 @@
         $routeProvider
             .when('/', {
                 title: 'Home',
-                activeTab: 'Home',
+                activeTab: 'Customer',
                 templateUrl: 'views/home-view/home.html',
             })
             // booking
@@ -58,6 +58,7 @@
             })
             .when('/customer', {
                 title: 'Customer Settings',
+                activeTab: 'Customer',
                 templateUrl: 'views/customer-view/customer.html',
                 controller: 'customerController'
 
