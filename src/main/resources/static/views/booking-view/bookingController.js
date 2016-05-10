@@ -14,13 +14,19 @@ angular.module('filmr')
 	
 	// functions on $scope object will be available to pages/templates (html) that that use this controller (see routing in app.js)
 	$scope.updateAvailableShowings = function(onlyForMovieWithId,date) {
-		getAllRelevantShowings(date,date,undefined,onlyForMovieWithId);
+        console.log("---");
+        console.log("BookingController: updateAvailableShowings");
+
+        var fromDate = new Date(date);
+        var toDate = new Date(date);
+
+        fromDate.setHours(0);
+        fromDate.setMinutes(0);
+        toDate.setHours(23);
+        toDate.setMinutes(59);
+		getAllRelevantShowings(fromDate,toDate,undefined,onlyForMovieWithId);
 	}
-	
-	$scope.functionForBtnClick = function() {
-		alert("clicked");
-	}
-	
+		
 
 
 	$scope.goToConfirm = function(id) {
