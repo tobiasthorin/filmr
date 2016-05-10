@@ -76,11 +76,13 @@ public class ShowingController {
     	System.out.println("to date, before manipulation: " + to_date);
     	
     	// plusDays(1) is temp fix for issue #86  - dates are one day off. TODO: fix for real
-		
+//    	from_date = from_date != null ? from_date.withHour(0).withMinute(0).plusDays(1) : LocalDateTime.now();
+//    	to_date = to_date != null ? to_date.withHour(23).withMinute(59).plusDays(1) : null;
+    	
     	// default values that are hard to code as strings.. If not null -> use the value, else provide a default value
-		from_date = from_date != null ? from_date.withHour(0).withMinute(0).plusDays(1) : LocalDateTime.now();
+		from_date = from_date != null ? from_date.withHour(0).withMinute(0) : LocalDateTime.now();
 		// change time of to_date so that it includes the whole day
-		to_date = to_date != null ? to_date.withHour(23).withMinute(59).plusDays(1) : null;
+		to_date = to_date != null ? to_date.withHour(23).withMinute(59) : null;
 		
 
 		System.out.println("From date: " + from_date);
