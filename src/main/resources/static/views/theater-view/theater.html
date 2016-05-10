@@ -14,7 +14,7 @@
 						<tr><th>Name:</th><td><input type="text" placeholder="Name" ng-model="name" ></td></tr>
 						<tr><th>Number of seats:</th><td><input type="number" ng-model="numberOfSeats"></td></tr>
 						<tr><th>Disabled:</th><td><input type="checkbox" ng-model="isDisabled"></td></tr>
-						<tr><th></th><td><input type="submit" ng-click="submitTheater()" value="Update"></td></tr>
+						<tr><th></th><td><input type="submit" class="btn" ng-click="submitTheater()" value="Update" ng-disabled="showingForm.$invalid || validateScheduleEditTheater()"></td></tr>
 					</table>
 				</form>
 			</div>

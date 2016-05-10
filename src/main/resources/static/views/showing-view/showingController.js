@@ -49,6 +49,12 @@ angular.module('filmr')
                         })
                 };
 
+                $scope.validateScheduleNewShowing = function() {
+                    if(!$scope.price && $scope.price!=0) return true; //note that zero is false i JS. we want all other "false"-values to be considered none valid
+                    if($scope.price<0) return true;
+                    return false;
+                }
+
                 $scope.createShowing = function () {
                     console.log("---");
                     console.log("call add showing to theater");
