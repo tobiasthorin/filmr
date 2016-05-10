@@ -6,6 +6,7 @@ import filmr.domain.Theater;
 import filmr.repositories.CinemaRepository;
 import filmr.repositories.TheaterRepository;
 import filmr.testfactories.EntityFactory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +24,8 @@ import java.util.Collection;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertTrue;
+
+//TODO when run after other tests it breaks (showing api integration test)
 
 @RunWith(Parameterized.class)
 @SpringApplicationConfiguration(Application.class)
@@ -67,7 +70,7 @@ public class TheaterAPIIntegrationTest {
         testContextManager.prepareTestInstance(this);
 
         //Initialize restTemplate
-        restTemplate = new RestTemplate(); //TODO TestRestTemplate broken
+        restTemplate = new RestTemplate();
 
         //clear everything
         theaterRepository.deleteAllInBatch();
@@ -133,5 +136,12 @@ public class TheaterAPIIntegrationTest {
 
     	// test if the local changes (savedTheater) matches the actual ones (updatedTheater)
     	assertEquals("Assert that the updated theater matches the changes we made", savedTheater, updatedTheater);
+    }
+
+    @After
+    public void clearDatabase() throws Exception {
+        //clear everything
+        theaterRepository.deleteAllInBatch();
+        cinemaRepository.deleteAllInBatch();
     }
 }

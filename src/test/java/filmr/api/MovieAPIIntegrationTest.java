@@ -4,6 +4,7 @@ import filmr.Application;
 import filmr.domain.Movie;
 import filmr.repositories.MovieRepository;
 import filmr.testfactories.EntityFactory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -70,7 +71,7 @@ public class MovieAPIIntegrationTest {
         movieRepository.deleteAllInBatch();
 
         //Create showing and everything that belongs in it
-        Movie movie = EntityFactory.createMovie("Global Test Movie", "A movie about things", new Long(120));
+        Movie movie = EntityFactory.createMovie("Global Test Movie", "A movie about things", new Long(120), new Double(100));
         savedMovie = movieRepository.save(movie);
 
         //Setup id for this run
@@ -82,7 +83,7 @@ public class MovieAPIIntegrationTest {
 
     @Test
     public void testCreate() throws Exception {
-        Movie movie = EntityFactory.createMovie("testCreate Movie", "A movie about testing", new Long(110));
+        Movie movie = EntityFactory.createMovie("testCreate Movie", "A movie about testing", new Long(110), new Double(100));
 
         //Post
         ResponseEntity<Movie> responseEntity = restTemplate.postForEntity(baseUrl, movie, Movie.class);
@@ -116,9 +117,9 @@ public class MovieAPIIntegrationTest {
         //Update object in database
         restTemplate.put(urlWithId, savedMovie);
 
-        //Movie updatedMovie = movieRepository.getOne(savedMovie.getId()); //TODO this throws a lazy exception; session close after a commited transaction?
-        ResponseEntity<Movie> responseEntity = restTemplate.getForEntity(urlWithId, Movie.class);
-        Movie updatedMovie = responseEntity.getBody();
+        Movie updatedMovie = movieRepository.findOne(id);
+//        ResponseEntity<Movie> responseEntity = restTemplate.getForEntity(urlWithId, Movie.class);
+//        Movie updatedMovie = responseEntity.getBody();
 
         //Assert
         assertEquals("Assert that the object is updated", savedMovie, updatedMovie);
@@ -139,5 +140,11 @@ public class MovieAPIIntegrationTest {
         restTemplate.delete(urlWithId, Movie.class);
         //Try to read it (should not exist)
         restTemplate.getForEntity(urlWithId, Movie.class);
+    }
+
+    @After
+    public void clearDatabase() throws Exception {
+        //clear everything
+        movieRepository.deleteAllInBatch();
     }
 }

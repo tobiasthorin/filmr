@@ -4,6 +4,7 @@ import filmr.Application;
 import filmr.domain.*;
 import filmr.repositories.*;
 import filmr.testfactories.EntityFactory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -71,17 +72,65 @@ public class ShowingFilterTest {
 
     //Parameters
     private Long id;
+    private String fromDateParameter;
+    private String toDateParameter;
+    private String availableTickets;
+    private String movieIdParameter;
+    private String theaterIdParameter;
+    private String cinemaIdParameter;
+    private String limitParameter;
+    private String showDisabledParameter;
+    private String includeDistinctHeaders;
+    private String includeEmptySlots; //TODO test these later
+
+    private boolean useMovie;
+    private boolean useTheater;
+    private boolean useCinema;
+
 
     //ID, ? TODO parameters pointless for this test
     @Parameterized.Parameters
     public static Collection<Object[]> parameters() {
         return Arrays.asList(new Object[][]{
-                {new Long(1)},
+                {null, null, "", false, false, false, "", "", "", ""}, //empty filter
+                {LocalDateTime.now().minusHours(3), null, "", false, false, false, "", "", "", ""},
+                {null, LocalDateTime.now().plusDays(2), "", false, false, false, "", "", "", ""},
+                {null, null, "0", false, false, false, "", "", "", ""},
+                {null, null, "", true, false, false, "", "", "", ""}, //TODO currently disabled
+                {null, null, "", false, true, false, "", "", "", ""},
+               // {null, null, "", false, false, true, "", "", "", ""}, //TODO disabled, se further down for info
+                {null, null, "", false, false, false, "10", "", "", ""},
+                {null, null, "", false, false, false, "", "true", "", ""},
+                {null, null, "", false, false, false, "", "false", "", ""},
+               // {null, null, "", false, false, false, "", "", "", ""}, //TODO disabled until time to test these filter options
+               // {null, null, "", false, false, false, "", "", "", ""}, //end single
+                {LocalDateTime.now().minusHours(4), LocalDateTime.now().plusDays(4), "0", true, true, false, "10", "true", "", ""}, //multiple
+                {LocalDateTime.now().minusHours(5), null, "0", false, true, false, "", "true", "", ""},
+                {null, LocalDateTime.now().plusDays(4), "", true, false, false, "20", "false", "", ""},
         });
     }
 
-    public ShowingFilterTest(Long id) {
+    public ShowingFilterTest(LocalDateTime fromDateParameter, LocalDateTime toDateParameter, String availableTicketsParameter, boolean useMovie, boolean useTheater, boolean useCinema, String limitParameter, String showDisabledParameter, String inludeDistinctHeadersParameter, String includeEmptySlotsParameter) {
         baseUrl = "http://localhost:8080/filmr/api/showings/";
+        if (fromDateParameter != null) {
+            this.fromDateParameter = fromDateParameter.toString().substring(0, fromDateParameter.toString().length()-4);
+        }
+        else
+            this.fromDateParameter = "";
+        if (toDateParameter != null) {
+            this.toDateParameter = toDateParameter.toString();
+            this.toDateParameter = this.toDateParameter.substring(0, this.toDateParameter.length()-4); //TODO there should be a smoother way to do this (deserializer forces this)
+        }
+        else
+            this.toDateParameter = "";
+        this.availableTickets = availableTicketsParameter;
+        this.useMovie = useMovie;
+        this.useTheater = useTheater;
+        this.useCinema = useCinema;
+        this.limitParameter = limitParameter;
+        this.showDisabledParameter = showDisabledParameter;
+        this.includeDistinctHeaders = inludeDistinctHeadersParameter;
+        this.includeEmptySlots = includeEmptySlotsParameter;
     }
 
     @Before
@@ -100,7 +149,7 @@ public class ShowingFilterTest {
         cinemaRepository.deleteAllInBatch();
 
         //Create showing and everything that belongs in it
-        Movie movie = EntityFactory.createMovie("Global Test Movie", "A Movie About Cows Murdering cute bunnies", new Long(120));
+        Movie movie = EntityFactory.createMovie("Global Test Movie", "A Movie About Cows Murdering cute bunnies", new Long(120), new Double(100));
         savedMovie = movieRepository.save(movie);
         Cinema cinema = EntityFactory.createCinema("Global Test Cinema");
         savedCinema = cinemaRepository.save(cinema);
@@ -114,33 +163,38 @@ public class ShowingFilterTest {
         id = savedShowing.getId();
         urlWithId = baseUrl+id;
 
+        if (useMovie) {
+            movieIdParameter = savedMovie.getId().toString();
+        } else {
+            movieIdParameter = "";
+        }
+        if (useTheater) {
+            theaterIdParameter = savedTheater.getId().toString();
+        } else {
+            theaterIdParameter = "";
+        }
+        if (useCinema) {
+            cinemaIdParameter = savedCinema.getId().toString();
+        } else {
+            cinemaIdParameter = "";
+        }
+
         tableSize = showingRepository.findAll().size();
         System.out.println("Table size: " + tableSize);
     }
 
     @Test //2016-05-05T15:07:15.000Z
     public void testFilterNoParameters() {
-        String fromDateParameter = "2016-05-04T14:14:04";
-        String toDateParameter = "2016-05-10T14:14:04";
-        String availableTickets = "0";
-        String movieIdParameter = savedMovie.getId().toString();
-        String theaterIdParameter = savedTheater.getId().toString();
-        String cinemaIdParameter = savedCinema.getId().toString();
-        String limitParameter = "10";
-        String showDisabledParameter = "true";
-        String includeDistinctHeaders;
-        String includeEmptySlots; //TODO test these later?
 
         HashMap<String, String> params = getFilterParameters(fromDateParameter, toDateParameter, availableTickets, movieIdParameter, theaterIdParameter, cinemaIdParameter, limitParameter, showDisabledParameter, "", "");
         URI uri = getURI(params);
         ResponseEntity<Showing[]> responseEntity =restTemplate.getForEntity(uri, Showing[].class);
         Showing[] showings = responseEntity.getBody();
 
-        HttpHeaders h = responseEntity.getHeaders(); //TODO use this?
+        HttpHeaders h = responseEntity.getHeaders(); //TODO use later
 
         LocalDateTime compareDate;
 
-        System.out.println("got dem showins!! thay be "+showings.length+ " big dat es big");
         for (Showing showing : showings) {
             if (!params.get(fromDate).equals("")) {
                 //all returned showings should be after fromDate
@@ -170,11 +224,13 @@ public class ShowingFilterTest {
                 assertTrue("Assert amount did not surpass limit", showings.length <= limit);
             }
             if (!params.get(showDisabledShowings).equals("")) {
-                Boolean showDisabled = Boolean.parseBoolean(showDisabledParameter);
-                assertEquals("Make sure show disabled filter works right", showDisabled, !showing.getIsDisabled());
+                Boolean showDisabled = Boolean.parseBoolean(showDisabledParameter); //TODO breaks when parameter is set to 'true'
+                //when false, only show not disabled
+                if (!showDisabled)
+                    assertEquals("Make sure show disabled filter works right", false, showing.getIsDisabled());
             }
             else {
-                assertEquals("Disabled shouldnt be showed", true, showing.getIsDisabled());
+                assertEquals("Disabled shouldnt be showed", false, showing.getIsDisabled());
             }
         }
     }
@@ -209,5 +265,14 @@ public class ShowingFilterTest {
         params.put(includeEmptySlotsForMovieOfLenght, includeEmptySlots);
 
         return params;
+    }
+
+    @After
+    public void clearDatabase() throws Exception {
+        //clear everything
+        showingRepository.deleteAllInBatch();
+        movieRepository.deleteAllInBatch();
+        theaterRepository.deleteAllInBatch();
+        cinemaRepository.deleteAllInBatch();
     }
 }

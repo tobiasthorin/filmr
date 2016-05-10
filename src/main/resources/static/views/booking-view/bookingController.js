@@ -46,9 +46,9 @@ angular.module('filmr')
 	// "private" functions. not visible on $scope.  
 	function getAllRelevantShowings(fromDate, toDate, mininumAvailableTickets, onlyForMovieWithId) {
 		
+		console.log("...");
+		console.log("BookingController: getAllRelevantShowings()");
 		console.log("fetching relevant showings based on selected options");
-		
-		// TODO: gather relevant variables to limit showings:  fromDate, toDate, mininumAvailableTickets, onlyForMovieWithId
 		
 		BookingService.getAllRelevantShowings(fromDate, toDate, mininumAvailableTickets, onlyForMovieWithId, true).then(
 				// on success
@@ -69,10 +69,10 @@ angular.module('filmr')
 					}
 
 					$scope.relevantDates = [];
-					for(i=20; i<31; i++) {
+					for(i=9; i<20; i++) {
 						var color = "#eee";
 						if(isDateFoundInShowings(i,showingsArray)) color = "#4e4";
-						$scope.relevantDates.push({"day":i,"color":color,"date":new Date("2016-04-"+i)});
+						$scope.relevantDates.push({"day":i,"color":color,"date":new Date("2016-05-"+i)});
 					}
 
 					$scope.relevantShowings = showingsArray;

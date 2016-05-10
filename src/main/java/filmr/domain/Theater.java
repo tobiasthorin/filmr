@@ -4,9 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
 
 import java.util.List;
 
@@ -21,7 +24,10 @@ public class Theater {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	@NotBlank
 	private String name;
+	@NotNull
+	@Range(min=1)
 	private int numberOfSeats;
 	private boolean disabled;
 	@OneToMany(mappedBy = "theater")
@@ -33,7 +39,7 @@ public class Theater {
 	private Cinema cinema;
 
 	@Transient
-	private String cinemaName;
+	private String cinemaName; // TODO: remove? useless?
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "theater")

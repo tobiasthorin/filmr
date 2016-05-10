@@ -19,7 +19,7 @@ public class BookingController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Booking> createMovie(@RequestBody Booking booking) {
+    public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) {
         Booking savedBooking = bookingService.saveEntity(booking);
         return new ResponseEntity<Booking>(savedBooking, HttpStatus.OK);
     }
@@ -27,15 +27,15 @@ public class BookingController {
     @CrossOrigin
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Booking> readBooking(@PathVariable Long id){
-        Booking retrievedShowing = bookingService.readEntity(id);
-        return new ResponseEntity<Booking>(retrievedShowing, HttpStatus.OK);
+        Booking retrievedBooking = bookingService.readEntity(id);
+        return new ResponseEntity<Booking>(retrievedBooking, HttpStatus.OK);
     }
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<Booking>> readAllShowings() {
-        List<Booking> retrievedShowings = bookingService.readAllEntities();
-        return new ResponseEntity<List<Booking>>(retrievedShowings, HttpStatus.OK);
+    public ResponseEntity<List<Booking>> readAllBookings() {
+        List<Booking> retrievedBookings = bookingService.readAllEntities();
+        return new ResponseEntity<List<Booking>>(retrievedBookings, HttpStatus.OK);
     }
 
     @CrossOrigin
@@ -45,8 +45,8 @@ public class BookingController {
             return new ResponseEntity<Booking>(new Booking(), HttpStatus.BAD_REQUEST);
         }
 
-        Booking updatedShowing = bookingService.saveEntity(Booking);
-        return new ResponseEntity<Booking>(updatedShowing, HttpStatus.OK);
+        Booking updatedBooking = bookingService.saveEntity(Booking);
+        return new ResponseEntity<Booking>(updatedBooking, HttpStatus.OK);
     }
 
     @CrossOrigin
