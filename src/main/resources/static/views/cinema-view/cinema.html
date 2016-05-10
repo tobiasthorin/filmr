@@ -42,7 +42,7 @@
 							<tr><th>Name:</th><td><input type="text" ng-model="add_theater_name" placeholder="Name" required><td></tr>
 							<tr><th>Number of seats:</th><td><input type="number" ng-model="add_theater_seats" placeholder="0 or more" required><td></tr>
 							<tr><th>Disabled:</th><td><input type="checkbox" ng-model="add_theater_disabled" id="disabledCheckbox"><td></tr>
-							<tr><th></th><td><input type="submit" ng-click="submitTheater()" value="Add theater" ng-disabled="add-new-theater-form.$invalid"></td></tr>
+							<tr><th></th><td><input type="submit" ng-click="submitTheater()" class="btn" value="Add theater" ng-disabled="add-new-theater-form.$invalid || validateScheduleAddTheater()"></td></tr>
 						</table>
 					</form>
 				</div>
