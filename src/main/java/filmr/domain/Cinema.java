@@ -2,9 +2,9 @@ package filmr.domain;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -14,7 +14,7 @@ public class Cinema {
     @GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-    @NotNull
+    @NotBlank
 	private String name;
     @OneToOne
 	private Repertoire repertoire;

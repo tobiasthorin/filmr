@@ -2,6 +2,8 @@ package filmr.domain;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,13 +16,15 @@ public class Movie {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	@NotNull
+	@NotBlank
 	private String title;
-	@NotNull
+	@NotBlank
 	private String description;
 	@NotNull
+	@Range(min=1)
 	private Long lengthInMinutes;
 	@NotNull
+	@Range(min=0)
 	private Double defaultPrice;
 	
 	public Double getDefaultPrice() {
