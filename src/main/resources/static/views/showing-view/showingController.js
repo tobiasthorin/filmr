@@ -1,8 +1,8 @@
 
 angular.module('filmr')
     .controller('showingController',
-        ['$location','$rootScope', '$scope', '$routeParams', 'MovieService','$resource', 'RepertoireService','CinemaService','ShowingService',
-        function($location,$rootScope, $scope, $routeParams, MovieService, $resource, RepertoireService, CinemaService, ShowingService) {
+        ['$location','$rootScope', '$scope', '$routeParams','$resource','CinemaService','ShowingService',
+        function($location,$rootScope, $scope, $routeParams, $resource, CinemaService, ShowingService) {
 
             //Variables
             $scope.moviesInRepertoire = [];
@@ -28,7 +28,7 @@ angular.module('filmr')
                 console.log("---");
                 console.log("updating Showings List");
                 getShowingsWithParams();
-            }
+            };
 
             $scope.disableShowing = function(showing){
                 console.log("---");
@@ -48,10 +48,7 @@ angular.module('filmr')
                     $rootScope.errorHandler(error);
                     showing.isDisabled = !showing.isDisabled;
                 })
-
-
-
-            }
+            };
 
             $scope.createShowing = function() {
                 console.log("---");
@@ -73,7 +70,7 @@ angular.module('filmr')
 
                 console.log("showing to add");
                 console.log(newShowing);
-            }
+            };
 
             function getCinemas() {
                 CinemaService.query().$promise.then(
@@ -114,7 +111,7 @@ angular.module('filmr')
                     "to_date" : $scope.toDate,
                     "show_disabled_showings" : $scope.showingIsDisabled,
                     "include_empty_slots_for_movie_of_length" : $scope.movie.lengthInMinutes
-                }
+                };
                 console.log(params);
                 console.log("Get Showings with Params");
                 ShowingService.query(params).$promise.then(
