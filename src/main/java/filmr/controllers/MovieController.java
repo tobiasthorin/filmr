@@ -19,6 +19,9 @@ public class MovieController {
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Movie> createMovie(@RequestBody Movie movie) {
+        if (movie.getId() != null) {
+            return new ResponseEntity<Movie>(new Movie(), HttpStatus.BAD_REQUEST);
+        }
         Movie savedMovie = movieService.saveEntity(movie);
         return new ResponseEntity<Movie>(savedMovie, HttpStatus.OK);
     }

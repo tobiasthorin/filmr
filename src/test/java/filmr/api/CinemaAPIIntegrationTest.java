@@ -14,9 +14,12 @@ import org.junit.runners.Parameterized;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.http.HttpMessage;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestContextManager;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
@@ -98,6 +101,16 @@ public class CinemaAPIIntegrationTest {
         assertTrue("Assert that cinemas repertoire is empty", postedCinemaRepertoire.getMovies().size()==0);
 
         assertEquals("Assert that amount of cinemas is +1", tableSize +1, cinemaRepository.findAll().size());
+    }
+
+    @Test(expected = HttpClientErrorException.class)
+    public void testCreateWithId() {
+        Cinema cinema = savedCinema;
+
+        ResponseEntity<Cinema> responseEntity = restTemplate.postForEntity(baseUrl, cinema, Cinema.class);
+        Cinema postedCinema = responseEntity.getBody();
+
+        assertEquals("Make sure we get a bad request", HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
     }
 
     @Test
