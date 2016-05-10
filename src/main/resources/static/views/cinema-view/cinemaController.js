@@ -30,6 +30,14 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 			return theaters;
 		};
 
+
+        $scope.validateScheduleAddTheater = function() {
+            if(!$scope.add_theater_seats) return true;
+            if($scope.add_theater_seats<1) return true;
+            return false;
+        }
+
+
 		$scope.submitTheater = function () {
 
 			if (!$scope.add_theater_disabled) {
