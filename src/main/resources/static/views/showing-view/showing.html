@@ -79,7 +79,7 @@
                     <label>Price:</label>
                     <input type="number" ng-model="price" name="price" value="{{movie.defaultPrice}}">
                 </div>
-                <button class="btn" type="button" name="submit" id="submit" ng-click="createShowing()" ng-disabled="showingForm.$invalid">Add showing</button>
+                <input type="submit" class="btn" type="button" name="submit" id="submit" ng-click="createShowing()" ng-disabled="showingForm.$invalid" value="Add showing">
             </form>
         </div>
     </div>
