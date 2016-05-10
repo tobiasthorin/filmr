@@ -55,7 +55,7 @@
             <h3>Schedule new showing</h3>
             <hr>
 
-            <form role="form">
+            <form role="form" name="schedule-showing-form">
                 <div class="form-group">
                     <label>Cinema:</label>
                     <select ng-options="cinema as cinema.name for cinema in allCinemas"
@@ -77,9 +77,9 @@
                 </div>
                 <div class="form-group">
                     <label>Price:</label>
-                    <input type="number" ng-model="price" name="price" value="{{movie.defaultPrice}}" placeholder="0 or more">
+                    <input type="number" ng-model="price" name="price" value="{{movie.defaultPrice}}" placeholder="0 or more" required>
                 </div>
-                <input type="submit" class="btn" type="button" name="submit" id="submit" ng-click="createShowing()" ng-disabled="showingForm.$invalid" value="Add showing">
+                <input type="submit" class="btn" type="button" name="submit" id="submit" ng-click="createShowing()" ng-disabled="schedule-showing-form.$invalid" value="Add showing">
             </form>
         </div>
     </div>

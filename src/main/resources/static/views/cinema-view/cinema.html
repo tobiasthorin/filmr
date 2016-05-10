@@ -35,13 +35,13 @@
                 </ul>
 		</div>
 				<div class="add-theater">
-					<form>
+					<form name="add-new-theater-form">
 						<h2>Add new Theater</h2>
 						<table>
-							<tr><th>Name:</th><td><input type="text" ng-model="add_theater_name" placeholder="Name"><td></tr>
-							<tr><th>Number of seats:</th><td><input type="number" ng-model="add_theater_seats" placeholder="0 or more"><td></tr>
+							<tr><th>Name:</th><td><input type="text" ng-model="add_theater_name" placeholder="Name" required><td></tr>
+							<tr><th>Number of seats:</th><td><input type="number" ng-model="add_theater_seats" placeholder="0 or more" required><td></tr>
 							<tr><th>Disabled:</th><td><input type="checkbox" ng-model="add_theater_disabled" id="disabledCheckbox"><td></tr>
-							<tr><th></th><td><input type="submit" ng-click="submitTheater()" value="Add theater"></td></tr>
+							<tr><th></th><td><input type="submit" ng-click="submitTheater()" value="Add theater" ng-disabled="add-new-theater-form.$invalid"></td></tr>
 						</table>
 					</form>
 				</div>
@@ -52,13 +52,13 @@
                 <form>
     			    <h2>Edit cinema</h2>
     		        <div class="edit-cinema-name">
-				        <form>
+				        <form name="change-cinema-name">
                             <table>
                                 <tr>
-					                <th>Name:</th><td><input type="text" ng-model="edited_cinema_name"></td>
+					                <th>Name:</th><td><input type="text" ng-model="edited_cinema_name" required></td>
                                 </tr>
                                 <tr>
-					                <th></th><td><input ng-click="updateCinemaName()" type="submit" value="Update"></td>
+					                <th></th><td><input ng-click="updateCinemaName()" type="submit" value="Update" ng-disabled="change-cinema-name.$invalid"></td>
                                 </tr>
                             </table>
 				        </form>
