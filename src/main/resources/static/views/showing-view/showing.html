@@ -64,12 +64,16 @@
                 <div class="form-group">
                     <label>Movie:</label>
                     <select ng-options="movie as movie.title for movie in moviesInRepertoire"
-                            name="movies" ng-model="movie" ng-change="updateShowings()" required></select>
+                            name="movies" ng-model="movie" ng-change="updateShowings()" required>
+                        <option value="">Select a Movie</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label>Theater:</label>
                     <select ng-options="theater as theater.name for theater in theatersInCinema"
-                            name="theaters" ng-model="theater" ng-change="updateShowings()" required></select>
+                            name="theaters" ng-model="theater" ng-change="updateShowings()" required>
+                        <option value="">Select a Theater</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label>Date:</label>

@@ -21,6 +21,7 @@
 		</div>
 		<form>
 			<select ng-options="movie as movie.title for movie in getAddableMovies()" ng-model="add_movie_to_repertoire_select" required>
+				<option value="">Please Select A Movie</option>
 			</select>
 			<input type="submit" ng-click="addMovieToRepertoire()" value="Add movie to repertoire">
 		</form>
