@@ -1,3 +1,4 @@
+html {overflow-y: scroll;}
 h1{background: #30007a;margin:0;padding:10px; color:#eee; font-family:MONOSPACE; margin-bottom:10px}
 /*.nav{margin:0;padding:0;background: #38008e; border:0;}
 .nav-tabs{margin:0;padding:0;background: #38008e; border:0;}
