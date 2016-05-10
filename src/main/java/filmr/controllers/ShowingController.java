@@ -29,7 +29,9 @@ public class ShowingController {
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Showing> createShowing(@RequestBody Showing showing) {
-        System.out.println(showing.getMovie());
+        if (showing.getId() != null) {
+            return new ResponseEntity<Showing>(new Showing(), HttpStatus.BAD_REQUEST);
+        }
         Boolean showingTimeisValid = showingService.showingTimeIsValid(showing);
 
         if(showingTimeisValid){

@@ -19,7 +19,10 @@ public class BookingController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) {
+    public ResponseEntity<Booking> createBooking(@RequestBody Booking booking){
+        if (booking.getId() != null) {
+            return new ResponseEntity<Booking>(new Booking(), HttpStatus.BAD_REQUEST);
+        }
         Booking savedBooking = bookingService.saveEntity(booking);
         return new ResponseEntity<Booking>(savedBooking, HttpStatus.OK);
     }

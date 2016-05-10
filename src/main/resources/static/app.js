@@ -53,6 +53,7 @@
             })
             .when('/customer', {
                 title: 'Customer Settings',
+                activeTab: 'Customer',
                 templateUrl: 'views/customer-view/customer.html',
                 controller: 'customerController'
 
