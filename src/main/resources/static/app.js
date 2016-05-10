@@ -37,14 +37,6 @@
                 controller: 'showingController'
 
             })
-            // admin
-            .when('/admin', {
-                title: 'Admin',
-                activeTab: 'Admin',
-                templateUrl: 'views/admin-view/admin.html',
-                controller: 'adminController'
-
-            })
             .when('/cinema/:cinema_id/theater/:theater_id', {
                 title: 'Edit Theater',
                 templateUrl: 'views/theater-view/theater.html',
@@ -57,7 +49,9 @@
                 templateUrl: 'views/customer-view/customer.html',
                 controller: 'customerController'
 
-            }).otherwise({redirectTo: "/customer"})
+            })
+            // all other (invalid) paths.
+            .otherwise({redirectTo: "/customer"})
     });
 
 
