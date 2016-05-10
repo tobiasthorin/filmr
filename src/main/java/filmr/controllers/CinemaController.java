@@ -22,8 +22,11 @@ public class CinemaController {
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Cinema> createCinema(@RequestBody Cinema cinema) {
+        if(cinema.getId() != null) {
+            return new ResponseEntity<Cinema>(new Cinema(), HttpStatus.BAD_REQUEST);
+        }
         Repertoire repertoire = new Repertoire();
-        Repertoire savedRepertoire = repertoireService.saveEntity(repertoire);
+        repertoireService.saveEntity(repertoire);
 
         cinema.setRepertoire(repertoire);
         Cinema savedCinema = cinemaService.saveEntity(cinema);

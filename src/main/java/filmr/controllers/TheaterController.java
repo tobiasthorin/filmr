@@ -18,6 +18,9 @@ public class TheaterController {
 	@CrossOrigin
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Theater> createTheater(@RequestBody Theater theater) {
+		if (theater.getId() != null) {
+			return new ResponseEntity<Theater>(new Theater(), HttpStatus.BAD_REQUEST);
+		}
 		Theater savedTheater = theaterService.saveEntity(theater);
 		return new ResponseEntity<Theater>(savedTheater, HttpStatus.OK);
 	}
