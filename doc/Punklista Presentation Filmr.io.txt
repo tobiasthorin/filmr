@@ -1,0 +1,38 @@
+Punktlista filmr.io
+
+-Kort beskrivning
+  Bokningssystem för biografer
+  Huvudsakligen ett api som ska kunna kopplas till valfri sida/frontend
+  -Exempel frontend
+
+
+- Presentation av Demo, Emil
+-Demon är en prototyp
+  -  Vilka parameter calls körs
+    -Datum
+    -Film
+      -Kan köras i vilken ordning man vill, parametrar uppdaterar lista och sökfält
+
+- Presentation av Admin-Cinema
+  Visar biografer som finns för inloggad kund.
+  Lägga till nya biografer
+
+  -Presentation av Cinema
+    -Filmer i repetoar, kan lägg till från kunds eget filmutbud och ta bort
+    -Ser biografs salonger samt har möjliget att lägga till nya salonger
+    -Stol och Radsystem är inte implementerat i denna sprint
+    -Kan också byta namn på biograf(uppdatera)
+
+  -Presentation av salong
+    -Byta namn
+    -Ändra antal platser
+
+  -Presentation av Showing
+    -Se lista över alla showings
+    -Kan inte ta bort bara inaktivera
+    -Kan filtrera på parametrar
+    -Rensa enskilda fält eller hela
+    -Ska implementera bättre system för att visa lediga tider
+
+  -Kort beskrivning av showing backend
+  - Valt att inte kunna ta bort saker utan bara inaktivera, så att ingen historik går förlorad
