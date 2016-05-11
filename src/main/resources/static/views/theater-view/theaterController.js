@@ -17,6 +17,7 @@ angular.module('filmr')
 					function (result) {
 						console.log("Successfully retrieved data: ");
 						console.log(result);
+						$scope.orginal_name = result.name;
 						$scope.name = result.name;
 						$scope.numberOfSeats = result.numberOfSeats;
 						$scope.isDisabled = result.disabled;
