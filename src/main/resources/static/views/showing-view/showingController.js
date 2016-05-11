@@ -4,11 +4,6 @@ angular.module('filmr')
         ['$location', '$rootScope', '$scope', '$routeParams', '$resource', 'CinemaService', 'ShowingService',
             function ($location, $rootScope, $scope, $routeParams, $resource, CinemaService, ShowingService) {
 
-            //Variables
-
-
-
-
             //Execute on page load
             getCinemas(function(){
                 $scope.cinema = $scope.allCinemas[0];
