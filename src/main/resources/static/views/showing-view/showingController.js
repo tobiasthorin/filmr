@@ -67,10 +67,10 @@ angular.module('filmr')
                 console.log("---");
                 console.log("call add showing to theater");
                 var newShowing = new ShowingService();
-                newShowing.movie = $scope.movie;
-                newShowing.theater =$scope.theater;
-                newShowing.showDateTime = $scope.date;
-                newShowing.price = $scope.price;
+                newShowing.movie = $scope.movieForShowing;
+                newShowing.theater =$scope.theaterForShowing;
+                newShowing.showDateTime = $scope.dateForShowing;
+                newShowing.price = $scope.priceForShowing;
                 console.log("Date is: "+newShowing.showDateTime);
 
                 ShowingService.save(newShowing, function(result){
