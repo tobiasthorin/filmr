@@ -1,13 +1,8 @@
 
 angular.module('filmr')
     .controller('showingController',
-        ['$location','$rootScope', '$scope', '$routeParams', 'MovieService','$resource', 'RepertoireService','CinemaService','ShowingService',
-        function($location,$rootScope, $scope, $routeParams, MovieService, $resource, RepertoireService, CinemaService, ShowingService) {
-
-            //Variables
-
-
-
+        ['$location', '$rootScope', '$scope', '$routeParams', '$resource', 'CinemaService', 'ShowingService',
+            function ($location, $rootScope, $scope, $routeParams, $resource, CinemaService, ShowingService) {
 
             //Execute on page load
             getCinemas(function(){
@@ -41,26 +36,29 @@ angular.module('filmr')
                 getShowingsWithParams();
             }
 
-            $scope.disableShowing = function(showing){
+            $scope.disableShowing = function(showing) {
                 console.log("---");
-                console.log("Disable showing with id: "+showing.id);
+                console.log("Disable showing with id: " + showing.id);
                 showing.isDisabled = !showing.isDisabled;
-                console.log("Showing has datestring: "+showing.showDateTime);
+                console.log("Showing has datestring: " + showing.showDateTime);
 
                 ShowingService.update(showing).$promise.then(
-                    function(result){
+                    function (result) {
                         console.log("showing enabled/disabled");
                         console.log(result);
                         getShowingsWithParams();
-                },
-                function(error){
-                    $rootScope.errorHandler(error);
-                    //Reset value of isDisabled for correct representation in gui
-                    showing.isDisabled = !showing.isDisabled;
-                })
+                    },
+                    function (error) {
+                        $rootScope.errorHandler(error);
+                        //Reset value of isDisabled for correct representation in gui
+                        showing.isDisabled = !showing.isDisabled;
+                    })
 
-
-
+                $scope.validateScheduleNewShowing = function () {
+                    if (!$scope.price && $scope.price != 0) return true; //note that zero is false i JS. we want all other "false"-values to be considered none valid
+                    if ($scope.price < 0) return true;
+                    return false;
+                }
             }
 
             $scope.createShowing = function() {
@@ -73,15 +71,15 @@ angular.module('filmr')
                 newShowing.price = $scope.priceForShowing;
                 console.log("Date is: "+newShowing.showDateTime);
 
-                ShowingService.save(newShowing, function(result){
-                    console.log("Saved showing: "+ result);
-                    getShowingsWithParams();
-                },
-                function(error){
-                    $rootScope.errorHandler(error);
-                });
-
-            }
+                    ShowingService.save(newShowing, function (result) {
+                            console.log("Saved showing: "+ result);
+                            getShowingsWithParams();
+                        },
+                        function (error) {
+                            $rootScope.errorHandler(error);
+                            alert("Something went wrong. Either you have left a required field empty or you are trying to create a showing on a time that is occupied.");
+                        });
+                };
 
             function getCinemas(callbackWhenDone) {
                 CinemaService.query().$promise.then(
