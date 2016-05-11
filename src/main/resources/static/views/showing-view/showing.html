@@ -7,36 +7,35 @@
             <label>Cinema:</label>
             <select ng-options="cinema as cinema.name for cinema in allCinemas"
                     name="cinema" ng-model="cinema" ng-change="updateCinemaScope()">
-
             </select>
             <label>From:</label>
             <input type="date" name="from_date" ng-model="fromDate" ng-change="updateShowings()">
-            <button class="btn" type="button" ng-click="fromDate = null; updateShowings()">x</button>
+            <button class="" type="button" ng-click="fromDate = null; updateShowings()">x</button>
 
             <label>To:</label>
             <input type="date" name="to_date" ng-model="toDate" ng-change="updateShowings()">
-            <button class="btn" type="button" ng-click="toDate = null; updateShowings()">x</button>
+            <button class="" type="button" ng-click="toDate = null; updateShowings()">x</button>
 
             <label>Movie:</label>
             <select ng-options="movie as movie.title for movie in moviesInRepertoire"
                     name="movies" ng-model="movie" ng-change="updateShowings()" required>
                 <option value="" disabled>Movies in Repertoire</option>
             </select>
-            <button class="btn" type="button" ng-click="movie = {}; updateShowings()">x</button>
+            <button class="" type="button" ng-click="movie = {}; updateShowings()">x</button>
 
             <label>Theater:</label>
             <select ng-options="theater as theater.name for theater in theatersInCinema"
                     name="theaters" ng-model="theater" ng-change="updateShowings()" required>
                 <option value="" disabled>Theaters in {{cinema.name}}</option>
             </select>
-            <button class="btn" type="button" ng-click="theater = {}; updateShowings()">x</button>
+            <button class="" type="button" ng-click="theater = {}; updateShowings()">x</button>
 
             <label>Show disabled:</label>
             <input type="checkbox" value="" name="disabledCheckbox" ng-model="showingIsDisabled"
                    ng-change="updateShowings()"
                    ng-true-value="true" ng-false-value="false" ng-checked="disabledCheckbox == true">
 
-            <button class="btn" type="button" ng-click="clearAllFilters()">Clear All Filters</button>
+            <button class="" type="button" ng-click="clearAllFilters()">Clear All Filters</button>
 
             <table class="table table-hover">
                 <thead>
@@ -72,7 +71,7 @@
             <h3>Schedule new showing</h3>
             <hr>
 
-            <form role="form">
+            <form role="form" name="showing_form">
                 <div class="form-group">
                     <label>Cinema:</label>
                     <select ng-options="cinema as cinema.name for cinema in allCinemas"
@@ -98,7 +97,7 @@
                            value="{{movieForShowing.defaultPrice}}">
                 </div>
                 <button class="btn" type="button" name="submit" id="submit" ng-click="createShowing()"
-                        ng-disabled="showingForm.$invalid">Add showing
+                        ng-disabled="showing_form.$invalid">Add showing
                 </button>
             </form>
         </div>
