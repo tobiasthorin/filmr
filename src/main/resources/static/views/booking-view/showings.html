@@ -1,6 +1,12 @@
 <link rel="stylesheet" href="styles/book.css">
 <div class="showings-wrapper">
 	<div class="container">
+
+        <div ng-if="searchCriteria" class="col-sm-12">
+            <input type="button" ng-click="clearSearchCriteriaAndUpdateList()" value="Start over"><!-- {{searchCriteria}} <--do not show this until we fixed serach box info-->
+            <br><br> <!-- temp HACK make real css class to handle search box -->
+        </div>
+
 		<div class="row">
 			<div class="col-sm-6">
 				<ul class="list movies">

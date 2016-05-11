@@ -17,17 +17,22 @@ angular.module('filmr')
         console.log("---");
         console.log("BookingController: updateAvailableShowings");
 
-        var fromDate = new Date(date);
-        var toDate = new Date(date);
+        if(typeof date != "undefined") {
+            var fromDate = new Date(date);
+            var toDate = new Date(date);
 
-        fromDate.setHours(0);
-        fromDate.setMinutes(0);
-        toDate.setHours(23);
-        toDate.setMinutes(59);
+            fromDate.setHours(0);
+            fromDate.setMinutes(0);
+            toDate.setHours(23);
+            toDate.setMinutes(59);
+        }
 		getAllRelevantShowings(fromDate,toDate,undefined,onlyForMovieWithId);
 	}
 		
 
+    $scope.clearSearchCriteriaAndUpdateList = function() {
+        getAllRelevantShowings();
+    }
 
 	$scope.goToConfirm = function(id) {
 		$location.path("/booking_confirm/"+id);
@@ -82,6 +87,7 @@ angular.module('filmr')
 					}
 
 					$scope.relevantShowings = showingsArray;
+                    $scope.searchCriteria = "Searching on "+fromDate+" - "+toDate+", "+onlyForMovieWithId;
 					
 				}, // on error
 				function(error) {
