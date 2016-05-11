@@ -2,6 +2,7 @@ Punktlista filmr.io
 
 -Kort beskrivning
   Bokningssystem för biografer
+  (Affärsidé är att sälja ett färdigt system istället för biografer ska behöva utveckla/köpa ett eget. Billigare för dom vilket gör produkten mer attraktiv)
   Huvudsakligen ett api som ska kunna kopplas till valfri sida/frontend
   -Exempel frontend
 
@@ -12,6 +13,9 @@ Punktlista filmr.io
     -Datum
     -Film
       -Kan köras i vilken ordning man vill, parametrar uppdaterar lista och sökfält
+      -Fler parameterar tillkommer (antal platser kvar, vilken biograf)
+      -Visa exempel: Jag vill se "Lion Queen", "Jag ser att dessa datum lyser då upp. Klickar på ett" "då SKA man se bara showings för den filmen på det datumet."
+           Visa sedan tvärtom. Välj datum först och se vilka filmer som går. Förklara att detta är smart då man inte behöver begränsa sig till en ordning utan besökaren kan välja söka i den ordningen hen vill.
 
 - Presentation av Admin-Cinema
   Visar biografer som finns för inloggad kund.
