@@ -35,7 +35,7 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
             if(!$scope.add_theater_seats) return true;
             if($scope.add_theater_seats<1) return true;
             return false;
-        }
+        };
 
 
 		$scope.submitTheater = function () {
@@ -125,6 +125,11 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 				$rootScope.errorHandler(error);
 			});
 		};
+
+        //Returns false if edited_cinema_name is falsy
+        $scope.validateCinemaNameForm = function () {
+            return !!$scope.edited_cinema_name;
+        };
 
 		function fetchMoviesInRepertorie() {
 
