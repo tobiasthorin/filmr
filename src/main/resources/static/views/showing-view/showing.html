@@ -55,7 +55,7 @@
             <h3>Schedule new showing</h3>
             <hr>
 
-            <form role="form" name="schedule-showing-form">
+            <form role="form">
                 <div class="form-group">
                     <label>Cinema:</label>
                     <select ng-options="cinema as cinema.name for cinema in allCinemas"
@@ -64,26 +64,22 @@
                 <div class="form-group">
                     <label>Movie:</label>
                     <select ng-options="movie as movie.title for movie in moviesInRepertoire"
-                            name="movies" ng-model="movie" ng-change="updateShowings()" required>
-                        <option value="">Select a Movie</option>
-                    </select>
+                            name="movies" ng-model="movieForShowing" required></select>
                 </div>
                 <div class="form-group">
                     <label>Theater:</label>
                     <select ng-options="theater as theater.name for theater in theatersInCinema"
-                            name="theaters" ng-model="theater" ng-change="updateShowings()" required>
-                        <option value="">Select a Theater</option>
-                    </select>
+                            name="theaters" ng-model="theaterForShowing" required></select>
                 </div>
                 <div class="form-group">
                     <label>Date:</label>
-                    <input type="datetime-local" name="date" id="date" ng-model="date" required>
+                    <input type="datetime-local" name="date" id="date" ng-model="dateForShowing" required>
                 </div>
                 <div class="form-group">
                     <label>Price:</label>
-                    <input type="number" ng-model="price" name="price" value="{{movie.defaultPrice}}" placeholder="0 or more" required>
+                    <input type="number" ng-model="price" name="priceForShowing" value="{{movieForShowing.defaultPrice}}">
                 </div>
-                <input type="submit" class="btn" name="submit" id="submit" ng-click="createShowing()" ng-disabled="schedule-showing-form.$invalid || validateScheduleNewShowing()" value="Add showing">
+                <button class="btn" type="button" name="submit" id="submit" ng-click="createShowing()" ng-disabled="showingForm.$invalid">Add showing</button>
             </form>
         </div>
     </div>
