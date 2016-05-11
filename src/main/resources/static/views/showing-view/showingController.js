@@ -69,6 +69,7 @@ angular.module('filmr')
                 newShowing.theater =$scope.theaterForShowing;
                 newShowing.showDateTime = $scope.dateForShowing;
                 newShowing.price = $scope.priceForShowing;
+                newShowing.isDisabled = false;
                 console.log("Date is: "+newShowing.showDateTime);
 
                 ShowingService.save(newShowing, function (result) {
