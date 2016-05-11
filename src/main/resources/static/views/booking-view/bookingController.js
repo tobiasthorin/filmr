@@ -80,7 +80,7 @@ angular.module('filmr')
 					}
 
 					$scope.relevantDates = [];
-					for(i=11; i<23; i++) {
+					for (i = 11; i < 23; i++) {
 						var color = "#eee";
 						if(isDateFoundInShowings(i,showingsArray)) color = "#4e4";
 						$scope.relevantDates.push({"day":i,"color":color,"date":new Date("2016-05-"+i)});

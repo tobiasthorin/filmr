@@ -36,7 +36,7 @@ angular.module('filmr')
                 getShowingsWithParams();
             }
 
-            $scope.disableShowing = function(showing) {
+            $scope.disableShowing = function (showing) {
                 console.log("---");
                 console.log("Disable showing with id: " + showing.id);
                 showing.isDisabled = !showing.isDisabled;
@@ -69,17 +69,27 @@ angular.module('filmr')
                 newShowing.theater =$scope.theaterForShowing;
                 newShowing.showDateTime = $scope.dateForShowing;
                 newShowing.price = $scope.priceForShowing;
+                newShowing.isDisabled = false;
                 console.log("Date is: "+newShowing.showDateTime);
 
-                    ShowingService.save(newShowing, function (result) {
-                            console.log("Saved showing: "+ result);
-                            getShowingsWithParams();
-                        },
-                        function (error) {
-                            $rootScope.errorHandler(error);
-                            alert("Something went wrong. Either you have left a required field empty or you are trying to create a showing on a time that is occupied.");
-                        });
-                };
+                ShowingService.save(newShowing, function (result) {
+                        console.log("Saved showing: "+ result);
+                        getShowingsWithParams();
+                    },
+                    function (error) {
+                        $rootScope.errorHandler(error);
+                        alert("Something went wrong. Either you have left a required field empty or you are trying to create a showing on a time that is occupied.");
+                    });
+            };
+
+            $scope.clearAllFilters = function() {
+                $scope.fromDate = null;
+                $scope.toDate = null;
+                $scope.movie = {};
+                $scope.theater = {};
+                $scope.showingIsDisabled = false;
+                getShowingsWithParams();
+            }
 
             function getCinemas(callbackWhenDone) {
                 CinemaService.query().$promise.then(
