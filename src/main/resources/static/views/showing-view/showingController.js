@@ -71,15 +71,24 @@ angular.module('filmr')
                 newShowing.price = $scope.priceForShowing;
                 console.log("Date is: "+newShowing.showDateTime);
 
-                    ShowingService.save(newShowing, function (result) {
-                            console.log("Saved showing: "+ result);
-                            getShowingsWithParams();
-                        },
-                        function (error) {
-                            $rootScope.errorHandler(error);
-                            alert("Something went wrong. Either you have left a required field empty or you are trying to create a showing on a time that is occupied.");
-                        });
-                };
+                ShowingService.save(newShowing, function (result) {
+                        console.log("Saved showing: "+ result);
+                        getShowingsWithParams();
+                    },
+                    function (error) {
+                        $rootScope.errorHandler(error);
+                        alert("Something went wrong. Either you have left a required field empty or you are trying to create a showing on a time that is occupied.");
+                    });
+            };
+
+            $scope.clearAllFilters = function() {
+                $scope.fromDate = null;
+                $scope.toDate = null;
+                $scope.movie = {};
+                $scope.theater = {};
+                $scope.showingIsDisabled = false;
+                getShowingsWithParams();
+            }
 
             function getCinemas(callbackWhenDone) {
                 CinemaService.query().$promise.then(
