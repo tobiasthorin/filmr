@@ -36,7 +36,7 @@ angular.module('filmr')
                 getShowingsWithParams();
             }
 
-            $scope.disableShowing = function(showing) {
+            $scope.disableShowing = function (showing) {
                 console.log("---");
                 console.log("Disable showing with id: " + showing.id);
                 showing.isDisabled = !showing.isDisabled;

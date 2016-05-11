@@ -231,5 +231,12 @@ describe("cinemaController.js", function () {
 		it("Prints the cinema name", function() {
 			expect($scope.cinema_name).toEqual($scope.getCurrentCinema().name);
 		});
+
+		it("Disables the submit button if cinema name is empty", function () {
+            $scope.edited_cinema_name = "";
+            expect($scope.validateCinemaNameForm()).toEqual(false);
+            $scope.edited_cinema_name = "Wololo";
+			expect($scope.validateCinemaNameForm()).toEqual(true);
+		});
 	});
 });
