@@ -21,6 +21,7 @@ angular.module('filmr')
 
             $scope.theater = {};
             $scope.movie = {};
+            $scope.movieForShowing = {};
             $scope.cinema= $scope.allCinemas[0];
 
             $scope.updateShowings = function() {
@@ -127,7 +128,7 @@ angular.module('filmr')
                     "from_date" : $scope.fromDate,
                     "to_date" : $scope.toDate,
                     "show_disabled_showings" : $scope.showingIsDisabled,
-                    "include_empty_slots_for_movie_of_length" : $scope.movie.lengthInMinutes
+                    "include_empty_slots_for_movie_of_length" : $scope.movieForShowing.lengthInMinutes
                 }
                 console.log(params);
                 console.log("Get Showings with Params");

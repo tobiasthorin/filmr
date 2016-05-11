@@ -81,7 +81,7 @@
                 <div class="form-group">
                     <label>Movie:</label>
                     <select ng-options="movie as movie.title for movie in moviesInRepertoire"
-                            name="movies" ng-model="movieForShowing" required></select>
+                            name="movies" ng-model="movieForShowing" ng-change="updateShowings()" required></select>
                 </div>
                 <div class="form-group">
                     <label>Theater:</label>
