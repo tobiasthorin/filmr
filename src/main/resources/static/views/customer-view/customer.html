@@ -1,41 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Customer</title>
+    <meta charset="UTF-8">
+    <title>Customer</title>
 </head>
 <body>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-6">
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
 
-		<div class="table">
-			<h2>Cinemas</h2>
-			<ul>
-				<li ng-repeat="cinema in cinemas">
-					<a href="#/cinema/{{cinema.id}}">{{cinema.name}}</a>
-				</li>
-			</ul>
-		</div>
-
-                <form name="add-cinema-form">
-					<h2>Add new Cinema</h2>
-					<table>
-						<tr>
-							<th>Name:</th><td><input type="text" ng-model="add_cinema_name" required></td>
-						</tr>
-						<!--<tr>-->
-							<!--<th>Disabled:</th><td><input type="checkbox" ng-model="add_cinema_disabled"></td>-->
-						<!--</tr>-->
-						<tr>
-							<th></th><td><input type="submit" ng-click="submitCinema()" value="Add cinema" ng-disabled="add-cinema-form.$invalid"></td>
-						</tr>
-					</table>
-                </form>
-
+            <div class="table">
+                <h2>Cinemas</h2>
+                <ul>
+                    <li ng-repeat="cinema in cinemas">
+                        <a href="#/cinema/{{cinema.id}}">{{cinema.name}}</a>
+                    </li>
+                </ul>
             </div>
-	</div>
+
+            <form name="add-cinema-form">
+                <h2>Add new Cinema</h2>
+                <table>
+                    <tr>
+                        <th>Name:</th>
+                        <td><input type="text" ng-model="add_cinema_name" required></td>
+                    </tr>
+                    <!--<tr>-->
+                    <!--<th>Disabled:</th><td><input type="checkbox" ng-model="add_cinema_disabled"></td>-->
+                    <!--</tr>-->
+                    <tr>
+                        <th></th>
+                        <td><input type="submit" ng-click="submitCinema()" value="Add cinema"
+                                   ng-disabled="add-cinema-form.$invalid"></td>
+                    </tr>
+                </table>
+            </form>
+
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
