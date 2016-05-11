@@ -2,19 +2,27 @@ package filmr.domain;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
+//@NamedQueries( TODO add disabled property (+getters and setters), we got to eager, this is not until next sprint
+//        @NamedQuery(name = "Cinema.filteredAndOrdered",
+//                query = "SELECT c FROM Cinema c " +
+//                        "WHERE " +
+//                        "( (:showDisabledCinemas = TRUE) OR (c.isDisabled = FALSE OR c.isDisabled is null) ) " + // (s.isDisabled = false) will only be evaluated if showDisabledShowings = false, and will only evaluate to true if s is not disabled
+//                        "ORDER BY c.id ASC"
+//        )
+//)
 public class Cinema {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-    @NotNull
+    @NotBlank
 	private String name;
     @OneToOne
 	private Repertoire repertoire;

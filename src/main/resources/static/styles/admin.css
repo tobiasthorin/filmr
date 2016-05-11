@@ -1,7 +1,8 @@
+html {overflow-y: scroll;}
 h1{background: #30007a;margin:0;padding:10px; color:#eee; font-family:MONOSPACE; margin-bottom:10px}
-.nav{margin:0;padding:0;background: #38008e; border:0;}
+/*.nav{margin:0;padding:0;background: #38008e; border:0;}
 .nav-tabs{margin:0;padding:0;background: #38008e; border:0;}
-.nav-tabs a{color:#eee; font-weight:bold}
+*/
 .table h2{font-size:16px; background: #30007a; color:#eee; font-weight:bold; padding: 5px; margin:0; border-bottom: 1px solid #270062}
 .table ul{padding:0;margin:0;display:block}
 .table li{padding:0;margin:0; background:#eee; padding:3px;display:block}
@@ -21,6 +22,9 @@ input[type=submit]{color:#eee;background: #30007a;}
 .is_enabled{background-color: #5cb85c; border-color: #4cae4c;}
 .is_disabled{background-color: #d9534f; border-color: #d43f3a;}
 
-.nav-tabs>li:hover>a{background-color:transparent}
-.nav-tabs>li.active>a{background-color:transparent;}
-.nav-tabs>li:active>a{background-color:transparent;}
+.nav-tabs li.active a{background-color: #5a31ae !important;}
+
+.nav-tabs li a {color: #666666;}
+.nav-tabs li.active a {color: #fff !important;}
+.nav-tabs li.active a:active {color: #fff !important;}
+.nav-tabs li.active a:focus {color: #fff !important;}

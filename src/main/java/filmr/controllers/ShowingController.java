@@ -29,7 +29,9 @@ public class ShowingController {
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Showing> createShowing(@RequestBody Showing showing) {
-        System.out.println(showing.getMovie());
+        if (showing.getId() != null) {
+            return new ResponseEntity<Showing>(new Showing(), HttpStatus.BAD_REQUEST);
+        }
         Boolean showingTimeisValid = showingService.showingTimeIsValid(showing);
 
         if(showingTimeisValid){
@@ -37,7 +39,9 @@ public class ShowingController {
             return new ResponseEntity<Showing>(savedShowing, HttpStatus.OK);
         }
         System.out.println("Not valid time");
-        return new ResponseEntity<Showing>(new Showing(), HttpStatus.PRECONDITION_FAILED);
+        // TODO: throw custom error. an empty doesn't serialize into json, so 
+        // HttpStatus.PRECONDITION_FAILED does not reach the api consumer
+        return new ResponseEntity<Showing>(new Showing(), HttpStatus.PRECONDITION_FAILED); 
 
 
     }
@@ -66,8 +70,21 @@ public class ShowingController {
     		) {
     	
     	
-		// default values that are hard to code as strings.. If not null -> use the value, else provide a default value
-		from_date = from_date != null ? from_date : LocalDateTime.now();
+    	
+    	//TODO: figure out why dates from chrome datepicker is received as the date minus one day. 2001-01-02 -> 2001-01-01
+    	System.out.println("from date, before manipulation: " + from_date);
+    	System.out.println("to date, before manipulation: " + to_date);
+    	
+    	// plusDays(1) is temp fix for issue #86  - dates are one day off. TODO: fix for real
+//    	from_date = from_date != null ? from_date.withHour(0).withMinute(0).plusDays(1) : LocalDateTime.now();
+//    	to_date = to_date != null ? to_date.withHour(23).withMinute(59).plusDays(1) : null;
+    	
+    	// default values that are hard to code as strings.. If not null -> use the value, else provide a default value
+		from_date = from_date != null ? from_date.withHour(0).withMinute(0) : LocalDateTime.now();
+		// change time of to_date so that it includes the whole day
+		to_date = to_date != null ? to_date.withHour(23).withMinute(59) : null;
+		
+
 		System.out.println("From date: " + from_date);
 		System.out.println("To date: " + to_date);
 		

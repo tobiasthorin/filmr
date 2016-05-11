@@ -6,11 +6,6 @@
     app.config(function ($routeProvider) {
 
         $routeProvider
-            .when('/', {
-                title: 'Home',
-                activeTab: 'Home',
-                templateUrl: 'views/home-view/home.html',
-            })
             // booking
             .when('/book', {
                 title: 'Book',
@@ -42,14 +37,6 @@
                 controller: 'showingController'
 
             })
-            // admin
-            .when('/admin', {
-                title: 'Admin',
-                activeTab: 'Admin',
-                templateUrl: 'views/admin-view/admin.html',
-                controller: 'adminController'
-
-            })
             .when('/cinema/:cinema_id/theater/:theater_id', {
                 title: 'Edit Theater',
                 templateUrl: 'views/theater-view/theater.html',
@@ -58,10 +45,13 @@
             })
             .when('/customer', {
                 title: 'Customer Settings',
+                activeTab: 'Customer',
                 templateUrl: 'views/customer-view/customer.html',
                 controller: 'customerController'
 
-            }).otherwise({redirectTo: "/"})
+            })
+            // all other (invalid) paths.
+            .otherwise({redirectTo: "/customer"})
     });
 
 

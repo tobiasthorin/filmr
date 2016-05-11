@@ -30,6 +30,9 @@ public class RepertoireController {
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Repertoire> createRepertoire(@RequestBody Repertoire repertoire) {
+        if (repertoire.getId() != null) {
+            return new ResponseEntity<Repertoire>(new Repertoire(), HttpStatus.BAD_REQUEST);
+        }
         Repertoire savedRepertoire = repertoireService.saveEntity(repertoire);
         return new ResponseEntity<Repertoire>(savedRepertoire, HttpStatus.OK);
     }

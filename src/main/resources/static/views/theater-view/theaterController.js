@@ -27,6 +27,12 @@ angular.module('filmr')
 					});
 			};
 
+            $scope.validateScheduleEditTheater = function() {
+                if(!$scope.numberOfSeats) return true;
+                if($scope.numberOfSeats<1) return true;
+                return false;
+            }
+
 			$scope.submitTheater = function () {
 				console.log("Submitting edited theater...");
 				console.log($scope.name + ", id: " + $routeParams.theater_id);

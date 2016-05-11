@@ -6,6 +6,7 @@ import filmr.domain.Repertoire;
 import filmr.repositories.MovieRepository;
 import filmr.repositories.RepertoireRepository;
 import filmr.testfactories.EntityFactory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -114,5 +115,12 @@ public class MovieAPI2IntegrationTest {
 	Movie[] moviesAfterAddToRepetoire = restTemplate.getForEntity(movieBaseUrl+"?not_in_repertoire_with_id="+id, Movie[].class).getBody();
         assertEquals("Assert that query is empty since now the movie is already in repetoire", moviesAfterAddToRepetoire.length, 0);
 
+    }
+
+    @After
+    public void clearDatabase() throws Exception {
+        //clear everything
+        repertoireRepository.deleteAllInBatch();
+        movieRepository.deleteAllInBatch();
     }
 }
