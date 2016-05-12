@@ -2,6 +2,8 @@ package filmr.controllers;
 
 import filmr.domain.Cinema;
 import filmr.domain.Repertoire;
+import filmr.errorhandling.IllegalEntityPropertyException;
+import filmr.errorhandling.InsufficientEntityDataException;
 import filmr.services.CinemaService;
 import filmr.services.RepertoireService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +23,10 @@ public class CinemaController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Cinema> createCinema(@RequestBody Cinema cinema) {
+    public ResponseEntity<Cinema> createCinema(@RequestBody Cinema cinema) throws IllegalEntityPropertyException {
         if(cinema.getId() != null) {
-            return new ResponseEntity<Cinema>(new Cinema(), HttpStatus.BAD_REQUEST);
+            // return new ResponseEntity<Cinema>(new Cinema(), HttpStatus.BAD_REQUEST);
+        	throw new IllegalEntityPropertyException("Trying to create entity, but sending entity with predefined id.");
         }
         Repertoire repertoire = new Repertoire();
         repertoireService.saveEntity(repertoire);
@@ -54,9 +57,10 @@ public class CinemaController {
 
     @CrossOrigin
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Cinema> updateCinema(@PathVariable Long id, @RequestBody Cinema cinema){
+    public ResponseEntity<Cinema> updateCinema(@PathVariable Long id, @RequestBody Cinema cinema) throws InsufficientEntityDataException{
         if(cinema.getId() == null){
-            return new ResponseEntity<Cinema>(new Cinema(), HttpStatus.BAD_REQUEST);
+            // return new ResponseEntity<Cinema>(new Cinema(), HttpStatus.BAD_REQUEST);
+        	throw new InsufficientEntityDataException("Cinema entity to be updated must have a non-null id property");
         }
 
         Cinema updatedCinema = cinemaService.saveEntity(cinema);
