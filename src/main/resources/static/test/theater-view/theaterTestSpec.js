@@ -11,15 +11,17 @@ describe("cinemaController.js", function () {
     var $scope;
     var $controller;
 
-    var Mocked$routeParams = {
-        'cinema_id': 1,
-        'theater_id': 2,
-        'width': 10,
-        'depth': 7
-    };
+    var $routeParams = {};
 
-    //Mocked services
+    //Mocks
     beforeEach(function () {
+
+        $routeParams = {
+            'cinema_id': 1,
+            'theater_id': 2,
+            'width': 10,
+            'depth': 7
+        };
 
         MockedTheaterService = {
             'get': function (params) {
@@ -96,7 +98,7 @@ describe("cinemaController.js", function () {
         $scope = {};
 
         $controller('theaterController', {
-            $scope: $scope, $routeParams: Mocked$routeParams,
+            $scope: $scope, $routeParams: $routeParams,
             TheaterService: MockedTheaterService
         });
     }));
@@ -104,24 +106,8 @@ describe("cinemaController.js", function () {
     /* Test specifications */
 
     it("Fetches the theater specified in the route", function () {
-        if (Mocked$routeParams.theater_id) {
-            expect(fetchedTheater.id).toEqual(Mocked$routeParams.theater_id);
-        }
-    });
-
-    it("Sets the width and height variables", function () {
-        if (Mocked$routeParams.theater_id) {
-            expect($scope.theaterDepth).toEqual(fetchedTheater.rows.length);
-            expect($scope.theaterWidth).toEqual(fetchedTheater.rows[0].seats.length);
-
-        } else if (Mocked$routeParams.depth && Mocked$routeParams.width){
-            console.log("No id");
-            expect($scope.theaterDepth).toEqual(Mocked$routeParams.depth);
-            expect($scope.theaterWidth).toEqual(Mocked$routeParams.width);
-        } else {
-            console.log("No length or width");
-            expect($scope.theaterDepth).toEqual($scope.defaultDepth);
-            expect($scope.theaterWidth).toEqual($scope.defaultWidth);
+        if ($routeParams.theater_id) {
+            expect(fetchedTheater.id).toEqual($routeParams.theater_id);
         }
     });
 
@@ -129,4 +115,29 @@ describe("cinemaController.js", function () {
         expect($scope.name).toEqual(fetchedTheater.name);
         expect($scope.isDisabled).toEqual(fetchedTheater.disabled);
     });
+
+    describe("Height and with variables", function () {
+        it("Sets the width and height variables when a theater id is specified", function () {
+            expect($scope.theaterDepth).toEqual(fetchedTheater.rows.length);
+            expect($scope.theaterWidth).toEqual(fetchedTheater.rows[0].seats.length);
+        });
+
+        it("Sets the width and height variables when a theater id is NOT specified", function () {
+            $routeParams.theater_id = 0;
+            $scope.newTheater();
+            expect($scope.theaterDepth).toEqual($routeParams.depth);
+            expect($scope.theaterWidth).toEqual($routeParams.width);
+        });
+
+        it("Sets the width and height variables when a theater id is NOT specified, nor are the route parameters", function () {
+            $routeParams.theater_id = 0;
+            $routeParams.depth = 0;
+            $routeParams.width = 0;
+            $scope.newTheater();
+            expect($scope.theaterDepth).toEqual($scope.defaultDepth);
+            expect($scope.theaterWidth).toEqual($scope.defaultWidth);
+        });
+    });
+
+
 });
