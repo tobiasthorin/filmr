@@ -1,30 +1,43 @@
 <div>
-	<div class="row">
-		<div class="col-sm-12 module-container">
-			<h2>Theater: {{orginal_name}}</h2>
-		</div>
-	</div>
+    <div class="row">
+        <div class="col-sm-12 module-container">
+            <h2>Theater: {{orginal_name}}</h2>
+        </div>
+    </div>
 
-        <div class="row">
-            <div class="col-sm-6">
+    <div class="row">
+        <div class="col-sm-6">
 
-			    <form name="showingForm">
-					<h2>Edit theater</h2>
-					<table>
-						<tr>
-							<th>Name:</th>
-							<td><input type="text" placeholder="Name" ng-model="name" required></td>
-						</tr>
-						<tr>
-							<th>Number of seats:</th>
-							<td><input type="number" ng-model="numberOfSeats" required></td>
-						</tr>
-						<!--<tr><th>Disabled:</th><td><input type="checkbox" ng-model="isDisabled"></td></tr>-->
-						<tr><th></th><td><input type="submit" class="btn" ng-click="submitTheater()" value="Update" ng-disabled="showingForm.$invalid || validateScheduleEditTheater()"></td></tr>
-					</table>
-				</form>
-			</div>
-            <div class="col-sm-6">
-		</div>
-	</div>
+            <form name="showingForm">
+                <h2>Edit theater</h2>
+                <table>
+                    <tr>
+                        <th>Name:</th>
+                        <td><input type="text" placeholder="Name" ng-model="name" required></td>
+                    </tr>
+                    <tr>
+                        <th>Width</th>
+                        <td><p>{{theaterWidth}}</p></td>
+                    </tr>
+                    <tr>
+                        <th>Height</th>
+                        <td><p>{{theaterHeight}}</p></td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <td><input type="submit" class="btn" ng-click="" value="Update"
+                                   ng-disabled="showingForm.$invalid || validateScheduleEditTheater()"></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div class="col-sm-6">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="theaterView">
+            Theater
+        </div>
+    </div>
 </div>

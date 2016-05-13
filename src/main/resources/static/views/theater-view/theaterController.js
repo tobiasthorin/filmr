@@ -3,6 +3,10 @@ angular.module('filmr')
 		function ($rootScope, $scope, $routeParams, $location, TheaterService) {
 			console.log("Theater Controller");
 
+			//Scoped variables
+            $scope.defaultWidth = 0;
+            $scope.defaultDepth = 0;
+
 			//Scoped functions
 
 			$scope.redirect = function (path) {
@@ -32,7 +36,7 @@ angular.module('filmr')
                 if(!$scope.numberOfSeats) return true;
                 if($scope.numberOfSeats<1) return true;
                 return false;
-            }
+            };
 
 			$scope.submitTheater = function () {
 				console.log("Submitting edited theater...");
