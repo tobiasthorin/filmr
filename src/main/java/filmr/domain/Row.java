@@ -16,7 +16,7 @@ public class Row {
 	@GeneratedValue( strategy = GenerationType.AUTO)
 	private Long id;
 	@OneToMany(mappedBy = "row")
-	//@Cascade(CascadeType.PERSIST)
+	@Cascade(CascadeType.PERSIST)
 	private List<Seat> seats;
 	@ManyToOne
 	@JoinColumn(name = "theater_id")

@@ -5,6 +5,8 @@ import javax.persistence.*;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Seat {
 	@Id
@@ -13,6 +15,7 @@ public class Seat {
 	
 	@ManyToOne
 	@JoinColumn(name = "row_id")
+	@JsonIgnore
 	private Row row;
 
 	private String seatLabel;

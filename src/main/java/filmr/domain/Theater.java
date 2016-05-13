@@ -36,7 +36,7 @@ public class Theater {
 	private int numberOfSeats;
 	private boolean disabled;
 	@OneToMany(mappedBy = "theater")
-	//@Cascade(CascadeType.PERSIST)
+	@Cascade(CascadeType.PERSIST)
 	private List<Row> rows;
 
 	@ManyToOne
