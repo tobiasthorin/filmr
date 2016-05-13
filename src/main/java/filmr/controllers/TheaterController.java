@@ -17,7 +17,12 @@ public class TheaterController {
 
 	@CrossOrigin
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Theater> createTheater(@RequestBody Theater theater) {
+	public ResponseEntity<Theater> createTheater(
+			@RequestBody Theater theater,
+			@RequestParam(name="number_of_rows") Integer number_of_rows,
+			@RequestParam(name="max_row_size") Integer max_row_size) {
+
+		theater = theaterService.buildTheater(theater,number_of_rows,max_row_size);
 		if (theater.getId() != null) {
 			return new ResponseEntity<Theater>(new Theater(), HttpStatus.BAD_REQUEST);
 		}

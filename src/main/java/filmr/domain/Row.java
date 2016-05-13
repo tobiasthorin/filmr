@@ -1,9 +1,12 @@
 package filmr.domain;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
 
 import java.util.List;
 
@@ -13,6 +16,7 @@ public class Row {
 	@GeneratedValue( strategy = GenerationType.AUTO)
 	private Long id;
 	@OneToMany(mappedBy = "row")
+	//@Cascade(CascadeType.PERSIST)
 	private List<Seat> seats;
 	@ManyToOne
 	@JoinColumn(name = "theater_id")
