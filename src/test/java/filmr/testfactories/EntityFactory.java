@@ -44,7 +44,7 @@ public class EntityFactory {
         showings = new ArrayList<>(); //TODO should be empty no errers?
 
         theater.setName(theaterName);
-        theater.setNumberOfSeats(numberOfSeats);
+        // theater.setNumberOfSeats(numberOfSeats);
         theater.setDisabled(disabled);
         theater.setRows(rows);
         theater.setCinema(cinema);

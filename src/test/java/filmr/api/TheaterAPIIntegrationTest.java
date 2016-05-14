@@ -91,6 +91,9 @@ public class TheaterAPIIntegrationTest {
 
     @Test
     public void testCreate() throws Exception {
+    	
+    	// TODO: fix test with params ?number_of_rows=2&max_row_size=4
+    	
         Theater theater = EntityFactory.createTheater("testCreate Theater", savedCinema);
 
         //Post
@@ -126,7 +129,7 @@ public class TheaterAPIIntegrationTest {
 
     	// make the changes to the local, but previously saved, java object
     	savedTheater.setName(updatedTheaterName);
-    	savedTheater.setNumberOfSeats(updatedNumberOfSeats);
+    	// savedTheater.setNumberOfSeats(updatedNumberOfSeats);
 
     	// actually do the PUT request
     	restTemplate.put(urlWithId, savedTheater);

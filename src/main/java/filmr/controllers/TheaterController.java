@@ -22,7 +22,7 @@ public class TheaterController {
 			@RequestParam(name="number_of_rows") Integer number_of_rows,
 			@RequestParam(name="max_row_size") Integer max_row_size) {
 
-		theater = theaterService.buildTheater(theater,number_of_rows,max_row_size);
+		theater = theaterService.buildTheaterWithRowsAndSeats(theater,number_of_rows,max_row_size);
 		if (theater.getId() != null) {
 			return new ResponseEntity<Theater>(new Theater(), HttpStatus.BAD_REQUEST);
 		}
@@ -57,10 +57,25 @@ public class TheaterController {
 
 	@CrossOrigin
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Theater> updateTheater(@PathVariable Long id, @RequestBody Theater theater) {
+	public ResponseEntity<Theater> updateTheater(
+			@PathVariable Long id, 
+			@RequestBody Theater theater,
+			@RequestParam(name="reset_seat_numbers_for_each_row", defaultValue="true", required=false) Boolean reset_seat_numbers_for_each_row
+			) {
 		if (theater.getId() == null) {
 			return new ResponseEntity<Theater>(new Theater(), HttpStatus.BAD_REQUEST);
 		}
+		
+		
+		// Temporary(?) fix for issue with theater losing rows on update, because @JsonIgnore means some two-way connections are missing after deserialization
+		theater.getRows().forEach(row -> {
+			row.setTheater(theater);	
+			row.getSeats().forEach(seat -> seat.setRow(row));
+		});
+		
+		//TODO: deletion of seats doesn't work. is that ok? they can be set to SeatState.NOT_A_SEAT
+		
+		theaterService.nameRowsAndSeats(theater, reset_seat_numbers_for_each_row);
 
 		Theater updatedTheater = theaterService.saveEntity(theater);
 		return new ResponseEntity<Theater>(updatedTheater, HttpStatus.OK);

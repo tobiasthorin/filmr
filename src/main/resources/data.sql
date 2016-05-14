@@ -21,10 +21,10 @@ INSERT INTO movie (title, length_in_minutes, description, default_price)
 	
 /* THEATERS */
 
-INSERT INTO theater (name, number_of_seats, cinema_id, disabled) VALUES ('Bergakungen sal 01', 20, 1, FALSE);
-INSERT INTO theater (name, number_of_seats, cinema_id, disabled) VALUES ('Bergakungen sal 04', 20, 1, FALSE);
-INSERT INTO theater (name, number_of_seats, cinema_id, disabled) VALUES ('Bergakungen sal 05', 20, 2, FALSE);
-INSERT INTO theater (name, number_of_seats, cinema_id, disabled) VALUES ('Bergakungen sal 08', 20, 2, FALSE);
+INSERT INTO theater (name, cinema_id, disabled) VALUES ('Bergakungen sal 01', 1, FALSE);
+INSERT INTO theater (name, cinema_id, disabled) VALUES ('Bergakungen sal 04', 1, FALSE);
+INSERT INTO theater (name, cinema_id, disabled) VALUES ('Bergakungen sal 05', 2, FALSE);
+INSERT INTO theater (name, cinema_id, disabled) VALUES ('Bergakungen sal 08', 2, FALSE);
 
 
 /* SHOWINGS */
@@ -171,8 +171,8 @@ INSERT INTO repertoire_movies (repertoire,movies) VALUES(2,4);
 
 /* SOME "DYNAMIC" DATA THAT GUARANTIES THAT THERE ARE ALWAYS A FEW SHOWINGS TODAY (now()). GETS THEIR OWN THEATERS SO THEY CAN'T INTERFERE WITH OTHER SHOWINGS ABOVE */
 /* theater will get id 5 and 6 */
-INSERT INTO theater (name, number_of_seats, cinema_id, disabled) VALUES ('sal 98', 20, 2, FALSE);
-INSERT INTO theater (name, number_of_seats, cinema_id, disabled) VALUES ('sal 99', 20, 2, FALSE);
+INSERT INTO theater (name, cinema_id, disabled) VALUES ('sal 98', 2, FALSE);
+INSERT INTO theater (name, cinema_id, disabled) VALUES ('sal 99', 2, FALSE);
 
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 10:00'), 3, 5);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 13:00'), 3, 5);
