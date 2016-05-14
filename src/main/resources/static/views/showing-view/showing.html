@@ -9,11 +9,11 @@
                     name="cinema" ng-model="cinema" ng-change="updateCinemaScope()">
             </select>
             <label>From:</label>
-            <input type="date" name="from_date" ng-model="fromDate" ng-change="updateShowings()">
+            <input name="from_date" ng-model="fromDate" ng-change="updateShowings()">
             <button class="" type="button" ng-click="fromDate = null; updateShowings()">x</button>
 
             <label>To:</label>
-            <input type="date" name="to_date" ng-model="toDate" ng-change="updateShowings()">
+            <input name="to_date" ng-model="toDate" ng-change="updateShowings()">
             <button class="" type="button" ng-click="toDate = null; updateShowings()">x</button>
 
             <label>Movie:</label>
@@ -103,3 +103,12 @@
         </div>
     </div>
 </div>
+<script>
+$('input[name=from_date]').datetimepicker({
+	format:'Y-m-d H:i',
+	step:15
+});
+$('input[name=to_date]').datetimepicker({
+	format:'Y-m-d H:i',
+	step:15
+});</script>

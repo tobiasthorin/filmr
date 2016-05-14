@@ -80,9 +80,9 @@ public class ShowingController {
 //    	to_date = to_date != null ? to_date.withHour(23).withMinute(59).plusDays(1) : null;
     	
     	// default values that are hard to code as strings.. If not null -> use the value, else provide a default value
-		from_date = from_date != null ? from_date.withHour(0).withMinute(0) : LocalDateTime.now();
+		from_date = from_date != null ? from_date : LocalDateTime.now();
 		// change time of to_date so that it includes the whole day
-		to_date = to_date != null ? to_date.withHour(23).withMinute(59) : null;
+		to_date = to_date != null ? to_date : null;
 		
 
 		System.out.println("From date: " + from_date);
