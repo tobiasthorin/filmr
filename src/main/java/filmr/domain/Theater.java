@@ -4,10 +4,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 
@@ -26,20 +31,15 @@ public class Theater {
 	private Long id;
 	@NotBlank
 	private String name;
-	@NotNull
-	@Range(min=1)
-	private int numberOfSeats;
 	private boolean disabled;
 	@OneToMany(mappedBy = "theater")
+	@Cascade(CascadeType.ALL)
 	private List<Row> rows;
 
 	@ManyToOne
 	@JoinColumn(name = "cinema_id")
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private Cinema cinema;
-
-	@Transient
-	private String cinemaName; // TODO: remove? useless?
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "theater")
@@ -89,20 +89,22 @@ public class Theater {
 		this.cinema = cinema;
 	}
 
-	public int getNumberOfSeats() {
-		return numberOfSeats;
-	}
-
-	public void setNumberOfSeats(int numberOfSeats) {
-		this.numberOfSeats = numberOfSeats;
-	}
-
 	public boolean isDisabled() {
 		return disabled;
 	}
 
 	public void setDisabled(boolean disabled) {
 		this.disabled = disabled;
+	}
+	
+	public Long getNumberOfEnabledSeats() {
+		if(rows == null) return new Long(0);
+		
+		return rows.stream()
+			.map(row -> row.getSeats()) // create a stream of lists of seats
+			.flatMap(seats -> seats.stream()) // combine all the seats as one stream
+			.filter(seat -> seat.getState() == SeatState.ENABLED)  // only care about enabled seats
+			.count();
 	}
 
     @Override
@@ -120,7 +122,6 @@ public class Theater {
                 //.append(rows, theater.getRows()) //TODO breaks everything boo
                 //.append(cinema, theater.getCinema())
                 //.append(showings,theater.getShowings())
-                .append(numberOfSeats, theater.numberOfSeats)
                 .append(disabled, theater.isDisabled())
                 .isEquals();
 
@@ -134,8 +135,6 @@ public class Theater {
                 //.append(rows)
                 //.append(cinema)
                 //.append(showings)
-                .append(numberOfSeats)
-                .append(numberOfSeats)
                 .toHashCode();
     }
 
