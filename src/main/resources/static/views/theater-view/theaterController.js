@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('filmr')
     .controller('theaterController', ['$rootScope', '$scope', '$routeParams', '$location', 'TheaterService',
         function ($rootScope, $scope, $routeParams, $location, TheaterService) {
@@ -5,6 +7,8 @@ angular.module('filmr')
             //Scoped variables
             $scope.defaultWidth = 5;
             $scope.defaultDepth = 10;
+
+            $scope.theaterRows = {};
 
             //Scoped functions
 
@@ -17,7 +21,7 @@ angular.module('filmr')
                         $scope.orginal_name = result.name;
                         $scope.name = result.name;
                         $scope.isDisabled = result.disabled;
-
+                        $scope.theaterRows = result.rows;
 
                         if (!result.rows[0]) {
                             $scope.theaterWidth = $scope.defaultWidth

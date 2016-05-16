@@ -37,7 +37,7 @@ INSERT INTO seat (seat_label, state, row_id) VALUES ('3', 'ENABLED', 1);
 INSERT INTO seat (seat_label, state, row_id) VALUES ('4', 'ENABLED', 1);
 
 INSERT INTO seat (seat_label, state, row_id) VALUES ('5', 'ENABLED', 2);
-INSERT INTO seat (seat_label, state, row_id) VALUES ('6', 'ENABLED', 3);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('6', 'ENABLED', 2);
 INSERT INTO seat (seat_label, state, row_id) VALUES ('7', 'ENABLED', 2);
 INSERT INTO seat (seat_label, state, row_id) VALUES ('8', 'ENABLED', 2);
 

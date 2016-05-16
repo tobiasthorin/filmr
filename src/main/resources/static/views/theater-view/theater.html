@@ -38,6 +38,9 @@
     <div class="row">
         <div class="theaterView">
             Theater
+            <div class="theaterRow" ng-repeat="row in theaterRows">
+                <span class="theaterSeat" ng-repeat="seat in theaterRows[$index].seats">{{seat.seatLabel}}</span>
+            </div>
         </div>
     </div>
 </div>
