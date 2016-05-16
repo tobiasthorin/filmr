@@ -43,6 +43,12 @@
                 controller: 'theaterController'
 
             })
+            .when('/cinema/:cinema_id/theater/new', {
+                title: 'New Theater',
+                templateUrl: 'views/theater-view/theater.html',
+                controller: 'theaterController'
+
+            })
             .when('/customer', {
                 title: 'Customer Settings',
                 activeTab: 'Customer',
