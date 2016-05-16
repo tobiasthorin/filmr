@@ -1,5 +1,7 @@
-app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'MovieService', 'TheaterService', 'RepertoireService', 'CinemaService',
-	function ($scope, $rootScope, $routeParams, MovieService, TheaterService, RepertoireService, CinemaService) {
+'use strict';
+
+app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', '$location', 'MovieService', 'TheaterService', 'RepertoireService', 'CinemaService',
+	function ($scope, $rootScope, $routeParams, $location, MovieService, TheaterService, RepertoireService, CinemaService) {
 
 		//Local variables
 		var moviesInRepertoire;
@@ -24,7 +26,7 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 
 		$scope.getCurrentCinema = function() {
 			return currentCinema;
-		}
+		};
 
 		$scope.getTheaters = function () {
 			return theaters;
@@ -32,31 +34,19 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', 'Mov
 
 
         $scope.validateScheduleAddTheater = function() {
-            if(!$scope.add_theater_seats) return true;
-            if($scope.add_theater_seats<1) return true;
+            if(!$scope.number_of_rows) return true;
+            if($scope.number_of_rows<1) return true;
+
+            if(!$scope.number_of_seats) return true;
+            if($scope.number_of_seats<1) return true;
             return false;
         };
 
 
-		$scope.submitTheater = function () {
+		$scope.addNewTheater = function () {
+            var url = $location.path() + '/theater/new';
+            $location.path(url).search({width: $scope.number_of_seats,depth: $scope.number_of_rows, name: $scope.theater_name});
 
-			if (!$scope.add_theater_disabled) {
-                $scope.add_theater_disabled = false;
-			}
-
-			$scope.newTheater.cinema = {id:currentCinema.id};
-			$scope.newTheater.name = $scope.add_theater_name;
-			$scope.newTheater.disabled = $scope.add_theater_disabled;
-			$scope.newTheater.numberOfSeats = $scope.add_theater_seats;
-
-			TheaterService.save($scope.newTheater).$promise.then(function () {
-					$scope.alert("Success!");
-					$scope.resetFields();
-					fetchTheaters();
-				},
-				function () {
-					$scope.alert("Error!");
-				});
 		};
 
 		$scope.alert = function (message) {

@@ -5,8 +5,8 @@ angular.module('filmr')
         function ($rootScope, $scope, $routeParams, $location, TheaterService) {
 
             //Scoped variables
-            $scope.defaultWidth = 5;
-            $scope.defaultDepth = 10;
+            $scope.defaultWidth = 1;
+            $scope.defaultDepth = 1;
 
             $scope.currentTheater = {};
             $scope.theaterRows = {};
@@ -20,8 +20,9 @@ angular.module('filmr')
                     //success
                     function (result) {
                         $scope.original_name = result.name;
+                        $scope.name = result.name;
                         $scope.currentTheater = result;
-                        
+
                         if (!result.rows[0]) {
                             $scope.theaterWidth = $scope.defaultWidth
                         } else {
@@ -51,9 +52,8 @@ angular.module('filmr')
 
                 $scope.newTheater.id = $routeParams.theater_id;
                 $scope.newTheater.name = $scope.name;
-                $scope.newTheater.numberOfSeats = $scope.numberOfSeats;
-                $scope.newTheater.disabled = $scope.isDisabled;
                 $scope.newTheater.cinema = {id: $routeParams.cinema_id};
+                $scope.newTheater.rows = $scope.theaterRows;
 
                 TheaterService.update($scope.newTheater).$promise.then(
                     function () {
@@ -88,9 +88,15 @@ angular.module('filmr')
 
             function createNewTheater() {
                 var newTheater = {
-                    name: 'New Theater',
-                    cinemaId: $routeParams.cinema_id
+                    name: $routeParams.name,
+                    cinema: {id: $routeParams.cinema_id}
                 };
+
+                if (!!$routeParams.name) {
+                    newTheater.name = $routeParams.name;
+                } else {
+                    newTheater.name = 'New Theater';
+                }
 
                 var theaterParams = {
                     number_of_rows: $scope.theaterDepth,
@@ -107,6 +113,7 @@ angular.module('filmr')
                     });
 
                 $scope.original_name = newTheater.name;
+                $scope.name = newTheater.name;
             }
 
             function updateRows() {

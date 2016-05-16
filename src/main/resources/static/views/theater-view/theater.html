@@ -9,7 +9,6 @@
         <div class="col-sm-6">
 
             <form name="showingForm">
-                <h2>Edit theater</h2>
                 <table>
                     <tr>
                         <th>Name:</th>
@@ -39,7 +38,10 @@
         <div class="theaterView">
             Theater
             <div class="theaterRow" ng-repeat="row in theaterRows">
-                <span>{{row.rowLabel}}</span><div class="theaterSeat" ng-repeat="seat in theaterRows[$index].seats"><div class="seatLabel">{{seat.seatLabel}}</div></div>
+                <span>{{row.rowLabel}}</span>
+                <div class="theaterSeat" ng-repeat="seat in theaterRows[$index].seats">
+                    <div class="seatLabel">{{seat.seatLabel}}<span> id: {{seat.id}}</span></div>
+                </div>
             </div>
         </div>
     </div>

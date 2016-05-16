@@ -23,7 +23,7 @@ h1 {
   display: block; }
   .theaterRow .theaterSeat {
     margin: 10px 5px;
-    color: white;
+    color: #b2b2b2;
     font-weight: bold;
     font-size: 1em;
     background-color: #c61a30;
