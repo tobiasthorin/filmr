@@ -3,8 +3,8 @@ angular.module('filmr')
         function ($rootScope, $scope, $routeParams, $location, TheaterService) {
 
             //Scoped variables
-            $scope.defaultWidth = 0;
-            $scope.defaultDepth = 0;
+            $scope.defaultWidth = 5;
+            $scope.defaultDepth = 10;
 
             //Scoped functions
 
@@ -17,8 +17,20 @@ angular.module('filmr')
                         $scope.orginal_name = result.name;
                         $scope.name = result.name;
                         $scope.isDisabled = result.disabled;
-                        $scope.theaterWidth = result.rows[0].seats.length;
-                        $scope.theaterDepth = result.rows.length;
+
+
+                        if (!result.rows[0]) {
+                            $scope.theaterWidth = $scope.defaultWidth
+                        } else {
+                            $scope.theaterWidth = result.rows[0].seats.length;
+                        }
+
+                        if (!result.rows.length) {
+                            $scope.theaterDepth = $scope.defaultDepth;
+                        } else {
+                            $scope.theaterDepth = result.rows.length;
+                        }
+
                     },
                     //fail
                     function (err) {

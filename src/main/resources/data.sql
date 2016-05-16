@@ -26,6 +26,26 @@ INSERT INTO theater (name, cinema_id, disabled) VALUES ('Bergakungen sal 04', 1,
 INSERT INTO theater (name, cinema_id, disabled) VALUES ('Bergakungen sal 05', 2, FALSE);
 INSERT INTO theater (name, cinema_id, disabled) VALUES ('Bergakungen sal 08', 2, FALSE);
 
+/* ROWS AND SEATS*/
+INSERT INTO row (row_label, theater_id) VALUES ('Rad 1', 1);
+INSERT INTO row (row_label, theater_id) VALUES ('Rad 2', 1);
+INSERT INTO row (row_label, theater_id) VALUES ('Rad 3', 1);
+
+INSERT INTO seat (seat_label, state, row_id) VALUES ('1', 'ENABLED', 1);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('2', 'ENABLED', 1);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('3', 'ENABLED', 1);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('4', 'ENABLED', 1);
+
+INSERT INTO seat (seat_label, state, row_id) VALUES ('5', 'ENABLED', 2);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('6', 'ENABLED', 3);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('7', 'ENABLED', 2);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('8', 'ENABLED', 2);
+
+INSERT INTO seat (seat_label, state, row_id) VALUES ('9', 'ENABLED', 3);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('10', 'ENABLED', 3);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('11', 'ENABLED', 3);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('12', 'ENABLED', 3);
+
 
 /* SHOWINGS */
 /*# for movie 1, theater 1*/
