@@ -4,6 +4,8 @@ import filmr.domain.Row;
 import filmr.domain.Seat;
 import filmr.domain.SeatState;
 import filmr.domain.Theater;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,8 @@ import java.util.List;
 @Transactional
 public class TheaterService extends BaseServiceClass<Theater, Long> {
 
+	private static org.apache.log4j.Logger logger = Logger.getLogger(TheaterService.class);
+	
 	@PersistenceContext
 	private EntityManager entityManager;
 
@@ -31,20 +35,16 @@ public class TheaterService extends BaseServiceClass<Theater, Long> {
 
 		return results;
 	}
+	
 	public Theater buildTheaterWithRowsAndSeats(Theater theater, Integer number_of_rows, Integer max_row_size){
 
 		theater.setRows(new ArrayList<Row>());
 		for(int i=0; i<number_of_rows; i++){
-			Row row = new Row();
-			row.setSeats(new ArrayList<Seat>() );
-		
-			row.setTheater(theater);
+			Row row = createStandardRowForTheater(theater);
 
 			for(int j=0; j < max_row_size; j++) {
-				Seat seat = new Seat();
-				seat.setState(SeatState.ENABLED);
+				Seat seat = createStandardSeatForRow(row);
 				row.getSeats().add(seat);
-				seat.setRow(row);
 			}
 			theater.getRows().add(row);
 		}
@@ -64,16 +64,17 @@ public class TheaterService extends BaseServiceClass<Theater, Long> {
 
 		if(oldnumberOfRows < new_number_of_rows){
 			Integer numberOfRowsToAdd = new_number_of_rows-oldnumberOfRows;
-			addRows(rows,numberOfRowsToAdd);
+			logger.info("before adding rows!");
+			addRowsToTheater(theater,numberOfRowsToAdd);
 		}else{
 			Integer numberOfRowsToRemove = oldnumberOfRows - new_number_of_rows;
 			removeRows(rows,numberOfRowsToRemove);
 		}
 
 		if(oldRowSize<new_max_row_size){
-			addSeatsToRow(rows,new_max_row_size);
+			addSeatsToRows(rows,new_max_row_size);
 		}else{
-			Integer numberOfSeatsToRemovePerRow = new_max_row_size - oldRowSize;
+			Integer numberOfSeatsToRemovePerRow = oldRowSize - new_max_row_size;
 			removeSeatsInRows(rows, numberOfSeatsToRemovePerRow);
 		}
 
@@ -83,21 +84,21 @@ public class TheaterService extends BaseServiceClass<Theater, Long> {
 	private void removeSeatsInRows(List<Row> rows, Integer numberOfSeatsToRemovePerRow) {
 		for (Row row : rows){
 			for(int i = 0; i < numberOfSeatsToRemovePerRow; i++){
-				int lastIndex = row.getSeats().size()-1;
-				//rowService.deleteEntity(row.getSeats().get(lastIndex).getId());
-				entityManager.remove(entityManager.merge(row.getSeats().get(lastIndex)));
+
+				Seat seatToRemove  = getLast(row.getSeats());
+				entityManager.remove(entityManager.merge(seatToRemove));
+				row.getSeats().remove(seatToRemove);
 
 			}
 		}
 	}
 
-	private void addSeatsToRow(List<Row> rows, Integer new_max_row_size) {
+	private void addSeatsToRows(List<Row> rows, Integer new_max_row_size) {
 		for(Row row : rows){
 			Integer numberOfSeatsToAddPerRow = new_max_row_size - row.getSeats().size();
 			if(row.getSeats().size()< new_max_row_size){
 				for(int i = 0; i<numberOfSeatsToAddPerRow; i++){
-					Seat seat = new Seat();
-					seat.setState(SeatState.ENABLED);
+					Seat seat = createStandardSeatForRow(row);
 					row.getSeats().add(seat);
 				}
 			}
@@ -105,21 +106,51 @@ public class TheaterService extends BaseServiceClass<Theater, Long> {
 	}
 
 	private void removeRows(List<Row> rows, Integer numberOfRowsToRemove) {
-
-		for(int i = rows.size()-1; i>rows.size()-numberOfRowsToRemove; i--){
-			entityManager.remove(entityManager.merge(rows.get(i)));
+		
+		logger.debug("numberOfRowsToRemove: " + numberOfRowsToRemove);
+		
+		for(int i = 0; i < numberOfRowsToRemove; i++) {
+			Row rowToRemove = getLast(rows);
+			
+//			// remove all the seats from db  and from object list
+//			deleteAllSeatsInRowFromDb(rowToRemove);
+//			rowToRemove.getSeats().removeAll(rowToRemove.getSeats());
+//			
+//			// remove row from db.
+//			entityManager.remove(entityManager.merge(rowToRemove));
+//			
+//			
+//			// remove row from java list
+//			rows.remove(rowToRemove);
+//			logger.debug("trying to remove row " + rowToRemove);
+			
+			
+			
+//			Row managedRowToRemove = entityManager.merge(rowToRemove);
+//			managedRowToRemove.getSeats().removeAll(managedRowToRemove.getSeats());
+//			
+//			entityManager.remove(managedRowToRemove);
+			
+			rows.remove(rowToRemove);
 		}
+		
+		logger.debug("nr of rows after remove: " + rows.size());
+		
+//		for(int i = rows.size()-1; i>rows.size()-numberOfRowsToRemove; i--){
+//			Row rowToRemove = entityManager.merge(rows.get(i));
+//			entityManager.remove(rowToRemove);
+//			rows.remove(i);
+//		}
 
 	}
 
-	private void addRows(List<Row> rows, Integer numberOfRowsToAdd) {
+	private void addRowsToTheater(Theater theater, Integer numberOfRowsToAdd) {
+		List<Row> rows = theater.getRows();
 		Integer currentRowSize = rows.get(0).getSeats().size();
 		for(int i = 0; i<numberOfRowsToAdd; i++){
-			Row row = new Row();
-			row.setSeats(new ArrayList<>());
+			Row row = createStandardRowForTheater(theater);
 			for(int j = 0; j<currentRowSize; j++){
-				Seat seat = new Seat();
-				seat.setState(SeatState.ENABLED);
+				Seat seat = createStandardSeatForRow(row);
 				row.getSeats().add(seat);
 			}
 			rows.add(row);
@@ -163,6 +194,37 @@ public class TheaterService extends BaseServiceClass<Theater, Long> {
 		}
 		
 		
+	}
+	
+	
+	private Seat createStandardSeatForRow(Row row){
+		Seat seat = new Seat();
+		seat.setState(SeatState.ENABLED);
+		seat.setRow(row);
+		
+		return seat;
+	}
+	
+	private Row createStandardRowForTheater(Theater theater) {
+		Row row = new Row();
+		row.setSeats(new ArrayList<Seat>() );
+		row.setTheater(theater);
+		
+		return row;
+	}
+	
+	private <T> T getLast(List<T> entities){
+		if(entities.size() == 0) return null;
+		
+		return entities.get(entities.size()-1);
+	}
+	
+	private void deleteAllSeatsInRowFromDb(Row row) {
+		logger.debug("Deleting all seats in row with id " + row.getId());
+		
+		for(Seat seat : row.getSeats()) {
+			entityManager.remove(entityManager.merge(seat));
+		}
 	}
 	
 	

@@ -32,7 +32,7 @@ public class Theater {
 	@NotBlank
 	private String name;
 	private boolean disabled;
-	@OneToMany(mappedBy = "theater")
+	@OneToMany(mappedBy = "theater", orphanRemoval=true)
 	@Cascade(CascadeType.ALL)
 	private List<Row> rows;
 
