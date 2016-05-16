@@ -81,6 +81,10 @@ public class TheaterController {
 		
 		logger.debug("theater row size before update: " + theater.getRows().size());
 
+		// set default arguments if any of the parameters are null
+		new_number_of_rows = new_number_of_rows != null ? new_number_of_rows : theater.getRows().size();
+		new_max_row_size = new_max_row_size != null ? new_max_row_size : theater.getRows().get(0).getSeats().size();
+		
 		theaterService.updateRowsAndSeats(theater, new_number_of_rows, new_max_row_size);
 		
 		logger.debug("theater row size after update: " + theater.getRows().size());
