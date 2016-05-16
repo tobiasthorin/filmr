@@ -41,7 +41,7 @@ angular.module('filmr')
                         $rootScope.errorHandler(err);
                     });
             };
-
+            //TODO fix
             $scope.submitTheater = function () {
                 console.log("Submitting edited theater...");
                 console.log($scope.name + ", id: " + $routeParams.theater_id);
