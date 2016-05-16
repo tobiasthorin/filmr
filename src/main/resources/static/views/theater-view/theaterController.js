@@ -22,6 +22,7 @@ angular.module('filmr')
                         $scope.original_name = result.name;
                         $scope.name = result.name;
                         $scope.currentTheater = result;
+                        $scope.currentTheater.cinema = {id: $routeParams.cinema_id};
 
                         if (!result.rows[0]) {
                             $scope.theaterWidth = $scope.defaultWidth
@@ -43,19 +44,12 @@ angular.module('filmr')
                         $rootScope.errorHandler(err);
                     });
             };
-            //TODO fix
-            $scope.submitTheater = function () {
-                console.log("Submitting edited theater...");
-                console.log($scope.name + ", id: " + $routeParams.theater_id);
+            
+            $scope.updateTheater = function () {
 
-                $scope.newTheater = {};
+                $scope.currentTheater.name = $scope.name;
 
-                $scope.newTheater.id = $routeParams.theater_id;
-                $scope.newTheater.name = $scope.name;
-                $scope.newTheater.cinema = {id: $routeParams.cinema_id};
-                $scope.newTheater.rows = $scope.theaterRows;
-
-                TheaterService.update($scope.newTheater).$promise.then(
+                TheaterService.update($scope.currentTheater).$promise.then(
                     function () {
                         //success
                         console.log("Updated!");
@@ -106,6 +100,7 @@ angular.module('filmr')
                 TheaterService.save(theaterParams, newTheater).$promise.then(
                     function (result) {
                         $scope.currentTheater = result;
+                        $scope.currentTheater.cinema = {id: $routeParams.cinema_id};
                         updateRows();
                     },
                     function (error) {
