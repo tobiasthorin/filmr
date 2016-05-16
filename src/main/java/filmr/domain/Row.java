@@ -1,9 +1,14 @@
 package filmr.domain;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.List;
 
@@ -13,9 +18,11 @@ public class Row {
 	@GeneratedValue( strategy = GenerationType.AUTO)
 	private Long id;
 	@OneToMany(mappedBy = "row")
+	@Cascade(CascadeType.ALL)
 	private List<Seat> seats;
 	@ManyToOne
 	@JoinColumn(name = "theater_id")
+	@JsonIgnore
 	private Theater theater;
 	private String rowLabel;
 	

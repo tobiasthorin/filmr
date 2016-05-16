@@ -64,7 +64,7 @@ public class TheaterCRUDTest {
 
         //TODO use proper parameters?
         theater.setName("Den fina salen");
-        theater.setNumberOfSeats(100);
+        // theater.setNumberOfSeats(100);
         theater.setDisabled(false);
         theater.setRows(rows);
         theater.setCinema(cinema);
