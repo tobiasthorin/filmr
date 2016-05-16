@@ -1,6 +1,8 @@
 package filmr.controllers;
 
 import filmr.domain.Theater;
+import filmr.services.RowService;
+import filmr.services.SeatService;
 import filmr.services.TheaterService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,18 +65,21 @@ public class TheaterController {
 	public ResponseEntity<Theater> updateTheater(
 			@PathVariable Long id, 
 			@RequestBody Theater theater,
-			@RequestParam(name="reset_seat_numbers_for_each_row", defaultValue="true", required=false) Boolean reset_seat_numbers_for_each_row
-			) {
+			@RequestParam(name="reset_seat_numbers_for_each_row", defaultValue="true", required=false) Boolean reset_seat_numbers_for_each_row,
+			@RequestParam(name="new_number_of_rows", required = false) Integer new_number_of_rows,
+			@RequestParam(name="new_max_row_size", required = false) Integer new_max_row_size){
+
 		if (theater.getId() == null) {
 			return new ResponseEntity<Theater>(new Theater(), HttpStatus.BAD_REQUEST);
 		}
-		
-		
+
 		// Temporary(?) fix for issue with theater losing rows on update, because @JsonIgnore means some two-way connections are missing after deserialization
 		theater.getRows().forEach(row -> {
 			row.setTheater(theater);	
 			row.getSeats().forEach(seat -> seat.setRow(row));
 		});
+
+		theaterService.updateRowsAndSeats(theater, new_number_of_rows, new_max_row_size);
 		
 		//TODO: deletion of seats doesn't work. is that ok? they can be set to SeatState.NOT_A_SEAT
 		
