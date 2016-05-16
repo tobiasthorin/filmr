@@ -57,18 +57,36 @@
 
     // middle-ware
 
+
     // make title names and other functionality accessible for every page, and every controller/service injecting $rootScope
     app.run(['$rootScope', function ($rootScope) {
         $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
 
+            var debug = true;
+
+            $rootScope.alerts = [];
             $rootScope.baseUrl = "/filmr/#/";
             $rootScope.API_baseUrl = "/filmr/api/";
 
             $rootScope.title = current.$$route.title;
             $rootScope.activeTab = current.$$route.activeTab;
-            $rootScope.errorHandler = function (error) {
-                console.log("Error!", error);
+
+            $rootScope.alert = function(header,text,type) {
+                $rootScope.alerts.push({"header":header,"text":text,"type":type});
             }
+            $rootScope.genericError = function() {
+                $rootScope.alert("Error! ","",2);
+            }
+
+            $rootScope.errorHandler = (debug ?
+                function (error) {
+                    console.log("Error!", error);
+                    $rootScope.alert("Error! ", error, 2);
+                } :
+                function (error) {
+                    $rootScope.genericError();
+                }
+            );
 
         });
     }]);

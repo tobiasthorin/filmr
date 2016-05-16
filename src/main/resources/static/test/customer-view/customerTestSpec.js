@@ -43,7 +43,8 @@ describe("Tests for customerController.js", function () {
 	beforeEach(inject(function (_$controller_) {
 		$controller = _$controller_;
 		$scope = {};
-		$controller('customerController', {$scope : $scope, CinemaService: MockedCinemaService});
+		$rootScope = {"alert": function(){}, "genericError": function(){$rootScope.alert("Error!")}};
+		$controller('customerController', {$scope : $scope, CinemaService: MockedCinemaService, "$rootScope": $rootScope});
 	}));
 
 	//TESTS
@@ -75,19 +76,19 @@ describe("Tests for customerController.js", function () {
 	});
 
 	it("Logs a success message if the POST is successful", function(){
-		spyOn($scope, 'alert');
+		spyOn($rootScope, 'alert');
 
 		$scope.add_cinema_name = "Cinema name";
 		$scope.add_cinema_disabled = false;
 
 		$scope.submitCinema();
-		expect($scope.alert).toHaveBeenCalledWith("Success!");
+		expect($rootScope.alert).toHaveBeenCalledWith('Success! ', 'Cinema Cinema name was created', 1);
 	});
 
 	it("Logs an error message if the POST is unsuccessful", function(){
-		spyOn($scope, 'alert');
+		spyOn($rootScope, 'alert');
 		$scope.submitCinema();
-		expect($scope.alert).toHaveBeenCalledWith("Error!");
+		expect($rootScope.alert).toHaveBeenCalledWith("Error!");
 	});
 
 	it("Resets the input fields", function () {
