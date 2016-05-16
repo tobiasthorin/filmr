@@ -2,6 +2,7 @@ package filmr.controllers;
 
 import filmr.domain.Theater;
 import filmr.services.TheaterService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,8 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/theaters")
 public class TheaterController {
+
+	private final static org.apache.log4j.Logger logger = Logger.getLogger(TheaterController.class);
 	@Autowired
 	private TheaterService theaterService;
 
@@ -41,13 +44,13 @@ public class TheaterController {
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<Theater>> readAllMovies(@RequestParam(name = "cinema_id", required = false) Long cinema_id) {
 
-		List<Theater> retrievedTheaters;
 
+		List<Theater> retrievedTheaters;
 		if (cinema_id != null) {
-			System.out.println("Retrieving theaters belonging to cinema " + cinema_id);
+			logger.info("Retrieving theaters belonging to cinema " + cinema_id);
 			retrievedTheaters = theaterService.readfilteredEntries(cinema_id);
 		} else {
-			System.out.println("Retrieving all cinemas");
+			logger.info("Retrieving all cinemas");
 			retrievedTheaters = theaterService.readAllEntities();
 		}
 

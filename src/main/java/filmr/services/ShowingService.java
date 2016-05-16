@@ -1,6 +1,8 @@
 package filmr.services;
 
+import filmr.controllers.TheaterController;
 import filmr.domain.Showing;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ public class ShowingService extends BaseServiceClass<Showing, Long> {
 	@PersistenceContext
 	@Autowired
 	private EntityManager entityManager;
+	private final static org.apache.log4j.Logger logger = Logger.getLogger(TheaterController.class);
 	
 	public List<Showing> getAllMatchingParams(
 			LocalDateTime from_date, 
@@ -31,7 +34,7 @@ public class ShowingService extends BaseServiceClass<Showing, Long> {
 			Integer limit, 
 			Boolean show_disabled_showings) {
 		
-		System.out.println("show disabled showings: " + show_disabled_showings);
+		logger.info("show disabled showings: " + show_disabled_showings);
 		// named query, works with null values  - see Showing.java
 		Query query = entityManager.createNamedQuery("Showing.filteredAndOrdered", Showing.class);
 		query.setParameter("showDisabledShowings", show_disabled_showings);
@@ -43,11 +46,10 @@ public class ShowingService extends BaseServiceClass<Showing, Long> {
 		query.setMaxResults(limit != null ? limit : 50);
 		List<Showing> matchingShowings = query.getResultList();
 		
-		System.out.println("ShowingService returning " + matchingShowings.size() + " showings, by named query Showing.filteredAndOrdered:");
+		logger.info("ShowingService returning " + matchingShowings.size() + " showings, by named query Showing.filteredAndOrdered:");
 		String queryBeingMade = query.unwrap(org.hibernate.Query.class).getQueryString();
-		System.out.println(queryBeingMade + "\n");
-		
-		
+		logger.debug(queryBeingMade + "\n");
+
 		return matchingShowings;
 	}
 
@@ -56,7 +58,7 @@ public class ShowingService extends BaseServiceClass<Showing, Long> {
 
         List<Showing> surroundingShowings = 
         		getSurroundingShowings(showingToSave, ASSUMED_MAX_H_LENGTH_OF_ANY_MOVIE);
-        System.out.println("nr of showings surrounding proposed new showing: "+surroundingShowings.size());
+        logger.debug("nr of showings surrounding proposed new showing: "+surroundingShowings.size());
 
         for(Showing existingShowing : surroundingShowings){
             if(!notConflictingTime(existingShowing, showingToSave)){
