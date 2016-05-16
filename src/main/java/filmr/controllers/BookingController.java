@@ -6,12 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.apache.log4j.Logger;
 
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/bookings")
 public class BookingController {
+
+    private static org.apache.log4j.Logger log = Logger.getLogger(BookingController.class);
 
     @Autowired
     private BookingService bookingService;
@@ -20,7 +23,9 @@ public class BookingController {
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Booking> createBooking(@RequestBody Booking booking){
+
         if (booking.getId() != null) {
+            if(log.isWarnEnabled()) log.warn("id on booking is not permitted when create booking");
             return new ResponseEntity<Booking>(new Booking(), HttpStatus.BAD_REQUEST);
         }
         Booking savedBooking = bookingService.saveEntity(booking);
@@ -45,6 +50,7 @@ public class BookingController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Booking> updateBooking(@PathVariable Long id, @RequestBody Booking Booking){
         if(Booking.getId() == null){
+            if(log.isWarnEnabled()) log.warn("id on booking is required when update booking");
             return new ResponseEntity<Booking>(new Booking(), HttpStatus.BAD_REQUEST);
         }
 
