@@ -2,6 +2,8 @@ package filmr.controllers;
 
 import filmr.domain.Movie;
 import filmr.services.MovieService;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,8 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/movies")
 public class MovieController {
+	
+	private final static org.apache.log4j.Logger logger = Logger.getLogger(ShowingController.class);
 
     @Autowired
     private MovieService movieService;
@@ -20,6 +24,7 @@ public class MovieController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Movie> createMovie(@RequestBody Movie movie) {
         if (movie.getId() != null) {
+        	logger.warn("Trying to create movie with pre-set id.");
             return new ResponseEntity<Movie>(new Movie(), HttpStatus.BAD_REQUEST);
         }
         Movie savedMovie = movieService.saveEntity(movie);
@@ -42,7 +47,9 @@ public class MovieController {
             List<Movie> retrievedMovies = movieService.readAllEntities();
             return new ResponseEntity<List<Movie>>(retrievedMovies, HttpStatus.OK);
         }
-	List<Movie> retrievedMovies = movieService.getAllMoviesNotInRepertoire(not_in_repertoire_with_id);
+        
+        logger.info("Getting movies not already in repertoire with id " + not_in_repertoire_with_id );
+        List<Movie> retrievedMovies = movieService.getAllMoviesNotInRepertoire(not_in_repertoire_with_id);
         return new ResponseEntity<List<Movie>>(retrievedMovies, HttpStatus.OK);
 
     }
@@ -51,6 +58,7 @@ public class MovieController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Movie> updateMovie(@PathVariable Long id, @RequestBody Movie movie){
         if(movie.getId() == null){
+        	logger.warn("Trying to update movie, but no movie has no id.");
             return new ResponseEntity<Movie>(new Movie(), HttpStatus.BAD_REQUEST);
         }
 
@@ -61,6 +69,7 @@ public class MovieController {
     @CrossOrigin
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteMovie(@PathVariable Long id) {
+    	logger.info("deleting movie with id " + id);
         movieService.deleteEntity(id);
         return new ResponseEntity(HttpStatus.OK);
     }
