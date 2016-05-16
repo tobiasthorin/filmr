@@ -49,7 +49,7 @@ public class RepertoireController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<Repertoire>> readAllMovies() {
+    public ResponseEntity<List<Repertoire>> readAllRepertoires() {
         List<Repertoire> retrievedRepertoires = repertoireService.readAllEntities();
         return new ResponseEntity<List<Repertoire>>(retrievedRepertoires, HttpStatus.OK);
     }

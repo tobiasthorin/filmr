@@ -71,18 +71,17 @@ public class ShowingService extends BaseServiceClass<Showing, Long> {
 
     }
 
-    //TODO: do we need to deal with cases where dates are neither before nor after (same date/time)
     private boolean notConflictingTime(Showing existingShowing, Showing showingToSave) {
         LocalDateTime otherShowingStartTime = existingShowing.getShowDateTime();
         LocalDateTime otherShowingEndTime = existingShowing.getShowingEndTime();
 
-        if(otherShowingStartTime.isAfter(showingToSave.getShowingEndTime())){
-            return true;
-        }else if(otherShowingEndTime.isBefore(showingToSave.getShowDateTime())){
-            return true;
-        }else return false;
-        // TODO: can this be simplified? to
-        // return otherShowingStartTime.isAfter(showingToSave.getShowingEndTime() || otherShowingEndTime.isBefore(showingToSave.getShowDateTime()
+//        if(otherShowingStartTime.isAfter(showingToSave.getShowingEndTime())){
+//            return true;
+//        }else if(otherShowingEndTime.isBefore(showingToSave.getShowDateTime())){
+//            return true;
+//        }else return false;
+
+         return otherShowingStartTime.isAfter(showingToSave.getShowingEndTime()) || otherShowingEndTime.isBefore(showingToSave.getShowDateTime());
         // too dense?
     }
     

@@ -42,7 +42,7 @@ public class TheaterController {
 
 	@CrossOrigin
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<Theater>> readAllMovies(@RequestParam(name = "cinema_id", required = false) Long cinema_id) {
+	public ResponseEntity<List<Theater>> readAllTheaters(@RequestParam(name = "cinema_id", required = false) Long cinema_id) {
 
 
 		List<Theater> retrievedTheaters;

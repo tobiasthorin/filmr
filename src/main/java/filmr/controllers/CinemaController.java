@@ -45,7 +45,7 @@ public class CinemaController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<Cinema>> readAllMovies(@RequestParam(name="show_disabled_cinemas", required=false, defaultValue = "true") Boolean show_disabled_cinemas) {
+    public ResponseEntity<List<Cinema>> readAllCinemas(@RequestParam(name="show_disabled_cinemas", required=false, defaultValue = "true") Boolean show_disabled_cinemas) {
     //public ResponseEntity<List<Cinema>> readAllMovies(@RequestParam(name="show_disabled_cinemas", required=false, defaultValue = "true") Boolean show_disabled_cinemas) {
 
 
