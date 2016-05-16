@@ -112,16 +112,12 @@ describe("cinemaController.js", function () {
     });
 
     describe("Sets the scope variables to the content of the fetched theater", function () {
-        it("Sets the theater name", function () {
-            expect($scope.name).toEqual(fetchedTheater.name);
+        it("Sets the original theater name", function () {
+            expect($scope.original_name).toEqual(fetchedTheater.name);
         });
 
-        it("Sets the theater enabled/disabled", function () {
-            expect($scope.isDisabled).toEqual(fetchedTheater.disabled);
-        });
-
-        it("Sets the theater rows", function () {
-            expect($scope.theaterRows).toEqual(fetchedTheater.rows);
+        it("Sets the theater", function () {
+            expect($scope.currentTheater).toEqual(fetchedTheater);
         });
     });
 

@@ -5,6 +5,8 @@ $primary-dark: #30007a;
 $cinema-red: #c61a30;
 $cinema-red-dark: #5c111d;
 
+$cinema-seat-size: 40px;
+
 /* Page wide stuff */
 html {
   overflow-y: scroll;
@@ -38,21 +40,26 @@ h1 {
   display: block;
   .theaterSeat {
     margin: 10px 5px;
-    padding: 15px;
 
     color: white;
     font-weight: bold;
+    font-size: 1em;
     background-color: $cinema-red;
 
-    width: 50px;
-    height: 50px;
+    width: $cinema-seat-size;
+    height: $cinema-seat-size;
 
     border-radius: 5px 5px 20px 20px;
     border: 2px solid $cinema-red-dark;
 
     display: inline-block;
     cursor: hand;
-
     text-align: center;
+    line-height: $cinema-seat-size;
+
+    .seatLabel {
+      margin: auto;
+    }
+
   }
 }
