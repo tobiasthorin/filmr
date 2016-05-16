@@ -179,7 +179,7 @@ describe("cinemaController.js", function () {
 
 			expect($scope.add_theater_disabled).toBeUndefined();
 
-			$scope.submitTheater();
+			$scope.updateTheater();
 
 			expect($scope.newTheater.name).toBe("sal03");
 			expect($scope.newTheater.disabled).toBe(false);
@@ -191,7 +191,7 @@ describe("cinemaController.js", function () {
 			$scope.add_theater_name = "sal04";
 			$scope.add_theater_seats = 100;
 			$scope.add_theater_disabled = false;
-			$scope.submitTheater();
+			$scope.updateTheater();
 
 			expect(mockedSavedTheater).toEqual({cinema: {id:1}, name: "sal04", disabled: false, numberOfSeats: 100});
 		});
@@ -203,14 +203,14 @@ describe("cinemaController.js", function () {
 			$scope.add_theater_name = "sal04";
 			$scope.add_theater_seats = 100;
 			$scope.add_theater_disabled = false;
-			$scope.submitTheater();
+			$scope.updateTheater();
 
 			expect($scope.alert).toHaveBeenCalledWith("Success!");
 		});
 
 		it("Logs an error message if the add theater-API call is unsuccessful", function () {
 			spyOn($scope, 'alert');
-			$scope.submitTheater();
+			$scope.updateTheater();
 
 			expect($scope.alert).toHaveBeenCalledWith("Error!");
 
