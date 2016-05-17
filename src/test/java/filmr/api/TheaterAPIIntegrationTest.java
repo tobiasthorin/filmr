@@ -18,9 +18,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestContextManager;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -93,12 +99,20 @@ public class TheaterAPIIntegrationTest {
     public void testCreate() throws Exception {
     	
     	// TODO: fix test with params ?number_of_rows=2&max_row_size=4
+    	HashMap<String,String> parameters = new HashMap<String, String>();
+    	parameters.put("number_of_rows", "4");
+    	parameters.put("max_row_size", "5");
+    	
+    	
+    	URI urlWithParams = getURI(parameters);
+    	System.out.println("sending uri params: " + urlWithParams );
     	
         Theater theater = EntityFactory.createTheater("testCreate Theater", savedCinema);
 
         //Post
-        ResponseEntity<Theater> responseEntity = restTemplate.postForEntity(baseUrl, theater, Theater.class);
+        ResponseEntity<Theater> responseEntity = restTemplate.postForEntity(urlWithParams, theater, Theater.class);
         Theater postedTheater = responseEntity.getBody();
+        System.out.println("posted theater is: " + postedTheater);
 
         //Assert
         assertTrue("Make sure the http was successfull", responseEntity.getStatusCode().is2xxSuccessful());
@@ -125,7 +139,6 @@ public class TheaterAPIIntegrationTest {
 
     	// setup values to update to
     	String updatedTheaterName = "Test updated theater name";
-    	int updatedNumberOfSeats = 666;
 
     	// make the changes to the local, but previously saved, java object
     	savedTheater.setName(updatedTheaterName);
@@ -146,5 +159,15 @@ public class TheaterAPIIntegrationTest {
         //clear everything
         theaterRepository.deleteAllInBatch();
         cinemaRepository.deleteAllInBatch();
+    }
+    
+    private URI getURI (HashMap<String, String> params) {
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(baseUrl);
+        
+        for(Entry<String, String> entry : params.entrySet()) {
+        	uriComponentsBuilder.queryParam(entry.getKey(), entry.getValue());
+        }
+        UriComponents uriComponents = uriComponentsBuilder.build();
+        return uriComponents.toUri();
     }
 }
