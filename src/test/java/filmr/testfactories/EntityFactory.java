@@ -25,7 +25,6 @@ public class EntityFactory {
     public static Theater createTheater(String name, Cinema savedCinema) {
         Theater theater = new Theater();
         String theaterName;
-        int numberOfSeats;
         boolean disabled;
         ArrayList<Row> rows;
         Cinema cinema;
@@ -33,22 +32,25 @@ public class EntityFactory {
 
         theaterName = name;
 
-        numberOfSeats = 1; //TODO how to set?
-
         disabled = false; //TODO parameter?
 
         rows = new ArrayList<>(); //TODO linked in DB?
 
         cinema = savedCinema;
 
-        showings = new ArrayList<>(); //TODO should be empty no errers?
+        showings = new ArrayList<>(); //TODO should be empty no errors?
+
+        Row r = createStandardRowForTheater(theater);
+        rows.add(r);
+
 
         theater.setName(theaterName);
-        // theater.setNumberOfSeats(numberOfSeats);
-        theater.setDisabled(disabled);
+//        theater.setDisabled(disabled);
         theater.setRows(rows);
-        theater.setCinema(cinema);
-        theater.setShowings(showings);
+//        theater.setCinema(cinema);
+//        theater.setShowings(showings);
+
+
         return theater;
     }
 
@@ -76,4 +78,20 @@ public class EntityFactory {
         //showing.setBookings(savedBookings);
         return showing;
     }
+    
+	public Seat createStandardSeatForRow(Row row){
+		Seat seat = new Seat();
+		seat.setState(SeatState.ENABLED);
+		seat.setRow(row);
+		
+		return seat;
+	}
+	
+	public static Row createStandardRowForTheater(Theater theater) {
+		Row row = new Row();
+		row.setSeats(new ArrayList<Seat>() );
+		row.setTheater(theater);
+		
+		return row;
+	}
 }
