@@ -22,7 +22,7 @@ angular.module('filmr')
                         $scope.original_name = result.name;
                         $scope.name = result.name;
                         $scope.currentTheater = result;
-                        $scope.currentTheater.cinema = {id: $routeParams.cinema_id};
+                        $scope.currentTheater.cinema = {id: result.cinemaId}
 
                         if (!result.rows[0]) {
                             $scope.theaterWidth = $scope.defaultWidth
@@ -55,6 +55,7 @@ angular.module('filmr')
 							activeRequest = false;
 							console.log("Updated!");
 							$scope.currentTheater = result;
+							$scope.currentTheater.cinema = {id: result.cinemaId}
 							updateRows();
 							//$location.path('/cinema/' + $routeParams.cinema_id);
 						},
