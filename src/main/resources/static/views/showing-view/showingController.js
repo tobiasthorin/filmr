@@ -125,8 +125,8 @@ angular.module('filmr')
                     "only_for_cinema_with_id" : $scope.cinema.id,
                     "only_for_theater_with_id" : $scope.theater.id,
                     "only_for_movie_with_id" : $scope.movie.id,
-                    "from_date" : $scope.fromDate,
-                    "to_date" : $scope.toDate,
+                    "from_date" : parseDate($scope.fromDate),
+                    "to_date" : parseDate($scope.toDate),
                     "show_disabled_showings" : $scope.showingIsDisabled,
                     "include_empty_slots_for_movie_of_length" : $scope.movieForShowing.lengthInMinutes
                 }
@@ -142,6 +142,19 @@ angular.module('filmr')
                         $rootScope.errorHandler(error);
                     }
                 )
+            }
+
+            var parseDate = function(f) {
+                console.log("parse");
+                
+                console.log("1");
+                if(!f) return "";
+                console.log("2");
+                var r = f.substr(0,4+3+3);
+                r += "T";
+                r += f.substr(8+3);
+                console.log(r);
+                return r;
             }
 
         }]);

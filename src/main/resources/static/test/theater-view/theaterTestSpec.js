@@ -1,84 +1,150 @@
+'use strict';
+
 describe("cinemaController.js", function () {
 
-	//Specify module
-	beforeEach(module('filmr'));
+    //Specify module
+    beforeEach(module('filmr'));
 
-	// Mocked data
-	var fetchedTheater;
+    // Variables and parameters
+    var fetchedTheater;
+    var MockedTheaterService;
+    var $scope;
+    var $controller;
 
-	var Mocked$routeParams = {
-		'cinema_id': 1,
-		'theater_id': 2
-	};
+    var $routeParams = {};
 
-	//Mocked services
-	beforeEach(function () {
+    //Mocks
+    beforeEach(function () {
 
-		MockedTheaterService = {
-			'get': function (params) {
-				return {
-					'$promise': {
-						then: function (success, fail) {
+        $routeParams = {
+            'cinema_id': 1,
+            'theater_id': 2,
+            'width': 10,
+            'depth': 7
+        };
 
-							fetchedTheater = {
-								id: params.id,
-								name: 'testTheater',
-								numberOfSeats: 330,
-								disabled: false,
-								cinema: {id: 1}
-							};
-							success(fetchedTheater);
-						}
-					}
-				}
-			},
-			'update': function (params) {
-				return {
-					'$promise': {
-						then: function (success, fail) {
-							if (params.id && params.name && params.numberOfSeats && params.cinema) {
-								success();
-							} else {
-								fail();
-							}
-						}
-					}
-				}
-			}
-		};
+        MockedTheaterService = {
+            'get': function (params) {
+                return {
+                    '$promise': {
+                        then: function (success, fail) {
+
+                            fetchedTheater = {
+                                id: params.id,
+                                name: 'testTheater',
+                                disabled: false,
+                                cinema: {id: 1},
+                                rows: [
+                                    {
+                                        seats: [
+                                            {seatName: 1},
+                                            {seatName: 2},
+                                            {seatName: 3}
+
+                                        ]
+                                    },
+                                    {
+                                        seats: [
+                                            {seatName: 4},
+                                            {seatName: 5},
+                                            {seatName: 6}
+
+                                        ]
+                                    },
+                                    {
+                                        seats: [
+                                            {seatName: 7},
+                                            {seatName: 8},
+                                            {seatName: 9}
+
+                                        ]
+                                    },
+                                    {
+                                        seats: [
+                                            {seatName: 7},
+                                            {seatName: 8},
+                                            {seatName: 9}
+
+                                        ]
+                                    }
+                                ]
+                            };
+                            success(fetchedTheater);
+                        }
+                    }
+                }
+            },
+            'update': function (params) {
+                return {
+                    '$promise': {
+                        then: function (success, fail) {
+                            if (params.id && params.name && params.numberOfSeats && params.cinema) {
+                                success();
+                            } else {
+                                fail();
+                            }
+                        }
+                    }
+                }
+            }
+        };
 
 
-	});
+    });
 
-	//Injections, defining which mocked services to use instead of the real ones
-	beforeEach(inject(function (_$controller_) {
-		$controller = _$controller_;
-		$scope = {};
+    //Injections, defining which mocked services to use instead of the real ones
+    beforeEach(inject(function (_$controller_) {
+        $controller = _$controller_;
+        $scope = {};
 
-		$controller('theaterController', {
-			$scope: $scope, $routeParams: Mocked$routeParams,
-			TheaterService: MockedTheaterService
-		});
-	}));
+        $controller('theaterController', {
+            $scope: $scope, $routeParams: $routeParams,
+            TheaterService: MockedTheaterService
+        });
+    }));
 
-	/* Test specifications */
+    /* Test specifications */
 
-	it("Fetches the theater specified in the route", function () {
-		expect(fetchedTheater.id).toEqual(Mocked$routeParams.theater_id);
-	});
+    it("Fetches the theater specified in the route", function () {
+        if ($routeParams.theater_id) {
+            expect(fetchedTheater.id).toEqual($routeParams.theater_id);
+        }
+    });
 
-	it("Sets the scope variables to the content of the fetched theater", function () {
-		expect($scope.name).toEqual(fetchedTheater.name);
-		expect($scope.numberOfSeats).toEqual(fetchedTheater.numberOfSeats);
-		expect($scope.isDisabled).toEqual(fetchedTheater.disabled);
-	});
+    describe("Sets the scope variables to the content of the fetched theater", function () {
+        it("Sets the original theater name", function () {
+            expect($scope.original_name).toEqual(fetchedTheater.name);
+        });
 
-	it("Creates a theater object in preparation of submitting it", function () {
-		$scope.submitTheater();
-		expect($scope.newTheater.id).toEqual(fetchedTheater.id);
-		expect($scope.newTheater.name).toEqual(fetchedTheater.name);
-		expect($scope.newTheater.numberOfSeats).toEqual(fetchedTheater.numberOfSeats);
-		expect($scope.newTheater.disabled).toEqual(fetchedTheater.disabled);
-		expect($scope.newTheater.cinema).toEqual(fetchedTheater.cinema);
-	});
+        it("Sets the theater", function () {
+            expect($scope.currentTheater).toEqual(fetchedTheater);
+        });
+    });
+
+
+
+    describe("Height and with variables", function () {
+        it("Sets the width and height variables when a theater id is specified", function () {
+            expect($scope.theaterDepth).toEqual(fetchedTheater.rows.length);
+            expect($scope.theaterWidth).toEqual(fetchedTheater.rows[0].seats.length);
+        });
+
+        it("Sets the width and height variables when a theater id is NOT specified", function () {
+            $routeParams.theater_id = 0;
+            $scope.newTheater();
+            expect($scope.theaterDepth).toEqual($routeParams.depth);
+            expect($scope.theaterWidth).toEqual($routeParams.width);
+        });
+
+        it("Sets the width and height variables when a theater id is NOT specified, nor are the route parameters", function () {
+            $routeParams.theater_id = 0;
+            $routeParams.depth = 0;
+            $routeParams.width = 0;
+            $scope.newTheater();
+            expect($scope.theaterDepth).toEqual($scope.defaultDepth);
+            expect($scope.theaterWidth).toEqual($scope.defaultWidth);
+        });
+    });
+
+
 });

@@ -27,7 +27,7 @@
             crossorigin="anonymous"></script>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="styles/admin.css">
+    <link rel="stylesheet" href="css/admin.css">
 
 </head>
 
@@ -43,6 +43,8 @@
     </ul>
 
     <h1>filmr</h1>
+
+    <div ng-repeat="alert in alerts" ng-class="{'alert-box':true,'success':alert.type==1,'error':alert.type==2}"><span>{{alert.header}}</span>{{alert.text}}</div>
 
     <!-- page specific content loads in this view. see routing in app.js  -->
     <div ng-view></div>
