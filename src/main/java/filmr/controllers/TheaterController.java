@@ -27,6 +27,8 @@ public class TheaterController {
 			@RequestParam(name="number_of_rows") Integer number_of_rows,
 			@RequestParam(name="max_row_size") Integer max_row_size) {
 
+		logger.debug("Theater (before save) received in createTheater: " + theater);
+		logger.debug(String.format("Creating theater with number_of_rows = %d, max_row_size  = %d ", number_of_rows, max_row_size));
 		theater = theaterService.buildTheaterWithRowsAndSeats(theater,number_of_rows,max_row_size);
 		if (theater.getId() != null) {
 			return new ResponseEntity<Theater>(new Theater(), HttpStatus.BAD_REQUEST);
