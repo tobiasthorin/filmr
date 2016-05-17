@@ -21,11 +21,15 @@
                     <tr>
                         <th>Depth</th>
                         <td><p>{{theaterDepth}}</p></td>
+                        <td><button type="button" ng-click="addRow()">Add Row</button></td>
+                        <td><button type="button" ng-click="removeRow()">Remove Row</button></td>
                     </tr>
                     <tr>
                         <th></th>
                         <td><input type="submit" class="btn" ng-click="updateTheater()" value="Update"
                                    ng-disabled="showingForm.$invalid || validateScheduleEditTheater()"></td>
+                        <td><button type="button" ng-click="addSeats()">Add Seats</button></td>
+                        <td><button type="button" ng-click="removeSeats()">Remove Seats</button></td>
                     </tr>
                 </table>
             </form>
