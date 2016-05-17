@@ -62,24 +62,45 @@ angular.module('filmr')
                 }
             }
 
+            $scope.validateCreateShowing = function() {
+                if(typeof $scope.movieForShowing != "object") return false;
+                if(typeof $scope.theaterForShowing != "object") return false;
+                if(typeof $scope.dateForShowing != "string") return false;
+                if(!(typeof $scope.price == "number" || typeof $scope.price == "undefined" || $scope.price===null)) return false;
+                if(typeof $scope.price == "number" && $scope.price<0) return false;
+                if(typeof $scope.price == "number" && $scope.price>8192) return false;
+                return true;
+            }
+
             $scope.createShowing = function() {
+
+                if(!$scope.validateCreateShowing()) {
+                    $rootScope.genericError();
+                    return;
+                }
+
                 console.log("---");
                 console.log("call add showing to theater");
+
+
+
                 var newShowing = new ShowingService();
                 newShowing.movie = $scope.movieForShowing;
                 newShowing.theater =$scope.theaterForShowing;
-                newShowing.showDateTime = $scope.dateForShowing;
-                newShowing.price = $scope.priceForShowing;
+                newShowing.showDateTime = parseDateStringToValidAPIDateString($scope.dateForShowing);
+                newShowing.price = $scope.price;
                 newShowing.isDisabled = false;
                 console.log("Date is: "+newShowing.showDateTime);
 
                 ShowingService.save(newShowing, function (result) {
-                        console.log("Saved showing: "+ result);
+                        $rootScope.alert("Success! ","Showing added",1);
                         getShowingsWithParams();
                     },
                     function (error) {
-                        $rootScope.errorHandler(error);
-                        alert("Something went wrong. Either you have left a required field empty or you are trying to create a showing on a time that is occupied.");
+                        if(error.data && error.data.exception=="filmr.helpers.exceptions.FilmrTimeOccupiedException") {
+                            $rootScope.alert("Error! ","Time is already occupied",2);
+                        }
+                        else $rootScope.errorHandler(error);
                     });
             };
 
@@ -125,8 +146,8 @@ angular.module('filmr')
                     "only_for_cinema_with_id" : $scope.cinema.id,
                     "only_for_theater_with_id" : $scope.theater.id,
                     "only_for_movie_with_id" : $scope.movie.id,
-                    "from_date" : parseDate($scope.fromDate),
-                    "to_date" : parseDate($scope.toDate),
+                    "from_date" : parseDateStringToValidAPIDateString($scope.fromDate),
+                    "to_date" : parseDateStringToValidAPIDateString($scope.toDate),
                     "show_disabled_showings" : $scope.showingIsDisabled,
                     "include_empty_slots_for_movie_of_length" : $scope.movieForShowing.lengthInMinutes
                 }
@@ -144,12 +165,8 @@ angular.module('filmr')
                 )
             }
 
-            var parseDate = function(f) {
-                console.log("parse");
-                
-                console.log("1");
+            var parseDateStringToValidAPIDateString = function(f) {
                 if(!f) return "";
-                console.log("2");
                 var r = f.substr(0,4+3+3);
                 r += "T";
                 r += f.substr(8+3);
