@@ -94,6 +94,7 @@ public class TheaterService extends BaseServiceClass<Theater, Long> {
 	}
 
 	private void addSeatsToRows(List<Row> rows, Integer new_max_row_size) {
+		logger.debug(String.format("Adding maximum of %d seats to %d rows ", new_max_row_size, rows.size()));
 		for(Row row : rows){
 			Integer numberOfSeatsToAddPerRow = new_max_row_size - row.getSeats().size();
 			if(row.getSeats().size()< new_max_row_size){
@@ -117,6 +118,7 @@ public class TheaterService extends BaseServiceClass<Theater, Long> {
 	}
 
 	private void addRowsToTheater(Theater theater, Integer numberOfRowsToAdd) {
+		logger.debug("Adding " + numberOfRowsToAdd + " rows to theater " + theater);
 		List<Row> rows = theater.getRows();
 		Integer currentRowSize = rows.get(0).getSeats().size();
 		for(int i = 0; i<numberOfRowsToAdd; i++){
