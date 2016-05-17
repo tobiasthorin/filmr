@@ -40,11 +40,17 @@ public class EntityFactory {
 
         showings = new ArrayList<>(); //TODO should be empty no errors?
 
+        Row r = createStandardRowForTheater(theater);
+        rows.add(r);
+
+
         theater.setName(theaterName);
 //        theater.setDisabled(disabled);
-//        //theater.setRows(rows);
+        theater.setRows(rows);
 //        theater.setCinema(cinema);
 //        theater.setShowings(showings);
+
+
         return theater;
     }
 
@@ -81,7 +87,7 @@ public class EntityFactory {
 		return seat;
 	}
 	
-	public Row createStandardRowForTheater(Theater theater) {
+	public static Row createStandardRowForTheater(Theater theater) {
 		Row row = new Row();
 		row.setSeats(new ArrayList<Seat>() );
 		row.setTheater(theater);
