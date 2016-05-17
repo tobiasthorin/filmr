@@ -34,19 +34,43 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', '$lo
 
 
         $scope.validateScheduleAddTheater = function() {
-            if(!$scope.number_of_rows) return true;
-            if($scope.number_of_rows<1) return true;
 
-            if(!$scope.number_of_seats) return true;
-            if($scope.number_of_seats<1) return true;
-            return false;
+			if(typeof $scope.theater_name != "string") return false;
+			if(!($scope.theater_name.length>0 && $scope.theater_name.length<=48)) return false;
+
+            if(!$scope.number_of_rows) return false;
+            if($scope.number_of_rows<1) return false;
+			if($scope.number_of_rows>128) return false;
+
+            if(!$scope.number_of_seats) return false;
+            if($scope.number_of_seats<1) return false;
+			if($scope.number_of_seats>128) return false;
+
+            return true;
         };
 
 
 		$scope.addNewTheater = function () {
-            var url = $location.path() + '/theater/new';
-            $location.path(url).search({width: $scope.number_of_seats,depth: $scope.number_of_rows, name: $scope.theater_name});
 
+			if(!$scope.validateScheduleAddTheater()) {
+				$rootScope.genericError();
+				return;
+			}
+
+//			TheaterService.save({width: $scope.number_of_seats,number_of_rows: $scope.number_of_rows, name: $scope.theater_name}).$promise.then(
+//				function () {
+//					$scope.fetchCinemas();
+//					$scope.resetFields();
+//					$rootScope.alert("Success! ","Cinema "+$scope.newCinema.name+" was created",1);
+//				},
+//				function(error){
+//					$rootScope.errorHandler(error);
+//				}
+//			);
+
+//			var url = $location.path() + '/theater/new';
+  //          $location.path(url).search({width: $scope.number_of_seats,depth: $scope.number_of_rows, name: $scope.theater_name});
+			createNewTheater($scope.theater_name,currentCinema.id,$scope.number_of_rows,$scope.number_of_seats);
 		};
 
 		$scope.alert = function (message) {
@@ -67,7 +91,18 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', '$lo
 			return currentCinema.id;
 		};
 
+		$scope.validateAddMovieToRepertoire = function() {
+			if(typeof $scope.add_movie_to_repertoire_select == "undefined") return false;
+			if($scope.add_movie_to_repertoire_select === null) return false;
+			return true;
+		}
+
 		$scope.addMovieToRepertoire = function () {
+
+			if(!$scope.validateAddMovieToRepertoire()) {
+				$rootScope.genericError();
+				return;
+			}
 
 			var repertoireId = currentCinema.repertoire.id;
 			var movieId = $scope.add_movie_to_repertoire_select.id;
@@ -108,9 +143,15 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', '$lo
 		};
 
 		$scope.updateCinemaName = function () {
+			if(!$scope.validateCinemaNameForm()) {
+				$rootScope.genericError();
+				return;
+			}
+
 			currentCinema.name = $scope.edited_cinema_name;
 			CinemaService.update(currentCinema).$promise.then(function () {
 				setCinemaName();
+				$rootScope.alert("Success! ","Cinema "+$scope.edited_cinema_name+" was updated",1);
 			}, function (error) {
 				$rootScope.errorHandler(error);
 			});
@@ -118,7 +159,9 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', '$lo
 
         //Returns false if edited_cinema_name is falsy
         $scope.validateCinemaNameForm = function () {
-            return !!$scope.edited_cinema_name;
+			if(typeof $scope.edited_cinema_name!="string") return false;
+			if(!($scope.edited_cinema_name.length>0 && $scope.edited_cinema_name.length<=48)) return false;
+            return true;
         };
 
 		function fetchMoviesInRepertorie() {
@@ -179,4 +222,27 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', '$lo
 			$scope.edited_cinema_name = currentCinema.name;
 		}
 
-	}]);
+		function createNewTheater(name,cinema_id,depth,width) {
+			var newTheater = {
+				"name": name,
+				cinema: {id: cinema_id}
+			};
+
+			var theaterParams = {
+				number_of_rows: depth,
+				max_row_size: width
+			};
+
+			TheaterService.save(theaterParams, newTheater).$promise.then(
+				function (result) {
+					$rootScope.alert("Success! ", "Theater "+name+" was created",1);
+					fetchTheaters();
+				},
+				function (error) {
+					$rootScope.errorHandler(error)
+				});
+
+			$scope.original_name = newTheater.name;
+			$scope.name = newTheater.name;
+		}
+}]);
