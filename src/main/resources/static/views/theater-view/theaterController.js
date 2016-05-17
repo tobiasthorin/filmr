@@ -3,7 +3,7 @@
 angular.module('filmr')
     .controller('theaterController', ['$rootScope', '$scope', '$routeParams', '$location', 'TheaterService',
         function ($rootScope, $scope, $routeParams, $location, TheaterService) {
-
+			var activeRequest = false;
             //Scoped variables
             $scope.defaultWidth = 1;
             $scope.defaultDepth = 1;
@@ -46,18 +46,24 @@ angular.module('filmr')
             };
             
             $scope.updateTheater = function () {
+				if(!activeRequest){
+					$scope.currentTheater.name = $scope.name;
+					activeRequest = true;
+					TheaterService.update($scope.currentTheater).$promise.then(
+						function (result) {
+							//success
+							activeRequest = false;
+							console.log("Updated!");
+							$scope.currentTheater = result;
+							updateRows();
+							//$location.path('/cinema/' + $routeParams.cinema_id);
+						},
+						function (error) {
+							activeRequest = false;
+							$rootScope.errorHandler(error);
+						});
+				}
 
-                $scope.currentTheater.name = $scope.name;
-
-                TheaterService.update($scope.currentTheater).$promise.then(
-                    function () {
-                        //success
-                        console.log("Updated!");
-                        $location.path('/cinema/' + $routeParams.cinema_id);
-                    },
-                    function () {
-                        //fail
-                    });
             };
 
             $scope.newTheater = function () {
@@ -68,7 +74,23 @@ angular.module('filmr')
                 } else {
                     setDefaultWidthAndDepth();
                 }
-            };
+            }
+
+	        $scope.toggleSeatState = function(seat){
+				switch(seat.state){
+					case "ENABLED":
+						seat.state = "DISABLED";
+						break;
+					case "DISABLED":
+						seat.state = "NOT_A_SEAT";
+						break;
+					case "NOT_A_SEAT":
+						seat.state = "ENABLED";
+						break;
+				}
+		        $scope.updateTheater();
+
+	        }
 
             function setWidthAndDepthFromParams() {
                 $scope.theaterWidth = $routeParams.width;

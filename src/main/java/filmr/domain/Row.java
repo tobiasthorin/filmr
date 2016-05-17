@@ -17,7 +17,7 @@ public class Row {
 	@Id
 	@GeneratedValue( strategy = GenerationType.AUTO)
 	private Long id;
-	@OneToMany(mappedBy = "row")
+	@OneToMany(mappedBy = "row", orphanRemoval=true) //TODO: remove orphan stuff?
 	@Cascade(CascadeType.ALL)
 	private List<Seat> seats;
 	@ManyToOne
@@ -67,7 +67,7 @@ public class Row {
         final Row row = (Row)object;
         return new EqualsBuilder()
                 .append(id,row.getId())
-                .append(seats,row.getSeats())
+                // .append(seats,row.getSeats())
                 .append(theater, row.getTheater())
                 .append(rowLabel, row.getRowLabel())
                 .isEquals();
@@ -78,7 +78,7 @@ public class Row {
     public int hashCode() {
         return new HashCodeBuilder(17, 31)
                 .append(id)
-                .append(seats)
+                // .append(seats)
                 .append(theater)
                 .append(rowLabel)
                 .toHashCode();

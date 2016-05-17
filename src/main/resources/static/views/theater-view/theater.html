@@ -39,8 +39,8 @@
             Theater
             <div class="theaterRow" ng-repeat="row in theaterRows">
                 <span>{{row.rowLabel}}</span>
-                <div class="theaterSeat" ng-repeat="seat in theaterRows[$index].seats">
-                    <div class="seatLabel">{{seat.seatLabel}}<span> id: {{seat.id}}</span></div>
+                <div class="theaterSeat" ng-class="{'disabledSeat': seat.state == 'DISABLED', 'not_a_seat':seat.state == 'NOT_A_SEAT'}" ng-repeat="seat in theaterRows[$index].seats">
+                    <div class="seatLabel" ng-click="toggleSeatState(seat)">{{seat.seatLabel}}</div>
                 </div>
             </div>
         </div>

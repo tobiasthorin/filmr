@@ -23,7 +23,8 @@ h1 {
   display: block; }
   .theaterRow .theaterSeat {
     margin: 10px 5px;
-    color: #b2b2b2;
+    cursor: pointer;
+    color: #FFFFFF;
     font-weight: bold;
     font-size: 1em;
     background-color: #c61a30;
@@ -37,6 +38,14 @@ h1 {
     line-height: 40px; }
     .theaterRow .theaterSeat .seatLabel {
       margin: auto; }
+  .theaterRow .disabledSeat {
+    background-color: lightgray;
+    border-color: black;
+    color: black; }
+  .theaterRow .not_a_seat {
+    background-color: #fbfbfb;
+    border-color: #eeeeee;
+    color: #dddddd; }
 
 /*  old css */
 html {

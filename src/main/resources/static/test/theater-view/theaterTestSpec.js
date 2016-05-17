@@ -8,7 +8,10 @@ describe("cinemaController.js", function () {
     // Variables and parameters
     var fetchedTheater;
     var MockedTheaterService;
+	var seat;
     var $scope;
+	var $rootScope = {};
+
     var $controller;
 
     var $routeParams = {};
@@ -22,6 +25,10 @@ describe("cinemaController.js", function () {
             'width': 10,
             'depth': 7
         };
+	    $rootScope.errorHandler = function(){
+		    console.log("Error!");
+	    };
+	    seat = {state: "ENABLED"}
 
         MockedTheaterService = {
             'get': function (params) {
@@ -86,7 +93,20 @@ describe("cinemaController.js", function () {
                         }
                     }
                 }
-            }
+            },
+	        'save': function (params) {
+		        return {
+			        '$promise': {
+				        then: function (success, fail) {
+					        if (params.name && params.numberOfSeats && params.cinema) {
+						        success(fetchedTheater);
+					        } else {
+						        fail();
+					        }
+				        }
+			        }
+		        }
+	        }
         };
 
 
@@ -97,9 +117,11 @@ describe("cinemaController.js", function () {
         $controller = _$controller_;
         $scope = {};
 
+
         $controller('theaterController', {
             $scope: $scope, $routeParams: $routeParams,
-            TheaterService: MockedTheaterService
+            TheaterService: MockedTheaterService,
+	        $rootScope: $rootScope
         });
     }));
 
@@ -145,6 +167,31 @@ describe("cinemaController.js", function () {
             expect($scope.theaterWidth).toEqual($scope.defaultWidth);
         });
     });
+
+	describe("Save theater", function(){
+		it("Saves a theater with name", function(){
+			expect($scope.currentTheater).toEqual(fetchedTheater);
+		});
+	});
+
+	describe("Updating seat state", function(){
+		it("Enable to disable", function(){
+			$scope.toggleSeatState(seat);
+			expect(seat.state).toEqual("DISABLED");
+		});
+		it("Disabled to Not_A_Seat", function(){
+			$scope.toggleSeatState(seat);
+			$scope.toggleSeatState(seat);
+			expect(seat.state).toEqual("NOT_A_SEAT");
+		});
+		it("Not_A_Seat to Enables", function(){
+			$scope.toggleSeatState(seat);
+			$scope.toggleSeatState(seat);
+			$scope.toggleSeatState(seat);
+			expect(seat.state).toEqual("ENABLED");
+		});
+
+	})
 
 
 });
