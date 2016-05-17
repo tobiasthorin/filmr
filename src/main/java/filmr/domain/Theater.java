@@ -53,6 +53,10 @@ public class Theater {
 		return cinema != null ? cinema.getName() : "ingen biograf kopplad";
 	}
 
+	public long getCinemaId() {
+		return cinema != null ? cinema.getId() : -1;
+	}
+
 	public String getName() {
 		return name;
 	}
