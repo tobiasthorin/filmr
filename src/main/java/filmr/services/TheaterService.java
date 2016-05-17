@@ -111,37 +111,9 @@ public class TheaterService extends BaseServiceClass<Theater, Long> {
 		
 		for(int i = 0; i < numberOfRowsToRemove; i++) {
 			Row rowToRemove = getLast(rows);
-			
-//			// remove all the seats from db  and from object list
-//			deleteAllSeatsInRowFromDb(rowToRemove);
-//			rowToRemove.getSeats().removeAll(rowToRemove.getSeats());
-//			
-//			// remove row from db.
-//			entityManager.remove(entityManager.merge(rowToRemove));
-//			
-//			
-//			// remove row from java list
-//			rows.remove(rowToRemove);
-//			logger.debug("trying to remove row " + rowToRemove);
-			
-			
-			
-//			Row managedRowToRemove = entityManager.merge(rowToRemove);
-//			managedRowToRemove.getSeats().removeAll(managedRowToRemove.getSeats());
-//			
-//			entityManager.remove(managedRowToRemove);
-			
 			rows.remove(rowToRemove);
 		}
-		
 		logger.debug("nr of rows after remove: " + rows.size());
-		
-//		for(int i = rows.size()-1; i>rows.size()-numberOfRowsToRemove; i--){
-//			Row rowToRemove = entityManager.merge(rows.get(i));
-//			entityManager.remove(rowToRemove);
-//			rows.remove(i);
-//		}
-
 	}
 
 	private void addRowsToTheater(Theater theater, Integer numberOfRowsToAdd) {
@@ -192,10 +164,8 @@ public class TheaterService extends BaseServiceClass<Theater, Long> {
 				seatCounter = 1;
 			}
 		}
-		
-		
+
 	}
-	
 	
 	private Seat createStandardSeatForRow(Row row){
 		Seat seat = new Seat();
@@ -218,14 +188,5 @@ public class TheaterService extends BaseServiceClass<Theater, Long> {
 		
 		return entities.get(entities.size()-1);
 	}
-	
-	private void deleteAllSeatsInRowFromDb(Row row) {
-		logger.debug("Deleting all seats in row with id " + row.getId());
-		
-		for(Seat seat : row.getSeats()) {
-			entityManager.remove(entityManager.merge(seat));
-		}
-	}
-	
-	
+
 }
