@@ -3,6 +3,7 @@ package filmr.controllers;
 import java.util.HashSet;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,11 +27,13 @@ public class RepertoireController {
     private RepertoireService repertoireService;
     @Autowired
     private MovieService movieService;
+	private final static org.apache.log4j.Logger logger = Logger.getLogger(TheaterController.class);
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Repertoire> createRepertoire(@RequestBody Repertoire repertoire) {
         if (repertoire.getId() != null) {
+			logger.warn("Can't create repertoire with manually set ID");
             return new ResponseEntity<Repertoire>(new Repertoire(), HttpStatus.BAD_REQUEST);
         }
         Repertoire savedRepertoire = repertoireService.saveEntity(repertoire);
@@ -46,7 +49,7 @@ public class RepertoireController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<Repertoire>> readAllMovies() {
+    public ResponseEntity<List<Repertoire>> readAllRepertoires() {
         List<Repertoire> retrievedRepertoires = repertoireService.readAllEntities();
         return new ResponseEntity<List<Repertoire>>(retrievedRepertoires, HttpStatus.OK);
     }
@@ -61,6 +64,7 @@ public class RepertoireController {
     		@RequestParam(name="remove_movie_with_id", required = false) Long remove_movie_with_id
     		){
         if(repertoire.getId() == null){
+	        logger.warn("Can only update repertoire with a set ID");
             return new ResponseEntity<Repertoire>(new Repertoire(), HttpStatus.BAD_REQUEST);
         }
         

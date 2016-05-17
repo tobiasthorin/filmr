@@ -5,6 +5,8 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+import filmr.controllers.TheaterController;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.util.SystemPropertyUtils;
@@ -26,6 +28,8 @@ public class CustomJsonDateDeserializer extends JsonDeserializer<LocalDateTime> 
 	@Autowired
 	private Environment environment;
 
+	private final static org.apache.log4j.Logger logger = Logger.getLogger(TheaterController.class);
+
 	@Override
     public LocalDateTime deserialize(JsonParser jp, DeserializationContext ctxt)
             throws IOException, JsonProcessingException {
@@ -36,21 +40,20 @@ public class CustomJsonDateDeserializer extends JsonDeserializer<LocalDateTime> 
 		// so we seem to get the date as an array of numbers, instead of a string.
 		//
 
-		System.out.println("deserializationContext: " + ctxt);
+		logger.debug("deserializationContext: " + ctxt);
 
 
-		System.out.println("!! TEST! in custom deserializer!! ");
+		logger.debug("!! TEST! in custom deserializer!! ");
 		ObjectCodec oc = jp.getCodec();
 		TreeNode node = oc.readTree(jp);
 		String nodeString = node.toString();
 		nodeString = nodeString.substring(1, nodeString.length()-1); // remove brackets
 
-		System.out.println("\n node.toString : " + nodeString);
+		logger.debug("\n node.toString : " + nodeString);
 
-		System.out.println("Formatted dateString from array values: " + nodeString);
-		System.out.println("Adding the stoff");
+		logger.debug("Formatted dateString from array values: " + nodeString);
 
-		System.out.println(nodeString.substring(nodeString.length()-5));
+		logger.debug(nodeString.substring(nodeString.length()-5));
 
 		//Convert the string as needed
 		if (nodeString.contains(",")){
@@ -64,7 +67,7 @@ public class CustomJsonDateDeserializer extends JsonDeserializer<LocalDateTime> 
 					Integer.parseInt(datenumbers[3]),
 					Integer.parseInt(datenumbers[4]),
 					Integer.parseInt(datenumbers[5]));
-			System.out.println("Formatted dateString from array values: " + dateString);
+			logger.debug("Formatted dateString from array values: " + dateString);
 			nodeString = dateString;//TODO probably a new variable for both
 		}
         //If string is less than 17, return as LocalDateTime, Timezone has been handled when creating
@@ -78,8 +81,8 @@ public class CustomJsonDateDeserializer extends JsonDeserializer<LocalDateTime> 
 
 		Instant instant = Instant.parse(nodeString);
 		dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-        System.out.println("Returned String dateTime:" + dateTime.toString());
-        System.out.println("\nTime in custom deserializer TEST: " + dateTime);
+        logger.info("Returned String dateTime:" + dateTime.toString());
+        logger.debug("\nTime in custom deserializer TEST: " + dateTime);
 
 
 		return dateTime;

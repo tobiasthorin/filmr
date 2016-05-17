@@ -1,0 +1,65 @@
+/* Global variables */
+$primary-light: #5a31ae;
+$primary-dark: #30007a;
+
+$cinema-red: #c61a30;
+$cinema-red-dark: #5c111d;
+
+$cinema-seat-size: 40px;
+
+/* Page wide stuff */
+html {
+  overflow-y: scroll;
+}
+
+h1 {
+  background: #30007a;
+  padding: 10px;
+  color: #eee;
+  font-family: monospace;
+  margin: 0 0 10px;
+}
+
+/* Nav bar */
+.nav-tabs {
+  li a {
+    color: #666666;
+  }
+  li.active {
+    a {
+      background-color: $primary-light !important;
+    }
+    a, a:active, a:focus {
+      color: #fff !important;
+    }
+  }
+}
+
+.theaterRow {
+  margin: 10px;
+  display: block;
+  .theaterSeat {
+    margin: 10px 5px;
+
+    color: #b2b2b2;
+    font-weight: bold;
+    font-size: 1em;
+    background-color: $cinema-red;
+
+    width: $cinema-seat-size;
+    height: $cinema-seat-size;
+
+    border-radius: 5px 5px 20px 20px;
+    border: 2px solid $cinema-red-dark;
+
+    display: inline-block;
+    cursor: hand;
+    text-align: center;
+    line-height: $cinema-seat-size;
+
+    .seatLabel {
+      margin: auto;
+    }
+
+  }
+}

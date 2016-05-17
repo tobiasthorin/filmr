@@ -4,6 +4,7 @@ import filmr.domain.Cinema;
 import filmr.domain.Repertoire;
 import filmr.services.CinemaService;
 import filmr.services.RepertoireService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +19,13 @@ public class CinemaController {
     private CinemaService cinemaService;
     @Autowired
     private RepertoireService repertoireService;
+	private final static org.apache.log4j.Logger logger = Logger.getLogger(TheaterController.class);
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Cinema> createCinema(@RequestBody Cinema cinema) {
         if(cinema.getId() != null) {
+			logger.warn("Can't create cinema with manually set ID");
             return new ResponseEntity<Cinema>(new Cinema(), HttpStatus.BAD_REQUEST);
         }
         Repertoire repertoire = new Repertoire();
@@ -30,7 +33,6 @@ public class CinemaController {
 
         cinema.setRepertoire(repertoire);
         Cinema savedCinema = cinemaService.saveEntity(cinema);
-
         return new ResponseEntity<Cinema>(savedCinema, HttpStatus.OK);
     }
 
@@ -43,7 +45,7 @@ public class CinemaController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<Cinema>> readAllMovies(@RequestParam(name="show_disabled_cinemas", required=false, defaultValue = "true") Boolean show_disabled_cinemas) {
+    public ResponseEntity<List<Cinema>> readAllCinemas(@RequestParam(name="show_disabled_cinemas", required=false, defaultValue = "true") Boolean show_disabled_cinemas) {
     //public ResponseEntity<List<Cinema>> readAllMovies(@RequestParam(name="show_disabled_cinemas", required=false, defaultValue = "true") Boolean show_disabled_cinemas) {
 
 
@@ -56,9 +58,9 @@ public class CinemaController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Cinema> updateCinema(@PathVariable Long id, @RequestBody Cinema cinema){
         if(cinema.getId() == null){
+	        logger.warn("Can only update cinema with a set ID");
             return new ResponseEntity<Cinema>(new Cinema(), HttpStatus.BAD_REQUEST);
         }
-
         Cinema updatedCinema = cinemaService.saveEntity(cinema);
         return new ResponseEntity<Cinema>(updatedCinema, HttpStatus.OK);
     }

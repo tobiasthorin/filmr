@@ -6,6 +6,8 @@ import filmr.domain.Movie;
 import filmr.domain.Showing;
 import filmr.helpers.TimeslotCreator;
 import filmr.services.ShowingService;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -22,6 +24,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(value = "/api/showings")
 public class ShowingController {
+	
+	private final static org.apache.log4j.Logger logger = Logger.getLogger(ShowingController.class);
 
     @Autowired
     private ShowingService showingService;
@@ -30,6 +34,7 @@ public class ShowingController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Showing> createShowing(@RequestBody Showing showing) {
         if (showing.getId() != null) {
+        	logger.warn("Trying to create showing, but showing already has id.");
             return new ResponseEntity<Showing>(new Showing(), HttpStatus.BAD_REQUEST);
         }
         Boolean showingTimeisValid = showingService.showingTimeIsValid(showing);
@@ -38,7 +43,7 @@ public class ShowingController {
             Showing savedShowing = showingService.saveEntity(showing);
             return new ResponseEntity<Showing>(savedShowing, HttpStatus.OK);
         }
-        System.out.println("Not valid time");
+        logger.warn("Not valid time");
         // TODO: throw custom error. an empty doesn't serialize into json, so 
         // HttpStatus.PRECONDITION_FAILED does not reach the api consumer
         return new ResponseEntity<Showing>(new Showing(), HttpStatus.PRECONDITION_FAILED); 
@@ -69,11 +74,9 @@ public class ShowingController {
     		@RequestParam(name="include_empty_slots_for_movie_of_length", required=false) Long include_empty_slots_for_movie_of_length
     		) {
     	
-    	
-    	
     	//TODO: figure out why dates from chrome datepicker is received as the date minus one day. 2001-01-02 -> 2001-01-01
-    	System.out.println("from date, before manipulation: " + from_date);
-    	System.out.println("to date, before manipulation: " + to_date);
+    	logger.info("from date, before manipulation: " + from_date);
+    	logger.info("to date, before manipulation: " + to_date);
     	
     	// plusDays(1) is temp fix for issue #86  - dates are one day off. TODO: fix for real
 //    	from_date = from_date != null ? from_date.withHour(0).withMinute(0).plusDays(1) : LocalDateTime.now();
@@ -85,8 +88,8 @@ public class ShowingController {
 		to_date = to_date != null ? to_date : null;
 		
 
-		System.out.println("From date: " + from_date);
-		System.out.println("To date: " + to_date);
+		logger.info("From date: " + from_date);
+		logger.info("To date: " + to_date);
 		
 		List<Showing> retrievedShowings = showingService.getAllMatchingParams(
 						from_date, 
@@ -103,17 +106,17 @@ public class ShowingController {
 
 
         if(include_distinct_movies_in_header) {
+        	logger.info("Trying to include distinct movies in http header.");
             try {
                 customHeaders = buildCustomHeadersForReadAll(retrievedShowings);
             } catch (JsonProcessingException e) {
-                System.out.println("Couldn't parse movie list into JSON");
+                logger.warn("Couldn't parse movie list into JSON");
                 e.printStackTrace();
             } finally {
                 return ResponseEntity.ok().headers(customHeaders).body(retrievedShowings);
             }
         }
         
-        // TODO: remove after testing new methods
         if(include_empty_slots_for_movie_of_length != null) {
         	retrievedShowings = 
         			TimeslotCreator.createExtendedShowingsListWithEmptyTimeSlots(retrievedShowings, include_empty_slots_for_movie_of_length);        	
@@ -125,6 +128,7 @@ public class ShowingController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Showing> updateShowing(@PathVariable Long id, @RequestBody Showing showing){
         if(showing.getId() == null){
+        	logger.warn("Trying to update an entity, but no id was found.");
             return new ResponseEntity<Showing>(new Showing(), HttpStatus.BAD_REQUEST);
         }
 
