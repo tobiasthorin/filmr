@@ -41,7 +41,8 @@ h1 {
   .theaterSeat {
     margin: 10px 5px;
 
-    color: #b2b2b2;
+    cursor: pointer;
+    color: #FFFFFF;
     font-weight: bold;
     font-size: 1em;
     background-color: $cinema-red;
@@ -61,5 +62,18 @@ h1 {
       margin: auto;
     }
 
+
   }
+  .disabledSeat{
+    background-color: lightgray;
+    border-color: black;
+    color: black;
+  }
+  .not_a_seat {
+    background-color: #fbfbfb;
+    border-color: #eeeeee;
+    color: #dddddd;
+
+  }
+
 }
