@@ -68,7 +68,22 @@ angular.module('filmr')
                 } else {
                     setDefaultWidthAndDepth();
                 }
-            };
+            }
+
+	        $scope.toggleSeatState = function(seat){
+				switch(seat.state){
+					case "ENABLED":
+						seat.state = "DISABLED";
+						break;
+					case "DISABLED":
+						seat.state = "NOT_A_SEAT";
+						break;
+					case "NOT_A_SEAT":
+						seat.state = "ENABLED";
+						break;
+				}
+
+	        }
 
             function setWidthAndDepthFromParams() {
                 $scope.theaterWidth = $routeParams.width;

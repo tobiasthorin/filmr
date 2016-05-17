@@ -40,7 +40,7 @@
             <div class="theaterRow" ng-repeat="row in theaterRows">
                 <span>{{row.rowLabel}}</span>
                 <div class="theaterSeat" ng-repeat="seat in theaterRows[$index].seats">
-                    <div class="seatLabel">{{seat.seatLabel}}<span> id: {{seat.id}}</span></div>
+                    <div class="seatLabel" ng-click="toggleSeatState(seat)">{{seat.seatLabel}}</div>
                 </div>
             </div>
         </div>
