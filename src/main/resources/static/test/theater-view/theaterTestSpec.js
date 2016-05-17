@@ -191,6 +191,38 @@ describe("cinemaController.js", function () {
 			expect(seat.state).toEqual("ENABLED");
 		});
 
+	});
+	describe("Add/Remove seats and rows", function(){
+		it("Adds a row", function(){
+			var beforeRows = $scope.theaterDepth;
+			$scope.addRow();
+			expect(beforeRows+1).toEqual($scope.theaterDepth);
+		})
+		it("Removes a row", function(){
+			var beforeRows = $scope.theaterDepth;
+			$scope.removeRow();
+			expect(beforeRows-1).toEqual($scope.theaterDepth);
+		})
+		it("Doesnt remove the last row", function(){
+			var beforeRows = 1;
+			$scope.removeRow();
+			expect(beforeRows).toEqual(1);
+		})
+		it("Removes seats", function(){
+			var beforeSeats = $scope.theaterWidth;
+			$scope.removeSeats();
+			expect(beforeSeats-1).toEqual($scope.theaterWidth);
+		})
+		it("Adds seats", function(){
+			var beforeSeats = $scope.theaterWidth;
+			$scope.addSeats();
+			expect(beforeSeats+1).toEqual($scope.theaterWidth);
+		})
+		it("Doesnt remove the last row", function(){
+			var beforeSeats = 1;
+			$scope.removeSeats();
+			expect(beforeSeats).toEqual(1);
+		})
 	})
 
 

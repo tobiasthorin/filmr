@@ -22,7 +22,7 @@ angular.module('filmr')
                         $scope.original_name = result.name;
                         $scope.name = result.name;
                         $scope.currentTheater = result;
-                        $scope.currentTheater.cinema = {id: $routeParams.cinema_id};
+                        $scope.currentTheater.cinema = {id: result.cinemaId};
 
                         if (!result.rows[0]) {
                             $scope.theaterWidth = $scope.defaultWidth
@@ -49,12 +49,15 @@ angular.module('filmr')
 				if(!activeRequest){
 					$scope.currentTheater.name = $scope.name;
 					activeRequest = true;
-					TheaterService.update($scope.currentTheater).$promise.then(
+					var updateParams ={"new_number_of_rows":$scope.theaterDepth, "new_max_row_size":$scope.theaterWidth};
+					TheaterService.update(updateParams,$scope.currentTheater).$promise.then(
 						function (result) {
 							//success
 							activeRequest = false;
 							console.log("Updated!");
 							$scope.currentTheater = result;
+							$scope.currentTheater.cinema = {id: result.cinemaId};
+                            $scope.original_name = result.name;
 							updateRows();
 							//$location.path('/cinema/' + $routeParams.cinema_id);
 						},
@@ -74,7 +77,7 @@ angular.module('filmr')
                 } else {
                     setDefaultWidthAndDepth();
                 }
-            }
+            };
 
 	        $scope.toggleSeatState = function(seat){
 				switch(seat.state){
@@ -90,7 +93,53 @@ angular.module('filmr')
 				}
 		        $scope.updateTheater();
 
-	        }
+	        };
+
+	        $scope.addRow = function (){
+		        if($scope.theaterDepth<128){
+			        $scope.theaterDepth++;
+			        $scope.updateTheater();
+		        }
+	        };
+
+	        $scope.removeRow = function (){
+		        if($scope.theaterDepth>1){
+			        $scope.theaterDepth--;
+			        $scope.updateTheater();
+		        }
+	        };
+
+	        $scope.addSeats = function() {
+		        if($scope.theaterWidth<128){
+			        $scope.theaterWidth++;
+			        $scope.updateTheater();
+		        }
+	        };
+
+	        $scope.removeSeats = function(){
+		        if($scope.theaterWidth>1){
+			        $scope.theaterWidth--;
+			        $scope.updateTheater();
+		        }
+	        };
+
+            $scope.validateNameInput = function() {
+              if(!$scope.name || $scope.name === $scope.original_name) {
+                  return true;
+              }
+            };
+
+            $scope.validateRowInput = function () {
+                if($scope.theaterDepth <= 1) {
+                    return true;
+                }
+            };
+
+            $scope.validateSeatInput = function () {
+                if($scope.theaterWidth <= 1) {
+                    return true;
+                }
+            };
 
             function setWidthAndDepthFromParams() {
                 $scope.theaterWidth = $routeParams.width;

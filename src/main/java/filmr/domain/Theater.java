@@ -53,6 +53,10 @@ public class Theater {
 		return cinema != null ? cinema.getName() : "ingen biograf kopplad";
 	}
 
+	public long getCinemaId() {
+		return cinema != null ? cinema.getId() : -1;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -140,7 +144,10 @@ public class Theater {
 
 	@Override
 	public String toString() {
-		return "Theater [id=" + id + ", name=" + name + ", rows size=" + "rows.size()" + ", cinema=" + "cinema.getName()" + ", showings size ="
-				+ "showings.size()" + "]";
+		return "Theater [id=" + id + ", name=" + name + ", "
+				// + "rows size=" + rows != null ? "" +rows.size(): "no rows" 
+				// +", cinema=" + cinema != null ?  cinema.getName() :  "no cinema" 
+				// + ", showings size =" + showings != null ? ""+showings.size() : "no showings" 
+				+ "]";
 	}
 }
