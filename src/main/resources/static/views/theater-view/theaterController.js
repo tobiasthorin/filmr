@@ -80,13 +80,11 @@ angular.module('filmr')
 
 					activeRequest = true;
 
-					var updateParams ={
-                        new_number_of_rows:$scope.theaterDepth,
-                        new_max_row_size:$scope.theaterWidth,
+                    var updateParams = {
+                        new_number_of_rows: $scope.theaterDepth,
+                        new_max_row_size: $scope.theaterWidth,
                         reset_seat_numbers_for_each_row: resetSeatNumbers
                     };
-
-                    console.log(updateParams);
 
 					TheaterService.update(updateParams,$scope.currentTheater).$promise.then(
 						function (result) {
@@ -96,12 +94,11 @@ angular.module('filmr')
 							$scope.currentTheater = result;
 							$scope.currentTheater.cinema = {id: result.cinemaId};
                             $scope.original_name = result.name;
-                            console.log(result);
 							updateRows();
                             $rootScope.alert("Success! ","Theater was updated",1);
-							//$location.path('/cinema/' + $routeParams.cinema_id);
 						},
 						function (error) {
+                            //fail
 							activeRequest = false;
 							$rootScope.errorHandler(error);
 						});
@@ -201,7 +198,7 @@ angular.module('filmr')
                 return true;
             };
 
-            $scope.setRowReset = function(value) {
+            $scope.setRowReset = function (value) {
                 resetSeatNumbers = value;
                 $scope.updateTheater();
             };
