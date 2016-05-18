@@ -143,6 +143,8 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', '$lo
 		};
 
 		$scope.updateCinemaName = function () {
+			$rootScope.clearAlerts();
+
 			if(!$scope.validateCinemaNameForm()) {
 				$rootScope.genericError();
 				return;
@@ -151,7 +153,7 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', '$lo
 			currentCinema.name = $scope.edited_cinema_name;
 			CinemaService.update(currentCinema).$promise.then(function () {
 				setCinemaName();
-				$rootScope.alert("Success! ","Cinema "+$scope.edited_cinema_name+" was updated",1);
+				$rootScope.alert("Success! ","Cinema was updated",1);
 			}, function (error) {
 				$rootScope.errorHandler(error);
 			});

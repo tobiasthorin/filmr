@@ -62,6 +62,8 @@ angular.module('filmr')
 
             $scope.updateTheater = function () {
 
+                $rootScope.clearAlerts();
+
                 if(!$scope.validateTheater()) {
                     $rootScope.genericError();
                     return;
