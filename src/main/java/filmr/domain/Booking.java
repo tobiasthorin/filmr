@@ -3,9 +3,12 @@ package filmr.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Range;
 
 import java.util.List;
 
@@ -15,6 +18,8 @@ public class Booking {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String bookingReference;
+	
+	@Size(min=1)
 	@OneToMany
 	private List<Seat> bookedSeats;
 	
@@ -23,6 +28,7 @@ public class Booking {
 	@JoinColumn(name = "showing_id")
 	private Showing showing;
 	
+	@NotEmpty
 	private String phoneNumber;
 	
 	public Booking() {

@@ -28,6 +28,9 @@ describe("cinemaController.js", function () {
 	    $rootScope.errorHandler = function(){
 		    console.log("Error!");
 	    };
+        $rootScope.clearAlerts = function(){
+
+        };
 	    seat = {state: "ENABLED"}
 
         MockedTheaterService = {
@@ -151,21 +154,7 @@ describe("cinemaController.js", function () {
             expect($scope.theaterWidth).toEqual(fetchedTheater.rows[0].seats.length);
         });
 
-        it("Sets the width and height variables when a theater id is NOT specified", function () {
-            $routeParams.theater_id = 0;
-            $scope.newTheater();
-            expect($scope.theaterDepth).toEqual($routeParams.depth);
-            expect($scope.theaterWidth).toEqual($routeParams.width);
-        });
 
-        it("Sets the width and height variables when a theater id is NOT specified, nor are the route parameters", function () {
-            $routeParams.theater_id = 0;
-            $routeParams.depth = 0;
-            $routeParams.width = 0;
-            $scope.newTheater();
-            expect($scope.theaterDepth).toEqual($scope.defaultDepth);
-            expect($scope.theaterWidth).toEqual($scope.defaultWidth);
-        });
     });
 
 	describe("Save theater", function(){

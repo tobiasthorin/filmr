@@ -22,10 +22,21 @@ public class Seat {
 
 	@Enumerated(EnumType.STRING)
 	private SeatState state;
+	
+	@Transient
+	private Boolean isBookedForShowing;
 
 	
 	public Seat() {}
 
+
+	public Boolean getIsBookedForShowing() {
+		return isBookedForShowing;
+	}
+
+	public void setIsBookedForShowing(Boolean isBookedForShowing) {
+		this.isBookedForShowing = isBookedForShowing;
+	}
 	public String getSeatLabel() {
 		return seatLabel;
 	}
