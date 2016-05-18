@@ -32,6 +32,7 @@ import javax.validation.constraints.NotNull;
 							"( (:showDisabledShowings = TRUE) OR (s.isDisabled = FALSE OR s.isDisabled is null) )  AND " + // (s.isDisabled = false) will only be evaluated if showDisabledShowings = false, and will only evaluate to true if s is not disabled
 							"(:fromDate is null OR s.showDateTime >= :fromDate) AND " +
 							"(:toDate is null OR s.showDateTime <= :toDate) AND " + // only care about the date, not time
+                            "(:minimumAvailableTickets is null OR s.availableTickets >= :minimumAvailableTickets) AND"+
 							"(:onlyForMovieWithId is null OR s.movie.id = :onlyForMovieWithId) AND " +
 							"(:onlyForTheaterWithId is null OR s.theater.id = :onlyForTheaterWithId) AND " +
 							"(:onlyForCinemaWithId is null OR s.theater.cinema.id = :onlyForCinemaWithId) " +
@@ -75,6 +76,14 @@ public class Showing implements Comparable<Showing> {
 	}
 	
 
+	public Long getAvailiableTickets() {
+		Long theaterSeats = theater.getNumberOfEnabledSeats();
+		Long bookedSeats = bookings.stream()
+				.map(booking -> booking.getBookedSeats())
+				.flatMap(seats -> seats.stream())
+				.count();
+		return theaterSeats-bookedSeats;
+	}
 
 	public LocalDateTime getShowDateTime() {
 		return showDateTime;

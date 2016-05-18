@@ -27,7 +27,7 @@ public class ShowingService extends BaseServiceClass<Showing, Long> {
 	public List<Showing> getAllMatchingParams(
 			LocalDateTime from_date, 
 			LocalDateTime to_date,
-			Integer minimum_available_tickets,
+			Long minimum_available_tickets,
 			Long only_for_movie_with_id,
 			Long only_for_theater_with_id,
 			Long only_for_cinema_with_id,
@@ -40,6 +40,7 @@ public class ShowingService extends BaseServiceClass<Showing, Long> {
 		query.setParameter("showDisabledShowings", show_disabled_showings);
 		query.setParameter("fromDate", from_date);
 		query.setParameter("toDate", to_date);
+		query.setParameter("minimum_available_tickets", minimum_available_tickets);
 		query.setParameter("onlyForMovieWithId", only_for_movie_with_id);
 		query.setParameter("onlyForTheaterWithId", only_for_theater_with_id);
 		query.setParameter("onlyForCinemaWithId", only_for_cinema_with_id);

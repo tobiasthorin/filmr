@@ -69,7 +69,7 @@ public class ShowingController {
     public ResponseEntity<List<Showing>> readAllShowings(
     		@RequestParam(name="from_date", required=false) @DateTimeFormat(iso = ISO.DATE_TIME) LocalDateTime from_date, // @DateTimeFormat(iso = ISO.DATE) seems to work when we retrieve javascript Date objects
     		@RequestParam(name="to_date", required=false) @DateTimeFormat(iso = ISO.DATE_TIME) LocalDateTime to_date,
-    		@RequestParam(name="minimum_available_tickets", required=false) Integer minimum_available_tickets,
+    		@RequestParam(name="minimum_available_tickets", required=false) Long minimum_available_tickets,
     		@RequestParam(name="only_for_movie_with_id", required=false) Long only_for_movie_with_id,
     		@RequestParam(name="only_for_theater_with_id", required=false) Long only_for_theater_with_id,
     		@RequestParam(name="only_for_cinema_with_id", required=false) Long only_for_cinema_with_id,

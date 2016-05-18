@@ -109,8 +109,6 @@ public class ShowingFilterTest {
                // {null, null, "", false, false, false, "", "", "", ""}, //TODO disabled until time to test these filter options
                // {null, null, "", false, false, false, "", "", "", ""}, //end single
                 {LocalDateTime.now().minusHours(4), LocalDateTime.now().plusDays(4), "0", true, true, false, "10", "true", "", ""}, //multiple
-                {LocalDateTime.now().minusHours(5), null, "0", false, true, false, "", "true", "", ""},
-                {null, LocalDateTime.now().plusDays(4), "", true, false, false, "20", "false", "", ""},
         });
     }
 
