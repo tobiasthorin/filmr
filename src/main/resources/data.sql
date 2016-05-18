@@ -11,13 +11,13 @@ INSERT INTO cinema (name,repertoire) VALUES('Lisas Biograf',2);
 /* MOVIES*/
 
 INSERT INTO movie (title, length_in_minutes, description, default_price) 
-	VALUES ('Lion King', 122, 'Story about lions', 65.00);
+	VALUES ('Lion King', 119, 'Story about lions', 65.00);
 INSERT INTO movie (title, length_in_minutes, description, default_price) 
-	VALUES ('Lion Queen', 123, 'Tale about lions', 70.00);
+	VALUES ('Lion Queen', 115, 'Tale about lions', 70.00);
 INSERT INTO movie (title, length_in_minutes, description, default_price) 
-	VALUES ('Lion Prince', 124, 'Epic story about lions', 55.50);
+	VALUES ('Lion Prince', 110, 'Epic story about lions', 55.50);
 INSERT INTO movie (title, length_in_minutes, description, default_price) 
-	VALUES ('Lion Princess', 125, 'Old tale about lions', 72.33);
+	VALUES ('Lion Princess', 92, 'Old tale about lions', 72.33);
 	
 /* THEATERS */
 
