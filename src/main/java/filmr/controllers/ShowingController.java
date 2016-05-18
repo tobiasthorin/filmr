@@ -1,13 +1,8 @@
 package filmr.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import filmr.domain.Movie;
-import filmr.domain.Showing;
-import filmr.helpers.FilmrException;
-import filmr.helpers.TimeslotCreator;
-import filmr.helpers.exceptions.FilmrTimeOccupiedException;
-import filmr.services.ShowingService;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +12,25 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import filmr.domain.Movie;
+import filmr.domain.Seat;
+import filmr.domain.Showing;
+import filmr.domain.Theater;
+import filmr.helpers.FilmrException;
+import filmr.helpers.TimeslotCreator;
+import filmr.helpers.exceptions.FilmrTimeOccupiedException;
+import filmr.services.ShowingService;
 
 @RestController
 @RequestMapping(value = "/api/showings")
@@ -58,10 +67,20 @@ public class ShowingController {
 
     @CrossOrigin
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Showing> readShowing(@PathVariable Long id){
-        Showing retrievedShowing = showingService.readEntity(id);
+    public ResponseEntity<Showing> readShowing(
+    		@PathVariable Long id,
+    		@RequestParam(name="mark_seat_booking_status", defaultValue="false", required=false) Boolean mark_seat_booking_status
+    		){
+        
+    	Showing retrievedShowing = showingService.readEntity(id);
+        
+        if(mark_seat_booking_status){
+        	markBookingStatusForSeats(retrievedShowing);        	
+        }
+
         return new ResponseEntity<Showing>(retrievedShowing, HttpStatus.OK);
     }
+
 
     
     @CrossOrigin
@@ -174,5 +193,26 @@ public class ShowingController {
     	return movies;
     }
    
+    private void markBookingStatusForSeats(Showing retrievedShowing) {
+    	Theater theater = retrievedShowing.getTheater();
+    	
+    	List<Seat> allBookedSeats = retrievedShowing.getBookings().stream()
+    			.flatMap(booking -> booking.getBookedSeats().stream())
+    			.distinct()
+    			.collect(Collectors.toList());
+    	
+    	List<Seat> allSeats = theater.getRows().stream()
+    			.flatMap(row -> row.getSeats().stream())
+    			.collect(Collectors.toList());
+    	
+    	// set default to false
+    	allSeats.forEach(seat -> seat.setIsBookedForShowing(false));
+    	
+    	allSeats.forEach(seat -> {
+    		if(allBookedSeats.contains(seat)) {
+    			seat.setIsBookedForShowing(true);
+    		}
+    	});
+    }
 
 }

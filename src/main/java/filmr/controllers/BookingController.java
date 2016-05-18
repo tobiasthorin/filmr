@@ -1,16 +1,26 @@
 package filmr.controllers;
 
-import filmr.domain.Booking;
-import filmr.services.BookingService;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.apache.log4j.Logger;
-import org.springframework.boot.logging.LoggingSystem;
-import org.springframework.boot.logging.log4j2.Log4J2LoggingSystem;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import filmr.domain.Booking;
+import filmr.domain.Seat;
+import filmr.domain.Showing;
+import filmr.services.BookingService;
+import filmr.services.SeatService;
+import filmr.services.ShowingService;
 
 @RestController
 @RequestMapping(value = "/api/bookings")
@@ -20,16 +30,38 @@ public class BookingController {
 
     @Autowired
     private BookingService bookingService;
+    @Autowired
+    private ShowingService showingService;
+//    @Autowired
+//    private SeatService seatService;
 
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Booking> createBooking(@RequestBody Booking booking){
+    public ResponseEntity<Booking> createBooking(
+    		@RequestBody Booking booking,
+    		@RequestParam(value="for_showing_with_id", required=true) Long for_showing_with_id
+    		) throws Exception{
 
         if (booking.getId() != null) {
             log.warn("id on booking is not permitted when create booking");
             return new ResponseEntity<Booking>(new Booking(), HttpStatus.BAD_REQUEST);
         }
+        
+        if (booking.getBookedSeats() == null) {
+        	throw new Exception("Booking must have seats");
+        } 
+        
+        Showing showing = showingService.readEntity(for_showing_with_id);
+        booking.setShowing(showing);
+        
+        // TODO: ? check if seat exists in showing theater
+//        List<Seat> savedSeats = new ArrayList<Seat>();
+//        booking.getBookedSeats().forEach(seat -> {
+//        	savedSeats.add(seatService.readEntity(seat.getId()));
+//        });
+//        booking.setBookedSeats(savedSeats);
+        
         Booking savedBooking = bookingService.saveEntity(booking);
         return new ResponseEntity<Booking>(savedBooking, HttpStatus.OK);
     }
