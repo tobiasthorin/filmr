@@ -84,6 +84,10 @@
                 $rootScope.alert("Error! ","",2);
             }
 
+            $rootScope.clearAlerts = function() {
+                $rootScope.alerts = [];
+            }
+
             $rootScope.errorHandler = (debug ?
                 function (error) {
                     console.log("Error!", error);
