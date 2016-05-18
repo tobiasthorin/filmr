@@ -34,6 +34,7 @@ public class Booking {
 	public Booking() {
 		
 	}
+	
 
 	public String getBookingReference() {
 		return bookingReference;
@@ -107,6 +108,25 @@ public class Booking {
 	}*/
 	
 	
+	// Convenience methods to compensate for missing link to showing (because of @JsonIgnore). Will show up as properties on showing when serialized to json	
+	public String getBookingMovieTitle() {
+		if(showing == null || showing.getMovie() == null) return "no movie / missing connection";
+		
+		return showing.getMovie().getTitle();
+	}
+	
+	public String getBookingTheaterName() {
+		if(showing == null || showing.getTheater() == null) return "no theater / missing connection";
+		
+		return showing.getTheater().getName();
+	}
+	
+	public String getBookingCinemaName() {
+		if(showing == null || showing.getTheater() == null || showing.getTheater().getCinema() == null) return "no cinema / missing connection";
+		
+		return showing.getTheater().getCinema().getName();
+	}
+	// end of convenience methods
 	
 	
 }
