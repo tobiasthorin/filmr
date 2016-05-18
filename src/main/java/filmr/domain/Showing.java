@@ -30,7 +30,7 @@ import javax.validation.constraints.NotNull;
 					query = "SELECT s FROM Showing s " + 
 							"WHERE " +
 							"( (:showDisabledShowings = TRUE) OR (s.isDisabled = FALSE OR s.isDisabled is null) )  AND " + // (s.isDisabled = false) will only be evaluated if showDisabledShowings = false, and will only evaluate to true if s is not disabled
-							"(:fromDate is null OR s.showDateTime > :fromDate) AND " +
+							"(:fromDate is null OR s.showDateTime >= :fromDate) AND " +
 							"(:toDate is null OR s.showDateTime <= :toDate) AND " + // only care about the date, not time
 							"(:onlyForMovieWithId is null OR s.movie.id = :onlyForMovieWithId) AND " +
 							"(:onlyForTheaterWithId is null OR s.theater.id = :onlyForTheaterWithId) AND " +
