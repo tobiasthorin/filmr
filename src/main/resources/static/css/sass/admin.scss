@@ -35,9 +35,38 @@ h1 {
   }
 }
 
+.inputTable {
+  tbody{
+    tr{
+      td{
+        padding: 0.5em;
+      }
+    }
+  }
+}
+
+.theaterScreen {
+  color: white;
+  letter-spacing: 1em;
+  text-transform: uppercase;
+
+
+  display: inline-block;
+
+  width: 30em;
+  height: 2em;
+  line-height: 2em;
+
+  background-color: black;
+  border-style: solid;
+  border-width: 0 2em 0 2em;
+  border-color: $cinema-red-dark;
+
+  margin: 5em 0;
+}
+
 .theaterRow {
-  margin: 10px;
-  display: block;
+  text-align: center;
   .theaterSeat {
     margin: 10px 5px;
 
@@ -54,7 +83,6 @@ h1 {
     border: 2px solid $cinema-red-dark;
 
     display: inline-block;
-    cursor: hand;
     text-align: center;
     line-height: $cinema-seat-size;
 

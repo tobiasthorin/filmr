@@ -47,6 +47,10 @@ public class ShowingAPIIntegrationTest {
     private TheaterRepository theaterRepository;
     @Autowired
     private CinemaRepository cinemaRepository;
+    @Autowired
+    private RowRepository rowRepository;
+    @Autowired
+    private SeatRepository seatRepository;
 
     private RestTemplate restTemplate;
     private String baseUrl;
@@ -83,6 +87,8 @@ public class ShowingAPIIntegrationTest {
         restTemplate = new RestTemplate();
 
         //clear everything
+        seatRepository.deleteAllInBatch();
+        rowRepository.deleteAllInBatch();
         showingRepository.deleteAllInBatch();
         movieRepository.deleteAllInBatch();
         theaterRepository.deleteAllInBatch();
@@ -165,6 +171,8 @@ public class ShowingAPIIntegrationTest {
     @After
     public void clearDatabase() throws Exception {
         //clear everything
+        seatRepository.deleteAllInBatch();
+        rowRepository.deleteAllInBatch();
         showingRepository.deleteAllInBatch();
         movieRepository.deleteAllInBatch();
         theaterRepository.deleteAllInBatch();
