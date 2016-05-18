@@ -11,6 +11,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class ShowingService extends BaseServiceClass<Showing, Long> {
 		query.setParameter("showDisabledShowings", show_disabled_showings);
 		query.setParameter("fromDate", from_date);
 		query.setParameter("toDate", to_date);
-		query.setParameter("minimum_available_tickets", minimum_available_tickets);
+		//query.setParameter("minimum_available_tickets", minimum_available_tickets);
 		query.setParameter("onlyForMovieWithId", only_for_movie_with_id);
 		query.setParameter("onlyForTheaterWithId", only_for_theater_with_id);
 		query.setParameter("onlyForCinemaWithId", only_for_cinema_with_id);
@@ -51,8 +52,20 @@ public class ShowingService extends BaseServiceClass<Showing, Long> {
 		String queryBeingMade = query.unwrap(org.hibernate.Query.class).getQueryString();
 		logger.debug(queryBeingMade + "\n");
 
+        if (minimum_available_tickets != null)
+            matchingShowings = showingsWithMinimumAvailableTickets(minimum_available_tickets, matchingShowings);
+
 		return matchingShowings;
 	}
+    private List<Showing> showingsWithMinimumAvailableTickets(Long minimunAvailableTickets, List<Showing> showings) {
+        List<Showing> s = new ArrayList<>();
+        for(Showing showing : showings) {
+            if (showing.getAvailableTickets() >= minimunAvailableTickets) {
+                s.add(showing);
+            }
+        }
+        return s;
+    }
 
     //Presupposes no previous conflicts
     public boolean showingTimeIsValid(Showing showingToSave) {

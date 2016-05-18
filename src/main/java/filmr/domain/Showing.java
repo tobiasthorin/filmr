@@ -11,16 +11,7 @@ import filmr.helpers.CustomJsonDateDeserializer;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 
@@ -32,7 +23,7 @@ import javax.validation.constraints.NotNull;
 							"( (:showDisabledShowings = TRUE) OR (s.isDisabled = FALSE OR s.isDisabled is null) )  AND " + // (s.isDisabled = false) will only be evaluated if showDisabledShowings = false, and will only evaluate to true if s is not disabled
 							"(:fromDate is null OR s.showDateTime >= :fromDate) AND " +
 							"(:toDate is null OR s.showDateTime <= :toDate) AND " + // only care about the date, not time
-                            "(:minimumAvailableTickets is null OR s.availableTickets >= :minimumAvailableTickets) AND"+
+                            //"(:minimumAvailableTickets is null OR s.availableTickets >= :minimumAvailableTickets) AND"+
 							"(:onlyForMovieWithId is null OR s.movie.id = :onlyForMovieWithId) AND " +
 							"(:onlyForTheaterWithId is null OR s.theater.id = :onlyForTheaterWithId) AND " +
 							"(:onlyForCinemaWithId is null OR s.theater.cinema.id = :onlyForCinemaWithId) " +
@@ -58,6 +49,9 @@ public class Showing implements Comparable<Showing> {
 	private List<Booking> bookings;
 	
 	private Boolean isDisabled;
+
+    @Transient
+    private Long availableTickets;
 	
 	@Range(min=0)
 	private Double price; // by default this will be same as movie.defaultPrice
@@ -76,7 +70,10 @@ public class Showing implements Comparable<Showing> {
 	}
 	
 
-	public Long getAvailiableTickets() {
+	public Long getAvailableTickets() {
+        if (theater == null || bookings == null || theater.getRows() == null) {
+            return new Long(0);
+        }
 		Long theaterSeats = theater.getNumberOfEnabledSeats();
 		Long bookedSeats = bookings.stream()
 				.map(booking -> booking.getBookedSeats())
