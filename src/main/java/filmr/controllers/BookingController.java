@@ -2,6 +2,7 @@ package filmr.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,30 @@ public class BookingController {
 //        	savedSeats.add(seatService.readEntity(seat.getId()));
 //        });
 //        booking.setBookedSeats(savedSeats);
+        
+        // check if any of the seats are already booked
+        List<Seat> alreadyBookedSeatsForShowing = showing.getBookings().stream()
+        		.map(b -> b.getBookedSeats() )
+        		.flatMap(seats -> seats.stream())
+        		.distinct()
+        		.collect(Collectors.toList());
+        
+        List<Seat> doubleBookedSeats = booking.getBookedSeats().stream()
+        		.filter(seat -> alreadyBookedSeatsForShowing.contains(seat))
+        		.distinct()
+        		.collect(Collectors.toList());
+        
+        if(doubleBookedSeats.size() != 0) {
+        	StringBuilder stringBuilder = new StringBuilder();
+        	for(int i = 0; i < doubleBookedSeats.size(); i++) {
+        		Seat doubleBookedSeat = doubleBookedSeats.get(i);
+        		stringBuilder.append("seat with label ").append(doubleBookedSeat.getSeatLabel()).append(",");
+        		//TODO: exclude last comma...
+        	}
+        	
+        	throw new Exception("Double booked seats for " + stringBuilder.toString());
+        }
+        
         
         Booking savedBooking = bookingService.saveEntity(booking);
         return new ResponseEntity<Booking>(savedBooking, HttpStatus.OK);
