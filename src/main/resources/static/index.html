@@ -44,7 +44,12 @@
 
     <h1>filmr</h1>
 
-    <div ng-repeat="alert in alerts" ng-class="{'alert-box':true,'success':alert.type==1,'error':alert.type==2}"><span>{{alert.header}}</span>{{alert.text}}</div>
+    <!-- Alert boxes -->
+    <div ng-repeat="alert in alerts" class="alert" ng-class="{'alert-success':alert.type==1,'alert-danger':alert.type==2}">
+        <span class="glyphicon" ng-class="{'glyphicon-ok-circle':alert.type==1,'glyphicon-ban-circle':alert.type==2}"></span>
+        <strong>{{alert.header}}</strong>
+        <span>{{alert.text}}</span>
+    </div>
 
     <!-- page specific content loads in this view. see routing in app.js  -->
     <div ng-view></div>

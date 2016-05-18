@@ -20,7 +20,7 @@ public class Booking {
 	private String bookingReference;
 	
 	@Size(min=1)
-	@OneToMany
+	@ManyToMany //TODO changed from ManyToOne, beware of side effects!!!!!1one!!
 	private List<Seat> bookedSeats;
 	
 	@JsonIgnore
