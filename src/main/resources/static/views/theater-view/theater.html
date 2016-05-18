@@ -23,7 +23,8 @@
                 <td>{{theaterWidth}}</td>
                 <td>
                     <button class="btn btn-default btn-sm" type="button" ng-click="addSeats()"
-                            ng-disabled="!validateSeatInput(1)">+</button>
+                            ng-disabled="!validateSeatInput(1)">+
+                    </button>
                     <button class="btn btn-default btn-sm" type="button" ng-click="removeSeats()"
                             ng-disabled="!validateSeatInput(-1)">-
                     </button>
@@ -34,11 +35,29 @@
                 <td>{{theaterDepth}}</td>
                 <td>
                     <button class="btn btn-default btn-sm" type="button" ng-click="addRow()"
-                            ng-disabled="!validateSeatInput(1)">+</button>
+                            ng-disabled="!validateSeatInput(1)">+
+                    </button>
                     <button class="btn btn-default btn-sm" type="button" ng-click="removeRow()"
                             ng-disabled="!validateRowInput(-1)">-
                     </button>
                 </td>
+            </tr>
+            <tr>
+                <td>Seat numbers:</td>
+                <td>
+                    <div>
+                        <button class="btn btn-default btn-sm" type="button" ng-click="setRowReset(true)">Reset for each
+                            row
+                        </button>
+                    </div>
+                    <div>
+                        <button class="btn btn-default btn-sm" type="button" ng-click="setRowReset(false)">Continuous
+                        </button>
+                    </div>
+
+                </td>
+
+
             </tr>
             </tbody>
         </table>
