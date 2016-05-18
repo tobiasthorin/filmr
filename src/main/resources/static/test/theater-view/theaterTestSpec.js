@@ -28,6 +28,9 @@ describe("cinemaController.js", function () {
 	    $rootScope.errorHandler = function(){
 		    console.log("Error!");
 	    };
+        $rootScope.clearAlerts = function(){
+
+        };
 	    seat = {state: "ENABLED"}
 
         MockedTheaterService = {
