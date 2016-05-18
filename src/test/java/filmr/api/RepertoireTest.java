@@ -32,7 +32,7 @@ import static org.junit.Assert.assertTrue;
 @SpringApplicationConfiguration(Application.class)
 @WebIntegrationTest
 @ActiveProfiles({"test"})
-public class RepertoireAPIIntegrationTest {
+public class RepertoireTest {
 
     //Used instead of SpringJunit4ClassRunner in @RunWith
     private TestContextManager testContextManager;
@@ -60,7 +60,7 @@ public class RepertoireAPIIntegrationTest {
         });
     }
 
-    public RepertoireAPIIntegrationTest(Long id) {
+    public RepertoireTest(Long id) {
         baseUrl = "http://localhost:8080/filmr/api/repertoires/";
     }
 

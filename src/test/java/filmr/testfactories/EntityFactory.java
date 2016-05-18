@@ -94,4 +94,16 @@ public class EntityFactory {
 		
 		return row;
 	}
+
+    public static Booking createBooking(Showing showing) {
+        Booking booking = new Booking();
+        ArrayList<Seat> bookedSeats = new ArrayList<>();
+        Seat seat = showing.getTheater().getRows().get(0).getSeats().get(0);
+        bookedSeats.add(seat);
+        String phoneNumber = "0700000000";
+        booking.setBookedSeats(bookedSeats);
+        booking.setShowing(showing);
+        booking.setPhoneNumber(phoneNumber);
+        return booking;
+    }
 }

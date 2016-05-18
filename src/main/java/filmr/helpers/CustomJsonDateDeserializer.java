@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 import filmr.controllers.TheaterController;
+import filmr.helpers.exceptions.TestException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -32,7 +33,7 @@ public class CustomJsonDateDeserializer extends JsonDeserializer<LocalDateTime> 
 
 	@Override
     public LocalDateTime deserialize(JsonParser jp, DeserializationContext ctxt)
-            throws IOException, JsonProcessingException {
+            throws IOException, JsonProcessingException {//TODO throw an excpetion?
 
 		LocalDateTime dateTime = LocalDateTime.now();
 
@@ -91,7 +92,6 @@ public class CustomJsonDateDeserializer extends JsonDeserializer<LocalDateTime> 
 		dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
         logger.info("Returned String dateTime:" + dateTime.toString());
         logger.debug("\nTime in custom deserializer TEST: " + dateTime);
-
 
 		return dateTime;
     }
