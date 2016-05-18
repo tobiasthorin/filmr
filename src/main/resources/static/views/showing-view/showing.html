@@ -85,7 +85,7 @@
                 <div class="form-group">
                     <label>Theater:</label>
                     <select ng-options="theater as theater.name for theater in theatersInCinema"
-                            name="theaters" ng-model="theaterForShowing" required></select>
+                            name="theaters" ng-model="theaterForShowing"></select>
                 </div>
                 <div class="form-group">
                     <label>Date:</label>
@@ -103,15 +103,26 @@
     </div>
 </div>
 <script>
-$('input[name=from_date]').datetimepicker({
-	format:'Y-m-d H:i',
-	step:15
-});
-$('input[name=date]').datetimepicker({
-    format:'Y-m-d H:i',
-    step:15
-});
-$('input[name=to_date]').datetimepicker({
-	format:'Y-m-d H:i',
-	step:15
-});</script>
+    $('input[name=from_date]').datetimepicker({
+        format:'Y-m-d H:i',
+        step:15
+    });
+    $('input[name=from_date]').keypress(function(event) {
+        event.preventDefault();
+    });
+
+    $('input[name=to_date]').datetimepicker({
+        format:'Y-m-d H:i',
+        step:15
+    });
+    $('input[name=to_date]').keypress(function(event) {
+        event.preventDefault();
+    });
+    $('input[name=date]').datetimepicker({
+        format:'Y-m-d H:i',
+        step:15
+    });
+    $('input[name=date]').keypress(function(event) {
+        event.preventDefault();
+    });
+</script>
