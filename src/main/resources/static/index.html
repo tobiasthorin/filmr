@@ -33,16 +33,18 @@
 
 <body>
 
-<div id="contentWrapper" class="container">
+<div class="container">
+
+    <h1>Filmr Cinema Management System</h1>
 
     <!-- activeTab is set in app.js in the routing -->
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-pills">
         <li role="presentation" ng-class="{'active': activeTab == 'Customer'}"><a href="#/customer">Admin Home</a></li>
         <li role="presentation" ng-class="{'active': activeTab == 'Book'}"><a href="#/book">Book</a></li>
         <li role="presentation" ng-class="{'active': activeTab == 'Showing'}"><a href="#/showing">Showings</a></li>
     </ul>
 
-    <h1>filmr</h1>
+
 
     <!-- Alert boxes -->
     <div ng-repeat="alert in alerts" class="alert" ng-class="{'alert-success':alert.type==1,'alert-danger':alert.type==2}">
