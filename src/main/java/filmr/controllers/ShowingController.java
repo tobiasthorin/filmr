@@ -4,7 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import filmr.domain.Movie;
 import filmr.domain.Showing;
+import filmr.helpers.FilmrException;
 import filmr.helpers.TimeslotCreator;
+import filmr.helpers.exceptions.FilmrTimeOccupiedException;
 import filmr.services.ShowingService;
 
 import org.apache.log4j.Logger;
@@ -32,21 +34,24 @@ public class ShowingController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Showing> createShowing(@RequestBody Showing showing) {
+    public ResponseEntity<Showing> createShowing(@RequestBody Showing showing) throws FilmrException {
         if (showing.getId() != null) {
         	logger.warn("Trying to create showing, but showing already has id.");
             return new ResponseEntity<Showing>(new Showing(), HttpStatus.BAD_REQUEST);
         }
-        Boolean showingTimeisValid = showingService.showingTimeIsValid(showing);
+        Boolean showingTimeisValid = showingService.showingTimeIsValid(showing); //TODO: show time valid is to generic IMO. rename to time is occupied or make method return type of invalid error
 
         if(showingTimeisValid){
             Showing savedShowing = showingService.saveEntity(showing);
             return new ResponseEntity<Showing>(savedShowing, HttpStatus.OK);
         }
         logger.warn("Not valid time");
-        // TODO: throw custom error. an empty doesn't serialize into json, so 
+
+        throw new FilmrTimeOccupiedException(""); //TODO: make so frontend get an code and message from exception
+
+        // TODO: throw custom error. an empty doesn't serialize into json, so
         // HttpStatus.PRECONDITION_FAILED does not reach the api consumer
-        return new ResponseEntity<Showing>(new Showing(), HttpStatus.PRECONDITION_FAILED); 
+//        return new ResponseEntity<Showing>(new Showing(), HttpStatus.PRECONDITION_FAILED);
 
 
     }

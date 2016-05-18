@@ -163,11 +163,11 @@ public class TheaterAPIIntegrationTest {
     }
 
     @Test
-    public void testUpdateMaxRowSize() {
-        String updatedMaxRowSize = "10";
+    public void testUpdateNumberOfRows() {
+        String updatedRowCount = "10";
 
         HashMap<String,String> parameters = new HashMap<String, String>();
-    	parameters.put("new_number_of_rows", updatedMaxRowSize);
+    	parameters.put("new_number_of_rows", updatedRowCount);
 
 
     	URI urlWithParams = getURI(parameters, urlWithId);
@@ -178,8 +178,31 @@ public class TheaterAPIIntegrationTest {
         Theater updatedTheater = restTemplate.getForEntity(urlWithId, Theater.class).getBody();
 
         assertEquals("Assert that the row size is updated", savedTheater, updatedTheater);
-        assertEquals("Assert that the rows are actually updated", Integer.parseInt(updatedMaxRowSize), updatedTheater.getRows().size());
+        assertEquals("Assert that the rows are actually updated", Integer.parseInt(updatedRowCount), updatedTheater.getRows().size());
     }
+    
+    @Test
+    public void testUpdateMaxRowSize() {
+        String updatedMaxRowSize = "10";
+
+        HashMap<String,String> parameters = new HashMap<String, String>();
+    	parameters.put("new_max_row_size", updatedMaxRowSize);
+
+
+    	URI urlWithParams = getURI(parameters, urlWithId);
+
+        restTemplate.put(urlWithParams, savedTheater);
+
+        //Theater updatedTheater = theaterRepository.findOne(id); TODO remember why this wont work sometimes and fix
+        Theater updatedTheater = restTemplate.getForEntity(urlWithId, Theater.class).getBody();
+        
+        int actualNewRowSize = updatedTheater.getRows().get(0).getSeats().size();
+
+        assertEquals("Assert that the row size is updated", savedTheater, updatedTheater);
+        assertEquals("Assert that the rows are actually updated", Integer.parseInt(updatedMaxRowSize), actualNewRowSize);
+    }
+    
+    
 
     @After
     public void clearDatabase() throws Exception {

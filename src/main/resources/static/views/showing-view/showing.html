@@ -9,7 +9,7 @@
                     name="cinema" ng-model="cinema" ng-change="updateCinemaScope()">
             </select>
             <label>From:</label>
-            <input name="from_date" ng-model="fromDate" ng-change="updateShowings()" ng-readonly="">
+            <input name="from_date" ng-model="fromDate" ng-change="updateShowings()">
             <button class="" type="button" ng-click="fromDate = null; updateShowings()">x</button>
 
             <label>To:</label>
@@ -80,25 +80,24 @@
                 <div class="form-group">
                     <label>Movie:</label>
                     <select ng-options="movie as movie.title for movie in moviesInRepertoire"
-                            name="movies" ng-model="movieForShowing" ng-change="updateShowings()" required></select>
+                            name="movies" ng-model="movieForShowing" ng-change="updateShowings()"></select>
                 </div>
                 <div class="form-group">
                     <label>Theater:</label>
                     <select ng-options="theater as theater.name for theater in theatersInCinema"
-                            name="theaters" ng-model="theaterForShowing" required></select>
+                            name="theaters" ng-model="theaterForShowing"></select>
                 </div>
                 <div class="form-group">
                     <label>Date:</label>
-                    <input type="datetime-local" name="date" id="date" ng-model="dateForShowing" required>
+                    <input type="text" name="date" id="date" ng-model="dateForShowing">
                 </div>
                 <div class="form-group">
                     <label>Price:</label>
                     <input type="number" ng-model="price" name="priceForShowing"
                            value="{{movieForShowing.defaultPrice}}">
                 </div>
-                <button class="btn" type="button" name="submit" id="submit" ng-click="createShowing()"
-                        ng-disabled="showing_form.$invalid">Add showing
-                </button>
+                <input type="submit" class="btn" type="button" name="submit" id="submit" ng-click="createShowing()"
+                        ng-disabled="!validateCreateShowing()" value="Add showing">
             </form>
         </div>
     </div>
@@ -117,6 +116,13 @@
         step:15
     });
     $('input[name=to_date]').keypress(function(event) {
+        event.preventDefault();
+    });
+    $('input[name=date]').datetimepicker({
+        format:'Y-m-d H:i',
+        step:15
+    });
+    $('input[name=date]').keypress(function(event) {
         event.preventDefault();
     });
 </script>

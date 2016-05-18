@@ -72,6 +72,14 @@ public class CustomJsonDateDeserializer extends JsonDeserializer<LocalDateTime> 
 		}
         //If string is less than 17, return as LocalDateTime, Timezone has been handled when creating
         else if(nodeString.length()<17){
+			if(nodeString.contains(" ")){
+				logger.debug("Contains whitespace: "+nodeString);
+                nodeString = nodeString.substring(0,10) + "T" + nodeString.substring(11,nodeString.length());
+//				String temp = nodeString.substring(0,10);
+//				temp = temp + "T"+ nodeString.substring(11,nodeString.length());
+//				nodeString = temp;
+				logger.info("Datestring after parsing: "+nodeString);
+			}
             dateTime = LocalDateTime.parse(nodeString);
             return dateTime;
         }
