@@ -61,6 +61,7 @@ angular.module('filmr')
                 if(!(typeof $scope.price == "number")) return false;
                 if(typeof $scope.price == "number" && $scope.price<0) return false;
                 if(typeof $scope.price == "number" && $scope.price>8192) return false;
+
                 return true;
             }
 
@@ -87,6 +88,7 @@ angular.module('filmr')
                 ShowingService.save(newShowing, function (result) {
                         $rootScope.alert("Success! ","Showing added",1);
                         fetchShowingsWithParams();
+                        clearAddShowingFields();
                     },
                     function (error) {
                         if(error.data && error.data.exception=="filmr.helpers.exceptions.FilmrTimeOccupiedException") {
@@ -170,6 +172,13 @@ angular.module('filmr')
                 r += f.substr(8+3);
                 $log.debug(""+f+"->"+r);
                 return r;
+            }
+
+            function clearAddShowingFields() {
+                $scope.movieForShowing = undefined;
+                $scope.theaterForShowing = undefined;
+                $scope.dateForShowing = undefined;
+                $scope.price = undefined;
             }
 
         }]);
