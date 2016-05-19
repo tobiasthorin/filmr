@@ -49,9 +49,6 @@ public class Showing implements Comparable<Showing> {
 	private List<Booking> bookings;
 	
 	private Boolean isDisabled;
-
-    @Transient
-    private Long availableTickets;
 	
 	@Range(min=0)
 	private Double price; // by default this will be same as movie.defaultPrice
