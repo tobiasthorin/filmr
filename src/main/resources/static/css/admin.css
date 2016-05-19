@@ -59,6 +59,10 @@ input.btn {
   border-color: #5c111d;
   margin: 5em 0; }
 
+.theaterScreenPlayer iframe {
+  width: 40em;
+  height: 20em; }
+
 .theaterRow {
   text-align: center; }
   .theaterRow .theaterSeat {
