@@ -1,4 +1,4 @@
-<h2>{{original_name}}</h2>
+<h2>{{name}}</h2>
 
 <div>
 
@@ -6,10 +6,10 @@
         <tbody>
         <tr>
             <td>Name:</td>
-            <td><input type="text" placeholder="Name" ng-model="name"></td>
+            <td><input type="text" placeholder="Name" ng-model="original_name"></td>
             <td>
-                <button type="button" class="btn btn-default btn-sm" ng-click="updateTheater()"
-                        ng-disabled="!validateTheater()">Apply
+                <button type="button" class="btn btn-default btn-sm" ng-click="setTheaterName()"
+                        ng-disabled="!validateNameInput()">Apply
                 </button>
             </td>
         </tr>
