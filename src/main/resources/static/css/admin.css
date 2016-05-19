@@ -97,4 +97,25 @@ input.btn {
 .activeMovie {
   background-color: purple; }
 
+.clearField {
+  position: absolute;
+  right: 5px;
+  top: 0;
+  bottom: 0;
+  height: 14px;
+  margin: auto;
+  font-size: 14px;
+  cursor: pointer;
+  color: #ccc; }
+
+.blockSpan {
+  display: block; }
+
+.clearButton {
+  float: left; }
+
+.form-control {
+  display: inline;
+  width: 80%; }
+
 /*# sourceMappingURL=admin.css.map */
