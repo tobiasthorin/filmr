@@ -1,37 +1,33 @@
-
-    <div class="row">
-        <div class="col-sm-6">
-
-            <div class="list">
-                <h2>Cinemas</h2>
-                <ul>
-                    <li ng-repeat="cinema in cinemas">
-                        <a href="#/cinema/{{cinema.id}}">{{cinema.name}}</a>
-                    </li>
-                </ul>
-            </div>
-
-            <form name="add-cinema-form">
-                <h2>Add new Cinema</h2>
-                <table>
-                    <tr>
-                        <th>Name:</th>
-                        <td><input type="text" ng-model="add_cinema_name"></td>
-                    </tr>
-                    <!--<tr>-->
-                    <!--<th>Disabled:</th><td><input type="checkbox" ng-model="add_cinema_disabled"></td>-->
-                    <!--</tr>-->
-                    <tr>
-                        <th></th>
-                        <td>
-                            <input ng-click="submitCinema()" type="submit" class="btn" value="Add cinema"
-                                   ng-disabled="!validateCinema()">
-
-                        </td>
-                    </tr>
-                </table>
-            </form>
-
-        </div>
+<div>
+    <h2>Home</h2>
+    <div class="list">
+        <h3>Cinemas</h3>
+        <ul>
+            <li ng-repeat="cinema in cinemas">
+                <a href="#/cinema/{{cinema.id}}">{{cinema.name}}</a>
+            </li>
+        </ul>
     </div>
+
+    <form name="add-cinema-form">
+        <h3>Add new Cinema</h3>
+        <table>
+            <tr>
+                <th>Name:</th>
+                <td><input type="text" ng-model="add_cinema_name"></td>
+            </tr>
+            <!--<tr>-->
+            <!--<th>Disabled:</th><td><input type="checkbox" ng-model="add_cinema_disabled"></td>-->
+            <!--</tr>-->
+            <tr>
+                <th></th>
+                <td>
+                    <input ng-click="submitCinema()" type="submit" class="btn" value="Add cinema"
+                           ng-disabled="!validateCinema()">
+
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
 

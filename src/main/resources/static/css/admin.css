@@ -23,6 +23,12 @@ h1 {
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px; }
 
+h2 {
+  font-size: 3em;
+  font-family: serif;
+  font-style: italic;
+  font-weight: 400; }
+
 /* Nav bar */
 .nav-pills li a {
   color: #5c111d; }
@@ -33,6 +39,11 @@ h1 {
 
 .inputTable tbody tr td {
   padding: 0.5em; }
+
+input.btn {
+  background-color: #bb3246;
+  color: #f1f1f1;
+  margin-top: 1em; }
 
 .theaterScreen {
   color: white;

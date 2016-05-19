@@ -24,7 +24,7 @@
             // Cinema 
             .when('/cinema/:id', {
                 title: 'Cinema',
-                activeTab: 'Cinema',
+                activeTab: 'Customer',
                 templateUrl: 'views/cinema-view/cinema.html',
                 controller: 'cinemaController'
 
@@ -39,12 +39,14 @@
             })
             .when('/cinema/:cinema_id/theater/:theater_id', {
                 title: 'Edit Theater',
+                activeTab: 'Customer',
                 templateUrl: 'views/theater-view/theater.html',
                 controller: 'theaterController'
 
             })
             .when('/cinema/:cinema_id/theater/new', {
                 title: 'New Theater',
+                activeTab: 'Customer',
                 templateUrl: 'views/theater-view/theater.html',
                 controller: 'theaterController'
 

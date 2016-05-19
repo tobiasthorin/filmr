@@ -44,6 +44,13 @@ h1 {
   border-bottom-right-radius: 5px;
 }
 
+h2 {
+  font-size: 3em;
+  font-family: serif;
+  font-style: italic;
+  font-weight: 400;
+}
+
 /* Nav bar */
 .nav-pills {
   li a {
@@ -67,6 +74,12 @@ h1 {
       }
     }
   }
+}
+
+input.btn {
+  background-color: $cinema-red;
+  color: $text-light;
+  margin-top: 1em;
 }
 
 .theaterScreen {
