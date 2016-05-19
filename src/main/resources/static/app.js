@@ -14,11 +14,11 @@
                 controller: 'bookingController'
             })
             // booking_confirm 
-            .when('/booking_confirm/:id', {
-                title: 'Book',
+            .when('/book/showing/:showingId/seat_select', {
+                title: 'Select Seats',
                 activeTab: 'Book',
-                templateUrl: 'views/booking_confirmed-view/confirm.html',
-                controller: 'bookingConfirmedController'
+                templateUrl: 'views/seatSelect-view/seatSelect.html',
+                controller: 'seatSelectController'
 
             })
             // Cinema 
