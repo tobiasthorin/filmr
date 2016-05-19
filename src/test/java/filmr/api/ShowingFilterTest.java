@@ -99,7 +99,7 @@ public class ShowingFilterTest {
                 {null, null, "", false, false, false, "", "", "", ""}, //empty filter
                 {LocalDateTime.now().minusHours(3), null, "", false, false, false, "", "", "", ""},
                 {null, LocalDateTime.now().plusDays(2), "", false, false, false, "", "", "", ""},
-                {null, null, "0", false, false, false, "", "", "", ""},
+                {null, null, "3", false, false, false, "", "", "", ""},
                 {null, null, "", true, false, false, "", "", "", ""}, //TODO currently disabled
                 {null, null, "", false, true, false, "", "", "", ""},
                // {null, null, "", false, false, true, "", "", "", ""}, //TODO disabled, se further down for info
@@ -212,7 +212,7 @@ public class ShowingFilterTest {
             }
             if (!params.get(minimumAvailableTickets).equals("")) {
                 Long availTicks = Long.parseLong(availableTickets);
-                assertTrue("Make sure there are at least as many available tickets as requested", availTicks <= showing.getBookings().size()); //TODO wait for backend
+                assertTrue("Make sure there are at least as many available tickets as requested", availTicks <= showing.getAvailableTickets());
             }
             if (!params.get(onlyForMovieWithId).equals("")) {
                 assertEquals("Assert movie id is equal to showing movie id", savedMovie.getId(), showing.getMovie().getId());

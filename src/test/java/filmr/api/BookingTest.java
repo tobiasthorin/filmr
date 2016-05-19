@@ -5,6 +5,7 @@ import filmr.domain.*;
 import filmr.repositories.*;
 import filmr.testfactories.EntityFactory;
 import junit.framework.Assert;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,15 +13,18 @@ import org.junit.runners.Parameterized;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestContextManager;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 import static junit.framework.TestCase.assertEquals;
@@ -129,9 +133,9 @@ public class BookingTest {
     public void testCreate() throws Exception {
         Booking booking = EntityFactory.createBooking(savedExclusiveShowing);
 
-        Long iddd = savedExclusiveShowing.getId();
+        Long id = savedExclusiveShowing.getId();
 
-        ResponseEntity<Booking> responseEntity = restTemplate.postForEntity(baseUrl+"?for_showing_with_id="+iddd, booking, Booking.class);
+        ResponseEntity<Booking> responseEntity = restTemplate.postForEntity(baseUrl+"?for_showing_with_id="+id, booking, Booking.class);
         Booking postedBooking = responseEntity.getBody();
 
         //Assert
@@ -139,5 +143,51 @@ public class BookingTest {
         assertEquals("Compare seats", booking.getBookedSeats(), postedBooking.getBookedSeats()); //TODO seats equals method
         assertEquals("Compare showing", booking.getShowing(), postedBooking.getShowing());
         assertEquals("Compare phone numbers", booking.getPhoneNumber(), booking.getPhoneNumber());
+    }
+
+    @Test
+    public void testCreateOnAlreadyBooked() {
+        Booking booking = EntityFactory.createBooking(savedShowing);
+
+        Long id = savedShowing.getId();
+
+        ResponseEntity<Booking> responseEntity = restTemplate.postForEntity(baseUrl+"?for_showing_with_id="+id, booking, Booking.class);
+
+        //Assert
+        assertEquals("Make sure the http was unsuccessfull", HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+    }
+
+    @Test (expected = HttpServerErrorException.class)
+    public void testCreateBookingOnShowingWithSeatOnOtherShowing() {
+        Booking booking = EntityFactory.createBooking(savedShowing);
+        List<Seat> seats = savedExclusiveShowing.getTheater().getRows().get(0).getSeats();
+        booking.setBookedSeats(seats);
+
+        Long id = savedShowing.getId();
+
+        ResponseEntity<Booking> responseEntity = restTemplate.postForEntity(baseUrl+"?for_showing_with_id="+id, booking, Booking.class);
+
+        //Assert
+        assertEquals("Make sure the http was unsuccessfull", HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+
+    @Test
+    public void testRead() {
+        ResponseEntity<Booking> responseEntity = restTemplate.getForEntity(urlWithId, Booking.class);
+        Booking booking = responseEntity.getBody();
+
+        assertEquals("Make sure http was successfull", HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals("Make sure the read object is right", savedBooking, booking);
+    }
+
+    @After
+    public void clearDatabase() {
+        bookingRepository.deleteAllInBatch();
+        seatRepository.deleteAllInBatch();
+        rowRepository.deleteAllInBatch();
+        showingRepository.deleteAllInBatch();
+        movieRepository.deleteAllInBatch();
+        theaterRepository.deleteAllInBatch();
+        cinemaRepository.deleteAllInBatch();
     }
 }

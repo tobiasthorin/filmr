@@ -1,7 +1,7 @@
 'use strict';
 
-app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', '$location', 'MovieService', 'TheaterService', 'RepertoireService', 'CinemaService',
-	function ($scope, $rootScope, $routeParams, $location, MovieService, TheaterService, RepertoireService, CinemaService) {
+app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', '$location', '$log', 'MovieService', 'TheaterService', 'RepertoireService', 'CinemaService',
+	function ($scope, $rootScope, $routeParams, $location, $log, MovieService, TheaterService, RepertoireService, CinemaService) {
 
 		//Local variables
 		var moviesInRepertoire;
@@ -57,20 +57,19 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', '$lo
 				return;
 			}
 
-//			TheaterService.save({width: $scope.number_of_seats,number_of_rows: $scope.number_of_rows, name: $scope.theater_name}).$promise.then(
-//				function () {
-//					$scope.fetchCinemas();
-//					$scope.resetFields();
-//					$rootScope.alert("Success! ","Cinema "+$scope.newCinema.name+" was created",1);
-//				},
-//				function(error){
-//					$rootScope.errorHandler(error);
-//				}
-//			);
+			$scope.newTheater = {
+				"name": $scope.theater_name,
+				cinema: {id: currentCinema.id},
+				theaterParams: {
+					number_of_rows: $scope.number_of_rows,
+					max_row_size: $scope.number_of_seats
+				}
+			};
 
-//			var url = $location.path() + '/theater/new';
-  //          $location.path(url).search({width: $scope.number_of_seats,depth: $scope.number_of_rows, name: $scope.theater_name});
-			createNewTheater($scope.theater_name,currentCinema.id,$scope.number_of_rows,$scope.number_of_seats);
+			createNewTheater($scope.newTheater, function(){
+				fetchTheaters();
+				clearTheaterFields();
+			});
 		};
 
 		$scope.alert = function (message) {
@@ -135,8 +134,8 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', '$lo
 				function () {
 					$rootScope.errorHandler(error);
 				}
-			);
-};
+			)
+        };
 
 		$scope.getCurrentCinema = function () {
 			return currentCinema;
@@ -210,7 +209,8 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', '$lo
 		}
 
 		function fetchTheaters() {
-			console.log("Getting theaters...");
+			$log.info("---");
+			$log.info("fetch theaters");
 			TheaterService.query({cinema_id:currentCinema.id}).$promise.then(function (result) {
 					theaters = result;
 				},
@@ -224,21 +224,12 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', '$lo
 			$scope.edited_cinema_name = currentCinema.name;
 		}
 
-		function createNewTheater(name,cinema_id,depth,width) {
-			var newTheater = {
-				"name": name,
-				cinema: {id: cinema_id}
-			};
+		function createNewTheater(newTheater,callbackWhenDone) {
 
-			var theaterParams = {
-				number_of_rows: depth,
-				max_row_size: width
-			};
-
-			TheaterService.save(theaterParams, newTheater).$promise.then(
+			TheaterService.save(newTheater.theaterParams, { "name":newTheater.name,"cinema":newTheater.cinema }).$promise.then(
 				function (result) {
-					$rootScope.alert("Success! ", "Theater "+name+" was created",1);
-					fetchTheaters();
+					$rootScope.alert("Success! ", "Theater "+newTheater.name+" was created",1);
+					callbackWhenDone();
 				},
 				function (error) {
 					$rootScope.errorHandler(error)
@@ -246,5 +237,11 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', '$lo
 
 			$scope.original_name = newTheater.name;
 			$scope.name = newTheater.name;
+		}
+		
+		function clearTheaterFields() {
+			$scope.number_of_rows = undefined;
+			$scope.number_of_seats = undefined;
+			$scope.theater_name = undefined;
 		}
 }]);

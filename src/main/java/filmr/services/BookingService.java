@@ -5,11 +5,15 @@ import filmr.domain.Booking;
 import filmr.domain.Seat;
 import filmr.domain.SeatState;
 import filmr.domain.Showing;
-import filmr.helpers.exceptions.FilmrInvalidBookingException;
+import filmr.helpers.exceptions.FilmrBaseException;
+import filmr.helpers.exceptions.booking.FilmrInvalidSeatStatusException;
+import filmr.helpers.exceptions.booking.FilmrSeatAlreadyBookedException;
+import filmr.helpers.exceptions.booking.FilmrSeatInDisabledShowingException;
 
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -25,8 +29,8 @@ public class BookingService extends BaseServiceClass<Booking,Long> {
      * @param showing to get the seats already booked
      * @throws FilmrInvalidBookingException if any of the conditions fail
      */
-    public void validateBooking(Booking booking, Showing showing) throws FilmrInvalidBookingException {
-    	if(showing.getIsDisabled()) throw new FilmrInvalidBookingException("Can't book seats for disabled showing");
+    public void validateBooking(Booking booking, Showing showing) throws FilmrBaseException {
+    	if(showing.getIsDisabled()) throw new FilmrSeatInDisabledShowingException();
     	
     	checkIfDoubleBooked(booking, showing);
     	checkIfSeatsBelongToRightTheater(booking, showing);
@@ -35,7 +39,7 @@ public class BookingService extends BaseServiceClass<Booking,Long> {
     
     
     // also handles the situation where someone tries to book a seat with status of something other than ENABLED
-    private void checkIfSeatsBelongToRightTheater(Booking booking, Showing showing) throws FilmrInvalidBookingException {
+    private void checkIfSeatsBelongToRightTheater(Booking booking, Showing showing) throws FilmrBaseException {
 		List<Seat> validSeats = showing.getTheater().getRows().stream()
 				.flatMap(row -> row.getSeats().stream())
 				.filter(isEnabledSeat)
@@ -62,7 +66,7 @@ public class BookingService extends BaseServiceClass<Booking,Long> {
     		
     		String errorMessage = stringBuilder.toString();
     		log.warn(errorMessage);
-    		throw new FilmrInvalidBookingException(errorMessage);
+    		throw new FilmrInvalidSeatStatusException(errorMessage);
 		}
 	}
 
@@ -74,7 +78,7 @@ public class BookingService extends BaseServiceClass<Booking,Long> {
 	 * @throws FilmrInvalidBookingException 
      * @throws Exception
      */
-    private void checkIfDoubleBooked(Booking booking, Showing showing) throws FilmrInvalidBookingException {
+    private void checkIfDoubleBooked(Booking booking, Showing showing) throws FilmrSeatAlreadyBookedException {
     	List<Seat> alreadyBookedSeatsForShowing = showing.getBookings().stream()
     			.map(b -> b.getBookedSeats() )
     			.flatMap(seats -> seats.stream())
@@ -100,7 +104,7 @@ public class BookingService extends BaseServiceClass<Booking,Long> {
     		
     		String errorMessage = stringBuilder.toString();
     		log.warn(errorMessage);
-    		throw new FilmrInvalidBookingException(errorMessage);
+    		throw new FilmrSeatAlreadyBookedException(errorMessage);
     	}
     }
     
@@ -109,4 +113,5 @@ public class BookingService extends BaseServiceClass<Booking,Long> {
     }
     
     private Predicate<Seat> isEnabledSeat = seat -> seat.getState() == SeatState.ENABLED;
+    
 }

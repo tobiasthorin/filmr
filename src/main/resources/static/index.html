@@ -33,16 +33,18 @@
 
 <body>
 
-<div id="contentWrapper" class="container">
+<div class="container">
+
+    <h1>Filmr Cinema Management System v0.1</h1>
 
     <!-- activeTab is set in app.js in the routing -->
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-pills">
         <li role="presentation" ng-class="{'active': activeTab == 'Customer'}"><a href="#/customer">Admin Home</a></li>
         <li role="presentation" ng-class="{'active': activeTab == 'Book'}"><a href="#/book">Book</a></li>
         <li role="presentation" ng-class="{'active': activeTab == 'Showing'}"><a href="#/showing">Showings</a></li>
     </ul>
 
-    <h1>filmr</h1>
+
 
     <!-- Alert boxes -->
     <div ng-repeat="alert in alerts" class="alert" ng-class="{'alert-success':alert.type==1,'alert-danger':alert.type==2}">
@@ -66,12 +68,14 @@
 
 <!-- services and controllers for our custom views -->
 <!-- vievs -->
-<script src="views/booking-view/bookingController.js"></script>
+<script src="views/booking-view/bookShowingController.js"></script>
+<script src="views/booking-view/old/bookingController.js"></script>
 <script src="views/booking_confirmed-view/bookingConfirmedController.js"></script>
 <script src="views/cinema-view/cinemaController.js"></script>
 <script src="views/theater-view/theaterController.js"></script>
 <script src="views/showing-view/showingController.js"></script>
 <script src="views/customer-view/customerController.js"></script>
+<script src="views/seatSelect-view/seatSelectController.js"></script>
 
 <!-- services -->
 <script src="services/bookingService.js"></script>

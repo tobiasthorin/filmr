@@ -10,21 +10,21 @@
             .when('/book', {
                 title: 'Book',
                 activeTab: 'Book',
-                templateUrl: 'views/booking-view/showings.html',
-                controller: 'bookingController'
+                templateUrl: 'views/booking-view/bookShowing.html',
+                controller: 'bookShowingController'
             })
             // booking_confirm 
-            .when('/booking_confirm/:id', {
-                title: 'Book',
+            .when('/book/showing/:showingId/seat_select', {
+                title: 'Select Seats',
                 activeTab: 'Book',
-                templateUrl: 'views/booking_confirmed-view/confirm.html',
-                controller: 'bookingConfirmedController'
+                templateUrl: 'views/seatSelect-view/seatSelect.html',
+                controller: 'seatSelectController'
 
             })
             // Cinema 
             .when('/cinema/:id', {
                 title: 'Cinema',
-                activeTab: 'Cinema',
+                activeTab: 'Customer',
                 templateUrl: 'views/cinema-view/cinema.html',
                 controller: 'cinemaController'
 
@@ -39,12 +39,14 @@
             })
             .when('/cinema/:cinema_id/theater/:theater_id', {
                 title: 'Edit Theater',
+                activeTab: 'Customer',
                 templateUrl: 'views/theater-view/theater.html',
                 controller: 'theaterController'
 
             })
             .when('/cinema/:cinema_id/theater/new', {
                 title: 'New Theater',
+                activeTab: 'Customer',
                 templateUrl: 'views/theater-view/theater.html',
                 controller: 'theaterController'
 
