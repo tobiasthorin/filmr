@@ -94,4 +94,7 @@ input.btn {
   z-index: 10;
   box-shadow: 0px 0px 1em rgba(0, 0, 0, 0.2); }
 
+.activeMovie {
+  background-color: purple; }
+
 /*# sourceMappingURL=admin.css.map */
