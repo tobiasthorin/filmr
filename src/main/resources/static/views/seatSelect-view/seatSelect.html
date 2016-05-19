@@ -1,0 +1,17 @@
+<h2>Select Seats</h2>
+
+<div class="theaterView">
+    <div class="theaterRow">
+        <div class="theaterScreenPlayer">
+            <iframe src="https://www.youtube.com/embed/4sj1MT05lAA?t=10" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <div class="theaterRow" ng-repeat="row in theaterRows">
+        <div class="theaterSeat"
+             ng-class="{'hiddenSeat':seat.state == 'NOT_A_SEAT'}"
+             ng-repeat="seat in theaterRows[$index].seats">
+            <div class="seatLabel" ng-click="toggleSelection(seat.id)">{{seat.seatLabel}}</div>
+        </div>
+    </div>
+</div>
