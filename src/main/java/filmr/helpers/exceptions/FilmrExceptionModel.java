@@ -15,18 +15,22 @@ public class FilmrExceptionModel {
 	public final String filmrErrorCode;
 
     public FilmrExceptionModel(HttpServletRequest req, FilmrBaseException exception) {
+    	System.out.println("Inside FilmrExceptionModel, START");
     	this.timestamp = LocalDateTime.now().toString();
     	this.status = exception.getHttpStatus().toString();//req.getHeader("status"); // TODO: 
     	this.error = exception.getHttpStatus().getReasonPhrase();
         this.path = req.getRequestURL().toString();
         
-        String[] splitExceptionName = exception.getClass().getName().split(".");
-        int indexOfActualName = splitExceptionName.length -1;
-        String exceptionName = splitExceptionName[indexOfActualName];
-        
-        this.exception = exceptionName;
+//        String[] splitExceptionName = exception.getClass().getName().split(".");
+//        int indexOfActualName = splitExceptionName.length -1;
+//        String exceptionName = splitExceptionName[indexOfActualName];
+//        
+//        this.exception = exceptionName;
+        this.exception = exception.getClass().getName();
         this.message = exception.getLocalizedMessage();
         this.filmrErrorCode = exception.getFilmrStatusCode().toString();
+        
+        System.out.println("Inside FilmrExceptionModel");
     }
     
 //    {

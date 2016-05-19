@@ -6,6 +6,7 @@ public class FilmrInvalidBookingException extends FilmrBaseException {
 
 	public FilmrInvalidBookingException(String msg, FilmrStatusCode filmrStatusCode) {
 		super(msg, filmrStatusCode);
+		System.out.println("Inside FilmrInvalidBookingException");
 	}
 
 	
