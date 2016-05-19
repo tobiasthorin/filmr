@@ -26,6 +26,7 @@ public class Movie {
 	@NotNull
 	@Range(min=0)
 	private Double defaultPrice;
+	private String trailerUrl;
 	
 	public Double getDefaultPrice() {
 		return defaultPrice;
@@ -63,6 +64,14 @@ public class Movie {
 
 	public Long getId() {
 		return id;
+	}
+
+	public String getTrailerUrl() {
+		return trailerUrl;
+	}
+
+	public void setTrailerUrl(String trailerUrl) {
+		this.trailerUrl = trailerUrl;
 	}
 
 	@Override
