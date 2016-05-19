@@ -28,6 +28,9 @@ public class CinemaController {
 			logger.warn("Can't create cinema with manually set ID");
             return new ResponseEntity<Cinema>(new Cinema(), HttpStatus.BAD_REQUEST);
         }
+        if(cinema.getName().length() > 48) {
+            return new ResponseEntity<Cinema>(new Cinema(), HttpStatus.BAD_REQUEST); //TODO use custom error?
+        }
         Repertoire repertoire = new Repertoire();
         repertoireService.saveEntity(repertoire);
 
@@ -60,6 +63,9 @@ public class CinemaController {
         if(cinema.getId() == null){
 	        logger.warn("Can only update cinema with a set ID");
             return new ResponseEntity<Cinema>(new Cinema(), HttpStatus.BAD_REQUEST);
+        }
+        if(cinema.getName().length() > 48) {
+            return new ResponseEntity<Cinema>(new Cinema(), HttpStatus.BAD_REQUEST); //TODO use custom error?
         }
         Cinema updatedCinema = cinemaService.saveEntity(cinema);
         return new ResponseEntity<Cinema>(updatedCinema, HttpStatus.OK);
