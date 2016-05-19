@@ -1,7 +1,12 @@
 package filmr.controllers;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
@@ -166,6 +171,78 @@ public class ShowingController {
         showingService.deleteEntity(id);
         return new ResponseEntity(HttpStatus.OK);
     }
+    
+    
+    
+    // testing "schedule" version of showings 
+    
+    @CrossOrigin
+    @RequestMapping(value = "/schedule", method = RequestMethod.GET)
+    public ResponseEntity<Map<LocalDateTime,Map<Theater,List<Showing>>>> readAllShowingsSchedule(
+    		@RequestParam(name="from_date", required=false) @DateTimeFormat(iso = ISO.DATE_TIME) LocalDateTime from_date, // @DateTimeFormat(iso = ISO.DATE) seems to work when we retrieve javascript Date objects
+    		@RequestParam(name="to_date", required=false) @DateTimeFormat(iso = ISO.DATE_TIME) LocalDateTime to_date,
+    		@RequestParam(name="minimum_available_tickets", required=false) Long minimum_available_tickets,
+    		@RequestParam(name="only_for_movie_with_id", required=false) Long only_for_movie_with_id,
+    		@RequestParam(name="only_for_theater_with_id", required=false) Long only_for_theater_with_id,
+    		@RequestParam(name="only_for_cinema_with_id", required=false) Long only_for_cinema_with_id,
+    		@RequestParam(name="limit", required=false, defaultValue = "50") Integer limit,
+    		@RequestParam(name="show_disabled_showings", required=false, defaultValue = "false") Boolean show_disabled_showings,
+    		@RequestParam(name="include_distinct_movies_in_header", required=false, defaultValue = "false") Boolean include_distinct_movies_in_header,
+    		@RequestParam(name="include_empty_slots_for_movie_of_length", required=false) Long include_empty_slots_for_movie_of_length
+    		) {
+    	
+    	//TODO: figure out why dates from chrome datepicker is received as the date minus one day. 2001-01-02 -> 2001-01-01
+    	logger.info("from date, before manipulation: " + from_date);
+    	logger.info("to date, before manipulation: " + to_date);
+    	
+    	// plusDays(1) is temp fix for issue #86  - dates are one day off. TODO: fix for real
+//    	from_date = from_date != null ? from_date.withHour(0).withMinute(0).plusDays(1) : LocalDateTime.now();
+//    	to_date = to_date != null ? to_date.withHour(23).withMinute(59).plusDays(1) : null;
+    	
+    	// default values that are hard to code as strings.. If not null -> use the value, else provide a default value
+		from_date = from_date != null ? from_date : LocalDateTime.now();
+		// change time of to_date so that it includes the whole day
+		to_date = to_date != null ? to_date : null;
+		
+
+		logger.info("From date: " + from_date);
+		logger.info("To date: " + to_date);
+		
+		List<Showing> retrievedShowings = showingService.getAllMatchingParams(
+						from_date, 
+						to_date, 
+						minimum_available_tickets, 
+						only_for_movie_with_id,
+						only_for_theater_with_id,
+						only_for_cinema_with_id,
+						limit,
+						show_disabled_showings
+				);
+		
+		
+		// Map<LocalDate,Map<Theater,List<Showing>>>
+		
+		Function<Showing, LocalDateTime> pickOutOnlyDateFromShowingDateTime = showing -> showing.getShowDateTime().truncatedTo(ChronoUnit.DAYS);
+		Function<Showing, Theater> pickOutTheaterFromShowing = showing -> showing.getTheater();
+		
+		Map<LocalDateTime,List<Showing>> scheduleByDate = 
+				retrievedShowings.stream()
+				.collect(Collectors.groupingBy(pickOutOnlyDateFromShowingDateTime));
+		
+		
+		Map<LocalDateTime,Map<Theater,List<Showing>>> scheuduleByDateAndTheater = new HashMap<LocalDateTime,Map<Theater,List<Showing>>>();
+		
+		scheduleByDate.forEach((dateTime, listOfShowings) -> {
+			Map<Theater, List<Showing>> showingsForSpecificDateGroupedByTheater = 
+					listOfShowings.stream()
+					.collect(Collectors.groupingBy(showing -> showing.getTheater()));
+			scheuduleByDateAndTheater.put(dateTime, showingsForSpecificDateGroupedByTheater);
+		});
+		
+		
+		return new ResponseEntity<Map<LocalDateTime,Map<Theater,List<Showing>>>>(scheuduleByDateAndTheater, HttpStatus.OK);
+    }
+    
     
     
     private HttpHeaders buildCustomHeadersForReadAll(List<Showing> showings) throws JsonProcessingException {
