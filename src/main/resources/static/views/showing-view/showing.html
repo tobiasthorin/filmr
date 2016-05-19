@@ -1,41 +1,57 @@
    <h2>Showings</h2>
     <div class="row">
         <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-            <h3>Showings</h3>
             <hr>
+            <div class="row">
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <label class="blockSpan">Cinema:</label>
+                        <select class="form-control" ng-options="cinema as cinema.name for cinema in allCinemas"
+                                name="cinema" ng-model="cinema" ng-change="updateCinemaScope()">
+                        </select>
+                    </div>
 
-            <label>Cinema:</label>
-            <select ng-options="cinema as cinema.name for cinema in allCinemas"
-                    name="cinema" ng-model="cinema" ng-change="updateCinemaScope()">
-            </select>
-            <label>From:</label>
-            <input name="from_date" ng-model="fromDate" ng-change="fetchShowings()">
-            <button class="" type="button" ng-click="fromDate = null; updateShowings()">x</button>
+                </div>
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <label class="blockSpan">From date:</label>
+                        <input class="form-control" name="from_date" ng-model="fromDate" ng-change="fetchShowings()">
+                        <button class="btn" type="button" ng-click="fromDate = null; updateShowings()"><span class="glyphicon glyphicon-remove"></span> </button>
+                </div>
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <label class="blockSpan">To date:</label>
+                        <input class="form-control" name="to_date" ng-model="toDate" ng-change="fetchShowings()">
+                        <button class="btn" type="button" ng-click="toDate = null; updateShowings()"><span class="glyphicon glyphicon-remove"></button>
+                </div>
+            </div>
 
-            <label>To:</label>
-            <input name="to_date" ng-model="toDate" ng-change="fetchShowings()">
-            <button class="" type="button" ng-click="toDate = null; updateShowings()">x</button>
+            <div class="row">
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <label class="blockSpan">Movie:</label>
+                        <select class="form-control" ng-options="movie as movie.title for movie in moviesInRepertoire"
+                                name="movies" ng-model="movie" ng-change="fetchShowings()" required>
+                            <option value="" disabled>Movies in Repertoire</option>
+                        </select>
+                        <button class="btn" type="button" ng-click="movie = {}; fetchShowings()"><span class="glyphicon glyphicon-remove"></button>
+                </div>
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <label class="blockSpan">Theater:</label>
+                        <select class="form-control" ng-options="theater as theater.name for theater in theatersInCinema"
+                                name="theaters" ng-model="theater" ng-change="fetchShowings()" required>
+                            <option value="" disabled>Theaters in {{cinema.name}}</option>
+                        </select>
+                        <button class="btn" type="button" ng-click="theater = {}; fetchShowings()"><span class="glyphicon glyphicon-remove"></button>
+                </div>
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                        <label class="blockSpan">Show disabled:</label>
+                        <input type="checkbox" value="" name="disabledCheckbox" ng-model="showingIsDisabled"
+                               ng-change="fetchShowings()"
+                               ng-true-value="true" ng-false-value="false" ng-checked="disabledCheckbox == true">
+                </div>
+            </div>
+            <button class="btn" type="button" ng-click="clearAllFilters()">Clear All Filters</button>
 
-            <label>Movie:</label>
-            <select ng-options="movie as movie.title for movie in moviesInRepertoire"
-                    name="movies" ng-model="movie" ng-change="fetchShowings()" required>
-                <option value="" disabled>Movies in Repertoire</option>
-            </select>
-            <button class="" type="button" ng-click="movie = {}; fetchShowings()">x</button>
 
-            <label>Theater:</label>
-            <select ng-options="theater as theater.name for theater in theatersInCinema"
-                    name="theaters" ng-model="theater" ng-change="fetchShowings()" required>
-                <option value="" disabled>Theaters in {{cinema.name}}</option>
-            </select>
-            <button class="" type="button" ng-click="theater = {}; fetchShowings()">x</button>
 
-            <label>Show disabled:</label>
-            <input type="checkbox" value="" name="disabledCheckbox" ng-model="showingIsDisabled"
-                   ng-change="fetchShowings()"
-                   ng-true-value="true" ng-false-value="false" ng-checked="disabledCheckbox == true">
-
-            <button class="" type="button" ng-click="clearAllFilters()">Clear All Filters</button>
 
             <table class="table table-hover">
                 <thead>
