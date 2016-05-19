@@ -58,7 +58,7 @@ angular.module('filmr')
                 if(typeof $scope.movieForShowing != "object") return false;
                 if(typeof $scope.theaterForShowing != "object") return false;
                 if(typeof $scope.dateForShowing != "string") return false;
-                if(!(typeof $scope.price == "number" || typeof $scope.price == "undefined" || $scope.price===null)) return false;
+                if(!(typeof $scope.price == "number")) return false;
                 if(typeof $scope.price == "number" && $scope.price<0) return false;
                 if(typeof $scope.price == "number" && $scope.price>8192) return false;
                 return true;
@@ -96,6 +96,10 @@ angular.module('filmr')
                     });
             };
 
+            $scope.fetchDefaultPrice = function() {
+                $scope.price = $scope.movieForShowing.defaultPrice;
+            }
+                
             $scope.clearAllFilters = function() {
                 $log.info("---");
                 $log.info("clear all filters");
