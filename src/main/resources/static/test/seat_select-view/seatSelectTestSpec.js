@@ -57,8 +57,13 @@ describe("Tests for seatSelectController.js", function () {
     //TESTS
 
     describe("Getting and setting variables", function () {
+
         it("Fetches the showing from the backend", function () {
             expect($scope.currentShowing).toEqual(fetchedShowing)
+        });
+
+        it("References the rows in a separate variable", function () {
+            expect($scope.theaterRows).toEqual(fetchedShowing.theater.rows)
         });
     });
 

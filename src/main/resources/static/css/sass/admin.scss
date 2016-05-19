@@ -102,6 +102,13 @@ input.btn {
   margin: 5em 0;
 }
 
+.theaterScreenPlayer {
+  iframe {
+    width: 40em;
+    height: 20em;
+  }
+}
+
 .theaterRow {
   text-align: center;
   .theaterSeat {
