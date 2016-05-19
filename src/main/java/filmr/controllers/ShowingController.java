@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -184,7 +185,7 @@ public class ShowingController {
     
     @CrossOrigin
     @RequestMapping(value = "/schedule", method = RequestMethod.GET)
-    public ResponseEntity<Map<LocalDateTime,Map<Theater,List<Showing>>>> readAllShowingsSchedule(
+    public ResponseEntity<Map<String,Map<String,List<Showing>>>> readAllShowingsSchedule(
     		@RequestParam(name="from_date", required=false) @DateTimeFormat(iso = ISO.DATE_TIME) LocalDateTime from_date, // @DateTimeFormat(iso = ISO.DATE) seems to work when we retrieve javascript Date objects
     		@RequestParam(name="to_date", required=false) @DateTimeFormat(iso = ISO.DATE_TIME) LocalDateTime to_date,
     		@RequestParam(name="minimum_available_tickets", required=false) Long minimum_available_tickets,
@@ -200,10 +201,6 @@ public class ShowingController {
     	//TODO: figure out why dates from chrome datepicker is received as the date minus one day. 2001-01-02 -> 2001-01-01
     	logger.info("from date, before manipulation: " + from_date);
     	logger.info("to date, before manipulation: " + to_date);
-    	
-    	// plusDays(1) is temp fix for issue #86  - dates are one day off. TODO: fix for real
-//    	from_date = from_date != null ? from_date.withHour(0).withMinute(0).plusDays(1) : LocalDateTime.now();
-//    	to_date = to_date != null ? to_date.withHour(23).withMinute(59).plusDays(1) : null;
     	
     	// default values that are hard to code as strings.. If not null -> use the value, else provide a default value
 		from_date = from_date != null ? from_date : LocalDateTime.now();
@@ -226,27 +223,48 @@ public class ShowingController {
 				);
 		
 		
-		// Map<LocalDate,Map<Theater,List<Showing>>>
+		Function<Showing, String> pickOutOnlyDateStringFromShowingDateTime = showing -> showing.getShowDateTime().toLocalDate().toString();
+		Function<Showing, String> pickOutTheaterNameFromShowing = showing -> showing.getTheater().getName();
 		
-		Function<Showing, LocalDateTime> pickOutOnlyDateFromShowingDateTime = showing -> showing.getShowDateTime().truncatedTo(ChronoUnit.DAYS);
-		Function<Showing, Theater> pickOutTheaterFromShowing = showing -> showing.getTheater();
-		
-		Map<LocalDateTime,List<Showing>> scheduleByDate = 
+		Map<String,List<Showing>> scheduleByDate = 
 				retrievedShowings.stream()
-				.collect(Collectors.groupingBy(pickOutOnlyDateFromShowingDateTime));
+				.collect(Collectors.groupingBy(pickOutOnlyDateStringFromShowingDateTime));
 		
+		// sort
+		TreeMap<String,List<Showing>> sortedScheduleByDate = new TreeMap<String,List<Showing>>(scheduleByDate);
 		
-		Map<LocalDateTime,Map<Theater,List<Showing>>> scheuduleByDateAndTheater = new HashMap<LocalDateTime,Map<Theater,List<Showing>>>();
+		Map<String,Map<String,List<Showing>>> scheuduleByDateAndTheaterName = new TreeMap<String,Map<String,List<Showing>>>();
 		
-		scheduleByDate.forEach((dateTime, listOfShowings) -> {
-			Map<Theater, List<Showing>> showingsForSpecificDateGroupedByTheater = 
+		scheduleByDate.forEach((dateString, listOfShowings) -> {
+			Map<String, List<Showing>> showingsForSpecificDateGroupedByTheater = 
 					listOfShowings.stream()
-					.collect(Collectors.groupingBy(showing -> showing.getTheater()));
-			scheuduleByDateAndTheater.put(dateTime, showingsForSpecificDateGroupedByTheater);
+					.sorted()
+					.collect(Collectors.groupingBy(pickOutTheaterNameFromShowing));
+			// sort map
+			TreeMap<String, List<Showing>> sortedShowingsForSpecificDateGroupedByTheater = 
+					new TreeMap<String, List<Showing>>(showingsForSpecificDateGroupedByTheater);
+			scheuduleByDateAndTheaterName.put(dateString, sortedShowingsForSpecificDateGroupedByTheater);
 		});
 		
 		
-		return new ResponseEntity<Map<LocalDateTime,Map<Theater,List<Showing>>>>(scheuduleByDateAndTheater, HttpStatus.OK);
+		// optional headers and timeslots
+		
+    	HttpHeaders customHeaders = null;
+
+
+        if(include_distinct_movies_in_header) {
+        	logger.info("Trying to include distinct movies in http header.");
+            try {
+                customHeaders = buildCustomHeadersForReadAll(retrievedShowings);
+            } catch (JsonProcessingException e) {
+                logger.warn("Couldn't parse movie list into JSON");
+                e.printStackTrace();
+            } finally {
+                return ResponseEntity.ok().headers(customHeaders).body(scheuduleByDateAndTheaterName);
+            }
+        }
+        
+		return new ResponseEntity<Map<String,Map<String,List<Showing>>>>(scheuduleByDateAndTheaterName, HttpStatus.OK);
     }
     
     
