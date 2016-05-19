@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,11 +15,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -27,9 +31,11 @@ import filmr.domain.Movie;
 import filmr.domain.Seat;
 import filmr.domain.Showing;
 import filmr.domain.Theater;
-import filmr.helpers.FilmrException;
 import filmr.helpers.TimeslotCreator;
-import filmr.helpers.exceptions.FilmrTimeOccupiedException;
+import filmr.helpers.exceptions.FilmrBaseException;
+import filmr.helpers.exceptions.FilmrExceptionModel;
+import filmr.helpers.exceptions.FilmrInvalidDateFormatException;
+import filmr.helpers.exceptions.FilmrShowingTimeOccupiedException;
 import filmr.services.ShowingService;
 
 @RestController
@@ -37,17 +43,21 @@ import filmr.services.ShowingService;
 public class ShowingController {
 	
 	private final static org.apache.log4j.Logger logger = Logger.getLogger(ShowingController.class);
+	private final static LocalDateTime ERROR_DATE_TIME = LocalDateTime.of(6, 6, 6, 6, 6);
 
     @Autowired
     private ShowingService showingService;
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Showing> createShowing(@RequestBody Showing showing) throws FilmrException {
+    public ResponseEntity<Showing> createShowing(@RequestBody Showing showing) throws FilmrBaseException {
         if (showing.getId() != null) {
         	logger.warn("Trying to create showing, but showing already has id.");
             return new ResponseEntity<Showing>(new Showing(), HttpStatus.BAD_REQUEST);
         }
+        
+        if(showing.getShowDateTime().equals(ERROR_DATE_TIME)) throw new FilmrInvalidDateFormatException();
+        
         Boolean showingTimeisValid = showingService.showingTimeIsValid(showing); //TODO: show time valid is to generic IMO. rename to time is occupied or make method return type of invalid error
 
         if(showingTimeisValid){
@@ -56,12 +66,7 @@ public class ShowingController {
         }
         logger.warn("Not valid time");
 
-        throw new FilmrTimeOccupiedException(""); //TODO: make so frontend get an code and message from exception
-
-        // TODO: throw custom error. an empty doesn't serialize into json, so
-        // HttpStatus.PRECONDITION_FAILED does not reach the api consumer
-//        return new ResponseEntity<Showing>(new Showing(), HttpStatus.PRECONDITION_FAILED);
-
+        throw new FilmrShowingTimeOccupiedException("Chosen time for showing is already occupied");
 
     }
 
@@ -71,7 +76,7 @@ public class ShowingController {
     		@PathVariable Long id,
     		@RequestParam(name="mark_seat_booking_status", defaultValue="false", required=false) Boolean mark_seat_booking_status
     		){
-        
+        logger.debug("in read showing.");
     	Showing retrievedShowing = showingService.readEntity(id);
         
         if(mark_seat_booking_status){
@@ -214,5 +219,13 @@ public class ShowingController {
     		}
     	});
     }
+    
+    // all custom errors should inherit from FilmrBaseException, so this should work for all of them. 
+    @ExceptionHandler(FilmrBaseException.class)
+    @ResponseBody
+    public FilmrExceptionModel handleBadRequest(HttpServletRequest req, FilmrBaseException ex) {
+    	logger.warn("Catching custom error in controller.. ");
+        return new FilmrExceptionModel(req, ex);
+    } 
 
 }

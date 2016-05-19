@@ -4,6 +4,13 @@ import java.time.LocalDateTime;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 
+ * Class to represent custom errors and their attributes. 
+ * This is the object that will be serialized to json and presented to the front-end developer getting a custom error.
+ * 
+ * @see FilmrBaseException
+ */
 public class FilmrExceptionModel {
 	
 	public final String timestamp;
@@ -13,34 +20,18 @@ public class FilmrExceptionModel {
 	public final String message;
 	public final String path;
 	public final String filmrErrorCode;
+	public final String filmrErrorDescription;
 
-    public FilmrExceptionModel(HttpServletRequest req, FilmrBaseException exception) {
-    	System.out.println("Inside FilmrExceptionModel, START");
+    public FilmrExceptionModel(HttpServletRequest req, FilmrBaseException filmrException) {
+    	
     	this.timestamp = LocalDateTime.now().toString();
-    	this.status = exception.getHttpStatus().toString();//req.getHeader("status"); // TODO: 
-    	this.error = exception.getHttpStatus().getReasonPhrase();
+    	this.status = filmrException.getHttpStatus().toString();
+    	this.error = filmrException.getHttpStatus().getReasonPhrase();
         this.path = req.getRequestURL().toString();
-        
-//        String[] splitExceptionName = exception.getClass().getName().split(".");
-//        int indexOfActualName = splitExceptionName.length -1;
-//        String exceptionName = splitExceptionName[indexOfActualName];
-//        
-//        this.exception = exceptionName;
-        this.exception = exception.getClass().getName();
-        this.message = exception.getLocalizedMessage();
-        this.filmrErrorCode = exception.getFilmrStatusCode().toString();
-        
-        System.out.println("Inside FilmrExceptionModel");
+        this.exception = filmrException.getClass().getSimpleName();
+        this.message = filmrException.getLocalizedMessage();
+        this.filmrErrorCode = filmrException.getFilmrStatusCode().toString();
+        this.filmrErrorDescription = filmrException.getFilmrStatusCode().getDescription();
     }
-    
-//    {
-//    	  "timestamp": "2016-05-19T09:44:20.001+0000",
-//    	  "status": 400,
-//    	  "error": "Bad Request",
-//    	  "exception": "org.springframework.web.bind.MissingServletRequestParameterException",
-//    	  "message": "Required Integer parameter 'number_of_rows' is not present",
-//    	  "path": "/filmr/api/theaters/"
-//    	}
-    
     
 }
