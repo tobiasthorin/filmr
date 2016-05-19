@@ -102,8 +102,14 @@ input.btn {
       margin: 10px 5px;
       text-align: center;
       line-height: 40px; }
+    .theaterRow .seatContainer .unbookedSeat {
+      background-color: #5c111d; }
+    .theaterRow .seatContainer .bookedSeat {
+      background-color: #444444;
+      border-color: #888888; }
     .theaterRow .seatContainer .selectedSeat {
-      background-color: blue; }
+      background-color: #bb3246;
+      border-color: #f1f1f1; }
 
 .alert {
   position: absolute;

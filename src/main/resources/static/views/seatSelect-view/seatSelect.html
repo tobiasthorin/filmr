@@ -10,8 +10,8 @@
     <div class="theaterRow" ng-repeat="row in theaterRows">
 
         <div class="seatContainer" ng-repeat="seat in theaterRows[$index].seats">
-            <div class="theaterSeat" ng-if="seat.state != 'NOT_A_SEAT'"
-                 ng-class="{'disabledSeat': checkIfSelected(seat.id)}">
+            <div class="theaterSeat unbookedSeat" ng-if="seat.state != 'NOT_A_SEAT'"
+                 ng-class="{'selectedSeat': checkIfSelected(seat.id), 'bookedSeat': checkIfBooked(seat.id)}">
                 <div class="seatLabel" ng-click="toggleSelection(seat.id)">
                     &nbsp;
                 </div>

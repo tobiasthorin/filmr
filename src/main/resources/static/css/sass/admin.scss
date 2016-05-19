@@ -11,6 +11,9 @@ $cinema-red: #bb3246;
 $cinema-red-dark: #5c111d;
 $cinema-red-darker: #25070c;
 
+$booked-seat: #444444;
+$booked-seat-border: #888888;
+
 $cinema-seat-size: 40px;
 
 /* Page wide stuff */
@@ -131,7 +134,6 @@ input.btn {
       border-radius: 5px 5px 20px 20px;
       border: 2px solid $cinema-red-dark;
 
-
       text-align: center;
       line-height: $cinema-seat-size;
 
@@ -167,8 +169,18 @@ input.btn {
       line-height: $cinema-seat-size;
     }
 
+    .unbookedSeat {
+      background-color: $cinema-red-dark;
+    }
+
+    .bookedSeat {
+      background-color: $booked-seat;
+      border-color: $booked-seat-border;
+    }
+
     .selectedSeat {
-      background-color: blue;
+      background-color: $cinema-red;
+      border-color: $text-light;
     }
   }
 
