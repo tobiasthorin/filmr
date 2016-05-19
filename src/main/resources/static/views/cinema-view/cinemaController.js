@@ -1,7 +1,7 @@
 'use strict';
 
-app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', '$location', 'MovieService', 'TheaterService', 'RepertoireService', 'CinemaService',
-	function ($scope, $rootScope, $routeParams, $location, MovieService, TheaterService, RepertoireService, CinemaService) {
+app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', '$location', '$log', 'MovieService', 'TheaterService', 'RepertoireService', 'CinemaService',
+	function ($scope, $rootScope, $routeParams, $location, $log, MovieService, TheaterService, RepertoireService, CinemaService) {
 
 		//Local variables
 		var moviesInRepertoire;
@@ -66,7 +66,10 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', '$lo
 				}
 			};
 
-			createNewTheater($scope.newTheater);
+			createNewTheater($scope.newTheater, function(){
+				fetchTheaters();
+				clearTheaterFields();
+			});
 		};
 
 		$scope.alert = function (message) {
@@ -206,7 +209,8 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', '$lo
 		}
 
 		function fetchTheaters() {
-			console.log("Getting theaters...");
+			$log.info("---");
+			$log.info("fetch theaters");
 			TheaterService.query({cinema_id:currentCinema.id}).$promise.then(function (result) {
 					theaters = result;
 				},
@@ -220,12 +224,12 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', '$lo
 			$scope.edited_cinema_name = currentCinema.name;
 		}
 
-		function createNewTheater(newTheater) {
+		function createNewTheater(newTheater,callbackWhenDone) {
 
 			TheaterService.save(newTheater.theaterParams, { "name":newTheater.name,"cinema":newTheater.cinema }).$promise.then(
 				function (result) {
 					$rootScope.alert("Success! ", "Theater "+newTheater.name+" was created",1);
-					fetchTheaters();
+					callbackWhenDone();
 				},
 				function (error) {
 					$rootScope.errorHandler(error)
@@ -233,5 +237,11 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', '$lo
 
 			$scope.original_name = newTheater.name;
 			$scope.name = newTheater.name;
+		}
+		
+		function clearTheaterFields() {
+			$scope.number_of_rows = undefined;
+			$scope.number_of_seats = undefined;
+			$scope.theater_name = undefined;
 		}
 }]);

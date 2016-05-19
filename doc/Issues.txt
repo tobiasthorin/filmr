@@ -1,0 +1,22 @@
+- cinema name spacing
+Frontend
+
+-breadcrumb navigering
+
+  showings
+    -ändra metodnamn
+    -validate date on new showing
+    - clear fields after submitting showing
+    - set background color on disabled showings
+
+  Theater
+    -kan inte uppdatera utan namn, ändra nman update funktion, sätt temp variabel
+    -max number of seats change to Row width or seats per row
+    -fix cinema page, bootstrap it?
+    - Rensa theater field when create
+    - Vänta på svar från server vid update
+
+
+backend
+- limit cinema name backend max 48 char? not empty?
+- backend seat/row label toggle
