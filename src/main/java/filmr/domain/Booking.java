@@ -83,9 +83,8 @@ public class Booking {
 		final Booking booking = (Booking) object;
 		return new EqualsBuilder()
 				.append(id, booking.getId())
-				.append(bookingReference, booking.getBookingReference())
-				.append(bookedSeats, booking.getBookedSeats())
-				.append(showing, booking.getShowing())
+				//.append(bookedSeats, booking.getBookedSeats()) TODO cant be read properly
+				//.append(showing, booking.getShowing())
 				.append(phoneNumber, booking.getPhoneNumber())
 				.isEquals();
 	}
@@ -93,9 +92,8 @@ public class Booking {
 	public int hashCode() {
 		return new HashCodeBuilder(17, 31)
 				.append(id)
-				.append(bookingReference)
-				.append(bookedSeats)
-				.append(showing)
+				//.append(bookedSeats)
+				//.append(showing)
 				.append(phoneNumber)
 				.toHashCode();
 	}
