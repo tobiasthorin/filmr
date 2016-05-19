@@ -96,7 +96,7 @@
                 <div class="form-group">
                     <label>Movie:</label>
                     <select ng-options="movie as movie.title for movie in moviesInRepertoire"
-                            name="movies" ng-model="movieForShowing" ng-change="fetchShowings()"></select>
+                            name="movies" ng-model="movieForShowing" ng-change="fetchShowings(); fetchDefaultPrice();"></select>
                 </div>
                 <div class="form-group">
                     <label>Theater:</label>
@@ -110,7 +110,7 @@
                 <div class="form-group">
                     <label>Price:</label>
                     <input type="number" ng-model="price" name="priceForShowing"
-                           value="{{movieForShowing.defaultPrice}}">
+                           value="">
                 </div>
                 <input type="submit" class="btn" type="button" name="submit" id="submit" ng-click="createShowing()"
                         ng-disabled="!validateCreateShowing()" value="Add showing">

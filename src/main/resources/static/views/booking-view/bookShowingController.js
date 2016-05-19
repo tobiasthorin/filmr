@@ -50,9 +50,18 @@ angular.module('filmr')
 			};
 
 			$scope.setMovie = function (movie) {
-				$scope.selectedMovie = movie;
-				$scope.updateShowings();
+				if (movie == $scope.selectedMovie) {
+					$scope.selectedMovie = {};
+				}
+				else {
+					$scope.selectedMovie = movie;
+				}
+                $scope.updateShowings();
 			};
+
+            $scope.goToSelectSeat = function(showing) {
+                $location.url("/showing/"+showing.id+"/seat_select");
+            }
 
 			function getCinemas(callbackWhenDone) {
 				CinemaService.query().$promise.then(

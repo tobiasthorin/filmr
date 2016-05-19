@@ -10,14 +10,28 @@ INSERT INTO cinema (name,repertoire) VALUES('Lisas Biograf',2);
 
 /* MOVIES*/
 
-INSERT INTO movie (title, length_in_minutes, description, default_price) 
-	VALUES ('Lion King', 119, 'Story about lions', 65.00);
+INSERT INTO movie (title, length_in_minutes, description, default_price, trailer_url)
+	VALUES ('Lion King', 119, 'Story about lions', 65.00, '4sj1MT05lAA?t=10');
 INSERT INTO movie (title, length_in_minutes, description, default_price) 
 	VALUES ('Lion Queen', 115, 'Tale about lions', 70.00);
 INSERT INTO movie (title, length_in_minutes, description, default_price) 
 	VALUES ('Lion Prince', 110, 'Epic story about lions', 55.50);
 INSERT INTO movie (title, length_in_minutes, description, default_price) 
 	VALUES ('Lion Princess', 92, 'Old tale about lions', 72.33);
+
+INSERT INTO movie (title, length_in_minutes, description, default_price) 
+	VALUES ('One Flew Over the Cuckoo\'s Nest', 133, 'A criminal pleads insanity after getting into trouble', 80);
+
+INSERT INTO movie (title, length_in_minutes, description, default_price) 
+	VALUES ('Batman Returns', 126, 'When a corrupt businessman and the grotesque Penguin plot to take control of Gotham City', 60);
+INSERT INTO movie (title, length_in_minutes, description, default_price) 
+	VALUES ('The Cable Guy', 96, '-', 72.33);
+INSERT INTO movie (title, length_in_minutes, description, default_price) 
+	VALUES ('Ferris Bueller\'s Day Off', 103, '-', 72.33);
+INSERT INTO movie (title, length_in_minutes, description, default_price) 
+	VALUES ('The Da Vinci Code', 159, '-', 72.33);
+INSERT INTO movie (title, length_in_minutes, description, default_price) 
+	VALUES ('Alien', 117, '-', 72.33);
 	
 /* THEATERS */
 
