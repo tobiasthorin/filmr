@@ -17,12 +17,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestContextManager;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 import static junit.framework.TestCase.assertEquals;
@@ -153,6 +155,20 @@ public class BookingTest {
 
         //Assert
         assertEquals("Make sure the http was unsuccessfull", HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+    }
+
+    @Test (expected = HttpServerErrorException.class)
+    public void testCreateBookingOnShowingWithSeatOnOtherShowing() {
+        Booking booking = EntityFactory.createBooking(savedShowing);
+        List<Seat> seats = savedExclusiveShowing.getTheater().getRows().get(0).getSeats();
+        booking.setBookedSeats(seats);
+
+        Long id = savedShowing.getId();
+
+        ResponseEntity<Booking> responseEntity = restTemplate.postForEntity(baseUrl+"?for_showing_with_id="+id, booking, Booking.class);
+
+        //Assert
+        assertEquals("Make sure the http was unsuccessfull", HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
     }
 
     @Test
