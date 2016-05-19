@@ -10,8 +10,8 @@
             .when('/book', {
                 title: 'Book',
                 activeTab: 'Book',
-                templateUrl: 'views/booking-view/showings.html',
-                controller: 'bookingController'
+                templateUrl: 'views/booking-view/bookShowing.html',
+                controller: 'bookShowingController'
             })
             // booking_confirm 
             .when('/book/showing/:showingId/seat_select', {
