@@ -2,8 +2,8 @@ package filmr.controllers;
 
 import filmr.domain.Cinema;
 import filmr.domain.Repertoire;
-import filmr.errorhandling.IllegalEntityPropertyException;
-import filmr.errorhandling.InsufficientEntityDataException;
+import filmr.helpers.exceptions.IllegalEntityPropertyException;
+import filmr.helpers.exceptions.InsufficientEntityDataException;
 import filmr.services.CinemaService;
 import filmr.services.RepertoireService;
 import org.apache.log4j.Logger;

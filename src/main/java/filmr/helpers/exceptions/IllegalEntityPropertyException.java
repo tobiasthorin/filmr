@@ -1,4 +1,4 @@
-package filmr.errorhandling;
+package filmr.helpers.exceptions;
 
 public class IllegalEntityPropertyException extends Exception {
 	private static final long serialVersionUID = 2071745177858992856L;

@@ -5,14 +5,22 @@ import filmr.domain.Booking;
 import filmr.domain.Seat;
 import filmr.domain.SeatState;
 import filmr.domain.Showing;
+import filmr.helpers.exceptions.FilmrExceptionModel;
 import filmr.helpers.exceptions.FilmrInvalidBookingException;
+import filmr.helpers.exceptions.FilmrStatusCode;
 
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Service
 public class BookingService extends BaseServiceClass<Booking,Long> {
@@ -26,7 +34,7 @@ public class BookingService extends BaseServiceClass<Booking,Long> {
      * @throws FilmrInvalidBookingException if any of the conditions fail
      */
     public void validateBooking(Booking booking, Showing showing) throws FilmrInvalidBookingException {
-    	if(showing.getIsDisabled()) throw new FilmrInvalidBookingException("Can't book seats for disabled showing");
+    	if(showing.getIsDisabled()) throw new FilmrInvalidBookingException("Can't book seats for disabled showing", FilmrStatusCode.F422);
     	
     	checkIfDoubleBooked(booking, showing);
     	checkIfSeatsBelongToRightTheater(booking, showing);
@@ -62,7 +70,7 @@ public class BookingService extends BaseServiceClass<Booking,Long> {
     		
     		String errorMessage = stringBuilder.toString();
     		log.warn(errorMessage);
-    		throw new FilmrInvalidBookingException(errorMessage);
+    		throw new FilmrInvalidBookingException(errorMessage, FilmrStatusCode.F422);
 		}
 	}
 
@@ -100,7 +108,7 @@ public class BookingService extends BaseServiceClass<Booking,Long> {
     		
     		String errorMessage = stringBuilder.toString();
     		log.warn(errorMessage);
-    		throw new FilmrInvalidBookingException(errorMessage);
+    		throw new FilmrInvalidBookingException(errorMessage, FilmrStatusCode.F422);
     	}
     }
     
@@ -109,4 +117,12 @@ public class BookingService extends BaseServiceClass<Booking,Long> {
     }
     
     private Predicate<Seat> isEnabledSeat = seat -> seat.getState() == SeatState.ENABLED;
+    
+    @ResponseStatus(HttpStatus.BANDWIDTH_LIMIT_EXCEEDED)
+    @ExceptionHandler(FilmrInvalidBookingException.class)
+    @ResponseBody
+    public FilmrExceptionModel handleBadRequest(HttpServletRequest req, FilmrInvalidBookingException ex) {
+    	log.warn("Catching custom error in service.. ");
+        return new FilmrExceptionModel(req, ex);
+    }
 }

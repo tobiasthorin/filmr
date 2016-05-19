@@ -4,23 +4,32 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.UsesSunHttpServer;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import filmr.domain.Booking;
 import filmr.domain.Seat;
 import filmr.domain.SeatState;
 import filmr.domain.Showing;
+import filmr.helpers.exceptions.FilmrBaseException;
+import filmr.helpers.exceptions.FilmrExceptionModel;
 import filmr.helpers.exceptions.FilmrInvalidBookingException;
+import filmr.helpers.exceptions.FilmrStatusCode;
 import filmr.services.BookingService;
 import filmr.services.ShowingService;
 
@@ -43,7 +52,7 @@ public class BookingController {
     public ResponseEntity<Booking> createBooking(
     		@RequestBody Booking booking,
     		@RequestParam(value="for_showing_with_id", required=true) Long for_showing_with_id
-    		) throws Exception{
+    		) throws FilmrInvalidBookingException{
 
         if (booking.getId() != null) {
             log.warn("id on booking is not permitted when create booking");
@@ -51,7 +60,7 @@ public class BookingController {
         }
         
         if (booking.getBookedSeats() == null) {
-        	throw new Exception("Booking must have seats");
+        	throw new FilmrInvalidBookingException("Booking must have seats", FilmrStatusCode.F422);
         } 
         
         Showing showing = showingService.readEntity(for_showing_with_id);
@@ -98,4 +107,18 @@ public class BookingController {
         bookingService.deleteEntity(id);
         return new ResponseEntity(HttpStatus.OK);
     }
+    
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    @ExceptionHandler(FilmrInvalidBookingException.class)
+//    public String errorerrroorrr() {
+//    	return "this is an errro!!!!";
+//    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(FilmrInvalidBookingException.class)
+    @ResponseBody
+    public FilmrExceptionModel handleBadRequest(HttpServletRequest req, FilmrInvalidBookingException ex) {
+    	log.warn("Catching custom error in controller.. ");
+        return new FilmrExceptionModel(req, ex);
+    } 
 }
