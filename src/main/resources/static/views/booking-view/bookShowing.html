@@ -1,6 +1,7 @@
 <div class="booking-wrapper">
+    <button class="" type="button" ng-click="clearAllFilters()">Start Over</button>
     <div class = row>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
         	<table class="table table-hover">
         		<thead>
         			<tr>
@@ -8,7 +9,7 @@
         			</tr>
         		</thead>
         		<tbody ng-repeat="movie in moviesInRepertoire">
-        			<tr>
+        			<tr class="bookingTableObject">
         				<td ng-class="{'activeMovie': selectedMovie == movie}" ng-click="setMovie(movie)">{{movie.title}}</td>
         			</tr>
         		</tbody>
@@ -18,9 +19,10 @@
 		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
             <label>From Date:</label>
         	<input name="from_date" ng-model="fromDate" ng-change="updateShowings()">
+			<button class="" type="button" ng-click="fromDate = null; updateShowings()">x</button>
         </div>
 
-		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+		<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
 			<table class="table table-striped table-hover">
 				<thead>
 				<tr>
@@ -28,9 +30,28 @@
 				</tr>
 				</thead>
 				<tbody ng-repeat="showing in allShowings">
-				<tr>
-					<td>{{showing.showDateTime | date : 'dd MMM HH:mm'}}</td>
-					<td>{{showing.movie.title}}</td>
+				<tr class="bookingTableObject">
+                    <td>
+                    <table>
+                        <tr>
+                            <td>{{showing.movie.title}}</td>
+                            <td>{{showing.movie.lengthInMinutes}} minutes.</td>
+                        </tr>
+                        <tr>
+                            <td>{{showing.showDateTime | date : 'dd MMM HH:mm'}} </td>
+                            <td></td>
+                            <td>{{showing.theater.name}}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>Seats left: {{showing.availableTickets}}</td>
+                        </tr>
+                    </table>
+                    </td>
+                    <td>
+                        <button class="" type="button" ng-click="goToSelectSeat(showing)"> >>> </button>
+                    </td>
 				</tr>
 				</tbody>
 			</table>
