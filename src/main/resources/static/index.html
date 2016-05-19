@@ -12,6 +12,10 @@
     <script src="https://code.jquery.com/jquery-2.2.3.min.js"
             integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
 
+    <!-- JQuery datepicker -->
+    <script src="dependencies/jquery.datetimepicker.full.js"></script>
+    <link rel="stylesheet" href="dependencies/jquery.datetimepicker.css">
+
     <!-- Bootstrap -->
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
@@ -23,7 +27,7 @@
             crossorigin="anonymous"></script>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="styles/admin.css">
+    <link rel="stylesheet" href="css/admin.css">
 
 </head>
 
@@ -39,6 +43,13 @@
     </ul>
 
     <h1>filmr</h1>
+
+    <!-- Alert boxes -->
+    <div ng-repeat="alert in alerts" class="alert" ng-class="{'alert-success':alert.type==1,'alert-danger':alert.type==2}">
+        <span class="glyphicon" ng-class="{'glyphicon-ok-circle':alert.type==1,'glyphicon-ban-circle':alert.type==2}"></span>
+        <strong>{{alert.header}}</strong>
+        <span>{{alert.text}}</span>
+    </div>
 
     <!-- page specific content loads in this view. see routing in app.js  -->
     <div ng-view></div>

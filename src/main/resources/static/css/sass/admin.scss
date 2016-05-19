@@ -1,0 +1,153 @@
+/* Global variables */
+$primary-light: #5a31ae;
+$primary-dark: #30007a;
+
+$cinema-red: #c61a30;
+$cinema-red-dark: #5c111d;
+
+$cinema-seat-size: 40px;
+
+/* Page wide stuff */
+html {
+  overflow-y: scroll;
+}
+
+h1 {
+  background: #30007a;
+  padding: 10px;
+  color: #eee;
+  font-family: monospace;
+  margin: 0 0 10px;
+}
+
+/* Nav bar */
+.nav-tabs {
+  li a {
+    color: #666666;
+  }
+  li.active {
+    a {
+      background-color: $primary-light !important;
+    }
+    a, a:active, a:focus {
+      color: #fff !important;
+    }
+  }
+}
+
+.inputTable {
+  tbody{
+    tr{
+      td{
+        padding: 0.5em;
+      }
+    }
+  }
+}
+
+.theaterScreen {
+  color: white;
+  letter-spacing: 1em;
+  text-transform: uppercase;
+
+
+  display: inline-block;
+
+  width: 30em;
+  height: 2em;
+  line-height: 2em;
+
+  background-color: black;
+  border-style: solid;
+  border-width: 0 2em 0 2em;
+  border-color: $cinema-red-dark;
+
+  margin: 5em 0;
+}
+
+.theaterRow {
+  text-align: center;
+  .theaterSeat {
+    margin: 10px 5px;
+
+    cursor: pointer;
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 1em;
+    background-color: $cinema-red;
+
+    width: $cinema-seat-size;
+    height: $cinema-seat-size;
+
+    border-radius: 5px 5px 20px 20px;
+    border: 2px solid $cinema-red-dark;
+
+    display: inline-block;
+    text-align: center;
+    line-height: $cinema-seat-size;
+
+    .seatLabel {
+      margin: auto;
+    }
+
+
+  }
+  .disabledSeat{
+    background-color: lightgray;
+    border-color: black;
+    color: black;
+  }
+
+  .not_a_seat {
+    background-color: #fbfbfb;
+    border-color: #eeeeee;
+    color: #dddddd;
+
+  }
+
+
+}
+
+
+/*  old css */
+html {overflow-y: scroll;}
+h1{background: #30007a;margin:0;padding:10px; color:#eee; font-family:MONOSPACE; margin-bottom:10px}
+/*.nav{margin:0;padding:0;background: #38008e; border:0;}
+.nav-tabs{margin:0;padding:0;background: #38008e; border:0;}
+*/
+.table h2{font-size:16px; background: #30007a; color:#eee; font-weight:bold; padding: 5px; margin:0; border-bottom: 1px solid #270062}
+.table ul{padding:0;margin:0;display:block}
+.table li{padding:0;margin:0; background:#eee; padding:3px;display:block}
+.table li:nth-child(odd){background:#e6e6e6;}
+.table{margin-bottom: 10px}
+form{background:#eee; border: 1px solid #ddd; padding:6px}
+form{text-size:12px;}
+form th{text-align:right; font-size:12px; padding:2px}
+input{border:0; background:#f4f4f4; border: 1px solid #ddd}
+form h2{font-size:16px; text-align:center; padding:0; margin:2px; font-weight:bold}
+input[type=submit]{color:#eee;background: #30007a;}
+.module-container h2{border-bottom:2px solid #30007a; color: #444}
+.table table{width:100%}
+.table tr input{background:0; color: #00b; border:0; text-decoration:underline}
+.table tr td{background:#eee; padding:3px}
+.table tr:nth-child(odd) td{background:#e6e6e6;}
+.is_enabled{background-color: #5cb85c; border-color: #4cae4c;}
+.is_disabled{background-color: #d9534f; border-color: #d43f3a;}
+
+.nav-tabs li.active a{background-color: #5a31ae !important;}
+
+.nav-tabs li a {color: #666666;}
+.nav-tabs li.active a {color: #fff !important;}
+.nav-tabs li.active a:active {color: #fff !important;}
+.nav-tabs li.active a:focus {color: #fff !important;}
+
+.alert {
+  position: absolute;
+  top:2em;
+  right: 2em;
+  padding: 3em;
+  z-index: 10;
+  box-shadow: 0px 0px 1em rgba(#000000, 0.2);
+}
+/* -/- old css */
+

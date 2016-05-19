@@ -29,7 +29,7 @@ import static org.junit.Assert.assertTrue;
 @SpringApplicationConfiguration(Application.class)
 @WebIntegrationTest
 @ActiveProfiles({"test"})
-public class MovieAPIIntegrationTest {
+public class MovieTest {
 
     //Used instead of SpringJunit4ClassRunner in @RunWith
     private TestContextManager testContextManager;
@@ -54,7 +54,7 @@ public class MovieAPIIntegrationTest {
         });
     }
 
-    public MovieAPIIntegrationTest(Long id) {
+    public MovieTest(Long id) {
         baseUrl = "http://localhost:8080/filmr/api/movies/";
     }
 

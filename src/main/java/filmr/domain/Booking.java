@@ -3,9 +3,12 @@ package filmr.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Range;
 
 import java.util.List;
 
@@ -15,7 +18,9 @@ public class Booking {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String bookingReference;
-	@OneToMany
+	
+	@Size(min=1)
+	@ManyToMany //TODO changed from ManyToOne, beware of side effects!!!!!1one!!
 	private List<Seat> bookedSeats;
 	
 	@JsonIgnore
@@ -23,11 +28,13 @@ public class Booking {
 	@JoinColumn(name = "showing_id")
 	private Showing showing;
 	
+	@NotEmpty
 	private String phoneNumber;
 	
 	public Booking() {
 		
 	}
+	
 
 	public String getBookingReference() {
 		return bookingReference;
@@ -77,9 +84,8 @@ public class Booking {
 		final Booking booking = (Booking) object;
 		return new EqualsBuilder()
 				.append(id, booking.getId())
-				.append(bookingReference, booking.getBookingReference())
-				.append(bookedSeats, booking.getBookedSeats())
-				.append(showing, booking.getShowing())
+				//.append(bookedSeats, booking.getBookedSeats()) TODO cant be read properly
+				//.append(showing, booking.getShowing())
 				.append(phoneNumber, booking.getPhoneNumber())
 				.isEquals();
 	}
@@ -87,9 +93,8 @@ public class Booking {
 	public int hashCode() {
 		return new HashCodeBuilder(17, 31)
 				.append(id)
-				.append(bookingReference)
-				.append(bookedSeats)
-				.append(showing)
+				//.append(bookedSeats)
+				//.append(showing)
 				.append(phoneNumber)
 				.toHashCode();
 	}
@@ -101,6 +106,25 @@ public class Booking {
 	}*/
 	
 	
+	// Convenience methods to compensate for missing link to showing (because of @JsonIgnore). Will show up as properties on showing when serialized to json	
+	public String getBookingMovieTitle() {
+		if(showing == null || showing.getMovie() == null) return "no movie / missing connection";
+		
+		return showing.getMovie().getTitle();
+	}
+	
+	public String getBookingTheaterName() {
+		if(showing == null || showing.getTheater() == null) return "no theater / missing connection";
+		
+		return showing.getTheater().getName();
+	}
+	
+	public String getBookingCinemaName() {
+		if(showing == null || showing.getTheater() == null || showing.getTheater().getCinema() == null) return "no cinema / missing connection";
+		
+		return showing.getTheater().getCinema().getName();
+	}
+	// end of convenience methods
 	
 	
 }

@@ -1,30 +1,80 @@
 <div>
-	<div class="row">
-		<div class="col-sm-12 module-container">
-			<h2>Theater: {{orginal_name}}</h2>
-		</div>
-	</div>
+    <div class="row">
+        <div class="col-sm-12 module-container">
+            <h2>{{original_name}}</h2>
+        </div>
+    </div>
 
-        <div class="row">
-            <div class="col-sm-6">
+    <div class="row">
 
-			    <form name="showingForm">
-					<h2>Edit theater</h2>
-					<table>
-						<tr>
-							<th>Name:</th>
-							<td><input type="text" placeholder="Name" ng-model="name" required></td>
-						</tr>
-						<tr>
-							<th>Number of seats:</th>
-							<td><input type="number" ng-model="numberOfSeats" required></td>
-						</tr>
-						<!--<tr><th>Disabled:</th><td><input type="checkbox" ng-model="isDisabled"></td></tr>-->
-						<tr><th></th><td><input type="submit" class="btn" ng-click="submitTheater()" value="Update" ng-disabled="showingForm.$invalid || validateScheduleEditTheater()"></td></tr>
-					</table>
-				</form>
-			</div>
-            <div class="col-sm-6">
-		</div>
-	</div>
+        <table class="inputTable">
+            <tbody>
+            <tr>
+                <td>Name:</td>
+                <td><input type="text" placeholder="Name" ng-model="name"></td>
+                <td>
+                    <button type="button" class="btn btn-default btn-sm" ng-click="updateTheater()"
+                            ng-disabled="!validateTheater()">Apply
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td>Width:</td>
+                <td>{{theaterWidth}}</td>
+                <td>
+                    <button class="btn btn-default btn-sm" type="button" ng-click="addSeats()"
+                            ng-disabled="!validateTheater() || !validateSeatInput(1)">+</button>
+                    <button class="btn btn-default btn-sm" type="button" ng-click="removeSeats()"
+                            ng-disabled="!validateTheater() || !validateSeatInput(-1)">-
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td>Rows:</td>
+                <td>{{theaterDepth}}</td>
+                <td>
+                    <button class="btn btn-default btn-sm" type="button" ng-click="addRow()"
+                            ng-disabled="!validateTheater() || !validateSeatInput(1)">+</button>
+                    <button class="btn btn-default btn-sm" type="button" ng-click="removeRow()"
+                            ng-disabled="!validateTheater() || !validateRowInput(-1)">-
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td>Seat numbers:</td>
+                <td>
+                    <div>
+                        <button class="btn btn-default btn-sm" type="button" ng-click="setRowReset(true)">Reset for each
+                            row
+                        </button>
+                    </div>
+                    <div>
+                        <button class="btn btn-default btn-sm" type="button" ng-click="setRowReset(false)">Continuous
+                        </button>
+                    </div>
+
+                </td>
+
+
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <div class="row">
+        <div class="theaterView">
+            <div class="theaterRow">
+                <div class="theaterScreen">Screen</div>
+            </div>
+
+            <div class="theaterRow" ng-repeat="row in theaterRows">
+                <div class="theaterSeat"
+                     ng-class="{'disabledSeat': seat.state == 'DISABLED', 'not_a_seat':seat.state == 'NOT_A_SEAT'}"
+                     ng-repeat="seat in theaterRows[$index].seats">
+                    <div class="seatLabel" ng-click="toggleSeatState(seat)">{{seat.seatLabel}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

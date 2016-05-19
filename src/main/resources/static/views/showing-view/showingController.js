@@ -1,137 +1,150 @@
 
 angular.module('filmr')
     .controller('showingController',
-        ['$location', '$rootScope', '$scope', '$routeParams', '$resource', 'CinemaService', 'ShowingService',
-            function ($location, $rootScope, $scope, $routeParams, $resource, CinemaService, ShowingService) {
+        ['$location', '$rootScope', '$scope', '$routeParams', '$resource', '$log', 'CinemaService', 'ShowingService',
+            function ($location, $rootScope, $scope, $routeParams, $resource, $log, CinemaService, ShowingService) {
 
-            //Execute on page load
-            getCinemas(function(){
-                $scope.cinema = $scope.allCinemas[0];
-                getTheatersAndRepertoireInCinema();
-                getShowingsWithParams();
-            });
-            //getTheatersAndRepertoireInCinema();
-            //getShowingsWithParams();
-
-            //Publicly accessible variables and functions
+            //Publicly accessible variables
             $scope.moviesInRepertoire = [];
             $scope.theatersInCinema = [];
             $scope.allShowings = [];
             $scope.allCinemas = [];
-
             $scope.theater = {};
             $scope.movie = {};
             $scope.movieForShowing = {};
-            $scope.cinema= $scope.allCinemas[0];
 
-            $scope.updateShowings = function() {
-                console.log("---");
-                console.log("updating Showings List");
-                getShowingsWithParams();
+            //Execute on page load
+            fetchCinemas(function(){
+                $scope.cinema = $scope.allCinemas[0];
+                fetchTheatersAndRepertoireInCinema();
+                fetchShowingsWithParams();
+            });
+
+            //Publicly accessible functions
+            $scope.fetchShowings = function() {
+                $log.info("---");
+                $log.info("fetch showings");
+                fetchShowingsWithParams();
             }
 
-            $scope.updateCinemaScope = function() {
-                console.log("---");
-                console.log("Set Cinema, get movies and theaters");
-                getTheatersAndRepertoireInCinema();
-                getShowingsWithParams();
+            $scope.fetchCinemaScope = function() {
+                $log.info("---");
+                $log.info("fetch cinema scope");
+                fetchTheatersAndRepertoireInCinema();
+                fetchShowingsWithParams();
             }
 
             $scope.disableShowing = function (showing) {
-                console.log("---");
-                console.log("Disable showing with id: " + showing.id);
+                $log.info("---");
+                $log.info("disable showing");
+                $log.info("Try disable showing with id: " + showing.id);
                 showing.isDisabled = !showing.isDisabled;
-                console.log("Showing has datestring: " + showing.showDateTime);
 
                 ShowingService.update(showing).$promise.then(
                     function (result) {
-                        console.log("showing enabled/disabled");
-                        console.log(result);
-                        getShowingsWithParams();
+                        $log.info("success!");
+                        fetchShowingsWithParams();
                     },
                     function (error) {
+                        $log.warn("failed!");
                         $rootScope.errorHandler(error);
                         //Reset value of isDisabled for correct representation in gui
                         showing.isDisabled = !showing.isDisabled;
-                    })
+                    }
+                );
+            }
 
-                $scope.validateScheduleNewShowing = function () {
-                    if (!$scope.price && $scope.price != 0) return true; //note that zero is false i JS. we want all other "false"-values to be considered none valid
-                    if ($scope.price < 0) return true;
-                    return false;
-                }
+            $scope.validateCreateShowing = function() {
+                if(typeof $scope.movieForShowing != "object") return false;
+                if(typeof $scope.theaterForShowing != "object") return false;
+                if(typeof $scope.dateForShowing != "string") return false;
+                if(!(typeof $scope.price == "number" || typeof $scope.price == "undefined" || $scope.price===null)) return false;
+                if(typeof $scope.price == "number" && $scope.price<0) return false;
+                if(typeof $scope.price == "number" && $scope.price>8192) return false;
+                return true;
             }
 
             $scope.createShowing = function() {
-                console.log("---");
-                console.log("call add showing to theater");
+                $log.info("---");
+                $log.info("create showing");
+
+                $rootScope.clearAlerts();
+
+                if(!$scope.validateCreateShowing()) {
+                    $rootScope.genericError();
+                    $log.warn("showing not validated");
+                    return;
+                }
+
                 var newShowing = new ShowingService();
                 newShowing.movie = $scope.movieForShowing;
                 newShowing.theater =$scope.theaterForShowing;
-                newShowing.showDateTime = $scope.dateForShowing;
-                newShowing.price = $scope.priceForShowing;
+                newShowing.showDateTime = parseDateStringToValidAPIDateString($scope.dateForShowing);
+                newShowing.price = $scope.price;
                 newShowing.isDisabled = false;
                 console.log("Date is: "+newShowing.showDateTime);
 
                 ShowingService.save(newShowing, function (result) {
-                        console.log("Saved showing: "+ result);
-                        getShowingsWithParams();
+                        $rootScope.alert("Success! ","Showing added",1);
+                        fetchShowingsWithParams();
                     },
                     function (error) {
-                        $rootScope.errorHandler(error);
-                        alert("Something went wrong. Either you have left a required field empty or you are trying to create a showing on a time that is occupied.");
+                        if(error.data && error.data.exception=="filmr.helpers.exceptions.FilmrTimeOccupiedException") {
+                            $rootScope.alert("Error! ","Time is already occupied",2);
+                        }
+                        else $rootScope.errorHandler(error);
                     });
             };
 
             $scope.clearAllFilters = function() {
+                $log.info("---");
+                $log.info("clear all filters");
                 $scope.fromDate = null;
                 $scope.toDate = null;
                 $scope.movie = {};
                 $scope.theater = {};
                 $scope.showingIsDisabled = false;
-                getShowingsWithParams();
+                fetchShowingsWithParams();
             }
 
-            function getCinemas(callbackWhenDone) {
+            function fetchCinemas(callbackWhenDone) {
+                $log.info("---");
+                $log.info("fetch cinemas");
                 CinemaService.query().$promise.then(
                     function(result) {
-                        console.log("in getCinemas");
-                        console.log(result);
                         $scope.allCinemas = result;
                         callbackWhenDone();
                     }
                 )
             }
 
-            function getTheatersAndRepertoireInCinema() {
-                console.log("---");
-                console.log("call get cinema");
-                CinemaService.get({id:$scope.cinema.id}).$promise.then(
-                    function(result){
-                        var cinema = result;
-                        console.log("Set Movies and Theaters lists")
-                        $scope.moviesInRepertoire = cinema.repertoire.movies;
-                        $scope.theatersInCinema = cinema.theaters;
+            function fetchTheatersAndRepertoireInCinema() {
+                $log.info("---");
+                $log.info("fetch theaters and repertoire in cinema");
+                if(!$scope.cinema) throw "cinema is not set";
 
-                    },
-                    function(error){
-                        $rootScope.errorHandler(error);
-                    }
-                )
+                $scope.moviesInRepertoire = $scope.cinema.repertoire.movies;
+                $scope.theatersInCinema = $scope.cinema.theaters;
             }
 
-            function getShowingsWithParams(){
-                var params = {
-                    "only_for_cinema_with_id" : $scope.cinema.id,
-                    "only_for_theater_with_id" : $scope.theater.id,
-                    "only_for_movie_with_id" : $scope.movie.id,
-                    "from_date" : $scope.fromDate,
-                    "to_date" : $scope.toDate,
-                    "show_disabled_showings" : $scope.showingIsDisabled,
-                    "include_empty_slots_for_movie_of_length" : $scope.movieForShowing.lengthInMinutes
-                }
-                console.log(params);
-                console.log("Get Showings with Params");
+            function fetchShowingsWithParams(){
+
+                $log.info("---");
+                $log.info("fetch showings with params");
+
+                var params = Object();
+                if($scope.cinema) params.only_for_cinema_with_id = $scope.cinema.id;
+                if($scope.theater) params.only_for_theater_with_id = $scope.theater.id;
+                if($scope.movie) params.only_for_movie_with_id = $scope.movie.id;
+                if($scope.fromDate) params.from_date = parseDateStringToValidAPIDateString($scope.fromDate)
+                if($scope.toDate) params.to_date = parseDateStringToValidAPIDateString($scope.toDate);
+                if($scope.showingIsDisabled) params.show_disabled_showings = $scope.showingIsDisabled;
+                if($scope.movieForShowing) params.include_empty_slots_for_movie_of_length = $scope.movieForShowing.lengthInMinutes;
+
+
+                $log.debug("params:");
+                $log.debug(params);
+
                 ShowingService.query(params).$promise.then(
                     function (result){
                         console.log("in showings with params");
@@ -142,6 +155,17 @@ angular.module('filmr')
                         $rootScope.errorHandler(error);
                     }
                 )
+            }
+
+            var parseDateStringToValidAPIDateString = function(f) {
+                $log.debug("---");
+                $log.debug("parse date string to valid API date string");
+                if(!f) return "";
+                var r = f.substr(0,4+3+3);
+                r += "T";
+                r += f.substr(8+3);
+                $log.debug(""+f+"->"+r);
+                return r;
             }
 
         }]);

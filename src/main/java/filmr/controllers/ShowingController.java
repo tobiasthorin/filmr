@@ -1,11 +1,10 @@
 package filmr.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import filmr.domain.Movie;
-import filmr.domain.Showing;
-import filmr.helpers.TimeslotCreator;
-import filmr.services.ShowingService;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -13,45 +12,75 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import filmr.domain.Movie;
+import filmr.domain.Seat;
+import filmr.domain.Showing;
+import filmr.domain.Theater;
+import filmr.helpers.FilmrException;
+import filmr.helpers.TimeslotCreator;
+import filmr.helpers.exceptions.FilmrTimeOccupiedException;
+import filmr.services.ShowingService;
 
 @RestController
 @RequestMapping(value = "/api/showings")
 public class ShowingController {
+	
+	private final static org.apache.log4j.Logger logger = Logger.getLogger(ShowingController.class);
 
     @Autowired
     private ShowingService showingService;
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Showing> createShowing(@RequestBody Showing showing) {
+    public ResponseEntity<Showing> createShowing(@RequestBody Showing showing) throws FilmrException {
         if (showing.getId() != null) {
+        	logger.warn("Trying to create showing, but showing already has id.");
             return new ResponseEntity<Showing>(new Showing(), HttpStatus.BAD_REQUEST);
         }
-        Boolean showingTimeisValid = showingService.showingTimeIsValid(showing);
+        Boolean showingTimeisValid = showingService.showingTimeIsValid(showing); //TODO: show time valid is to generic IMO. rename to time is occupied or make method return type of invalid error
 
         if(showingTimeisValid){
             Showing savedShowing = showingService.saveEntity(showing);
             return new ResponseEntity<Showing>(savedShowing, HttpStatus.OK);
         }
-        System.out.println("Not valid time");
-        // TODO: throw custom error. an empty doesn't serialize into json, so 
+        logger.warn("Not valid time");
+
+        throw new FilmrTimeOccupiedException(""); //TODO: make so frontend get an code and message from exception
+
+        // TODO: throw custom error. an empty doesn't serialize into json, so
         // HttpStatus.PRECONDITION_FAILED does not reach the api consumer
-        return new ResponseEntity<Showing>(new Showing(), HttpStatus.PRECONDITION_FAILED); 
+//        return new ResponseEntity<Showing>(new Showing(), HttpStatus.PRECONDITION_FAILED);
 
 
     }
 
     @CrossOrigin
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Showing> readShowing(@PathVariable Long id){
-        Showing retrievedShowing = showingService.readEntity(id);
+    public ResponseEntity<Showing> readShowing(
+    		@PathVariable Long id,
+    		@RequestParam(name="mark_seat_booking_status", defaultValue="false", required=false) Boolean mark_seat_booking_status
+    		){
+        
+    	Showing retrievedShowing = showingService.readEntity(id);
+        
+        if(mark_seat_booking_status){
+        	markBookingStatusForSeats(retrievedShowing);        	
+        }
+
         return new ResponseEntity<Showing>(retrievedShowing, HttpStatus.OK);
     }
+
 
     
     @CrossOrigin
@@ -59,7 +88,7 @@ public class ShowingController {
     public ResponseEntity<List<Showing>> readAllShowings(
     		@RequestParam(name="from_date", required=false) @DateTimeFormat(iso = ISO.DATE_TIME) LocalDateTime from_date, // @DateTimeFormat(iso = ISO.DATE) seems to work when we retrieve javascript Date objects
     		@RequestParam(name="to_date", required=false) @DateTimeFormat(iso = ISO.DATE_TIME) LocalDateTime to_date,
-    		@RequestParam(name="minimum_available_tickets", required=false) Integer minimum_available_tickets,
+    		@RequestParam(name="minimum_available_tickets", required=false) Long minimum_available_tickets,
     		@RequestParam(name="only_for_movie_with_id", required=false) Long only_for_movie_with_id,
     		@RequestParam(name="only_for_theater_with_id", required=false) Long only_for_theater_with_id,
     		@RequestParam(name="only_for_cinema_with_id", required=false) Long only_for_cinema_with_id,
@@ -69,24 +98,22 @@ public class ShowingController {
     		@RequestParam(name="include_empty_slots_for_movie_of_length", required=false) Long include_empty_slots_for_movie_of_length
     		) {
     	
-    	
-    	
     	//TODO: figure out why dates from chrome datepicker is received as the date minus one day. 2001-01-02 -> 2001-01-01
-    	System.out.println("from date, before manipulation: " + from_date);
-    	System.out.println("to date, before manipulation: " + to_date);
+    	logger.info("from date, before manipulation: " + from_date);
+    	logger.info("to date, before manipulation: " + to_date);
     	
     	// plusDays(1) is temp fix for issue #86  - dates are one day off. TODO: fix for real
 //    	from_date = from_date != null ? from_date.withHour(0).withMinute(0).plusDays(1) : LocalDateTime.now();
 //    	to_date = to_date != null ? to_date.withHour(23).withMinute(59).plusDays(1) : null;
     	
     	// default values that are hard to code as strings.. If not null -> use the value, else provide a default value
-		from_date = from_date != null ? from_date.withHour(0).withMinute(0) : LocalDateTime.now();
+		from_date = from_date != null ? from_date : LocalDateTime.now();
 		// change time of to_date so that it includes the whole day
-		to_date = to_date != null ? to_date.withHour(23).withMinute(59) : null;
+		to_date = to_date != null ? to_date : null;
 		
 
-		System.out.println("From date: " + from_date);
-		System.out.println("To date: " + to_date);
+		logger.info("From date: " + from_date);
+		logger.info("To date: " + to_date);
 		
 		List<Showing> retrievedShowings = showingService.getAllMatchingParams(
 						from_date, 
@@ -103,17 +130,17 @@ public class ShowingController {
 
 
         if(include_distinct_movies_in_header) {
+        	logger.info("Trying to include distinct movies in http header.");
             try {
                 customHeaders = buildCustomHeadersForReadAll(retrievedShowings);
             } catch (JsonProcessingException e) {
-                System.out.println("Couldn't parse movie list into JSON");
+                logger.warn("Couldn't parse movie list into JSON");
                 e.printStackTrace();
             } finally {
                 return ResponseEntity.ok().headers(customHeaders).body(retrievedShowings);
             }
         }
         
-        // TODO: remove after testing new methods
         if(include_empty_slots_for_movie_of_length != null) {
         	retrievedShowings = 
         			TimeslotCreator.createExtendedShowingsListWithEmptyTimeSlots(retrievedShowings, include_empty_slots_for_movie_of_length);        	
@@ -125,6 +152,7 @@ public class ShowingController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Showing> updateShowing(@PathVariable Long id, @RequestBody Showing showing){
         if(showing.getId() == null){
+        	logger.warn("Trying to update an entity, but no id was found.");
             return new ResponseEntity<Showing>(new Showing(), HttpStatus.BAD_REQUEST);
         }
 
@@ -165,5 +193,26 @@ public class ShowingController {
     	return movies;
     }
    
+    private void markBookingStatusForSeats(Showing retrievedShowing) {
+    	Theater theater = retrievedShowing.getTheater();
+    	
+    	List<Seat> allBookedSeats = retrievedShowing.getBookings().stream()
+    			.flatMap(booking -> booking.getBookedSeats().stream())
+    			.distinct()
+    			.collect(Collectors.toList());
+    	
+    	List<Seat> allSeats = theater.getRows().stream()
+    			.flatMap(row -> row.getSeats().stream())
+    			.collect(Collectors.toList());
+    	
+    	// set default to false
+    	allSeats.forEach(seat -> seat.setIsBookedForShowing(false));
+    	
+    	allSeats.forEach(seat -> {
+    		if(allBookedSeats.contains(seat)) {
+    			seat.setIsBookedForShowing(true);
+    		}
+    	});
+    }
 
 }

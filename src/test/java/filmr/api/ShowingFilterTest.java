@@ -47,6 +47,10 @@ public class ShowingFilterTest {
     private TheaterRepository theaterRepository;
     @Autowired
     private CinemaRepository cinemaRepository;
+    @Autowired
+    private RowRepository rowRepository;
+    @Autowired
+    private SeatRepository seatRepository;
 
     private RestTemplate restTemplate;
     private String baseUrl;
@@ -95,7 +99,7 @@ public class ShowingFilterTest {
                 {null, null, "", false, false, false, "", "", "", ""}, //empty filter
                 {LocalDateTime.now().minusHours(3), null, "", false, false, false, "", "", "", ""},
                 {null, LocalDateTime.now().plusDays(2), "", false, false, false, "", "", "", ""},
-                {null, null, "0", false, false, false, "", "", "", ""},
+                {null, null, "3", false, false, false, "", "", "", ""},
                 {null, null, "", true, false, false, "", "", "", ""}, //TODO currently disabled
                 {null, null, "", false, true, false, "", "", "", ""},
                // {null, null, "", false, false, true, "", "", "", ""}, //TODO disabled, se further down for info
@@ -105,8 +109,6 @@ public class ShowingFilterTest {
                // {null, null, "", false, false, false, "", "", "", ""}, //TODO disabled until time to test these filter options
                // {null, null, "", false, false, false, "", "", "", ""}, //end single
                 {LocalDateTime.now().minusHours(4), LocalDateTime.now().plusDays(4), "0", true, true, false, "10", "true", "", ""}, //multiple
-                {LocalDateTime.now().minusHours(5), null, "0", false, true, false, "", "true", "", ""},
-                {null, LocalDateTime.now().plusDays(4), "", true, false, false, "20", "false", "", ""},
         });
     }
 
@@ -143,6 +145,8 @@ public class ShowingFilterTest {
         restTemplate = new RestTemplate();
 
         //clear everything
+        seatRepository.deleteAllInBatch();
+        rowRepository.deleteAllInBatch();
         showingRepository.deleteAllInBatch();
         movieRepository.deleteAllInBatch();
         theaterRepository.deleteAllInBatch();
@@ -208,7 +212,7 @@ public class ShowingFilterTest {
             }
             if (!params.get(minimumAvailableTickets).equals("")) {
                 Long availTicks = Long.parseLong(availableTickets);
-                assertTrue("Make sure there are at least as many available tickets as requested", availTicks <= showing.getBookings().size()); //TODO wait for backend
+                assertTrue("Make sure there are at least as many available tickets as requested", availTicks <= showing.getAvailableTickets());
             }
             if (!params.get(onlyForMovieWithId).equals("")) {
                 assertEquals("Assert movie id is equal to showing movie id", savedMovie.getId(), showing.getMovie().getId());
@@ -270,6 +274,8 @@ public class ShowingFilterTest {
     @After
     public void clearDatabase() throws Exception {
         //clear everything
+        seatRepository.deleteAllInBatch();
+        rowRepository.deleteAllInBatch();
         showingRepository.deleteAllInBatch();
         movieRepository.deleteAllInBatch();
         theaterRepository.deleteAllInBatch();

@@ -1,9 +1,14 @@
 package filmr.domain;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.List;
 
@@ -12,10 +17,12 @@ public class Row {
 	@Id
 	@GeneratedValue( strategy = GenerationType.AUTO)
 	private Long id;
-	@OneToMany(mappedBy = "row")
+	@OneToMany(mappedBy = "row", orphanRemoval=true) //TODO: remove orphan stuff?
+	@Cascade(CascadeType.ALL)
 	private List<Seat> seats;
 	@ManyToOne
 	@JoinColumn(name = "theater_id")
+	@JsonIgnore
 	private Theater theater;
 	private String rowLabel;
 	
@@ -60,7 +67,7 @@ public class Row {
         final Row row = (Row)object;
         return new EqualsBuilder()
                 .append(id,row.getId())
-                .append(seats,row.getSeats())
+                // .append(seats,row.getSeats())
                 .append(theater, row.getTheater())
                 .append(rowLabel, row.getRowLabel())
                 .isEquals();
@@ -71,7 +78,7 @@ public class Row {
     public int hashCode() {
         return new HashCodeBuilder(17, 31)
                 .append(id)
-                .append(seats)
+                // .append(seats)
                 .append(theater)
                 .append(rowLabel)
                 .toHashCode();

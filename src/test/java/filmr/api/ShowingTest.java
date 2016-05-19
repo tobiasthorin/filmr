@@ -34,7 +34,7 @@ import static org.junit.Assert.assertTrue;
 @SpringApplicationConfiguration(Application.class)
 @WebIntegrationTest
 @ActiveProfiles({"test"})
-public class ShowingAPIIntegrationTest {
+public class ShowingTest {
 
     //Used instead of SpringJunit4ClassRunner in @RunWith
     private TestContextManager testContextManager;
@@ -47,6 +47,10 @@ public class ShowingAPIIntegrationTest {
     private TheaterRepository theaterRepository;
     @Autowired
     private CinemaRepository cinemaRepository;
+    @Autowired
+    private RowRepository rowRepository;
+    @Autowired
+    private SeatRepository seatRepository;
 
     private RestTemplate restTemplate;
     private String baseUrl;
@@ -69,7 +73,7 @@ public class ShowingAPIIntegrationTest {
         });
     }
 
-    public ShowingAPIIntegrationTest(Long id) {
+    public ShowingTest(Long id) {
         baseUrl = "http://localhost:8080/filmr/api/showings/";
     }
 
@@ -83,6 +87,8 @@ public class ShowingAPIIntegrationTest {
         restTemplate = new RestTemplate();
 
         //clear everything
+        seatRepository.deleteAllInBatch();
+        rowRepository.deleteAllInBatch();
         showingRepository.deleteAllInBatch();
         movieRepository.deleteAllInBatch();
         theaterRepository.deleteAllInBatch();
@@ -165,6 +171,8 @@ public class ShowingAPIIntegrationTest {
     @After
     public void clearDatabase() throws Exception {
         //clear everything
+        seatRepository.deleteAllInBatch();
+        rowRepository.deleteAllInBatch();
         showingRepository.deleteAllInBatch();
         movieRepository.deleteAllInBatch();
         theaterRepository.deleteAllInBatch();

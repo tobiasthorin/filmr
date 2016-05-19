@@ -1,10 +1,12 @@
-app.controller('customerController', ['$scope', 'CinemaService',
-	function ($scope, CinemaService) {
+app.controller('customerController', ['$scope', 'CinemaService','$log','$rootScope',
+	function ($scope, CinemaService, $log, $rootScope) {
 		console.log('In Customer Controller');
 
-
-
 		$scope.fetchCinemas = function () {
+
+			console.log("test logg");
+			$log.info("l");
+
 			console.log("Fetching cinemas");
 			CinemaService.query().$promise.then(function (result) {
 					$scope.cinemas = result;
@@ -18,12 +20,20 @@ app.controller('customerController', ['$scope', 'CinemaService',
 			$scope.add_cinema_disabled = false;
 		};
 
+		$scope.validateCinema = function() {
+			if(!$scope.add_cinema_name) return false;
+			if($scope.add_cinema_name.length>48) return;
+			return true;
+		}
+
 		$scope.submitCinema = function () {
-			console.log("Saving...");
-			if(!$scope.add_cinema_name) {
-				$scope.alert("Error!");
+
+			if(!$scope.validateCinema()) {
+				$rootScope.genericError();
 				return;
 			}
+
+			console.log("Saving...");
 
 			if (!$scope.add_cinema_disabled) {
 				$scope.add_cinema_disabled = false;
@@ -31,23 +41,17 @@ app.controller('customerController', ['$scope', 'CinemaService',
 
 			$scope.newCinema = {name: $scope.add_cinema_name, disabled:$scope.add_cinema_disabled};
 
-			console.log($scope.newCinema);
-
 			CinemaService.save($scope.newCinema).$promise.then(
 				function () {
-					$scope.alert("Success!");
 					$scope.fetchCinemas();
 					$scope.resetFields();
+					$rootScope.alert("Success! ","Cinema "+$scope.newCinema.name+" was created",1);
 				},
-				function () {
-					$scope.alert("Error!");
+				function(error){
+					$rootScope.errorHandler(error);
 				});
 
 
-		};
-
-		$scope.alert = function(message){
-			//print message
 		};
 
 

@@ -5,6 +5,8 @@ import javax.persistence.*;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Seat {
 	@Id
@@ -13,9 +15,43 @@ public class Seat {
 	
 	@ManyToOne
 	@JoinColumn(name = "row_id")
+	@JsonIgnore
 	private Row row;
+
+	private String seatLabel;
+
+	@Enumerated(EnumType.STRING)
+	private SeatState state;
+	
+	@Transient
+	private Boolean isBookedForShowing;
+
 	
 	public Seat() {}
+
+
+	public Boolean getIsBookedForShowing() {
+		return isBookedForShowing;
+	}
+
+	public void setIsBookedForShowing(Boolean isBookedForShowing) {
+		this.isBookedForShowing = isBookedForShowing;
+	}
+	public String getSeatLabel() {
+		return seatLabel;
+	}
+
+	public void setSeatLabel(String seatLabel) {
+		this.seatLabel = seatLabel;
+	}
+
+	public SeatState getState() {
+		return state;
+	}
+
+	public void setState(SeatState state) {
+		this.state = state;
+	}
 
 	public Row getRow() {
 		return row;

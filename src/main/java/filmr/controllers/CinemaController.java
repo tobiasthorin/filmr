@@ -6,6 +6,7 @@ import filmr.errorhandling.IllegalEntityPropertyException;
 import filmr.errorhandling.InsufficientEntityDataException;
 import filmr.services.CinemaService;
 import filmr.services.RepertoireService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +21,14 @@ public class CinemaController {
     private CinemaService cinemaService;
     @Autowired
     private RepertoireService repertoireService;
+	private final static org.apache.log4j.Logger logger = Logger.getLogger(TheaterController.class);
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Cinema> createCinema(@RequestBody Cinema cinema) throws IllegalEntityPropertyException {
         if(cinema.getId() != null) {
             // return new ResponseEntity<Cinema>(new Cinema(), HttpStatus.BAD_REQUEST);
+			logger.warn("Can't create cinema with manually set ID");
         	throw new IllegalEntityPropertyException("Trying to create entity, but sending entity with predefined id.");
         }
         Repertoire repertoire = new Repertoire();
@@ -33,7 +36,6 @@ public class CinemaController {
 
         cinema.setRepertoire(repertoire);
         Cinema savedCinema = cinemaService.saveEntity(cinema);
-
         return new ResponseEntity<Cinema>(savedCinema, HttpStatus.OK);
     }
 
@@ -46,7 +48,7 @@ public class CinemaController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<Cinema>> readAllMovies(@RequestParam(name="show_disabled_cinemas", required=false, defaultValue = "true") Boolean show_disabled_cinemas) {
+    public ResponseEntity<List<Cinema>> readAllCinemas(@RequestParam(name="show_disabled_cinemas", required=false, defaultValue = "true") Boolean show_disabled_cinemas) {
     //public ResponseEntity<List<Cinema>> readAllMovies(@RequestParam(name="show_disabled_cinemas", required=false, defaultValue = "true") Boolean show_disabled_cinemas) {
 
 
@@ -60,9 +62,9 @@ public class CinemaController {
     public ResponseEntity<Cinema> updateCinema(@PathVariable Long id, @RequestBody Cinema cinema) throws InsufficientEntityDataException{
         if(cinema.getId() == null){
             // return new ResponseEntity<Cinema>(new Cinema(), HttpStatus.BAD_REQUEST);
+			logger.warn("Can only update cinema with a set ID");
         	throw new InsufficientEntityDataException("Cinema entity to be updated must have a non-null id property");
         }
-
         Cinema updatedCinema = cinemaService.saveEntity(cinema);
         return new ResponseEntity<Cinema>(updatedCinema, HttpStatus.OK);
     }

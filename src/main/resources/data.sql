@@ -11,20 +11,69 @@ INSERT INTO cinema (name,repertoire) VALUES('Lisas Biograf',2);
 /* MOVIES*/
 
 INSERT INTO movie (title, length_in_minutes, description, default_price) 
-	VALUES ('Lion King', 122, 'Story about lions', 65.00);
+	VALUES ('Lion King', 119, 'Story about lions', 65.00);
 INSERT INTO movie (title, length_in_minutes, description, default_price) 
-	VALUES ('Lion Queen', 123, 'Tale about lions', 70.00);
+	VALUES ('Lion Queen', 115, 'Tale about lions', 70.00);
 INSERT INTO movie (title, length_in_minutes, description, default_price) 
-	VALUES ('Lion Prince', 124, 'Epic story about lions', 55.50);
+	VALUES ('Lion Prince', 110, 'Epic story about lions', 55.50);
 INSERT INTO movie (title, length_in_minutes, description, default_price) 
-	VALUES ('Lion Princess', 125, 'Old tale about lions', 72.33);
+	VALUES ('Lion Princess', 92, 'Old tale about lions', 72.33);
 	
 /* THEATERS */
 
-INSERT INTO theater (name, number_of_seats, cinema_id, disabled) VALUES ('Bergakungen sal 01', 20, 1, FALSE);
-INSERT INTO theater (name, number_of_seats, cinema_id, disabled) VALUES ('Bergakungen sal 04', 20, 1, FALSE);
-INSERT INTO theater (name, number_of_seats, cinema_id, disabled) VALUES ('Bergakungen sal 05', 20, 2, FALSE);
-INSERT INTO theater (name, number_of_seats, cinema_id, disabled) VALUES ('Bergakungen sal 08', 20, 2, FALSE);
+INSERT INTO theater (name, cinema_id, disabled) VALUES ('Lasses Stora', 1, FALSE);
+INSERT INTO theater (name, cinema_id, disabled) VALUES ('Lasses Lilla', 1, FALSE);
+
+INSERT INTO theater (name, cinema_id, disabled) VALUES ('Sal 1', 2, FALSE);
+INSERT INTO theater (name, cinema_id, disabled) VALUES ('Sal 2', 2, FALSE);
+
+/* ROWS AND SEATS */
+INSERT INTO row (row_label, theater_id) VALUES ('Rad 1', 1);
+INSERT INTO row (row_label, theater_id) VALUES ('Rad 2', 1);
+INSERT INTO row (row_label, theater_id) VALUES ('Rad 3', 1);
+
+INSERT INTO row (row_label, theater_id) VALUES ('Enda raden', 2);
+
+INSERT INTO row (row_label, theater_id) VALUES ('Rad 1', 3);
+INSERT INTO row (row_label, theater_id) VALUES ('Rad 2', 4);
+
+INSERT INTO seat (seat_label, state, row_id) VALUES ('1', 'NOT_A_SEAT', 1);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('2', 'ENABLED', 1);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('3', 'ENABLED', 1);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('4', 'ENABLED', 1);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('5', 'ENABLED', 1);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('6', 'ENABLED', 1);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('7', 'ENABLED', 1);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('8', 'NOT_A_SEAT', 1);
+
+INSERT INTO seat (seat_label, state, row_id) VALUES ('9', 'ENABLED', 2);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('10', 'ENABLED', 2);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('11', 'ENABLED', 2);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('12', 'ENABLED', 2);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('13', 'ENABLED', 2);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('14', 'ENABLED', 2);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('15', 'ENABLED', 2);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('16', 'ENABLED', 2);
+
+INSERT INTO seat (seat_label, state, row_id) VALUES ('17', 'ENABLED', 3);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('18', 'ENABLED', 3);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('19', 'ENABLED', 3);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('20', 'ENABLED', 3);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('21', 'ENABLED', 3);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('22', 'ENABLED', 3);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('23', 'ENABLED', 3);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('24', 'ENABLED', 3);
+
+INSERT INTO seat (seat_label, state, row_id) VALUES ('1', 'ENABLED', 4);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('2', 'ENABLED', 4);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('3', 'ENABLED', 4);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('4', 'ENABLED', 4);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('5', 'ENABLED', 4);
+
+INSERT INTO seat (seat_label, state, row_id) VALUES ('1', 'ENABLED', 5);
+INSERT INTO seat (seat_label, state, row_id) VALUES ('1', 'ENABLED', 6);
+
+
 
 
 /* SHOWINGS */
@@ -171,19 +220,18 @@ INSERT INTO repertoire_movies (repertoire,movies) VALUES(2,4);
 
 /* SOME "DYNAMIC" DATA THAT GUARANTIES THAT THERE ARE ALWAYS A FEW SHOWINGS TODAY (now()). GETS THEIR OWN THEATERS SO THEY CAN'T INTERFERE WITH OTHER SHOWINGS ABOVE */
 /* theater will get id 5 and 6 */
-INSERT INTO theater (name, number_of_seats, cinema_id, disabled) VALUES ('sal 98', 20, 2, FALSE);
-INSERT INTO theater (name, number_of_seats, cinema_id, disabled) VALUES ('sal 99', 20, 2, FALSE);
 
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 10:00'), 3, 5);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 13:00'), 3, 5);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 16:00'), 3, 5);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 19:00'), 3, 5);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 22:00'), 3, 5);
 
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 09:00'), 2, 6);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 12:00'), 2, 6);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 15:00'), 2, 6);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 18:00'), 2, 6);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 21:00'), 2, 6);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 23:30'), 2, 6);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 10:00'), 3, 4);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 13:00'), 3, 4);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 16:00'), 3, 4);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 19:00'), 3, 4);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 22:00'), 3, 4);
+
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 09:00'), 2, 3);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 12:00'), 2, 3);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 15:00'), 2, 3);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 18:00'), 2, 3);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 21:00'), 2, 3);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 23:30'), 2, 3);
 

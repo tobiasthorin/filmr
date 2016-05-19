@@ -43,6 +43,12 @@
                 controller: 'theaterController'
 
             })
+            .when('/cinema/:cinema_id/theater/new', {
+                title: 'New Theater',
+                templateUrl: 'views/theater-view/theater.html',
+                controller: 'theaterController'
+
+            })
             .when('/customer', {
                 title: 'Customer Settings',
                 activeTab: 'Customer',
@@ -57,18 +63,48 @@
 
     // middle-ware
 
+
     // make title names and other functionality accessible for every page, and every controller/service injecting $rootScope
-    app.run(['$rootScope', function ($rootScope) {
+    app.run(['$rootScope', '$timeout', function ($rootScope, $timeout) {
         $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
 
+            var debug = true;
+
+            function clear() {
+                console.log("clear");
+                $rootScope.alerts = [];
+            }
+
+            $rootScope.alerts = [];
             $rootScope.baseUrl = "/filmr/#/";
             $rootScope.API_baseUrl = "/filmr/api/";
 
             $rootScope.title = current.$$route.title;
             $rootScope.activeTab = current.$$route.activeTab;
-            $rootScope.errorHandler = function (error) {
-                console.log("Error!", error);
-            }
+
+            $rootScope.clearAlerts = function() {
+                console.log("clear");
+                $rootScope.alerts = [];
+            };
+
+            $rootScope.alert = function(header,text,type) {
+                $rootScope.alerts.push({"header":header,"text":text,"type":type});
+                $timeout($rootScope.clearAlerts, 3000);
+            };
+
+            $rootScope.genericError = function() {
+                $rootScope.alert("Error! ","",2);
+            };
+
+            $rootScope.errorHandler = (debug ?
+                function (error) {
+                    console.log("Error!", error);
+                    $rootScope.alert("Error! ", error, 2);
+                } :
+                function (error) {
+                    $rootScope.genericError();
+                }
+            );
 
         });
     }]);

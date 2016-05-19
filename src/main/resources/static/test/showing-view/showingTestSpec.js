@@ -7,7 +7,6 @@ describe("Tests for showingController.js", function () {
     //Mocks
     var createdShowing = {};
     var allCinemas = [
-        {},
         {
             name: "cinema1",
             id:1,
@@ -62,7 +61,7 @@ describe("Tests for showingController.js", function () {
     //Injections
     beforeEach(inject(function (_$controller_) {
         $controller = _$controller_;
-        $scope = {};
+        $scope = { };
         $controller(
             'showingController', {
                 $scope: $scope,
@@ -80,11 +79,11 @@ describe("Tests for showingController.js", function () {
     });
 
     it("Loads the theaters", function () {
-        expect($scope.moviesInRepertoire).toEqual(allCinemas[1].repertoire.movies);
+        expect($scope.theatersInCinema).toEqual(allCinemas[0].theaters);
     });
 
     it("Loads the repertoire", function () {
-        expect($scope.allCinemas).toEqual(allCinemas);
+        expect($scope.moviesInRepertoire).toEqual(allCinemas[0].repertoire.movies);
     });
 
 });
