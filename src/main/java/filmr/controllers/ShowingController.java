@@ -2,6 +2,7 @@ package filmr.controllers;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -185,7 +186,7 @@ public class ShowingController {
     
     @CrossOrigin
     @RequestMapping(value = "/schedule", method = RequestMethod.GET)
-    public ResponseEntity<Map<String,Map<String,List<Showing>>>> readAllShowingsSchedule(
+    public ResponseEntity<? extends Object> readAllShowingsSchedule(
     		@RequestParam(name="from_date", required=false) @DateTimeFormat(iso = ISO.DATE_TIME) LocalDateTime from_date, // @DateTimeFormat(iso = ISO.DATE) seems to work when we retrieve javascript Date objects
     		@RequestParam(name="to_date", required=false) @DateTimeFormat(iso = ISO.DATE_TIME) LocalDateTime to_date,
     		@RequestParam(name="minimum_available_tickets", required=false) Long minimum_available_tickets,
@@ -195,7 +196,9 @@ public class ShowingController {
     		@RequestParam(name="limit", required=false, defaultValue = "50") Integer limit,
     		@RequestParam(name="show_disabled_showings", required=false, defaultValue = "false") Boolean show_disabled_showings,
     		@RequestParam(name="include_distinct_movies_in_header", required=false, defaultValue = "false") Boolean include_distinct_movies_in_header,
-    		@RequestParam(name="include_empty_slots_for_movie_of_length", required=false) Long include_empty_slots_for_movie_of_length
+    		@RequestParam(name="include_empty_slots_for_movie_of_length", required=false) Long include_empty_slots_for_movie_of_length,
+    		@RequestParam(name="group_by_theater", required=false, defaultValue="true") Boolean group_by_theater
+    		
     		) {
     	
     	//TODO: figure out why dates from chrome datepicker is received as the date minus one day. 2001-01-02 -> 2001-01-01
@@ -233,21 +236,22 @@ public class ShowingController {
 		// sort
 		TreeMap<String,List<Showing>> sortedScheduleByDate = new TreeMap<String,List<Showing>>(scheduleByDate);
 		
+		
 		Map<String,Map<String,List<Showing>>> scheuduleByDateAndTheaterName = new TreeMap<String,Map<String,List<Showing>>>();
 		
-		scheduleByDate.forEach((dateString, listOfShowings) -> {
+		sortedScheduleByDate.forEach((dateString, listOfShowings) -> {
 			Map<String, List<Showing>> showingsForSpecificDateGroupedByTheater = 
 					listOfShowings.stream()
 					.sorted()
 					.collect(Collectors.groupingBy(pickOutTheaterNameFromShowing));
-			// sort map
+			// sort map (list in map is already sorted)
 			TreeMap<String, List<Showing>> sortedShowingsForSpecificDateGroupedByTheater = 
 					new TreeMap<String, List<Showing>>(showingsForSpecificDateGroupedByTheater);
 			scheuduleByDateAndTheaterName.put(dateString, sortedShowingsForSpecificDateGroupedByTheater);
-		});
+		});			
 		
 		
-		// optional headers and timeslots
+		// optional headers
 		
     	HttpHeaders customHeaders = null;
 
@@ -260,11 +264,17 @@ public class ShowingController {
                 logger.warn("Couldn't parse movie list into JSON");
                 e.printStackTrace();
             } finally {
-                return ResponseEntity.ok().headers(customHeaders).body(scheuduleByDateAndTheaterName);
+                return ResponseEntity.ok().headers(customHeaders).body(group_by_theater ? scheuduleByDateAndTheaterName : sortedScheduleByDate);
             }
         }
         
-		return new ResponseEntity<Map<String,Map<String,List<Showing>>>>(scheuduleByDateAndTheaterName, HttpStatus.OK);
+//        if(group_by_theater) {
+//        	return new ResponseEntity<Map<String,Map<String,List<Showing>>>>(scheuduleByDateAndTheaterName, HttpStatus.OK);
+//        } else {
+//        	return new ResponseEntity<Map<String,List<Showing>>>(sortedScheduleByDate, HttpStatus.OK);        	
+//        }
+        
+        return ResponseEntity.ok().body(group_by_theater ? scheuduleByDateAndTheaterName : sortedScheduleByDate);
     }
     
     
