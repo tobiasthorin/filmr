@@ -23,7 +23,7 @@ public class BookingService extends BaseServiceClass<Booking,Long> {
      * Checks if showing is enabled and if the proposed seats to book are valid in terms of not being non-ENABLED seats, not belonging to other (or no) theater, not already booked
      * @param booking to get the seats that is currently being booked
      * @param showing to get the seats already booked
-     * @throws Exception if any of the conditions fail
+     * @throws FilmrInvalidBookingException if any of the conditions fail
      */
     public void validateBooking(Booking booking, Showing showing) throws FilmrInvalidBookingException {
     	if(showing.getIsDisabled()) throw new FilmrInvalidBookingException("Can't book seats for disabled showing");
