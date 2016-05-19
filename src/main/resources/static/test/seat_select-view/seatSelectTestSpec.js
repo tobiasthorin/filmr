@@ -71,7 +71,19 @@ describe("Tests for seatSelectController.js", function () {
 
         it("Puts a seat in the selected-seat-list when it is clicked", function () {
             $scope.toggleSelection(1);
-            expect($scope.selectedSeats).toContain(1);
+            expect($scope.selectedSeats.has(1)).toBeTruthy();
+        });
+
+        it("Removes a seat from the selected-seat-list when it is clicked", function () {
+            $scope.toggleSelection(1);
+            $scope.toggleSelection(1);
+            expect($scope.selectedSeats.has(1)).toBeFalsy();
+        });
+
+        it("Checks if a seat is selected", function () {
+            expect($scope.checkIfSelected(1)).toBeFalsy();
+            $scope.toggleSelection(1);
+            expect($scope.checkIfSelected(1)).toBeTruthy();
         });
     });
 

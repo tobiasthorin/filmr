@@ -59,36 +59,51 @@ input.btn {
   border-color: #5c111d;
   margin: 5em 0; }
 
-.theaterScreenPlayer iframe {
-  width: 40em;
-  height: 20em; }
+.theaterScreenPlayer {
+  text-align: center;
+  margin-bottom: 2em; }
+  .theaterScreenPlayer iframe {
+    width: 40em;
+    height: 20em; }
 
 .theaterRow {
   text-align: center; }
-  .theaterRow .theaterSeat {
-    margin: 10px 5px;
-    cursor: pointer;
-    color: #FFFFFF;
-    font-weight: bold;
-    font-size: 1em;
-    background-color: #bb3246;
-    width: 40px;
-    height: 40px;
-    border-radius: 5px 5px 20px 20px;
-    border: 2px solid #5c111d;
-    display: inline-block;
-    text-align: center;
-    line-height: 40px; }
-    .theaterRow .theaterSeat .seatLabel {
-      margin: auto; }
-  .theaterRow .disabledSeat {
-    background-color: lightgray;
-    border-color: black;
-    color: black; }
-  .theaterRow .not_a_seat {
-    background-color: #fbfbfb;
-    border-color: #eeeeee;
-    color: #dddddd; }
+  .theaterRow .seatContainer {
+    display: inline-block; }
+    .theaterRow .seatContainer .theaterSeat {
+      margin: 10px 5px;
+      cursor: pointer;
+      color: #FFFFFF;
+      font-weight: bold;
+      font-size: 1em;
+      background-color: #bb3246;
+      width: 40px;
+      height: 40px;
+      border-radius: 5px 5px 20px 20px;
+      border: 2px solid #5c111d;
+      text-align: center;
+      line-height: 40px; }
+      .theaterRow .seatContainer .theaterSeat .seatLabel {
+        margin: auto; }
+    .theaterRow .seatContainer .disabledSeat {
+      background-color: lightgray;
+      border-color: black;
+      color: black; }
+    .theaterRow .seatContainer .not_a_seat {
+      background-color: #fbfbfb;
+      border-color: #eeeeee;
+      color: #dddddd; }
+    .theaterRow .seatContainer .hiddenSeat {
+      background-color: transparent;
+      color: transparent;
+      width: 40px;
+      height: 40px;
+      border: 2px solid transparent;
+      margin: 10px 5px;
+      text-align: center;
+      line-height: 40px; }
+    .theaterRow .seatContainer .selectedSeat {
+      background-color: blue; }
 
 .alert {
   position: absolute;

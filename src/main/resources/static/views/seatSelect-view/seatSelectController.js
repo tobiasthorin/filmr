@@ -5,7 +5,7 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
 
         $scope.theaterRows = [];
         $scope.currentShowing = {};
-        $scope.selectedSeats = [];
+        $scope.selectedSeats = new Set();
 
         $scope.fetchShowing = function () {
             console.log($routeParams.showingId);
@@ -23,25 +23,26 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
 
         $scope.toggleSelection = function (id) {
 
-            var seatIndex = jQuery.inArray(id, $scope.selectedSeats);
-            console.log(seatIndex);
-
-            if(seatIndex < 0){
-                console.log("select");
-                selectSeat(id);
+            if($scope.selectedSeats.has(id)){
+                console.log("unselect " + id);
+                unselectSeat(id);
             } else {
-                console.log("unselect");
-                unselectSeat(seatIndex);
+                console.log("select " + id);
+                selectSeat(id);
             }
 
         };
+        
+        $scope.checkIfSelected = function (id) {
+            return $scope.selectedSeats.has(id);
+        };
 
         function selectSeat(id) {
-            $scope.selectedSeats.push(id);
+            $scope.selectedSeats.add(id);
         }
 
         function unselectSeat(id) {
-
+            $scope.selectedSeats.delete(id);
         }
 
         //Run on page load
