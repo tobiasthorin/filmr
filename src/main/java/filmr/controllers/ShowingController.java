@@ -226,6 +226,12 @@ public class ShowingController {
 				);
 		
 		
+		if(include_empty_slots_for_movie_of_length != null) {
+        	retrievedShowings = 
+        			TimeslotCreator.createExtendedShowingsListWithEmptyTimeSlots(retrievedShowings, include_empty_slots_for_movie_of_length);        	
+        }
+		
+		
 		Function<Showing, String> pickOutOnlyDateStringFromShowingDateTime = showing -> showing.getShowDateTime().toLocalDate().toString();
 		Function<Showing, String> pickOutTheaterNameFromShowing = showing -> showing.getTheater().getName();
 		
