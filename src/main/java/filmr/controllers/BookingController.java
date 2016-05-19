@@ -1,7 +1,8 @@
 package filmr.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import filmr.domain.Booking;
 import filmr.domain.Seat;
+import filmr.domain.SeatState;
 import filmr.domain.Showing;
+import filmr.helpers.exceptions.FilmrInvalidBookingException;
 import filmr.services.BookingService;
-import filmr.services.SeatService;
 import filmr.services.ShowingService;
 
 @RestController
@@ -55,16 +57,14 @@ public class BookingController {
         Showing showing = showingService.readEntity(for_showing_with_id);
         booking.setShowing(showing);
         
-        // TODO: ? check if seat exists in showing theater
-//        List<Seat> savedSeats = new ArrayList<Seat>();
-//        booking.getBookedSeats().forEach(seat -> {
-//        	savedSeats.add(seatService.readEntity(seat.getId()));
-//        });
-//        booking.setBookedSeats(savedSeats);
+        
+        bookingService.validateBooking(booking, showing);
+        
         
         Booking savedBooking = bookingService.saveEntity(booking);
         return new ResponseEntity<Booking>(savedBooking, HttpStatus.OK);
     }
+
 
     @CrossOrigin
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -98,5 +98,4 @@ public class BookingController {
         bookingService.deleteEntity(id);
         return new ResponseEntity(HttpStatus.OK);
     }
-
 }

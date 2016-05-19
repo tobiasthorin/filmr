@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ShowingService extends BaseServiceClass<Showing, Long> {
@@ -57,15 +58,6 @@ public class ShowingService extends BaseServiceClass<Showing, Long> {
 
 		return matchingShowings;
 	}
-    private List<Showing> showingsWithMinimumAvailableTickets(Long minimunAvailableTickets, List<Showing> showings) {
-        List<Showing> s = new ArrayList<>();
-        for(Showing showing : showings) {
-            if (showing.getAvailableTickets() >= minimunAvailableTickets) {
-                s.add(showing);
-            }
-        }
-        return s;
-    }
 
     //Presupposes no previous conflicts
     public boolean showingTimeIsValid(Showing showingToSave) {
@@ -113,4 +105,17 @@ public class ShowingService extends BaseServiceClass<Showing, Long> {
         return potentialConflicts;
     }
 
+    private List<Showing> showingsWithMinimumAvailableTickets(Long minimunAvailableTickets, List<Showing> showings) {
+    	List<Showing> s = new ArrayList<>();
+    	for(Showing showing : showings) {
+    		if (showing.getAvailableTickets() >= minimunAvailableTickets) {
+    			s.add(showing);
+    		}
+    	}
+    	return s;
+    	// same thing using Stream api, for future reference
+//    	return showings.stream()
+//    			.filter(showing -> showing.getAvailableTickets() >= minimunAvailableTickets)
+//    			.collect(Collectors.toList());
+    }
 }

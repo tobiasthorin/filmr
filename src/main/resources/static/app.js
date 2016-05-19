@@ -65,10 +65,15 @@
 
 
     // make title names and other functionality accessible for every page, and every controller/service injecting $rootScope
-    app.run(['$rootScope', function ($rootScope) {
+    app.run(['$rootScope', '$timeout', function ($rootScope, $timeout) {
         $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
 
             var debug = true;
+
+            function clear() {
+                console.log("clear");
+                $rootScope.alerts = [];
+            }
 
             $rootScope.alerts = [];
             $rootScope.baseUrl = "/filmr/#/";
@@ -77,16 +82,19 @@
             $rootScope.title = current.$$route.title;
             $rootScope.activeTab = current.$$route.activeTab;
 
+            $rootScope.clearAlerts = function() {
+                console.log("clear");
+                $rootScope.alerts = [];
+            };
+
             $rootScope.alert = function(header,text,type) {
                 $rootScope.alerts.push({"header":header,"text":text,"type":type});
-            }
+                $timeout($rootScope.clearAlerts, 3000);
+            };
+
             $rootScope.genericError = function() {
                 $rootScope.alert("Error! ","",2);
-            }
-
-            $rootScope.clearAlerts = function() {
-                $rootScope.alerts = [];
-            }
+            };
 
             $rootScope.errorHandler = (debug ?
                 function (error) {

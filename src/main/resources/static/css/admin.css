@@ -176,28 +176,14 @@ input[type=submit] {
 .nav-tabs li.active a:focus {
   color: #fff !important; }
 
-/* COPY PASTED FROM INTERNET */
-.alert-box {
-  color: #555;
-  border-radius: 10px;
-  font-family: Tahoma,Geneva,Arial,sans-serif;
-  font-size: 11px;
-  padding: 10px 10px 10px 36px;
-  margin: 10px; }
+.alert {
+  position: absolute;
+  top: 2em;
+  right: 2em;
+  padding: 3em;
+  z-index: 10;
+  box-shadow: 0px 0px 1em rgba(0, 0, 0, 0.2); }
 
-.alert-box span {
-  font-weight: bold;
-  text-transform: uppercase; }
-
-.success {
-  background: #e9ffd9 url("../images/success.png") no-repeat 10px 50%;
-  border: 1px solid #a6ca8a; }
-
-.error {
-  background: #ffecec url("../images/error.png") no-repeat 10px 50%;
-  border: 1px solid #f5aca6; }
-
-/* -/- COPY PASTED FROM INTERNET*/
 /* -/- old css */
 
 /*# sourceMappingURL=admin.css.map */
