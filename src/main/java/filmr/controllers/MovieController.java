@@ -1,6 +1,10 @@
 package filmr.controllers;
 
 import filmr.domain.Movie;
+import filmr.helpers.exceptions.FilmrBaseException;
+import filmr.helpers.exceptions.FilmrExceptionModel;
+import filmr.helpers.exceptions.FilmrPOSTRequestWithPredefinedIdException;
+import filmr.helpers.exceptions.FilmrPUTRequestWithMissingEntityIdException;
 import filmr.services.MovieService;
 
 import org.apache.log4j.Logger;
@@ -10,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(value = "/api/movies")
@@ -22,10 +28,10 @@ public class MovieController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Movie> createMovie(@RequestBody Movie movie) {
+    public ResponseEntity<Movie> createMovie(@RequestBody Movie movie) throws FilmrPOSTRequestWithPredefinedIdException {
         if (movie.getId() != null) {
         	logger.warn("Trying to create movie with pre-set id.");
-            return new ResponseEntity<Movie>(new Movie(), HttpStatus.BAD_REQUEST);
+            throw new FilmrPOSTRequestWithPredefinedIdException("Trying to create movie with pre-set id.");
         }
         Movie savedMovie = movieService.saveEntity(movie);
         return new ResponseEntity<Movie>(savedMovie, HttpStatus.OK);
@@ -56,10 +62,10 @@ public class MovieController {
 
     @CrossOrigin
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Movie> updateMovie(@PathVariable Long id, @RequestBody Movie movie){
+    public ResponseEntity<Movie> updateMovie(@PathVariable Long id, @RequestBody Movie movie) throws FilmrPUTRequestWithMissingEntityIdException {
         if(movie.getId() == null){
         	logger.warn("Trying to update movie, but no movie has no id.");
-            return new ResponseEntity<Movie>(new Movie(), HttpStatus.BAD_REQUEST);
+            throw new FilmrPUTRequestWithMissingEntityIdException("Trying to update movie, but movie has no id.");
         }
 
         Movie updatedMovie = movieService.saveEntity(movie);
@@ -73,4 +79,12 @@ public class MovieController {
         movieService.deleteEntity(id);
         return new ResponseEntity(HttpStatus.OK);
     }
+    
+    // all custom errors should inherit from FilmrBaseException, so this should work for all of them. 
+    @ExceptionHandler(FilmrBaseException.class)
+    @ResponseBody
+    public FilmrExceptionModel handleBadRequest(HttpServletRequest req, FilmrBaseException ex) {
+    	logger.debug("Catching custom error in controller.. ");
+        return new FilmrExceptionModel(req, ex);
+    } 
 }

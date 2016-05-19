@@ -35,6 +35,8 @@ import filmr.helpers.TimeslotCreator;
 import filmr.helpers.exceptions.FilmrBaseException;
 import filmr.helpers.exceptions.FilmrExceptionModel;
 import filmr.helpers.exceptions.FilmrInvalidDateFormatException;
+import filmr.helpers.exceptions.FilmrPOSTRequestWithPredefinedIdException;
+import filmr.helpers.exceptions.FilmrPUTRequestWithMissingEntityIdException;
 import filmr.helpers.exceptions.FilmrShowingTimeOccupiedException;
 import filmr.services.ShowingService;
 
@@ -50,11 +52,9 @@ public class ShowingController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Showing> createShowing(@RequestBody Showing showing) throws FilmrBaseException {
-        if (showing.getId() != null) {
-        	logger.warn("Trying to create showing, but showing already has id.");
-            return new ResponseEntity<Showing>(new Showing(), HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<Showing> createShowing(@RequestBody Showing showing) throws FilmrInvalidDateFormatException, FilmrPOSTRequestWithPredefinedIdException, FilmrShowingTimeOccupiedException {
+       
+    	if(showing.getId() != null) throw new FilmrPOSTRequestWithPredefinedIdException("Trying to create showing, but showing already has id.");
         
         if(showing.getShowDateTime().equals(ERROR_DATE_TIME)) throw new FilmrInvalidDateFormatException();
         
@@ -155,12 +155,13 @@ public class ShowingController {
 
     @CrossOrigin
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Showing> updateShowing(@PathVariable Long id, @RequestBody Showing showing){
-        if(showing.getId() == null){
-        	logger.warn("Trying to update an entity, but no id was found.");
-            return new ResponseEntity<Showing>(new Showing(), HttpStatus.BAD_REQUEST);
-        }
-
+    public ResponseEntity<Showing> updateShowing(@PathVariable Long id, @RequestBody Showing showing) throws FilmrPUTRequestWithMissingEntityIdException, FilmrInvalidDateFormatException{
+        
+    	if(showing.getId() == null) throw new FilmrPUTRequestWithMissingEntityIdException("Trying to update Showing but entity is missing id.");
+    	
+    	if(showing.getShowDateTime().equals(ERROR_DATE_TIME)) throw new FilmrInvalidDateFormatException();
+    	
+    	
         Showing updatedShowing = showingService.saveEntity(showing);
         return new ResponseEntity<Showing>(updatedShowing, HttpStatus.OK);
     }
@@ -224,7 +225,7 @@ public class ShowingController {
     @ExceptionHandler(FilmrBaseException.class)
     @ResponseBody
     public FilmrExceptionModel handleBadRequest(HttpServletRequest req, FilmrBaseException ex) {
-    	logger.warn("Catching custom error in controller.. ");
+    	logger.debug("Catching custom error in controller.. ");
         return new FilmrExceptionModel(req, ex);
     } 
 

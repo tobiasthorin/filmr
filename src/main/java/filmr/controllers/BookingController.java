@@ -22,6 +22,8 @@ import filmr.domain.Booking;
 import filmr.domain.Showing;
 import filmr.helpers.exceptions.FilmrBaseException;
 import filmr.helpers.exceptions.FilmrExceptionModel;
+import filmr.helpers.exceptions.FilmrPOSTRequestWithPredefinedIdException;
+import filmr.helpers.exceptions.FilmrPUTRequestWithMissingEntityIdException;
 import filmr.helpers.exceptions.booking.FilmerBookingMustHaveSeatsException;
 import filmr.services.BookingService;
 import filmr.services.ShowingService;
@@ -30,14 +32,12 @@ import filmr.services.ShowingService;
 @RequestMapping(value = "/api/bookings")
 public class BookingController {
 
-    private static org.apache.log4j.Logger log = Logger.getLogger(BookingController.class);
+    private static org.apache.log4j.Logger logger = Logger.getLogger(BookingController.class);
 
     @Autowired
     private BookingService bookingService;
     @Autowired
     private ShowingService showingService;
-//    @Autowired
-//    private SeatService seatService;
 
 
     @CrossOrigin
@@ -48,8 +48,8 @@ public class BookingController {
     		) throws FilmrBaseException{
 
         if (booking.getId() != null) {
-            log.warn("id on booking is not permitted when create booking");
-            return new ResponseEntity<Booking>(new Booking(), HttpStatus.BAD_REQUEST);
+            logger.warn("Pre-set id on booking is not permitted when creating booking");
+            throw new FilmrPOSTRequestWithPredefinedIdException("Pre-set id on booking is not permitted when creating booking");
         }
         
         if (booking.getBookedSeats() == null || booking.getBookedSeats().size() == 0) {
@@ -84,10 +84,10 @@ public class BookingController {
 
     @CrossOrigin
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Booking> updateBooking(@PathVariable Long id, @RequestBody Booking Booking){
+    public ResponseEntity<Booking> updateBooking(@PathVariable Long id, @RequestBody Booking Booking) throws FilmrPUTRequestWithMissingEntityIdException{
         if(Booking.getId() == null){
-            log.warn("id on booking is required when update booking");
-            return new ResponseEntity<Booking>(new Booking(), HttpStatus.BAD_REQUEST);
+            logger.warn("id on booking is required when update booking");
+            throw new FilmrPUTRequestWithMissingEntityIdException("id on booking is required when update booking");
         }
 
         Booking updatedBooking = bookingService.saveEntity(Booking);
@@ -105,7 +105,7 @@ public class BookingController {
     @ExceptionHandler(FilmrBaseException.class)
     @ResponseBody
     public FilmrExceptionModel handleBadRequest(HttpServletRequest req, FilmrBaseException ex) {
-    	log.warn("Catching custom error in controller.. ");
+    	logger.debug("Catching custom error in controller.. ");
         return new FilmrExceptionModel(req, ex);
     } 
 }
