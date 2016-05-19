@@ -11,7 +11,7 @@
         <div class="theaterSeat"
              ng-class="{'hiddenSeat':seat.state == 'NOT_A_SEAT'}"
              ng-repeat="seat in theaterRows[$index].seats">
-            <div class="seatLabel" ng-click="">{{seat.seatLabel}}</div>
+            <div class="seatLabel" ng-click="toggleSelection(seat.id)">{{seat.seatLabel}}</div>
         </div>
     </div>
 </div>

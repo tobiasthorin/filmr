@@ -67,6 +67,14 @@ describe("Tests for seatSelectController.js", function () {
         });
     });
 
+    describe("Selecting seats", function () {
+
+        it("Puts a seat in the selected-seat-list when it is clicked", function () {
+            $scope.toggleSelection(1);
+            expect($scope.selectedSeats).toContain(1);
+        });
+    });
+
 
 
 });
