@@ -23,7 +23,7 @@ angular.module('filmr')
 			$scope.allCinemas = [];
 
 			$scope.theater = {};
-			$scope.movie = {};
+			$scope.selectedMovie = {};
 			$scope.movieForShowing = {};
 			$scope.cinema= $scope.allCinemas[0];
 
@@ -43,10 +43,15 @@ angular.module('filmr')
 			$scope.clearAllFilters = function() {
 				$scope.fromDate = null;
 				$scope.toDate = null;
-				$scope.movie = {};
+				$scope.selectedMovie = {};
 				$scope.theater = {};
 				$scope.showingIsDisabled = false;
 				getShowingsWithParams();
+			};
+
+			$scope.setMovie = function (movie) {
+				$scope.selectedMovie = movie;
+				$scope.updateShowings();
 			};
 
 			function getCinemas(callbackWhenDone) {
@@ -81,7 +86,7 @@ angular.module('filmr')
 				var params = {
 					"only_for_cinema_with_id" : $scope.cinema.id,
 					"only_for_theater_with_id" : $scope.theater.id,
-					"only_for_movie_with_id" : $scope.movie.id,
+					"only_for_movie_with_id" : $scope.selectedMovie.id,
 					"from_date" : parseDateStringToValidAPIDateString($scope.fromDate),
 					"to_date" : parseDateStringToValidAPIDateString($scope.toDate),
 					"show_disabled_showings" : $scope.showingIsDisabled,
