@@ -83,15 +83,16 @@ angular.module('filmr')
                 newShowing.showDateTime = parseDateStringToValidAPIDateString($scope.dateForShowing);
                 newShowing.price = $scope.price;
                 newShowing.isDisabled = false;
-                console.log("Date is: "+newShowing.showDateTime);
+                $log.debug(newShowing);
 
-                ShowingService.save(newShowing, function (result) {
+                ShowingService.save(newShowing).$promise.then(function (result){
+                        $log.debug(result);
                         $rootScope.alert("Success! ","Showing added",1);
                         fetchShowingsWithParams();
                         clearAddShowingFields();
                     },
                     function (error) {
-                        if(error.data && error.data.exception=="filmr.helpers.exceptions.FilmrTimeOccupiedException") {
+                        if(error.data && error.data.exception=="FilmrShowingTimeOccupiedException") {
                             $rootScope.alert("Error! ","Time is already occupied",2);
                         }
                         else $rootScope.errorHandler(error);
