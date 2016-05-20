@@ -6,19 +6,24 @@
     app.config(function ($routeProvider) {
 
         $routeProvider
-            // booking
             .when('/book', {
                 title: 'Book',
                 activeTab: 'Book',
                 templateUrl: 'views/booking-view/bookShowing.html',
                 controller: 'bookShowingController'
             })
-            // booking_confirm 
             .when('/book/showing/:showingId/seat_select', {
                 title: 'Select Seats',
                 activeTab: 'Book',
                 templateUrl: 'views/seatSelect-view/seatSelect.html',
                 controller: 'seatSelectController'
+
+            })
+            .when('/book/showing/:showingId/confirm/:bookingId', {
+                title: 'Confirmation',
+                activeTab: 'Book',
+                templateUrl: 'views/confirm-view/confirm.html',
+                controller: 'confirmController'
 
             })
             // Cinema 

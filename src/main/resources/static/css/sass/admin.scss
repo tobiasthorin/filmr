@@ -10,6 +10,7 @@ $cinema-red-light: #e88989;
 $cinema-red: #bb3246;
 $cinema-red-dark: #5c111d;
 $cinema-red-darker: #25070c;
+$cinema-gold: #f3ca29;
 
 $booked-seat: #444444;
 $booked-seat-border: #888888;
@@ -194,13 +195,53 @@ input.btn {
   text-align: center;
 }
 
+.confirmWrapper {
+  .hooray {
+    background: $cinema-red;
+    font-family: serif;
+    text-align: center;
+
+    border-radius: 5px;
+    padding: 1em;
+
+    h1 {
+      color: $text-light;
+      text-align: center;
+      font-size: 3em;
+      font-style: normal;
+
+      padding: 0;
+
+      background-color: transparent;
+
+    }
+
+    h2 {
+      font-size: 7em;
+      color: $cinema-gold;
+      margin: 0;
+    }
+
+    h3 {
+      font-style: normal;
+      color: $cinema-red-light;
+      margin: 0;
+    }
+
+    .divider {
+      border-top: 1px solid $text-light;
+      margin: 4em 0;
+    }
+  }
+}
+
 .alert {
   position: absolute;
   top: 2em;
   right: 2em;
   padding: 3em;
   z-index: 10;
-  box-shadow: 0px 0px 1em rgba(#000000, 0.2);
+  box-shadow: 0 0 1em rgba(#000000, 0.2);
 }
 
 .bookingTableObject {
@@ -236,6 +277,18 @@ input.btn {
   float: left;
 }
 
+.pullLeft{
+  float: left;
+}
+
+.pullRight{
+  float: right;
+}
+
+.btn.pullRight{
+  padding: 3px 3px;
+}
+
 .form-control{
   display: inline;
   width:80%;
@@ -251,6 +304,33 @@ tbody > tr.dateRow:hover{
   color: #FFFFFF;
 }
 
-
+//Button CSS
+.orange {
+  color: #fef4e9;
+  border: solid 1px $cinema-red-dark;
+  background-color: $cinema-red;
+}
+.small {
+  font-size: 11px;
+  padding: .2em 1em .275em;
+}
+.button {
+  display: inline-block;
+  zoom: 1;
+  vertical-align: baseline;
+  margin: 0 2px;
+  outline: none;
+  cursor: pointer;
+text-align: center;
+  text-decoration: none;
+  padding: .5em 2em .55em;
+  text-shadow: 0 1px 1px rgba(0,0,0,.3);
+  -webkit-border-radius: .5em;
+  -moz-border-radius: .5em;
+  border-radius: .5em;
+  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+  -moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+  box-shadow: 0 1px 2px rgba(0,0,0,.2);
+}
 
 

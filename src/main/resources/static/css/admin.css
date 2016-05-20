@@ -117,13 +117,38 @@ input.btn {
   margin-bottom: 25em;
   text-align: center; }
 
+.confirmWrapper .hooray {
+  background: #bb3246;
+  font-family: serif;
+  text-align: center;
+  border-radius: 5px;
+  padding: 1em; }
+  .confirmWrapper .hooray h1 {
+    color: #f1f1f1;
+    text-align: center;
+    font-size: 3em;
+    font-style: normal;
+    padding: 0;
+    background-color: transparent; }
+  .confirmWrapper .hooray h2 {
+    font-size: 7em;
+    color: #f3ca29;
+    margin: 0; }
+  .confirmWrapper .hooray h3 {
+    font-style: normal;
+    color: #e88989;
+    margin: 0; }
+  .confirmWrapper .hooray .divider {
+    border-top: 1px solid #f1f1f1;
+    margin: 4em 0; }
+
 .alert {
   position: absolute;
   top: 2em;
   right: 2em;
   padding: 3em;
   z-index: 10;
-  box-shadow: 0px 0px 1em rgba(0, 0, 0, 0.2); }
+  box-shadow: 0 0 1em rgba(0, 0, 0, 0.2); }
 
 .bookingTableObject {
   background-color: rgba(0, 0, 0, 0.14); }
@@ -152,6 +177,15 @@ input.btn {
 .clearButton {
   float: left; }
 
+.pullLeft {
+  float: left; }
+
+.pullRight {
+  float: right; }
+
+.btn.pullRight {
+  padding: 3px 3px; }
+
 .form-control {
   display: inline;
   width: 80%; }
@@ -163,5 +197,32 @@ input.btn {
 tbody > tr.dateRow:hover {
   background-color: #5c111d;
   color: #FFFFFF; }
+
+.orange {
+  color: #fef4e9;
+  border: solid 1px #5c111d;
+  background-color: #bb3246; }
+
+.small {
+  font-size: 11px;
+  padding: .2em 1em .275em; }
+
+.button {
+  display: inline-block;
+  zoom: 1;
+  vertical-align: baseline;
+  margin: 0 2px;
+  outline: none;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  padding: .5em 2em .55em;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+  -webkit-border-radius: .5em;
+  -moz-border-radius: .5em;
+  border-radius: .5em;
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); }
 
 /*# sourceMappingURL=admin.css.map */

@@ -4,92 +4,92 @@
 </ol>
 
 <h2>{{getCurrentCinema().name}}</h2>
-
-<div class="row">
-    <div class="col-sm-6">
-
-        <div class="table">
+<div class="container">
+    <div class="row">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
             <h3>Repertoire</h3>
-            <table>
-                <tr ng-repeat="movie in getMoviesInRepertoire()">
-                    <td>{{movie.title}}</td>
-                    <td style="text-align:right"><input type="button"
-                                                        ng-click="removeMovieFromRepertoire(movie.id)"
-                                                        value="Delete from repertoire"></td>
-                </tr>
-            </table>
+            <ul class="list-group">
+                <li class="list-group-item" ng-repeat="movie in getMoviesInRepertoire()">
+                    {{movie.title}}
+                    <!--TODO make buttons go to the right, try to get same size on this and theater list elements?-->
+                    <button class="btn pullRight" type="button" ng-click="removeMovieFromRepertoire(movie.id)"><span class="glyphicon glyphicon-remove"></button>
+                </li>
+            </ul>
+
+            <!--TODO old for backup-->
+            <!--<table>-->
+            <!--<tr ng-repeat="movie in getMoviesInRepertoire()">-->
+            <!--<td>{{movie.title}}</td>-->
+            <!--<td style="text-align:right">-->
+            <!--<input class="" type="button" ng-click="removeMovieFromRepertoire(movie.id)" value="Delete">-->
+
+            <!--&lt;!&ndash;<span class="glyphicon glyphicon-remove">&ndash;&gt;-->
+            <!--</td>-->
+            <!--</tr>-->
+            <!--</table>-->
         </div>
-        <form>
-            <select ng-options="movie as movie.title for movie in getAddableMovies()"
-                    ng-model="add_movie_to_repertoire_select">
-                <option value="">Please Select A Movie</option>
-            </select>
-            <input type="submit" class="btn" ng-click="addMovieToRepertoire()" value="Add movie to repertoire"
-                   ng-disabled="!validateAddMovieToRepertoire()">
-        </form>
-    </div>
-    <div class="col-sm-6">
-        <div class="table">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
             <h3>Theaters</h3>
-            <ul>
-                <li ng-repeat="theater in getTheaters()">
+            <ul class="list-group">
+                <li class="list-group-item" ng-repeat="theater in getTheaters()">
                     <a href="#/cinema/{{getCurrentCinema().id}}/theater/{{theater.id}}">{{theater.name}}</a>
                 </li>
             </ul>
         </div>
-        <div class="add-theater">
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            <h3>Add Movie To Repertoire</h3>
+            <form>
+                <select class="form-control" ng-options="movie as movie.title for movie in getAddableMovies()"
+                        ng-model="add_movie_to_repertoire_select">
+                    <option value="">Please Select A Movie</option>
+                </select>
+                <input type="submit" class="btn" ng-click="addMovieToRepertoire()" value="Add movie to repertoire"
+                       ng-disabled="!validateAddMovieToRepertoire()">
+            </form>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
             <form name="add-new-theater-form">
                 <h3>Add new Theater</h3>
-                <table>
-                    <tr>
-                        <th>Name:</th>
-                        <td><input type="text" ng-model="theater_name" placeholder="Name">
-                        <td>
-                    </tr>
-                    <tr>
-                        <th>Number of rows:</th>
-                        <td><input type="number" ng-model="number_of_rows" placeholder="1 or more">
-                        <td>
-                    </tr>
-                    <tr>
-                        <th>Seats per row:</th>
-                        <td><input type="number" ng-model="number_of_seats" placeholder="1 or more">
-                        <td>
-                    </tr>
-                    <!--<tr><th>Disabled:</th><td><input type="checkbox" ng-model="add_theater_disabled" id="disabledCheckbox"><td></tr>-->
-                    <tr>
-                        <th></th>
-                        <td><input type="submit" ng-click="addNewTheater()" class="btn" value="Add theater"
-                                   ng-disabled="!validateScheduleAddTheater()">
-                        </td>
-                    </tr>
-                </table>
+
+                <label class="blockSpan">Name:</label>
+                <input class="form-control" type="text" ng-model="theater_name" placeholder="Name">
+
+                <label class="blockSpan">Number of rows:</label>
+                <input class="form-control" type="number" ng-model="number_of_rows" placeholder="1 or more">
+
+
+                <label class="blockSpan">Seats per row:</label>
+                <input class="form-control blockSpan" type="number" ng-model="number_of_seats" placeholder="1 or more">
+                <br>
+                <input type="submit" ng-click="addNewTheater()" class="btn" value="Add theater"
+                       ng-disabled="!validateScheduleAddTheater()">
+
             </form>
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-sm-6">
-        <form>
+    <hr>
+    <div class="row">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
             <h3>Edit cinema</h3>
             <div class="edit-cinema-name">
                 <form name="change-cinema-name">
-                    <table>
-                        <tr>
-                            <th>Name:</th>
-                            <td><input type="text" ng-model="edited_cinema_name"></td>
-                        </tr>
-                        <tr>
-                            <th></th>
-                            <td><input ng-click="updateCinemaName()" type="submit" class="btn" value="Update"
-                                       ng-disabled="!validateCinemaNameForm()">
-                            </td>
-                        </tr>
-                    </table>
+                    <div class="row">
+                        Name:
+                    </div>
+                    <div class="row">
+                        <input class="form-control" type="text" ng-model="edited_cinema_name">
+                    </div>
+                    <div class="row">
+                        <input ng-click="updateCinemaName()" type="submit" class="btn" value="Update" ng-disabled="!validateCinemaNameForm()">
+                    </div>
                 </form>
             </div>
-        </form>
+        </div>
     </div>
-    <div class="col-sm-6">
-    </div>
+
+    <hr>
+
 </div>
