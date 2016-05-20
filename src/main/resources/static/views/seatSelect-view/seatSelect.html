@@ -1,17 +1,35 @@
 <h2>Select Seats</h2>
 
 <div class="theaterView">
-    <div class="theaterRow">
-        <div class="theaterScreenPlayer">
-            <iframe src="https://www.youtube.com/embed/4sj1MT05lAA?t=10" frameborder="0" allowfullscreen></iframe>
-        </div>
+
+    <div class="theaterScreenPlayer">
+        <h2>{{currentShowing.movie.title}}</h2>
+        <iframe src="https://www.youtube.com/embed/4sj1MT05lAA?t=10" frameborder="0" allowfullscreen></iframe>
     </div>
 
     <div class="theaterRow" ng-repeat="row in theaterRows">
-        <div class="theaterSeat"
-             ng-class="{'hiddenSeat':seat.state == 'NOT_A_SEAT'}"
-             ng-repeat="seat in theaterRows[$index].seats">
-            <div class="seatLabel" ng-click="toggleSelection(seat.id)">{{seat.seatLabel}}</div>
+
+        <div class="seatContainer" ng-repeat="seat in theaterRows[$index].seats">
+            <div class="theaterSeat unbookedSeat" ng-if="seat.state != 'NOT_A_SEAT'"
+                 ng-class="{'selectedSeat': checkIfSelected(seat.id), 'bookedSeat': checkIfBooked(seat.id)}">
+                <div class="seatLabel" ng-click="toggleSelection(seat.id)">
+                    &nbsp;
+                </div>
+
+            </div>
+
+            <div class="hiddenSeat" ng-if="seat.state == 'NOT_A_SEAT'">
+                &nbsp;
+            </div>
         </div>
+
+    </div>
+
+    <div class="confirmBooking">
+        <h2>Confirm your booking</h2>
+        <p>Booked seats: {{numberOfSelectedSeats}}</p>
+        <h3>Enter phone number</h3>
+        <input type="text" ng-model="phoneNumber" placeholder="Numbers only">
+        <button class="btn btn-default" ng-click="submitBooking()" ng-disabled="!validateInputs()">Confirm</button>
     </div>
 </div>

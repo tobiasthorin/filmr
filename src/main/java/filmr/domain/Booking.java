@@ -17,7 +17,6 @@ public class Booking {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private String bookingReference;
 	
 	@Size(min=1)
 	@ManyToMany //TODO changed from ManyToOne, beware of side effects!!!!!1one!!
@@ -33,15 +32,6 @@ public class Booking {
 	
 	public Booking() {
 		
-	}
-	
-
-	public String getBookingReference() {
-		return bookingReference;
-	}
-
-	public void setBookingReference(String bookingReference) {
-		this.bookingReference = bookingReference;
 	}
 
 	public List<Seat> getBookedSeats() {

@@ -11,6 +11,9 @@ $cinema-red: #bb3246;
 $cinema-red-dark: #5c111d;
 $cinema-red-darker: #25070c;
 
+$booked-seat: #444444;
+$booked-seat-border: #888888;
+
 $cinema-seat-size: 40px;
 
 /* Page wide stuff */
@@ -18,7 +21,7 @@ html {
   overflow-y: scroll;
 }
 
-body{
+body {
   background-color: $background-primary;
   margin-top: 0;
 }
@@ -67,9 +70,9 @@ h2 {
 }
 
 .inputTable {
-  tbody{
-    tr{
-      td{
+  tbody {
+    tr {
+      td {
         padding: 0.5em;
       }
     }
@@ -87,7 +90,6 @@ input.btn {
   letter-spacing: 1em;
   text-transform: uppercase;
 
-
   display: inline-block;
 
   width: 30em;
@@ -103,54 +105,98 @@ input.btn {
 }
 
 .theaterScreenPlayer {
+  text-align: center;
+
   iframe {
     width: 40em;
     height: 20em;
+
   }
+  margin-bottom: 2em;
 }
 
 .theaterRow {
   text-align: center;
-  .theaterSeat {
-    margin: 10px 5px;
-
-    cursor: pointer;
-    color: #FFFFFF;
-    font-weight: bold;
-    font-size: 1em;
-    background-color: $cinema-red;
-
-    width: $cinema-seat-size;
-    height: $cinema-seat-size;
-
-    border-radius: 5px 5px 20px 20px;
-    border: 2px solid $cinema-red-dark;
-
+  .seatContainer {
     display: inline-block;
-    text-align: center;
-    line-height: $cinema-seat-size;
+    .theaterSeat {
+      margin: 10px 5px;
 
-    .seatLabel {
-      margin: auto;
+      cursor: pointer;
+      color: #FFFFFF;
+      font-weight: bold;
+      font-size: 1em;
+      background-color: $cinema-red;
+
+      width: $cinema-seat-size;
+      height: $cinema-seat-size;
+
+      border-radius: 5px 5px 20px 20px;
+      border: 2px solid $cinema-red-dark;
+
+      text-align: center;
+      line-height: $cinema-seat-size;
+
+      .seatLabel {
+        margin: auto;
+      }
+    }
+    .disabledSeat {
+      background-color: lightgray;
+      border-color: black;
+      color: black;
+    }
+
+    .not_a_seat {
+      background-color: #fbfbfb;
+      border-color: #eeeeee;
+      color: #dddddd;
+
+    }
+
+    .hiddenSeat {
+      background-color: transparent;
+      color: transparent;
+
+      width: $cinema-seat-size;
+      height: $cinema-seat-size;
+
+      border: 2px solid transparent;
+
+      margin: 10px 5px;
+
+      text-align: center;
+      line-height: $cinema-seat-size;
+    }
+
+    .unbookedSeat {
+      background-color: $cinema-red-dark;
+    }
+
+    .bookedSeat {
+      background-color: $booked-seat;
+      border-color: $booked-seat-border;
+    }
+
+    .selectedSeat {
+      background-color: $cinema-red;
+      border-color: $text-light;
     }
   }
-  .disabledSeat{
-    background-color: lightgray;
-    border-color: black;
-    color: black;
-  }
 
-  .not_a_seat {
-    background-color: #fbfbfb;
-    border-color: #eeeeee;
-    color: #dddddd;
+}
 
-  }
+.confirmBooking {
+  margin-top: 3em;
+  border-top: 1px solid $background-dark;
+  margin-bottom: 25em;
+
+  text-align: center;
 }
 
 .alert {
   position: absolute;
-  top:2em;
+  top: 2em;
   right: 2em;
   padding: 3em;
   z-index: 10;
@@ -160,10 +206,12 @@ input.btn {
 .bookingTableObject {
   background-color: rgba(0, 0, 0, 0.14);
 }
+
 .activeMovie {
   background-color: #800840;
   color: #FFFFFF;
 }
+
 .fullBookedShowing {
   background-color: #ff5260;
 }
