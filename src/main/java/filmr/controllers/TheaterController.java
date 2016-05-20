@@ -1,8 +1,10 @@
 package filmr.controllers;
 
 import filmr.domain.Theater;
-import filmr.services.RowService;
-import filmr.services.SeatService;
+import filmr.helpers.exceptions.FilmrBaseException;
+import filmr.helpers.exceptions.FilmrExceptionModel;
+import filmr.helpers.exceptions.FilmrPOSTRequestWithPredefinedIdException;
+import filmr.helpers.exceptions.FilmrPUTRequestWithMissingEntityIdException;
 import filmr.services.TheaterService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(value = "/api/theaters")
@@ -25,14 +29,16 @@ public class TheaterController {
 	public ResponseEntity<Theater> createTheater(
 			@RequestBody Theater theater,
 			@RequestParam(name="number_of_rows") Integer number_of_rows,
-			@RequestParam(name="max_row_size") Integer max_row_size) {
+			@RequestParam(name="max_row_size") Integer max_row_size) throws FilmrPOSTRequestWithPredefinedIdException {
 
+		if (theater.getId() != null) throw new FilmrPOSTRequestWithPredefinedIdException("Trying to create Theater but entity already has a set id.");
+		
 		logger.debug("Theater (before save) received in createTheater: " + theater);
 		logger.debug(String.format("Creating theater with number_of_rows = %d, max_row_size  = %d ", number_of_rows, max_row_size));
+		
 		theater = theaterService.buildTheaterWithRowsAndSeats(theater,number_of_rows,max_row_size);
-		if (theater.getId() != null) {
-			return new ResponseEntity<Theater>(new Theater(), HttpStatus.BAD_REQUEST);
-		}
+		
+		theater.setUsingContinuousSeatLabeling(false);
 		Theater savedTheater = theaterService.saveEntity(theater);
 		return new ResponseEntity<Theater>(savedTheater, HttpStatus.OK);
 	}
@@ -69,11 +75,9 @@ public class TheaterController {
 			@RequestBody Theater theater,
 			@RequestParam(name="reset_seat_numbers_for_each_row", defaultValue="true", required=false) Boolean reset_seat_numbers_for_each_row,
 			@RequestParam(name="new_number_of_rows", required = false) Integer new_number_of_rows,
-			@RequestParam(name="new_max_row_size", required = false) Integer new_max_row_size){
+			@RequestParam(name="new_max_row_size", required = false) Integer new_max_row_size) throws FilmrPUTRequestWithMissingEntityIdException{
 
-		if (theater.getId() == null) {
-			return new ResponseEntity<Theater>(new Theater(), HttpStatus.BAD_REQUEST);
-		}
+		if(theater.getId() == null) throw new FilmrPUTRequestWithMissingEntityIdException("Trying to update Theater but it has no id set.");
 
 		// Temporary(?) fix for issue with theater losing rows on update, because @JsonIgnore means some two-way connections are missing after deserialization
 		theater.getRows().forEach(row -> {
@@ -98,6 +102,9 @@ public class TheaterController {
 		theaterService.nameRowsAndSeats(theater, reset_seat_numbers_for_each_row);
 
 		Theater updatedTheater = theaterService.saveEntity(theater);
+		
+		// set value for front-end devs to read
+		updatedTheater.setUsingContinuousSeatLabeling(!reset_seat_numbers_for_each_row);
 		return new ResponseEntity<Theater>(updatedTheater, HttpStatus.OK);
 	}
 
@@ -107,5 +114,14 @@ public class TheaterController {
 		theaterService.deleteEntity(id);
 		return new ResponseEntity(HttpStatus.OK);
 	}
+	
+	// all custom errors should inherit from FilmrBaseException, so this should work for all of them. 
+    @ExceptionHandler(FilmrBaseException.class)
+    @ResponseBody
+    public ResponseEntity<FilmrExceptionModel> handleBadRequest(HttpServletRequest req, FilmrBaseException ex) {
+    	logger.debug("Catching custom error in controller.. ");
+    	FilmrExceptionModel exceptionModel = new FilmrExceptionModel(req, ex);
+        return new ResponseEntity<FilmrExceptionModel>(exceptionModel, ex.getHttpStatus());
+    } 
 
 }

@@ -13,7 +13,6 @@ angular.module('filmr')
             $scope.currentTheater = {};
             $scope.theaterRows = {};
 
-
             //Scoped functions
 
             $scope.fetchTheater = function () {
@@ -64,6 +63,10 @@ angular.module('filmr')
                 return true;
             };
 
+            $scope.setTheaterName = function () {
+                $scope.name = $scope.original_name;
+                $scope.updateTheater();
+            }
             $scope.updateTheater = function () {
 
                 $rootScope.clearAlerts();
@@ -107,19 +110,22 @@ angular.module('filmr')
             };
 
 	        $scope.toggleSeatState = function(seat){
-				switch(seat.state){
-					case "ENABLED":
-						seat.state = "DISABLED";
-						break;
-					case "DISABLED":
-						seat.state = "NOT_A_SEAT";
-						break;
-					case "NOT_A_SEAT":
-						seat.state = "ENABLED";
-						break;
-				}
-		        $scope.updateTheater();
-
+                if (!activeRequest) {
+                    activeRequest = true;
+                    switch (seat.state) {
+                        case "ENABLED":
+                            seat.state = "DISABLED";
+                            break;
+                        case "DISABLED":
+                            seat.state = "NOT_A_SEAT";
+                            break;
+                        case "NOT_A_SEAT":
+                            seat.state = "ENABLED";
+                            break;
+                    }
+                    activeRequest = false;
+                    $scope.updateTheater();
+                }
 	        };
 
 	        $scope.addRow = function (){
@@ -171,8 +177,8 @@ angular.module('filmr')
 	        };
 
             $scope.validateNameInput = function() {
-                if(typeof $scope.name != "string") return false;
-                if(!($scope.name.length>0 && $scope.name.length<=48)) return false;
+                if(typeof $scope.original_name != "string") return false;
+                if(!($scope.original_name.length>0 && $scope.original_name.length<=48)) return false;
                 //if($scope.name === $scope.original_name) return false;
                 return true;
 

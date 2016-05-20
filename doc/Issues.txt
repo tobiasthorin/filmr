@@ -1,0 +1,18 @@
+- cinema name spacing
+Frontend
+
+-breadcrumb navigering
+
+  showings
+    - validate date on new showing
+    - clear fields after submitting showing
+    - set background color on disabled showings
+
+  Theater
+    -fix cinema page, bootstrap it?
+    - Rensa theater field when create
+    - Vänta på svar från server vid update
+
+
+backend
+- backend seat/row label toggle
