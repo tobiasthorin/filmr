@@ -61,7 +61,7 @@ public class MovieJUnitTest {
         repertoire.add(inRepertoire);
 
         when(spyMovieService.readAllEntities()).thenReturn(allMovies);
-        PowerMockito.when(spyMovieService.repertoireService.readEntity(1).getMovies()).thenReturn(repertoire);
+        //PowerMockito.when(spyMovieService.repertoireService.readEntity(1).getMovies()).thenReturn(repertoire);
 
         assertEquals("Check movies returned by spy are the same as created list", allMovies, spyMovieService.readAllEntities());
     }
