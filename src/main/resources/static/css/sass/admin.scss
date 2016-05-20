@@ -253,4 +253,19 @@ tbody > tr.dateRow:hover{
 
 
 
+.calendar h2{
+  font-size: 14px;
+  font-style: normal;
+  font-weight: bold;
+}
 
+.calendar td {
+  background: #CCC;
+  border: 1px solid #DDD;
+  font-weight:bold;
+  .highlight{
+    background: #800840;
+    color: #FFFFFF;
+    border: 1px solid #800840;
+  }
+}

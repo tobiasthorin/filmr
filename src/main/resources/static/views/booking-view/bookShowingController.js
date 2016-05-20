@@ -13,7 +13,7 @@ angular.module('filmr')
 			getCinemas(function(){
 				$scope.cinema = $scope.allCinemas[0];
 				getTheatersAndRepertoireInCinema();
-				getShowingsWithParams();
+                refreshPage
 			});
 
 			//Publicly accessible variables and functions
@@ -30,14 +30,14 @@ angular.module('filmr')
 			$scope.updateShowings = function() {
 				console.log("---");
 				console.log("updating Showings List");
-				getShowingsWithParams();
+                refreshPage();
 			};
 
 			$scope.updateCinemaScope = function() {
 				console.log("---");
 				console.log("Set Cinema, get movies and theaters");
 				getTheatersAndRepertoireInCinema();
-				getShowingsWithParams();
+                refreshPage();
 			};
 
 			$scope.clearAllFilters = function() {
@@ -46,7 +46,7 @@ angular.module('filmr')
 				$scope.selectedMovie = {};
 				$scope.theater = {};
 				$scope.showingIsDisabled = false;
-				getShowingsWithParams();
+                refreshPage();
 			};
 
 			$scope.setMovie = function (movie) {
@@ -91,7 +91,25 @@ angular.module('filmr')
 				)
 			}
 
-			function getShowingsWithParams(){
+            function refreshPage() {
+               console.log("cc"); 
+                getShowingsWithParams(function(){
+                    refreshDates();
+                });
+            }
+
+            function refreshDates() {
+               console.log("aa"); 
+               var dates = Object.keys($scope.allShowings);
+                console.log(dates);
+                $("td").removeClass("highlight");
+                for(var i=0; i<dates.length; i++) {
+                    if(dates[i].substr(0,1)=="2") //TODO: this is an hack to make sure we just handle dates from result. We also get other stuff like promise etc
+                        $("td[data-date="+dates[i]+"]").addClass("highlight");
+                }
+            }
+
+			function getShowingsWithParams(callbackWhenDone){
 				var params = {
 					"only_for_cinema_with_id" : $scope.cinema.id,
 					"only_for_theater_with_id" : $scope.theater.id,
@@ -108,6 +126,7 @@ angular.module('filmr')
 						console.log("in showings with params");
 						console.log(result);
 						$scope.allShowings = result;
+                        if(callbackWhenDone)callbackWhenDone();
 					},
 					function (error) {
 						$rootScope.errorHandler(error);

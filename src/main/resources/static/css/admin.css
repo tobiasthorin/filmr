@@ -164,4 +164,18 @@ tbody > tr.dateRow:hover {
   background-color: #5c111d;
   color: #FFFFFF; }
 
+.calendar h2 {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: bold; }
+
+.calendar td {
+  background: #CCC;
+  border: 1px solid #DDD;
+  font-weight: bold; }
+  .calendar td .highlight {
+    background: #800840;
+    color: #FFFFFF;
+    border: 1px solid #800840; }
+
 /*# sourceMappingURL=admin.css.map */
