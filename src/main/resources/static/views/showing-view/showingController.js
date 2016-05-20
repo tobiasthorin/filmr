@@ -1,8 +1,8 @@
 
 angular.module('filmr')
     .controller('showingController',
-        ['$location', '$rootScope', '$scope', '$routeParams', '$resource', '$log', 'CinemaService', 'ShowingService',
-            function ($location, $rootScope, $scope, $routeParams, $resource, $log, CinemaService, ShowingService) {
+        ['$location', '$rootScope', '$scope', '$routeParams', '$resource', '$log', 'CinemaService', 'ShowingService','ScheduleService',
+            function ($location, $rootScope, $scope, $routeParams, $resource, $log, CinemaService, ShowingService, ScheduleService) {
 
             //Publicly accessible variables
             $scope.moviesInRepertoire = [];
@@ -150,7 +150,7 @@ angular.module('filmr')
                 $log.debug("params:");
                 $log.debug(params);
 
-                ShowingService.query(params).$promise.then(
+	            ScheduleService.query(params).$promise.then(
                     function (result){
                         console.log("in showings with params");
                         console.log(result);
