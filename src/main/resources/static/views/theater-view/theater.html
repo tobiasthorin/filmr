@@ -43,23 +43,25 @@
                 </button>
             </td>
         </tr>
+        
         <tr>
-            <td>Seat numbers:</td>
-            <td>
+        	<td>Seat numbers:</td>
+            <td colspan="2">
                 <div>
-                    <button class="btn btn-default btn-sm" type="button" ng-click="setRowReset(true)">Reset for each
-                        row
-                    </button>
-                </div>
-                <div>
-                    <button class="btn btn-default btn-sm" type="button" ng-click="setRowReset(false)">Continuous
-                    </button>
+				    <label class="radio-inline">
+				    	<input type="radio" name="rowReset" ng-model="rowReset" ng-value="false" ng-click="setRowReset(false)">
+				    	Continuous
+				    </label>
+				    
+                    <label class="radio-inline">
+                    	<input type="radio" name="rowReset" ng-model="rowReset" ng-value="true" ng-click="setRowReset(true)">
+                    	Reset for each row
+                    </label>
                 </div>
 
             </td>
-
-
         </tr>
+        
         </tbody>
     </table>
 

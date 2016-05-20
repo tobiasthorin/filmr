@@ -12,6 +12,8 @@ angular.module('filmr')
 
             $scope.currentTheater = {};
             $scope.theaterRows = {};
+            
+            $scope.rowReset = true;
 
             //Scoped functions
 
@@ -25,6 +27,7 @@ angular.module('filmr')
                         $scope.name = result.name;
                         $scope.currentTheater = result;
                         $scope.currentTheater.cinema = {id: result.cinemaId};
+                        $scope.rowReset = !result.usingContinuousSeatLabeling;
 
                         if (!result.rows[0]) {
                             $scope.theaterWidth = $scope.defaultWidth

@@ -307,11 +307,8 @@ tbody > tr.dateRow:hover{
 //Button CSS
 .orange {
   color: #fef4e9;
-  border: solid 1px #da7c0c;
-  background: #f7c13f;
-  background: -webkit-gradient(linear, left top, left bottom, from($cinema-red), to($cinema-red-dark));
-  background: -moz-linear-gradient(top, #faa51a, #f47a20);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#faa51a', endColorstr='#f47a20');
+  border: solid 1px $cinema-red-dark;
+  background-color: $cinema-red;
 }
 .small {
   font-size: 11px;
