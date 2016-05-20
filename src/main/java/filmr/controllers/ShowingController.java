@@ -1,19 +1,12 @@
 package filmr.controllers;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -30,9 +23,8 @@ import filmr.domain.Movie;
 import filmr.domain.Seat;
 import filmr.domain.Showing;
 import filmr.domain.Theater;
+
 import filmr.helpers.TimeslotCreator;
-import filmr.helpers.exceptions.FilmrBaseException;
-import filmr.helpers.exceptions.FilmrExceptionModel;
 import filmr.helpers.exceptions.FilmrInvalidDateFormatException;
 import filmr.helpers.exceptions.FilmrPOSTRequestWithPredefinedIdException;
 import filmr.helpers.exceptions.FilmrPUTRequestWithMissingEntityIdException;
@@ -41,9 +33,8 @@ import filmr.services.ShowingService;
 
 @RestController
 @RequestMapping(value = "/api/showings")
-public class ShowingController {
-	
-	private final static org.apache.log4j.Logger logger = Logger.getLogger(ShowingController.class);
+public class ShowingController extends BaseController {
+
 	private final static LocalDateTime ERROR_DATE_TIME = LocalDateTime.of(6, 6, 6, 6, 6);
 
     @Autowired
@@ -323,14 +314,5 @@ public class ShowingController {
     		}
     	});
     }
-    
-    // all custom errors should inherit from FilmrBaseException, so this should work for all of them. 
-    @ExceptionHandler(FilmrBaseException.class)
-    @ResponseBody
-    public ResponseEntity<FilmrExceptionModel> handleBadRequest(HttpServletRequest req, FilmrBaseException ex) {
-    	logger.debug("Catching custom error in controller.. ");
-    	FilmrExceptionModel exceptionModel = new FilmrExceptionModel(req, ex);
-        return new ResponseEntity<FilmrExceptionModel>(exceptionModel, ex.getHttpStatus());
-    } 
 
 }
