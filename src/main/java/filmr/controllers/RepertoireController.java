@@ -3,20 +3,28 @@ package filmr.controllers;
 import java.util.HashSet;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import filmr.domain.Movie;
 import filmr.domain.Repertoire;
+import filmr.helpers.exceptions.FilmrBaseException;
+import filmr.helpers.exceptions.FilmrExceptionModel;
+import filmr.helpers.exceptions.FilmrPOSTRequestWithPredefinedIdException;
+import filmr.helpers.exceptions.FilmrPUTRequestWithMissingEntityIdException;
 import filmr.services.MovieService;
 import filmr.services.RepertoireService;
 
@@ -31,11 +39,10 @@ public class RepertoireController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Repertoire> createRepertoire(@RequestBody Repertoire repertoire) {
-        if (repertoire.getId() != null) {
-			logger.warn("Can't create repertoire with manually set ID");
-            return new ResponseEntity<Repertoire>(new Repertoire(), HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<Repertoire> createRepertoire(@RequestBody Repertoire repertoire) throws FilmrPOSTRequestWithPredefinedIdException {
+        
+    	if(repertoire.getClass() != null) throw new FilmrPOSTRequestWithPredefinedIdException("Trying to create Repertoire, but entity id is already set.");
+    	
         Repertoire savedRepertoire = repertoireService.saveEntity(repertoire);
         return new ResponseEntity<Repertoire>(savedRepertoire, HttpStatus.OK);
     }
@@ -62,11 +69,9 @@ public class RepertoireController {
     		@RequestBody Repertoire repertoire,
     		@RequestParam(name="add_movie_with_id", required = false) Long add_movie_with_id,
     		@RequestParam(name="remove_movie_with_id", required = false) Long remove_movie_with_id
-    		){
-        if(repertoire.getId() == null){
-	        logger.warn("Can only update repertoire with a set ID");
-            return new ResponseEntity<Repertoire>(new Repertoire(), HttpStatus.BAD_REQUEST);
-        }
+    		) throws FilmrPUTRequestWithMissingEntityIdException{
+    	
+    	if(repertoire.getId() == null ) throw new FilmrPUTRequestWithMissingEntityIdException("Trying to update Repertoire, but entity has no id.");
         
         // needed because .movies will be empty otherwise (see READ_ONLY above)
         repertoire = repertoireService.readEntity(repertoire.getId());
@@ -86,8 +91,7 @@ public class RepertoireController {
     
     private Repertoire updateRepertoireMoviesIfNeeded(Repertoire repertoire, Long add_movie_with_id, Long remove_movie_with_id) {
         
-    	// TODO: throw error if id is not set?
-    	System.out.println("Updating repertoire with id: " + repertoire.getId());
+    	logger.info("Updating repertoire with id: " + repertoire.getId());
     	
     	if(repertoire.getMovies() == null) repertoire.setMovies(new HashSet<Movie>());
     	
@@ -103,6 +107,14 @@ public class RepertoireController {
         
         return repertoire;
     }
+    
+    // all custom errors should inherit from FilmrBaseException, so this should work for all of them. 
+    @ExceptionHandler(FilmrBaseException.class)
+    @ResponseBody
+    public FilmrExceptionModel handleBadRequest(HttpServletRequest req, FilmrBaseException ex) {
+    	logger.debug("Catching custom error in controller.. ");
+        return new FilmrExceptionModel(req, ex);
+    } 
 
 }
 
