@@ -61,14 +61,12 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
                 BookingService.save(params, body).$promise.then(
                     function (result) {
                         $rootScope.alert("Thank you!", "Your booking is now confirmed.", 1);
+                        window.location.assign("#/book/showing/" + $scope.currentShowing.id + "/confirm/" + result.id);
                     },
                     function () {
                         $rootScope.genericError();
                     }
                 );
-
-                resetFields();
-                $scope.fetchShowing();
 
             }
         };
