@@ -111,6 +111,12 @@ input.btn {
       background-color: #bb3246;
       border-color: #f1f1f1; }
 
+.confirmBooking {
+  margin-top: 3em;
+  border-top: 1px solid #353535;
+  margin-bottom: 25em;
+  text-align: center; }
+
 .alert {
   position: absolute;
   top: 2em;

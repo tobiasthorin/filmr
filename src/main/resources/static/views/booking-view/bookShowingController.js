@@ -5,8 +5,8 @@
 
 angular.module('filmr')
     .controller('bookShowingController',
-        ['$rootScope', '$scope', '$routeParams', '$location', '$resource', 'CinemaService', 'ShowingService', 'BookingService',
-            function ($rootScope, $scope, $routeParams, $location, $resource, CinemaService, ShowingService, BookingService) {
+        ['$rootScope', '$scope', '$routeParams', '$location', '$resource', 'CinemaService', 'ShowingService',
+            function ($rootScope, $scope, $routeParams, $location, $resource, CinemaService, ShowingService) {
 
 
                 //Execute on page load

@@ -25,14 +25,14 @@ angular.module('filmr')
                 $log.info("---");
                 $log.info("fetch showings");
                 fetchShowingsWithParams();
-            }
+            };
 
             $scope.fetchCinemaScope = function() {
                 $log.info("---");
                 $log.info("fetch cinema scope");
                 fetchTheatersAndRepertoireInCinema();
                 fetchShowingsWithParams();
-            }
+            };
 
             $scope.disableShowing = function (showing) {
                 $log.info("---");
@@ -52,7 +52,7 @@ angular.module('filmr')
                         showing.isDisabled = !showing.isDisabled;
                     }
                 );
-            }
+            };
 
             $scope.validateCreateShowing = function() {
                 if(typeof $scope.movieForShowing != "object") return false;
@@ -62,7 +62,7 @@ angular.module('filmr')
                 if(typeof $scope.price == "number" && $scope.price<0) return false;
                 if(typeof $scope.price == "number" && $scope.price>8192) return false;
                 return true;
-            }
+            };
 
             $scope.createShowing = function() {
                 $log.info("---");
@@ -105,7 +105,7 @@ angular.module('filmr')
                 $scope.theater = {};
                 $scope.showingIsDisabled = false;
                 fetchShowingsWithParams();
-            }
+            };
 
             function fetchCinemas(callbackWhenDone) {
                 $log.info("---");

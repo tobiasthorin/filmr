@@ -7,6 +7,7 @@ describe("Tests for seatSelectController.js", function () {
     var $controller, $scope, $routeParams;
 
     //Mocks
+    var savedBooking = {};
     var fetchedShowing = {
         showDateTime: "2016-05-12T12:00",
         movie: {
@@ -58,6 +59,18 @@ describe("Tests for seatSelectController.js", function () {
         }
     };
 
+    var BookingService = {
+        "save": function (params, obj) {
+            return {
+                "$promise": {
+                    then: function (success, fail) {
+                        //success?
+                    }
+                }
+            }
+        }
+    };
+
     //Injections
     beforeEach(inject(function (_$controller_, _$routeParams_) {
         $controller = _$controller_;
@@ -67,7 +80,8 @@ describe("Tests for seatSelectController.js", function () {
             'seatSelectController', {
                 $scope: $scope,
                 $routeParams: $routeParams,
-                ShowingService: ShowingService
+                ShowingService: ShowingService,
+                BookingService: BookingService
             });
     }));
 
@@ -114,6 +128,34 @@ describe("Tests for seatSelectController.js", function () {
         it("Checks if a seat is booked", function () {
             expect($scope.checkIfBooked(1)).toBeTruthy();
             expect($scope.checkIfBooked(99)).toBeFalsy();
+        });
+
+        it("Updates the number of selected seats", function () {
+            expect($scope.numberOfSelectedSeats).toEqual(0);
+            $scope.toggleSelection(10);
+            expect($scope.numberOfSelectedSeats).toEqual(1);
+            $scope.toggleSelection(9);
+            expect($scope.numberOfSelectedSeats).toEqual(2);
+        });
+    });
+
+    describe("Verifications", function () {
+        it("Verifies the phone number", function () {
+            $scope.numberOfSelectedSeats = 5;
+            $scope.phoneNumber = "";
+            expect($scope.validateInputs()).toEqual(false);
+            $scope.phoneNumber = "abc";
+            expect($scope.validateInputs()).toEqual(false);
+            $scope.phoneNumber = 123;
+            expect($scope.validateInputs()).toEqual(true);
+        });
+
+        it("Verifies the seats selected", function () {
+            $scope.phoneNumber = 123;
+            $scope.numberOfSelectedSeats = 0;
+            expect($scope.validateInputs()).toEqual(false);
+            $scope.numberOfSelectedSeats = 5;
+            expect($scope.validateInputs()).toEqual(true);
         });
     });
 

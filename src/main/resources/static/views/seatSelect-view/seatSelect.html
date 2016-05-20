@@ -24,4 +24,12 @@
         </div>
 
     </div>
+
+    <div class="confirmBooking">
+        <h2>Confirm your booking</h2>
+        <p>Booked seats: {{numberOfSelectedSeats}}</p>
+        <h3>Enter phone number</h3>
+        <input type="text" ng-model="phoneNumber" placeholder="Numbers only">
+        <button class="btn btn-default" ng-click="submitBooking()" ng-disabled="!validateInputs()">Confirm</button>
+    </div>
 </div>
