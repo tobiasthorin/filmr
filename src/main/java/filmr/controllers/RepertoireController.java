@@ -41,7 +41,7 @@ public class RepertoireController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Repertoire> createRepertoire(@RequestBody Repertoire repertoire) throws FilmrPOSTRequestWithPredefinedIdException {
         
-    	if(repertoire.getClass() != null) throw new FilmrPOSTRequestWithPredefinedIdException("Trying to create Repertoire, but entity id is already set.");
+    	if(repertoire.getId() != null) throw new FilmrPOSTRequestWithPredefinedIdException("Trying to create Repertoire, but entity id is already set.");
     	
         Repertoire savedRepertoire = repertoireService.saveEntity(repertoire);
         return new ResponseEntity<Repertoire>(savedRepertoire, HttpStatus.OK);

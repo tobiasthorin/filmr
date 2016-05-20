@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestContextManager;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -112,6 +113,9 @@ public class BookingTest {
         seat.setState(SeatState.ENABLED);
         theater.getRows().get(0).getSeats().add(seat);
 
+        rowRepository.save(theater.getRows());
+        seatRepository.save(seat);
+
         savedTheater = theaterRepository.save(theater);
 
 
@@ -145,7 +149,7 @@ public class BookingTest {
         assertEquals("Compare phone numbers", booking.getPhoneNumber(), booking.getPhoneNumber());
     }
 
-    @Test
+    @Test (expected = HttpClientErrorException.class)
     public void testCreateOnAlreadyBooked() {
         Booking booking = EntityFactory.createBooking(savedShowing);
 
@@ -157,7 +161,7 @@ public class BookingTest {
         assertEquals("Make sure the http was unsuccessfull", HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
     }
 
-    @Test (expected = HttpServerErrorException.class)
+    @Test (expected = HttpClientErrorException.class)
     public void testCreateBookingOnShowingWithSeatOnOtherShowing() {
         Booking booking = EntityFactory.createBooking(savedShowing);
         List<Seat> seats = savedExclusiveShowing.getTheater().getRows().get(0).getSeats();
@@ -168,7 +172,7 @@ public class BookingTest {
         ResponseEntity<Booking> responseEntity = restTemplate.postForEntity(baseUrl+"?for_showing_with_id="+id, booking, Booking.class);
 
         //Assert
-        assertEquals("Make sure the http was unsuccessfull", HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+        assertTrue("Make sure we get the right error code", responseEntity.getStatusCode().is4xxClientError());
     }
 
     @Test
