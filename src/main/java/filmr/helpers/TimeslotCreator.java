@@ -32,7 +32,7 @@ public class TimeslotCreator {
     		
     	List<Showing> extendedListOfShowings = new ArrayList<>();
     	
-    	// to find actual empty timeslots, the showings we are comparing must be
+    	// to find actual empty time slots, the showings we are comparing must be
     	// from the same theater. So first split into lists grouped by theater
     	Map<Long, List<Showing>> showingsListsByTheater = getShowingsListGroupedByShowingTheater(showings);
     	
@@ -99,12 +99,7 @@ public class TimeslotCreator {
     	long timegapInMinutes = 
     			showingWithMovieEndTimeStartingTheTimegap.getShowingEndTime()
     			.until(showingWithMovieStartTimeEndingTheTimegap.getShowDateTime(), ChronoUnit.MINUTES);
-//    	Long potentialTimeGapStart = showingWithMovieEndTimeStartingTheTimegap.getShowingEndTime().getTime();
-//    	Long potentialTimeGapEnd =  showingWithMovieStartTimeEndingTheTimegap.getShowDateTime().getTime();
-//    	
-//    	Long timegapInMillis = potentialTimeGapEnd - potentialTimeGapStart;
-//    	Long timegapInMinutes = Math.floorDiv(timegapInMillis, ONE_MINUTE_IN_MILLIS);
-    	
+
     	return timegapInMinutes;
     }
     
