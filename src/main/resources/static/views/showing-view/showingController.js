@@ -7,6 +7,7 @@ angular.module('filmr')
             //Publicly accessible variables
             $scope.moviesInRepertoire = [];
             $scope.theatersInCinema = [];
+	        $scope.showingSchedule = [];
             $scope.allShowings = [];
             $scope.allCinemas = [];
             $scope.theater = {};
@@ -144,7 +145,7 @@ angular.module('filmr')
                 if($scope.toDate) params.to_date = parseDateStringToValidAPIDateString($scope.toDate);
                 if($scope.showingIsDisabled) params.show_disabled_showings = $scope.showingIsDisabled;
                 if($scope.movieForShowing) params.include_empty_slots_for_movie_of_length = $scope.movieForShowing.lengthInMinutes;
-
+	            params.group_by_theater = false;
 
                 $log.debug("params:");
                 $log.debug(params);
@@ -153,7 +154,7 @@ angular.module('filmr')
                     function (result){
                         console.log("in showings with params");
                         console.log(result);
-                        $scope.allShowings = result;
+                        $scope.showingSchedule = result;
                     },
                     function (error) {
                         $rootScope.errorHandler(error);
