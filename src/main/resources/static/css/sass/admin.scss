@@ -236,6 +236,18 @@ input.btn {
   float: left;
 }
 
+.pullLeft{
+  float: left;
+}
+
+.pullRight{
+  float: right;
+}
+
+.btn.pullRight{
+  padding: 3px 3px;
+}
+
 .form-control{
   display: inline;
   width:80%;
