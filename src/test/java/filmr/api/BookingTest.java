@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestContextManager;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -30,14 +31,12 @@ import java.util.List;
 import static org.junit.Assert.assertTrue;
 import static junit.framework.TestCase.assertEquals;
 
-@RunWith(Parameterized.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(Application.class)
 @WebIntegrationTest
 @ActiveProfiles({"test"})
 public class BookingTest {
 
-    //Used instead of SpringJunit4ClassRunner in @RunWith
-    private TestContextManager testContextManager;
     //Variables
     @Autowired
     private BookingRepository bookingRepository;
@@ -69,26 +68,12 @@ public class BookingTest {
     //Parameters
     private Long id;
 
-    //ID, ? TODO parameters pointless for this test
-    @Parameterized.Parameters
-    public static Collection<Object[]> parameters() {
-        return Arrays.asList(new Object[][]{
-                {new Long(1)},
-        });
-    }
-
-    public BookingTest(Long id) {
-        baseUrl = "http://localhost:8080/filmr/api/bookings/";
-    }
-
     @Before
     public void resetDatabase() throws Exception {
-        //Initialize replacement for SpringJunit4ClassRunner
-        testContextManager = new TestContextManager(getClass());
-        testContextManager.prepareTestInstance(this);
-
         //Initialize restTemplate
         restTemplate = new RestTemplate();
+
+        baseUrl = "http://localhost:8080/filmr/api/bookings/";
 
         //clear everything
         bookingRepository.deleteAllInBatch();
@@ -106,7 +91,7 @@ public class BookingTest {
         savedCinema = cinemaRepository.save(cinema);
         Theater theater = EntityFactory.createTheater("Global Test Theater", savedCinema);
 
-        //TODO factory
+        //TODO factory? do we need it?
         Seat seat = new Seat();
         seat.setRow(theater.getRows().get(0));
         seat.setSeatLabel("Label");

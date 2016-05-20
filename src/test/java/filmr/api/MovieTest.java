@@ -15,6 +15,7 @@ import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestContextManager;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -25,14 +26,12 @@ import java.util.Collection;
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-@RunWith(Parameterized.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(Application.class)
 @WebIntegrationTest
 @ActiveProfiles({"test"})
 public class MovieTest {
 
-    //Used instead of SpringJunit4ClassRunner in @RunWith
-    private TestContextManager testContextManager;
     //Variables
     @Autowired
     private MovieRepository movieRepository;
@@ -46,23 +45,9 @@ public class MovieTest {
     //Parameters
     private Long id;
 
-    //ID, ? TODO parameters pointless for this test
-    @Parameterized.Parameters
-    public static Collection<Object[]> parameters() {
-        return Arrays.asList(new Object[][]{
-                {new Long(1)},
-        });
-    }
-
-    public MovieTest(Long id) {
-        baseUrl = "http://localhost:8080/filmr/api/movies/";
-    }
-
     @Before
 	public void resetDatabase() throws Exception {
-        //Initialize replacement for SpringJunit4ClassRunner
-        testContextManager = new TestContextManager(getClass());
-        testContextManager.prepareTestInstance(this);
+        baseUrl = "http://localhost:8080/filmr/api/movies/";
 
         //Initialize restTemplate
         restTemplate = new RestTemplate();
@@ -118,8 +103,6 @@ public class MovieTest {
         restTemplate.put(urlWithId, savedMovie);
 
         Movie updatedMovie = movieRepository.findOne(id);
-//        ResponseEntity<Movie> responseEntity = restTemplate.getForEntity(urlWithId, Movie.class);
-//        Movie updatedMovie = responseEntity.getBody();
 
         //Assert
         assertEquals("Assert that the object is updated", savedMovie, updatedMovie);
