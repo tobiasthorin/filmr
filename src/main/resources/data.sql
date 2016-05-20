@@ -35,11 +35,11 @@ INSERT INTO movie (title, length_in_minutes, description, default_price)
 	
 /* THEATERS */
 
-INSERT INTO theater (name, cinema_id, disabled) VALUES ('Lasses Stora', 1, FALSE);
-INSERT INTO theater (name, cinema_id, disabled) VALUES ('Lasses Lilla', 1, FALSE);
+INSERT INTO theater (name, cinema_id, disabled, using_continuous_seat_labeling) VALUES ('Lasses Stora', 1, FALSE, b'1');
+INSERT INTO theater (name, cinema_id, disabled, using_continuous_seat_labeling) VALUES ('Lasses Lilla', 1, FALSE, b'1');
 
-INSERT INTO theater (name, cinema_id, disabled) VALUES ('Sal 1', 2, FALSE);
-INSERT INTO theater (name, cinema_id, disabled) VALUES ('Sal 2', 2, FALSE);
+INSERT INTO theater (name, cinema_id, disabled, using_continuous_seat_labeling) VALUES ('Sal 1', 2, FALSE, b'1');
+INSERT INTO theater (name, cinema_id, disabled, using_continuous_seat_labeling) VALUES ('Sal 2', 2, FALSE, b'1');
 
 /* ROWS AND SEATS */
 INSERT INTO row (row_label, theater_id) VALUES ('Rad 1', 1);
