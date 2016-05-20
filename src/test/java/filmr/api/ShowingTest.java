@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestContextManager;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -30,14 +31,12 @@ import java.util.HashMap;
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-@RunWith(Parameterized.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(Application.class)
 @WebIntegrationTest
 @ActiveProfiles({"test"})
 public class ShowingTest {
 
-    //Used instead of SpringJunit4ClassRunner in @RunWith
-    private TestContextManager testContextManager;
     //Variables
     @Autowired
     private ShowingRepository showingRepository;
@@ -65,23 +64,13 @@ public class ShowingTest {
     //Parameters
     private Long id;
 
-    //ID, ? TODO parameters pointless for this test
-    @Parameterized.Parameters
-    public static Collection<Object[]> parameters() {
-        return Arrays.asList(new Object[][]{
-                {new Long(1)},
-        });
-    }
-
     public ShowingTest(Long id) {
         baseUrl = "http://localhost:8080/filmr/api/showings/";
     }
 
     @Before
     public void resetDatabase() throws Exception {
-        //Initialize replacement for SpringJunit4ClassRunner
-        testContextManager = new TestContextManager(getClass());
-        testContextManager.prepareTestInstance(this);
+        baseUrl = "http://localhost:8080/filmr/api/showings/";
 
         //Initialize restTemplate
         restTemplate = new RestTemplate();
@@ -132,7 +121,7 @@ public class ShowingTest {
 
     @Test(expected = HttpMessageNotWritableException.class)
     public void testCreateWithNullMovie() {
-        //TODO this is made for phun! not really but anyway
+        //TODO actually properly finish this ya lazy tyke
         Showing showing = EntityFactory.createShowing(LocalDateTime.now(), null, savedTheater, new ArrayList<>());
 
         ResponseEntity<Showing> responseEntity = restTemplate.postForEntity(baseUrl, showing, Showing.class);

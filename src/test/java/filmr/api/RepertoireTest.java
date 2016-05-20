@@ -17,6 +17,7 @@ import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestContextManager;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
@@ -28,14 +29,12 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-@RunWith(Parameterized.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(Application.class)
 @WebIntegrationTest
 @ActiveProfiles({"test"})
 public class RepertoireTest {
 
-    //Used instead of SpringJunit4ClassRunner in @RunWith
-    private TestContextManager testContextManager;
     //Variables
     @Autowired
     private RepertoireRepository repertoireRepository;
@@ -52,23 +51,9 @@ public class RepertoireTest {
     //Parameters
     private Long id;
 
-    //ID, ? TODO parameters pointless for this test
-    @Parameterized.Parameters
-    public static Collection<Object[]> parameters() {
-        return Arrays.asList(new Object[][]{
-                {new Long(1)},
-        });
-    }
-
-    public RepertoireTest(Long id) {
-        baseUrl = "http://localhost:8080/filmr/api/repertoires/";
-    }
-
     @Before
     public void resetDatabase() throws Exception {
-        //Initialize replacement for SpringJunit4ClassRunner
-        testContextManager = new TestContextManager(getClass());
-        testContextManager.prepareTestInstance(this);
+        baseUrl = "http://localhost:8080/filmr/api/repertoires/";
 
         //Initialize restTemplate
         restTemplate = new RestTemplate();
