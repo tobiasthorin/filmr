@@ -37,6 +37,8 @@ public class TheaterController {
 		logger.debug(String.format("Creating theater with number_of_rows = %d, max_row_size  = %d ", number_of_rows, max_row_size));
 		
 		theater = theaterService.buildTheaterWithRowsAndSeats(theater,number_of_rows,max_row_size);
+		
+		theater.setUsingContinuousSeatLabeling(false);
 		Theater savedTheater = theaterService.saveEntity(theater);
 		return new ResponseEntity<Theater>(savedTheater, HttpStatus.OK);
 	}
@@ -100,6 +102,9 @@ public class TheaterController {
 		theaterService.nameRowsAndSeats(theater, reset_seat_numbers_for_each_row);
 
 		Theater updatedTheater = theaterService.saveEntity(theater);
+		
+		// set value for front-end devs to read
+		updatedTheater.setUsingContinuousSeatLabeling(!reset_seat_numbers_for_each_row);
 		return new ResponseEntity<Theater>(updatedTheater, HttpStatus.OK);
 	}
 
