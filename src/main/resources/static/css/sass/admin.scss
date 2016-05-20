@@ -10,6 +10,7 @@ $cinema-red-light: #e88989;
 $cinema-red: #bb3246;
 $cinema-red-dark: #5c111d;
 $cinema-red-darker: #25070c;
+$cinema-gold: #f3ca29;
 
 $booked-seat: #444444;
 $booked-seat-border: #888888;
@@ -194,13 +195,53 @@ input.btn {
   text-align: center;
 }
 
+.confirmWrapper {
+  .hooray {
+    background: $cinema-red;
+    font-family: serif;
+    text-align: center;
+
+    border-radius: 5px;
+    padding: 1em;
+
+    h1 {
+      color: $text-light;
+      text-align: center;
+      font-size: 3em;
+      font-style: normal;
+
+      padding: 0;
+
+      background-color: transparent;
+
+    }
+
+    h2 {
+      font-size: 7em;
+      color: $cinema-gold;
+      margin: 0;
+    }
+
+    h3 {
+      font-style: normal;
+      color: $cinema-red-light;
+      margin: 0;
+    }
+
+    .divider {
+      border-top: 1px solid $text-light;
+      margin: 4em 0;
+    }
+  }
+}
+
 .alert {
   position: absolute;
   top: 2em;
   right: 2em;
   padding: 3em;
   z-index: 10;
-  box-shadow: 0px 0px 1em rgba(#000000, 0.2);
+  box-shadow: 0 0 1em rgba(#000000, 0.2);
 }
 
 .bookingTableObject {
