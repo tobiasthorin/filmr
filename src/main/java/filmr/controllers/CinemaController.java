@@ -79,9 +79,10 @@ public class CinemaController {
     // all custom errors should inherit from FilmrBaseException, so this should work for all of them. 
     @ExceptionHandler(FilmrBaseException.class)
     @ResponseBody
-    public FilmrExceptionModel handleBadRequest(HttpServletRequest req, FilmrBaseException ex) {
+    public ResponseEntity<FilmrExceptionModel> handleBadRequest(HttpServletRequest req, FilmrBaseException ex) {
     	logger.debug("Catching custom error in controller.. ");
-        return new FilmrExceptionModel(req, ex);
+    	FilmrExceptionModel exceptionModel = new FilmrExceptionModel(req, ex);
+        return new ResponseEntity<FilmrExceptionModel>(exceptionModel, ex.getHttpStatus());
     } 
 
 }
