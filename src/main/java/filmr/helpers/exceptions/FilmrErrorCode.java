@@ -28,7 +28,7 @@ public enum FilmrErrorCode {
 	F303(HttpStatus.PRECONDITION_FAILED, "Showing collided with existing showing(s)"),
 	
 	// other.
-	F900(HttpStatus.BAD_REQUEST, "Invalid date format detected. Use ISO-8601 (YYYY-MM-DDTHH:mm:ss) or ")
+	F900(HttpStatus.BAD_REQUEST, "Invalid date format detected. Use YYYY-MM-DDTHH:mm:ss")
 	
 	; // end of enum declaration
 	

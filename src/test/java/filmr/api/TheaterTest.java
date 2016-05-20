@@ -19,6 +19,7 @@ import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestContextManager;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -33,13 +34,11 @@ import java.util.Map.Entry;
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-//TODO when run after other tests it breaks (showing api integration test)
-
-@RunWith(Parameterized.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(Application.class)
 @WebIntegrationTest
 @ActiveProfiles({"test"})
-public class TheaterAPIIntegrationTest {
+public class TheaterTest {
 
     //Used instead of SpringJunit4ClassRunner in @RunWith
     private TestContextManager testContextManager;
@@ -63,23 +62,9 @@ public class TheaterAPIIntegrationTest {
     //Parameters
     private Long id;
 
-    //ID, ? TODO parameters pointless for this test
-    @Parameterized.Parameters
-    public static Collection<Object[]> parameters() {
-        return Arrays.asList(new Object[][]{
-                {new Long(1)},
-        });
-    }
-
-    public TheaterAPIIntegrationTest(Long id) {
-        baseUrl = "http://localhost:8080/filmr/api/theaters/";
-    }
-
     @Before
     public void resetDatabase() throws Exception {
-        //Initialize replacement for SpringJunit4ClassRunner
-        testContextManager = new TestContextManager(getClass());
-        testContextManager.prepareTestInstance(this);
+        baseUrl = "http://localhost:8080/filmr/api/theaters/";
 
         //Initialize restTemplate
         restTemplate = new RestTemplate();
@@ -106,7 +91,7 @@ public class TheaterAPIIntegrationTest {
     @Test
     public void testCreate() throws Exception {
     	
-    	// TODO: fix test with params ?number_of_rows=2&max_row_size=4
+    	// TODO: fix test with params ?number_of_rows=2&max_row_size=4  <-- Who wrote this?
     	HashMap<String,String> parameters = new HashMap<String, String>();
     	parameters.put("number_of_rows", "4");
     	parameters.put("max_row_size", "5");
@@ -124,9 +109,7 @@ public class TheaterAPIIntegrationTest {
 
         //Assert
         assertTrue("Make sure the http was successfull", responseEntity.getStatusCode().is2xxSuccessful());
-        //TODO not allowed to read cinema
         assertEquals("Assert Theater Name", theater.getName(), postedTheater.getName());
-
         assertEquals("Assert that amount of theaters is +1", tableSize +1, theaterRepository.findAll().size());
     }
 
@@ -134,7 +117,6 @@ public class TheaterAPIIntegrationTest {
     public void testRead() {
         ResponseEntity<Theater> responseEntity = restTemplate.getForEntity(urlWithId, Theater.class);
         Theater theater = responseEntity.getBody();
-
 
         //Assert
         assertTrue("Make sure the call was succesfull", responseEntity.getStatusCode().is2xxSuccessful());
@@ -144,7 +126,6 @@ public class TheaterAPIIntegrationTest {
 
     @Test
     public void testUpdate() throws Exception {
-
     	// setup values to update to
     	String updatedTheaterName = "Test updated theater name";
 
@@ -174,7 +155,7 @@ public class TheaterAPIIntegrationTest {
 
         restTemplate.put(urlWithParams, savedTheater);
 
-        //Theater updatedTheater = theaterRepository.findOne(id); TODO remember why this wont work sometimes and fix
+        //Theater updatedTheater = theaterRepository.findOne(id); //TODO remember why this wont work sometimes and fix
         Theater updatedTheater = restTemplate.getForEntity(urlWithId, Theater.class).getBody();
 
         assertEquals("Assert that the row size is updated", savedTheater, updatedTheater);

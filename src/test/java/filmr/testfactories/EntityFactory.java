@@ -29,6 +29,7 @@ public class EntityFactory {
         ArrayList<Row> rows;
         Cinema cinema;
         ArrayList<Showing> showings;
+        Boolean usingContinuousSeatLabeling;
 
         theaterName = name;
 
@@ -39,6 +40,7 @@ public class EntityFactory {
         cinema = savedCinema;
 
         showings = new ArrayList<>(); //TODO should be empty no errors?
+        usingContinuousSeatLabeling = false;
 
         Row r = createStandardRowForTheater(theater);
         rows.add(r);
@@ -49,6 +51,7 @@ public class EntityFactory {
         theater.setRows(rows);
 //        theater.setCinema(cinema);
 //        theater.setShowings(showings);
+        theater.setUsingContinuousSeatLabeling(usingContinuousSeatLabeling);
 
 
         return theater;
@@ -79,7 +82,7 @@ public class EntityFactory {
         return showing;
     }
     
-	public Seat createStandardSeatForRow(Row row){
+	public static Seat createStandardSeatForRow(Row row){
 		Seat seat = new Seat();
 		seat.setState(SeatState.ENABLED);
 		seat.setRow(row);
@@ -91,7 +94,10 @@ public class EntityFactory {
 		Row row = new Row();
 		row.setSeats(new ArrayList<Seat>() );
 		row.setTheater(theater);
-		
+//        Seat seat = createStandardSeatForRow(row);
+//		List<Seat> seats = new ArrayList<>();
+//        seats.add(seat);
+//        row.setSeats(seats);
 		return row;
 	}
 

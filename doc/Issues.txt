@@ -1,11 +1,7 @@
 - cinema name spacing
 Frontend
 
--breadcrumb navigering
-
   showings
-    - validate date on new showing
-    - clear fields after submitting showing
     - set background color on disabled showings
 
   Theater

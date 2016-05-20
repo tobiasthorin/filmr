@@ -2,13 +2,11 @@ package filmr.controllers;
 
 import filmr.domain.Cinema;
 import filmr.domain.Repertoire;
-import filmr.helpers.exceptions.FilmrBaseException;
-import filmr.helpers.exceptions.FilmrExceptionModel;
 import filmr.helpers.exceptions.FilmrPOSTRequestWithPredefinedIdException;
 import filmr.helpers.exceptions.FilmrPUTRequestWithMissingEntityIdException;
 import filmr.services.CinemaService;
 import filmr.services.RepertoireService;
-import org.apache.log4j.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,22 +14,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 @RestController
 @RequestMapping(value="/api/cinemas")
-public class CinemaController {
+public class CinemaController extends BaseController{
     @Autowired
     private CinemaService cinemaService;
     @Autowired
     private RepertoireService repertoireService;
-	private final static org.apache.log4j.Logger logger = Logger.getLogger(TheaterController.class);
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Cinema> createCinema(@RequestBody Cinema cinema) throws FilmrPOSTRequestWithPredefinedIdException {
         if(cinema.getId() != null) {
-            // return new ResponseEntity<Cinema>(new Cinema(), HttpStatus.BAD_REQUEST);
 			logger.warn("Can't create cinema with manually set ID");
         	throw new FilmrPOSTRequestWithPredefinedIdException("Trying to create Cinema, but sending Cinema with predefined id.");
         }
@@ -82,14 +76,6 @@ public class CinemaController {
         return new ResponseEntity(HttpStatus.OK);
     }
     
-    // all custom errors should inherit from FilmrBaseException, so this should work for all of them. 
-    @ExceptionHandler(FilmrBaseException.class)
-    @ResponseBody
-    public ResponseEntity<FilmrExceptionModel> handleBadRequest(HttpServletRequest req, FilmrBaseException ex) {
-    	logger.debug("Catching custom error in controller.. ");
-    	FilmrExceptionModel exceptionModel = new FilmrExceptionModel(req, ex);
-        return new ResponseEntity<FilmrExceptionModel>(exceptionModel, ex.getHttpStatus());
-    } 
 
 }
 

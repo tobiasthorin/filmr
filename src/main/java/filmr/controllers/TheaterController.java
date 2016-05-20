@@ -1,12 +1,10 @@
 package filmr.controllers;
 
 import filmr.domain.Theater;
-import filmr.helpers.exceptions.FilmrBaseException;
-import filmr.helpers.exceptions.FilmrExceptionModel;
 import filmr.helpers.exceptions.FilmrPOSTRequestWithPredefinedIdException;
 import filmr.helpers.exceptions.FilmrPUTRequestWithMissingEntityIdException;
 import filmr.services.TheaterService;
-import org.apache.log4j.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 @RestController
 @RequestMapping(value = "/api/theaters")
-public class TheaterController {
+public class TheaterController extends BaseController {
 
-	private final static org.apache.log4j.Logger logger = Logger.getLogger(TheaterController.class);
 	@Autowired
 	private TheaterService theaterService;
 
@@ -101,10 +96,11 @@ public class TheaterController {
 		
 		theaterService.nameRowsAndSeats(theater, reset_seat_numbers_for_each_row);
 
+		// set value for front-end devs to read
+		theater.setUsingContinuousSeatLabeling(!reset_seat_numbers_for_each_row);
+		
 		Theater updatedTheater = theaterService.saveEntity(theater);
 		
-		// set value for front-end devs to read
-		updatedTheater.setUsingContinuousSeatLabeling(!reset_seat_numbers_for_each_row);
 		return new ResponseEntity<Theater>(updatedTheater, HttpStatus.OK);
 	}
 
@@ -114,14 +110,5 @@ public class TheaterController {
 		theaterService.deleteEntity(id);
 		return new ResponseEntity(HttpStatus.OK);
 	}
-	
-	// all custom errors should inherit from FilmrBaseException, so this should work for all of them. 
-    @ExceptionHandler(FilmrBaseException.class)
-    @ResponseBody
-    public ResponseEntity<FilmrExceptionModel> handleBadRequest(HttpServletRequest req, FilmrBaseException ex) {
-    	logger.debug("Catching custom error in controller.. ");
-    	FilmrExceptionModel exceptionModel = new FilmrExceptionModel(req, ex);
-        return new ResponseEntity<FilmrExceptionModel>(exceptionModel, ex.getHttpStatus());
-    } 
 
 }
