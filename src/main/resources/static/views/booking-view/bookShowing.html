@@ -23,14 +23,16 @@
         </div>
 
 		<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-			<table class="table">
+			
+			<table class="table" ng-repeat="(date,theaters) in allShowings">
 				<thead>
 				<tr>
-					<th></th>
+					<th>{{(date)}}</th>
 				</tr>
 				</thead>
-				<tbody ng-repeat="showing in allShowings">
-				<tr class="bookingTableObject" ng-class="{'fullBookedShowing': showing.availableTickets <= 0}">
+				<tbody ng-repeat="(theaterName, showings) in theaters">
+				<tr><td>{{theaterName}}<td></tr>
+				<tr class="bookingTableObject" ng-class="{'fullBookedShowing': showing.availableTickets <= 0}" ng-repeat="showing in showings">
                     <td>
                     <table>
                         <tr>
@@ -55,6 +57,7 @@
 				</tr>
 				</tbody>
 			</table>
+			</div>
 		</div>
     </div>
 </div>

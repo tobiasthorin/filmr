@@ -5,8 +5,8 @@
 
 angular.module('filmr')
 	.controller('bookShowingController',
-		['$rootScope', '$scope', '$routeParams', '$location', '$resource','CinemaService','ShowingService','BookingService',
-		function ($rootScope, $scope, $routeParams, $location, $resource, CinemaService, ShowingService, BookingService) {
+		['$rootScope', '$scope', '$routeParams', '$location', '$resource','CinemaService','ScheduleService','BookingService',
+		function ($rootScope, $scope, $routeParams, $location, $resource, CinemaService, ScheduleService, BookingService) {
 
 
 			//Execute on page load
@@ -103,7 +103,7 @@ angular.module('filmr')
 				}
 				console.log(params);
 				console.log("Get Showings with Params");
-				ShowingService.query(params).$promise.then(
+				ScheduleService.query(params).$promise.then(
 					function (result){
 						console.log("in showings with params");
 						console.log(result);
@@ -123,6 +123,5 @@ angular.module('filmr')
 				console.log(r);
 				return r;
 			}
-
 		}]);
 

@@ -72,11 +72,13 @@
         </div>
 
         <div class="theaterRow" ng-repeat="row in theaterRows">
-            <div class="theaterSeat"
-                 ng-class="{'disabledSeat': seat.state == 'DISABLED', 'not_a_seat':seat.state == 'NOT_A_SEAT'}"
-                 ng-repeat="seat in theaterRows[$index].seats">
-                <div class="seatLabel" ng-click="toggleSeatState(seat)">{{seat.seatLabel}}</div>
+            <div class="seatContainer" ng-repeat="seat in theaterRows[$index].seats">
+                <div class="theaterSeat"
+                     ng-class="{'disabledSeat': seat.state == 'DISABLED', 'not_a_seat':seat.state == 'NOT_A_SEAT'}">
+                    <div class="seatLabel" ng-click="toggleSeatState(seat)">{{seat.seatLabel}}</div>
+                </div>
             </div>
         </div>
+
     </div>
 </div>

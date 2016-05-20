@@ -1,12 +1,13 @@
 
 angular.module('filmr')
     .controller('showingController',
-        ['$location', '$rootScope', '$scope', '$routeParams', '$resource', '$log', 'CinemaService', 'ShowingService',
-            function ($location, $rootScope, $scope, $routeParams, $resource, $log, CinemaService, ShowingService) {
+        ['$location', '$rootScope', '$scope', '$routeParams', '$resource', '$log', 'CinemaService', 'ShowingService','ScheduleService',
+            function ($location, $rootScope, $scope, $routeParams, $resource, $log, CinemaService, ShowingService, ScheduleService) {
 
             //Publicly accessible variables
             $scope.moviesInRepertoire = [];
             $scope.theatersInCinema = [];
+	        $scope.showingSchedule = [];
             $scope.allShowings = [];
             $scope.allCinemas = [];
             $scope.theater = {};
@@ -25,14 +26,14 @@ angular.module('filmr')
                 $log.info("---");
                 $log.info("fetch showings");
                 fetchShowingsWithParams();
-            }
+            };
 
             $scope.fetchCinemaScope = function() {
                 $log.info("---");
                 $log.info("fetch cinema scope");
                 fetchTheatersAndRepertoireInCinema();
                 fetchShowingsWithParams();
-            }
+            };
 
             $scope.disableShowing = function (showing) {
                 $log.info("---");
@@ -52,7 +53,7 @@ angular.module('filmr')
                         showing.isDisabled = !showing.isDisabled;
                     }
                 );
-            }
+            };
 
             $scope.validateCreateShowing = function() {
                 if(typeof $scope.movieForShowing != "object") return false;
@@ -61,8 +62,15 @@ angular.module('filmr')
                 if(!(typeof $scope.price == "number")) return false;
                 if(typeof $scope.price == "number" && $scope.price<0) return false;
                 if(typeof $scope.price == "number" && $scope.price>8192) return false;
+                if(!(typeof $scope.minuteForShowing == "number")) return false;
+                if(typeof $scope.minuteForShowing == "number" && $scope.minuteForShowing<0) return false;
+                if(typeof $scope.minuteForShowing == "number" && $scope.minuteForShowing>59) return false;
+                if(!(typeof $scope.hourForShowing == "number")) return false;
+                if(typeof $scope.hourForShowing == "number" && $scope.hourForShowing<0) return false;
+                if(typeof $scope.hourForShowing == "number" && $scope.hourForShowing>23) return false;
+
                 return true;
-            }
+            };
 
             $scope.createShowing = function() {
                 $log.info("---");
@@ -79,17 +87,19 @@ angular.module('filmr')
                 var newShowing = new ShowingService();
                 newShowing.movie = $scope.movieForShowing;
                 newShowing.theater =$scope.theaterForShowing;
-                newShowing.showDateTime = parseDateStringToValidAPIDateString($scope.dateForShowing);
+                newShowing.showDateTime = makeDateTimeForApi($scope.dateForShowing,$scope.hourForShowing,$scope.minuteForShowing);
                 newShowing.price = $scope.price;
                 newShowing.isDisabled = false;
-                console.log("Date is: "+newShowing.showDateTime);
+                $log.debug(newShowing);
 
-                ShowingService.save(newShowing, function (result) {
+                ShowingService.save(newShowing).$promise.then(function (result){
+                        $log.debug(result);
                         $rootScope.alert("Success! ","Showing added",1);
                         fetchShowingsWithParams();
+                        clearAddShowingFields();
                     },
                     function (error) {
-                        if(error.data && error.data.exception=="filmr.helpers.exceptions.FilmrTimeOccupiedException") {
+                        if(error.data && error.data.exception=="FilmrShowingTimeOccupiedException") {
                             $rootScope.alert("Error! ","Time is already occupied",2);
                         }
                         else $rootScope.errorHandler(error);
@@ -109,7 +119,7 @@ angular.module('filmr')
                 $scope.theater = {};
                 $scope.showingIsDisabled = false;
                 fetchShowingsWithParams();
-            }
+            };
 
             function fetchCinemas(callbackWhenDone) {
                 $log.info("---");
@@ -144,16 +154,16 @@ angular.module('filmr')
                 if($scope.toDate) params.to_date = parseDateStringToValidAPIDateString($scope.toDate);
                 if($scope.showingIsDisabled) params.show_disabled_showings = $scope.showingIsDisabled;
                 if($scope.movieForShowing) params.include_empty_slots_for_movie_of_length = $scope.movieForShowing.lengthInMinutes;
-
+	            params.group_by_theater = false;
 
                 $log.debug("params:");
                 $log.debug(params);
 
-                ShowingService.query(params).$promise.then(
+	            ScheduleService.query(params).$promise.then(
                     function (result){
                         console.log("in showings with params");
                         console.log(result);
-                        $scope.allShowings = result;
+                        $scope.showingSchedule = result;
                     },
                     function (error) {
                         $rootScope.errorHandler(error);
@@ -170,6 +180,21 @@ angular.module('filmr')
                 r += f.substr(8+3);
                 $log.debug(""+f+"->"+r);
                 return r;
+            }
+
+            function clearAddShowingFields() {
+                $scope.movieForShowing = undefined;
+                $scope.theaterForShowing = undefined;
+                $scope.dateForShowing = undefined;
+                $scope.price = undefined;
+                $scope.hourForShowing = undefined;
+                $scope.minuteForShowing = undefined;
+            }
+
+            function makeDateTimeForApi(date,hour,minute){
+                if(hour<10)hour = "0"+hour;
+                if(minute<10)minute = "0"+minute;
+                return date+"T"+hour+":"+minute;
             }
 
         }]);

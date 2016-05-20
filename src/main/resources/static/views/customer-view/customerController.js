@@ -24,7 +24,7 @@ app.controller('customerController', ['$scope', 'CinemaService','$log','$rootSco
 			if(!$scope.add_cinema_name) return false;
 			if($scope.add_cinema_name.length>48) return;
 			return true;
-		}
+		};
 
 		$scope.submitCinema = function () {
 

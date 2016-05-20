@@ -45,6 +45,12 @@ public class Theater {
 	@OneToMany(mappedBy = "theater")
 	private List<Showing> showings;
 	
+	// used for back-end to determine if seat numbering is
+	// reset for each row or not
+	@NotNull
+	@Column(columnDefinition="bit(1) default 0")
+	private Boolean usingContinuousSeatLabeling;
+	
 	public Theater() {
 	}
 
@@ -110,8 +116,20 @@ public class Theater {
 			.filter(seat -> seat.getState() == SeatState.ENABLED)  // only care about enabled seats
 			.count();
 	}
+	
+	
 
-    @Override
+    public Boolean isUsingContinuousSeatLabeling() {
+		return usingContinuousSeatLabeling;
+	}
+
+
+	public void setUsingContinuousSeatLabeling(Boolean usingContinuousSeatLabeling) {
+		this.usingContinuousSeatLabeling = usingContinuousSeatLabeling;
+	}
+
+
+	@Override
     public boolean equals(Object object){
         if (object == null) {
             return false;
