@@ -60,8 +60,8 @@ angular.module('filmr')
 			};
 
             $scope.goToSelectSeat = function(showing) {
-                $location.url("/showing/"+showing.id+"/seat_select");
-            }
+                $location.url("book/showing/"+showing.id+"/seat_select");
+            };
 
 			function getCinemas(callbackWhenDone) {
 				CinemaService.query().$promise.then(
