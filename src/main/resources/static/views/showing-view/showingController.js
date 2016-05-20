@@ -61,6 +61,12 @@ angular.module('filmr')
                 if(!(typeof $scope.price == "number")) return false;
                 if(typeof $scope.price == "number" && $scope.price<0) return false;
                 if(typeof $scope.price == "number" && $scope.price>8192) return false;
+                if(!(typeof $scope.minuteForShowing == "number")) return false;
+                if(typeof $scope.minuteForShowing == "number" && $scope.minuteForShowing<0) return false;
+                if(typeof $scope.minuteForShowing == "number" && $scope.minuteForShowing>59) return false;
+                if(!(typeof $scope.hourForShowing == "number")) return false;
+                if(typeof $scope.hourForShowing == "number" && $scope.hourForShowing<0) return false;
+                if(typeof $scope.hourForShowing == "number" && $scope.hourForShowing>23) return false;
 
                 return true;
             }
@@ -80,7 +86,7 @@ angular.module('filmr')
                 var newShowing = new ShowingService();
                 newShowing.movie = $scope.movieForShowing;
                 newShowing.theater =$scope.theaterForShowing;
-                newShowing.showDateTime = parseDateStringToValidAPIDateString($scope.dateForShowing);
+                newShowing.showDateTime = makeDateTimeForApi($scope.dateForShowing,$scope.hourForShowing,$scope.minuteForShowing);
                 newShowing.price = $scope.price;
                 newShowing.isDisabled = false;
                 $log.debug(newShowing);
@@ -180,6 +186,14 @@ angular.module('filmr')
                 $scope.theaterForShowing = undefined;
                 $scope.dateForShowing = undefined;
                 $scope.price = undefined;
+                $scope.hourForShowing = undefined;
+                $scope.minuteForShowing = undefined;
+            }
+
+            function makeDateTimeForApi(date,hour,minute){
+                if(hour<10)hour = "0"+hour;
+                if(minute<10)minute = "0"+minute;
+                return date+"T"+hour+":"+minute;
             }
 
         }]);
