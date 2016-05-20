@@ -96,10 +96,11 @@ public class TheaterController extends BaseController {
 		
 		theaterService.nameRowsAndSeats(theater, reset_seat_numbers_for_each_row);
 
+		// set value for front-end devs to read
+		theater.setUsingContinuousSeatLabeling(!reset_seat_numbers_for_each_row);
+		
 		Theater updatedTheater = theaterService.saveEntity(theater);
 		
-		// set value for front-end devs to read
-		updatedTheater.setUsingContinuousSeatLabeling(!reset_seat_numbers_for_each_row);
 		return new ResponseEntity<Theater>(updatedTheater, HttpStatus.OK);
 	}
 

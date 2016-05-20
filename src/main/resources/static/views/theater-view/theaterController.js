@@ -13,7 +13,7 @@ angular.module('filmr')
             $scope.currentTheater = {};
             $scope.theaterRows = {};
             
-            $scope.rowReset = true;
+            $scope.rowReset;
 
             //Scoped functions
 
