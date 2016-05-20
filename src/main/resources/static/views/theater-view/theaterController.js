@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('filmr')
-    .controller('theaterController', ['$rootScope', '$scope', '$routeParams', '$location', 'TheaterService',
-        function ($rootScope, $scope, $routeParams, $location, TheaterService) {
+    .controller('theaterController', ['$rootScope', '$scope', '$routeParams', '$location', 'TheaterService', 'CinemaService',
+        function ($rootScope, $scope, $routeParams, $location, TheaterService, CinemaService) {
 			var activeRequest = false;
             var resetSeatNumbers = false;
 
@@ -12,7 +12,6 @@ angular.module('filmr')
 
             $scope.currentTheater = {};
             $scope.theaterRows = {};
-
 
             //Scoped functions
 
