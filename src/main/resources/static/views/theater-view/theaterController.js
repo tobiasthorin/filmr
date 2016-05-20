@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('filmr')
-    .controller('theaterController', ['$rootScope', '$scope', '$routeParams', '$location', 'TheaterService', 'CinemaService',
-        function ($rootScope, $scope, $routeParams, $location, TheaterService, CinemaService) {
+    .controller('theaterController', ['$rootScope', '$scope', '$routeParams', '$location', 'TheaterService',
+        function ($rootScope, $scope, $routeParams, $location, TheaterService) {
 			var activeRequest = false;
             var resetSeatNumbers = false;
 
@@ -110,19 +110,22 @@ angular.module('filmr')
             };
 
 	        $scope.toggleSeatState = function(seat){
-				switch(seat.state){
-					case "ENABLED":
-						seat.state = "DISABLED";
-						break;
-					case "DISABLED":
-						seat.state = "NOT_A_SEAT";
-						break;
-					case "NOT_A_SEAT":
-						seat.state = "ENABLED";
-						break;
-				}
-		        $scope.updateTheater();
-
+                if (!activeRequest) {
+                    activeRequest = true;
+                    switch (seat.state) {
+                        case "ENABLED":
+                            seat.state = "DISABLED";
+                            break;
+                        case "DISABLED":
+                            seat.state = "NOT_A_SEAT";
+                            break;
+                        case "NOT_A_SEAT":
+                            seat.state = "ENABLED";
+                            break;
+                    }
+                    activeRequest = false;
+                    $scope.updateTheater();
+                }
 	        };
 
 	        $scope.addRow = function (){

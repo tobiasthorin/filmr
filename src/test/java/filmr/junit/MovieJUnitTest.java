@@ -2,7 +2,6 @@ package filmr.junit;
 
 import filmr.Application;
 import filmr.domain.Movie;
-import filmr.services.CinemaService;
 import filmr.services.MovieService;
 import filmr.testfactories.EntityFactory;
 import org.junit.Before;
@@ -13,7 +12,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.TestContextManager;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -50,7 +48,7 @@ public class MovieJUnitTest {
     }
 
     @Test
-    public void testGetAllMoviesNotInRepertoaire() {
+    public void testGetAllMoviesNotInRepertoaire() throws Exception {
         List<Movie> allMovies = new ArrayList<>();
         Movie inRepertoire = EntityFactory.createMovie("movie in repertoirn", "a movie", new Long(110), new Double(100));
         Movie notInRepertoire = EntityFactory.createMovie("movie not in repertiore", "another movie", new Long(120), new Double(110));
@@ -62,7 +60,12 @@ public class MovieJUnitTest {
 
         when(spyMovieService.readAllEntities()).thenReturn(allMovies);
         //PowerMockito.when(spyMovieService.repertoireService.readEntity(1).getMovies()).thenReturn(repertoire);
+        //PowerMockito.when(spyMovieService, "readEntity").thenReturn(repertoire);
 
-        assertEquals("Check movies returned by spy are the same as created list", allMovies, spyMovieService.readAllEntities());
+//        List<Movie> match = spyMovieService.getAllMoviesNotInRepertoire(new Long(1));
+//
+//        assertEquals("check", repertoire, match);
+
+        //assertEquals("Check movies returned by spy are the same as created list", allMovies, spyMovieService.readAllEntities());
     }
 }
