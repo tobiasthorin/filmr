@@ -4,10 +4,10 @@
 /**
  *  (some) CRUD operations for booking
  */
-angular.module('filmr').factory('BookingService', function($resource,$rootScope) {
+angular.module('filmr').factory('BookingService', ['$resource', '$rootScope',  function($resource,$rootScope) {
 	var bookingsBaseUrl = $rootScope.API_baseUrl + "bookings/";
 	return $resource(bookings + ":id", { id : '@id' }, {
 		update: {method: 'PUT'}
 	});
 // end of service
-});
+}]);
