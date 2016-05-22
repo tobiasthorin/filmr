@@ -6,7 +6,7 @@
  */
 angular.module('filmr').factory('BookingService', ['$resource', '$rootScope',  function($resource,$rootScope) {
 	var bookingsBaseUrl = $rootScope.API_baseUrl + "bookings/";
-	return $resource(bookings + ":id", { id : '@id' }, {
+	return $resource(bookingsBaseUrl + ":id", { id : '@id' }, {
 		update: {method: 'PUT'}
 	});
 // end of service
