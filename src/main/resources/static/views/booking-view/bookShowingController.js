@@ -65,6 +65,12 @@ angular.module('filmr')
 				$log.info("---");
 				$log.info("set date");
 				$log.info(date);
+
+				var cd = compareDates(today,date);
+				$log.debug(cd);
+				if(cd==-1) return;
+
+
 				if (date == $scope.selectedDates) {
 					$scope.selectedDates = [];
 				}
@@ -185,6 +191,16 @@ angular.module('filmr')
 				month = month<10 ? "0" + month : month;
 				date = date<10 ? "0" + date : date;
 				return d.getFullYear()+"-"+month+"-"+date;
+			}
+
+			function compareDates(dateA,dateB) {
+				if(dateA.substring(0,4)<dateB.substring(0,4)) return 1;
+				if(dateA.substring(5,7)<dateB.substring(5,7)) return 1;
+				if(dateA.substring(8,10)<dateB.substring(8,10)) return 1;
+				if(dateA.substring(0,4)>dateB.substring(0,4)) return -1;
+				if(dateA.substring(5,7)>dateB.substring(5,7)) return -1;
+				if(dateA.substring(8,10)>dateB.substring(8,10)) return -1;
+				return 0;
 			}
 
 		}]);
