@@ -101,9 +101,7 @@ public class TheaterController extends BaseController {
 		theaterService.updateRowsAndSeats(theater, new_number_of_rows, new_max_row_size);
 		
 		logger.debug("theater row size after update: " + theater.getRows().size());
-		
-		//TODO: deletion of seats doesn't work. is that ok? they can be set to SeatState.NOT_A_SEAT
-		
+
 		theaterService.nameRowsAndSeats(theater, reset_seat_numbers_for_each_row);
 
 		// set value for front-end devs to read

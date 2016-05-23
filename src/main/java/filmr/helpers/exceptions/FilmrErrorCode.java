@@ -16,6 +16,7 @@ public enum FilmrErrorCode {
 	// for all entities
 	F105(HttpStatus.PRECONDITION_FAILED, "POST request must not include entity with a set (non-null) id value"),
 	F110(HttpStatus.PRECONDITION_FAILED, "PUT request must not include entity with an unset (null) id value"),
+	F115(HttpStatus.PRECONDITION_FAILED, "Entity parameter is out of range"),
 	
 	// showings
 	
