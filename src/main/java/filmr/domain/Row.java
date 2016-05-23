@@ -1,15 +1,12 @@
 package filmr.domain;
 
-import javax.persistence.*;
-import javax.persistence.Entity;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import javax.persistence.*;
 import java.util.List;
 
 @Entity

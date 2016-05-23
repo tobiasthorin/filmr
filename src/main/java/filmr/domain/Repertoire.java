@@ -1,15 +1,10 @@
 package filmr.domain;
 
-import javax.persistence.*;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import javax.persistence.*;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -31,7 +26,7 @@ public class Repertoire {
 
     public Set<Movie> getMovies() {
         if (movies == null) {
-            movies = new TreeSet<>(); //TODO this is kinda stupid?
+            movies = new TreeSet<>();
         }
         return movies;
     }

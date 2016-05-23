@@ -5,9 +5,6 @@ import org.springframework.core.convert.converter.Converter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-/**
- * Created by Marco on 2016-05-02.
- */
 public class LocalDateTimeStringConverter implements Converter<String, LocalDateTime> {
 
         private final DateTimeFormatter formatter;
