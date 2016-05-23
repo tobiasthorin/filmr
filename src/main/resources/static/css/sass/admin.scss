@@ -365,8 +365,12 @@ tbody > tr.dateRow:hover {
 .calendar td {
   background: #CCC;
   border: 1px solid #DDD;
-
   font-weight:bold;
+
+  .fc-past {
+    background:#DDD;
+  }
+
   .highlight{
     background: #8008FF;
     color: #FFFFFF;
@@ -379,4 +383,5 @@ tbody > tr.dateRow:hover {
     border: none;
   }
 }
+
 
