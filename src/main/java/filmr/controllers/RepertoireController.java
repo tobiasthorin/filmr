@@ -2,6 +2,7 @@ package filmr.controllers;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,6 +44,7 @@ public class RepertoireController extends BaseController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Repertoire> readRepertoire(@PathVariable Long id){
         Repertoire retrievedRepertoire = repertoireService.readEntity(id);
+        retrievedRepertoire.setMovies(new TreeSet<Movie>(retrievedRepertoire.getMovies()));
         return new ResponseEntity<Repertoire>(retrievedRepertoire, HttpStatus.OK);
     }
 
