@@ -1,5 +1,8 @@
 'use strict';
 
+var tag = document.createElement('script');
+
+
 var trailerUrl;
 
 app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeParams', 'ShowingService', 'BookingService',
@@ -11,6 +14,8 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
         $scope.bookedSeats = new Set;
         $scope.numberOfSelectedSeats = 0;
 
+        var player;
+
         $scope.fetchShowing = function () {
             ShowingService.get({id: $routeParams.showingId}).$promise.then(
                 function (result) {
@@ -20,7 +25,6 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
                     onYouTubeIframeAPIReady();
 
                     findBookedSeats();
-                    loadYouTubePlayer()
                 },
                 function () {
                     //fail
@@ -125,25 +129,19 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
             return returnArray;
         }
 
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '390',
+                width: '640',
+                videoId: trailerUrl,
+                events: {}
+            });
+        }
 
         //Run on page load
         $scope.fetchShowing();
 
     }]);
 
-var tag = document.createElement('script');
 
-tag.src = "https://www.youtube.com/iframe_api";
-var firstScriptTag = document.getElementsByTagName('script')[0];
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-var player;
-function onYouTubeIframeAPIReady() {
-    player = new YT.Player('player', {
-        height: '390',
-        width: '640',
-        videoId: trailerUrl,
-        events: {
-        }
-    });
-}
