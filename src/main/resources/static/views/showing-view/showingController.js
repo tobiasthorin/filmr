@@ -99,7 +99,8 @@ angular.module('filmr')
                         clearAddShowingFields();
                     },
                     function (error) {
-                        if(error.data && error.data.exception=="FilmrShowingTimeOccupiedException") {
+                        $log.debug(error);
+                        if(error.data && error.data.filmrErrorCode=="F303") {
                             $rootScope.alert("Error! ","Time is already occupied",2);
                         }
                         else $rootScope.errorHandler(error);
@@ -161,8 +162,8 @@ angular.module('filmr')
 
 	            ScheduleService.query(params).$promise.then(
                     function (result){
-                        console.log("in showings with params");
-                        console.log(result);
+                        $log.debug("in showings with params");
+                        $log.debug(result);
                         $scope.showingSchedule = result;
                     },
                     function (error) {
