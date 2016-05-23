@@ -269,21 +269,7 @@ input.btn {
   color: #ccc;
 }
 
-.blockSpan{
-  display: block;
-}
 
-.clearButton{
-  float: left;
-}
-
-.pullLeft{
-  float: left;
-}
-
-.pullRight{
-  float: right;
-}
 
 .btn.pullRight{
   padding: 3px 3px;
@@ -302,6 +288,22 @@ input.btn {
 tbody > tr.dateRow:hover{
   background-color: #5c111d;
   color: #FFFFFF;
+}
+
+.blockSpan{
+  display: block;
+}
+
+.clearButton{
+  float: left;
+}
+
+.pullLeft{
+  float: left;
+}
+
+.pullRight{
+  float: right;
 }
 
 //Button CSS
