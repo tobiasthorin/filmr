@@ -170,15 +170,6 @@ public class Showing implements Comparable<Showing> {
 				.append(isDisabled)
 				.toHashCode();
 	}
-
-
-
-	/*@Override
-	public String toString() {
-		return "Showing [id=" + id + ", showDateTime=" + showDateTime + ", movie=" + movie.getTitle() + ", theater=" + theater.getName()
-				+ ", bookings size =" + bookings.size() + ", isDisabled=" + isDisabled + "]";
-	} */
-	
 	@Override
 	public int compareTo(Showing o) {
 		// Showings are by default sorted by date, so we can use the Date's compareTo-method

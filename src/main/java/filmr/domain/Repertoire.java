@@ -62,12 +62,4 @@ public class Repertoire {
                 .append(movies)
                 .toHashCode();
     }
-
-	/*@Override
-	public String toString() {
-		return "Repertoire [id=" + id + ", movies=" + movies + "]";
-	}*/
-    
-    
-    
 }

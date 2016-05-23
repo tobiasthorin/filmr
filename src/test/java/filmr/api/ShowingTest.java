@@ -64,10 +64,6 @@ public class ShowingTest {
     //Parameters
     private Long id;
 
-    public ShowingTest(Long id) {
-        baseUrl = "http://localhost:8080/filmr/api/showings/";
-    }
-
     @Before
     public void resetDatabase() throws Exception {
         baseUrl = "http://localhost:8080/filmr/api/showings/";
@@ -113,7 +109,7 @@ public class ShowingTest {
 
         //Assert
         assertTrue("Make sure the http was successfull", responseEntity.getStatusCode().is2xxSuccessful());
-       // assertEquals("Compare times", showing.getShowDateTime(), postedShowing.getShowDateTime()); //TODO the returned date has passed through deserializer and therefore is slightly different
+       // assertEquals("Compare times", showing.getShowDateTime(), postedShowing.getShowDateTime()); //The returned date has passed through deserializer and therefore is slightly different
         assertEquals("Compare movies", showing.getMovie(), postedShowing.getMovie());
         assertEquals("Compare theaters", showing.getTheater(), postedShowing.getTheater());
         assertEquals("Compare bookings", showing.getBookings(), postedShowing.getBookings());
@@ -121,14 +117,9 @@ public class ShowingTest {
 
     @Test(expected = HttpMessageNotWritableException.class)
     public void testCreateWithNullMovie() {
-        //TODO actually properly finish this ya lazy tyke
         Showing showing = EntityFactory.createShowing(LocalDateTime.now(), null, savedTheater, new ArrayList<>());
 
         ResponseEntity<Showing> responseEntity = restTemplate.postForEntity(baseUrl, showing, Showing.class);
-        Showing postedShowing = responseEntity.getBody();
-
-        System.out.println("DA COD" + responseEntity.getStatusCode());
-        //assertTrue("Make sure its a fail")
     }
 
     @Test

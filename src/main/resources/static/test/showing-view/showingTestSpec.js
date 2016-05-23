@@ -57,6 +57,17 @@ describe("Tests for showingController.js", function () {
         }
     };
 
+    MockedScheduleService = {
+        "query": function () {
+            return {
+                "$promise": {
+                    then: function (success, fail) {
+
+                    }
+                }
+            }
+        }
+    };
 
     //Injections
     beforeEach(inject(function (_$controller_) {
@@ -66,6 +77,7 @@ describe("Tests for showingController.js", function () {
             'showingController', {
                 $scope: $scope,
                 MovieService: MovieService,
+                ScheduleService: MockedScheduleService,
                 RepertoireService: RepertoireService,
                 CinemaService: CinemaService,
                 ShowingService: ShowingService

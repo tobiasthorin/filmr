@@ -182,8 +182,6 @@ public class TheaterTest {
         assertEquals("Assert that the row size is updated", savedTheater, updatedTheater);
         assertEquals("Assert that the rows are actually updated", Integer.parseInt(updatedMaxRowSize), actualNewRowSize);
     }
-    
-    
 
     @After
     public void clearDatabase() throws Exception {

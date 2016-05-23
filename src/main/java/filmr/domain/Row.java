@@ -17,7 +17,7 @@ public class Row {
 	@Id
 	@GeneratedValue( strategy = GenerationType.AUTO)
 	private Long id;
-	@OneToMany(mappedBy = "row", orphanRemoval=true) //TODO: remove orphan stuff?
+	@OneToMany(mappedBy = "row", orphanRemoval=true)
 	@Cascade(CascadeType.ALL)
 	private List<Seat> seats;
 	@ManyToOne
@@ -83,14 +83,4 @@ public class Row {
                 .append(rowLabel)
                 .toHashCode();
     }
-
-	/*@Override
-	public String toString() {
-		return "Row [id=" + id + ", seats size=" + seats.size() + ", theater=" + theater + ", rowLabel=" + rowLabel + "]";
-	}*/
-	
-	
-	
-	
-	
 }

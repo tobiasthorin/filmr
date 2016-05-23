@@ -1,12 +1,9 @@
-/**
- * Created by Marco on 2016-05-18.
- */
 'use strict';
 
 angular.module('filmr')
 	.controller('bookShowingController',
-		['$rootScope', '$scope', '$routeParams', '$location', '$resource','CinemaService','ScheduleService','BookingService',
-		function ($rootScope, $scope, $routeParams, $location, $resource, CinemaService, ScheduleService, BookingService) {
+		['$rootScope', '$scope', '$routeParams', '$location', '$resource', '$log', 'CinemaService','ScheduleService','BookingService',
+		function ($rootScope, $scope, $routeParams, $location, $resource, $log, CinemaService, ScheduleService, BookingService) {
 
 
 			//Execute on page load
@@ -28,14 +25,14 @@ angular.module('filmr')
 			$scope.cinema= $scope.allCinemas[0];
 
 			$scope.updateShowings = function() {
-				console.log("---");
-				console.log("updating Showings List");
+				$log.debug("---");
+				$log.debug("updating Showings List");
                 refreshPage();
 			};
 
 			$scope.updateCinemaScope = function() {
-				console.log("---");
-				console.log("Set Cinema, get movies and theaters");
+				$log.debug("---");
+				$log.debug("Set Cinema, get movies and theaters");
 				getTheatersAndRepertoireInCinema();
                 refreshPage();
 			};
@@ -66,8 +63,8 @@ angular.module('filmr')
 			function getCinemas(callbackWhenDone) {
 				CinemaService.query().$promise.then(
 					function(result) {
-						console.log("in getCinemas");
-						console.log(result);
+						$log.debug("in getCinemas");
+						$log.debug(result);
 						$scope.allCinemas = result;
 						callbackWhenDone();
 					}
@@ -75,12 +72,12 @@ angular.module('filmr')
 			}
 
 			function getTheatersAndRepertoireInCinema() {
-				console.log("---");
-				console.log("call get cinema");
+				$log.debug("---");
+				$log.debug("call get cinema");
 				CinemaService.get({id:$scope.cinema.id}).$promise.then(
 					function(result){
 						var cinema = result;
-						console.log("Set Movies and Theaters lists")
+						$log.debug("Set Movies and Theaters lists")
 						$scope.moviesInRepertoire = cinema.repertoire.movies;
 						$scope.theatersInCinema = cinema.theaters;
 
@@ -92,16 +89,14 @@ angular.module('filmr')
 			}
 
             function refreshPage() {
-               console.log("cc"); 
                 getShowingsWithParams(function(){
                     refreshDates();
                 });
             }
 
             function refreshDates() {
-               console.log("aa"); 
                var dates = Object.keys($scope.allShowings);
-                console.log(dates);
+				$log.debug(dates);
                 $("td").removeClass("highlight");
                 for(var i=0; i<dates.length; i++) {
                     if(dates[i].substr(0,1)=="2") //TODO: this is an hack to make sure we just handle dates from result. We also get other stuff like promise etc
@@ -119,12 +114,12 @@ angular.module('filmr')
 					"show_disabled_showings" : $scope.showingIsDisabled,
 					"include_empty_slots_for_movie_of_length" : $scope.movieForShowing.lengthInMinutes
 				}
-				console.log(params);
-				console.log("Get Showings with Params");
+				$log.debug(params);
+				$log.debug("Get Showings with Params");
 				ScheduleService.query(params).$promise.then(
 					function (result){
-						console.log("in showings with params");
-						console.log(result);
+						$log.debug("in showings with params");
+						$log.debug(result);
 						$scope.allShowings = result;
                         if(callbackWhenDone)callbackWhenDone();
 					},
@@ -139,7 +134,7 @@ angular.module('filmr')
 				var r = f.substr(0,4+3+3);
 				r += "T";
 				r += f.substr(8+3);
-				console.log(r);
+				$log.debug(r);
 				return r;
 			}
 		}]);
