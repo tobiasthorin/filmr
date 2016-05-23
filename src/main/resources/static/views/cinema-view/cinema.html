@@ -64,12 +64,12 @@
                             <input class="form-control" type="text" ng-model="theater_name" placeholder="Name">
 
                             <label class="blockSpan">Number of rows:</label>
-                            <input class="form-control" type="number" ng-model="number_of_rows" placeholder="1 or more">
+                            <input class="form-control" type="number" ng-model="number_of_rows" placeholder="1 to 64">
 
 
                             <label class="blockSpan">Seats per row:</label>
                             <input class="form-control blockSpan" type="number" ng-model="number_of_seats"
-                                   placeholder="1 or more">
+                                   placeholder="1 to 64">
                             <br>
                             <input type="submit" ng-click="addNewTheater()" class="btn" value="Add theater"
                                    ng-disabled="!validateScheduleAddTheater()">
