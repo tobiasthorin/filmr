@@ -25,7 +25,12 @@ angular.module('filmr')
             $scope.fetchShowings = function() {
                 $log.info("---");
                 $log.info("fetch showings");
-                fetchShowingsWithParams();
+                if ($scope.fromDate > $scope.toDate) {
+                    $scope.toDate = null;
+                }
+                else {
+                    fetchShowingsWithParams();
+                }
             };
 
             $scope.fetchCinemaScope = function() {

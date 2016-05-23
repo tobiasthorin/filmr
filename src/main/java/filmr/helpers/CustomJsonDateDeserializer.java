@@ -30,7 +30,7 @@ public class CustomJsonDateDeserializer extends JsonDeserializer<LocalDateTime> 
 		
 		try {
 			
-			//  test doesn't enforse write-dates-as-timestamps: false  in application-test.yml
+			//  test doesn't enforce write-dates-as-timestamps: false  in application-test.yml
 			// so we seem to get the date as an array of numbers, instead of a string.
 			//
 			
@@ -69,13 +69,10 @@ public class CustomJsonDateDeserializer extends JsonDeserializer<LocalDateTime> 
 				if(nodeString.contains(" ")){
 					logger.debug("Contains whitespace: "+nodeString);
 					nodeString = nodeString.substring(0,10) + "T" + nodeString.substring(11,nodeString.length());
-//				String temp = nodeString.substring(0,10);
-//				temp = temp + "T"+ nodeString.substring(11,nodeString.length());
-//				nodeString = temp;
 					logger.info("Datestring after parsing: "+nodeString);
 				}
-				dateTime = LocalDateTime.parse(nodeString);
-				return dateTime;
+			dateTime = LocalDateTime.parse(nodeString);
+			return dateTime;
 			}
 			else if (!nodeString.substring(nodeString.length()-5).equals(".000Z")) {
 				nodeString += ".000Z";
