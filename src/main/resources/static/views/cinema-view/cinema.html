@@ -16,7 +16,8 @@
                         <li class="list-group-item" ng-repeat="movie in getMoviesInRepertoire()">
                             {{movie.title}}
                             <!--TODO make buttons go to the right, try to get same size on this and theater list elements?-->
-                            <div class="remove pull-right"  ng-click="removeMovieFromRepertoire(movie.id)"><span class="glyphicon glyphicon-remove"></div>
+                            <div class="remove pull-right" ng-click="removeMovieFromRepertoire(movie.id)"><span
+                                    class="glyphicon glyphicon-remove"></span></div>
                         </li>
                     </ul>
                     <form>
@@ -24,7 +25,8 @@
                                 ng-model="add_movie_to_repertoire_select">
                             <option value="">Please Select A Movie</option>
                         </select>
-                        <input type="submit" class="btn" ng-click="addMovieToRepertoire()" value="Add movie to repertoire"
+                        <input type="submit" class="btn" ng-click="addMovieToRepertoire()"
+                               value="Add movie to repertoire"
                                ng-disabled="!validateAddMovieToRepertoire()">
                     </form>
                 </div>
@@ -38,7 +40,8 @@
                         <form name="change-cinema-name">
                             <label class="blockSpan">Cinema name:</label>
                             <input class="form-control" type="text" ng-model="edited_cinema_name">
-                            <input ng-click="updateCinemaName()" type="submit" class="btn" value="Update" ng-disabled="!validateCinemaNameForm()">
+                            <input ng-click="updateCinemaName()" type="submit" class="btn" value="Update"
+                                   ng-disabled="!validateCinemaNameForm()">
                         </form>
                     </div>
                 </div>
@@ -49,7 +52,7 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">Theaters</h3>
                 </div>
-            	<div class="panel-body">
+                <div class="panel-body">
                     <ul class="list-group">
                         <li class="list-group-item" ng-repeat="theater in getTheaters()">
                             <a href="#/cinema/{{getCurrentCinema().id}}/theater/{{theater.id}}">{{theater.name}}</a>
@@ -66,13 +69,14 @@
 
 
                             <label class="blockSpan">Seats per row:</label>
-                            <input class="form-control blockSpan" type="number" ng-model="number_of_seats" placeholder="1 or more">
+                            <input class="form-control blockSpan" type="number" ng-model="number_of_seats"
+                                   placeholder="1 or more">
                             <br>
                             <input type="submit" ng-click="addNewTheater()" class="btn" value="Add theater"
                                    ng-disabled="!validateScheduleAddTheater()">
                         </fieldset>
                     </form>
-            	</div>
+                </div>
             </div>
         </div>
     </div>
