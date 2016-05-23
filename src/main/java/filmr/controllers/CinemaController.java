@@ -29,8 +29,10 @@ public class CinemaController extends BaseController{
 			logger.warn("Can't create cinema with manually set ID");
         	throw new FilmrPOSTRequestWithPredefinedIdException("Trying to create Cinema, but sending Cinema with predefined id.");
         }
-        if(cinema.getName().length() > 48) {
-            return new ResponseEntity<Cinema>(new Cinema(), HttpStatus.BAD_REQUEST); //TODO use custom error?
+        if(cinema.getName().length() > 48) { //TODO this really should be some global variable?
+            //return new ResponseEntity<Cinema>(new Cinema(), HttpStatus.BAD_REQUEST); //TODO using error instead
+            logger.warn("Can't create cinema with a name surpassing the limit.");
+            throw new FilmrPOSTRequestWithPredefinedIdException("Trying to create Cinema, but name is to long");
         }
         Repertoire repertoire = new Repertoire();
         repertoireService.saveEntity(repertoire);
