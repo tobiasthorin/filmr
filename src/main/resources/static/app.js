@@ -72,13 +72,13 @@
 
 
     // make title names and other functionality accessible for every page, and every controller/service injecting $rootScope
-    app.run(['$rootScope', '$timeout', function ($rootScope, $timeout) {
+    app.run(['$rootScope', '$timeout', '$log', function ($rootScope, $timeout, $log) {
         $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
 
             var debug = true;
 
             function clear() {
-                $log.debug("clear");
+                //$log.debug("clear");
                 $rootScope.alerts = [];
             }
 
@@ -90,7 +90,7 @@
             $rootScope.activeTab = current.$$route.activeTab;
 
             $rootScope.clearAlerts = function() {
-                $log.info("clear");
+                //$log.info("clear");
                 $rootScope.alerts = [];
             };
 
@@ -105,7 +105,7 @@
 
             $rootScope.errorHandler = (debug ?
                 function (error) {
-                    $log.error("Error! "+error);
+                    //$log.error("Error! "+error);
                     $rootScope.alert("Error! ", error, 2);
                 } :
                 function (error) {
