@@ -1,7 +1,6 @@
 <script>
 
     $('.calendar').fullCalendar({
-        defaultDate: '2016-05-12',
         editable: true,
         eventLimit: true,
         events: [
@@ -16,6 +15,14 @@
     });
     $(".calendar button").css("display","none");
     $('.calendar').fullCalendar('option', 'height', 500);
+    $('.calendar td').click(function(){
+
+
+    });
+    $('.calendar td').each(function(index){
+        var date = $(this).attr("data-date");
+        if(typeof date != "undefined") $(this).attr("ng-click","setDate('"+date+"')");
+    });
 </script>
 <div class="booking-wrapper">
     <button class="" type="button" ng-click="clearAllFilters()">Start Over</button>
@@ -36,9 +43,6 @@
         </div>
 
 		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-            <label>From Date:</label>
-        	<input name="from_date" ng-model="fromDate" ng-change="updateShowings()">
-			<button class="" type="button" ng-click="fromDate = null; updateShowings()">x</button>
             <div class="calendar">
             </div>
         </div>
