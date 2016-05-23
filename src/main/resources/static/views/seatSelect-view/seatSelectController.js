@@ -12,6 +12,8 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
         $scope.bookedSeats = new Set;
         $scope.numberOfSelectedSeats = 0;
 
+        var player;
+
         $scope.fetchShowing = function () {
             if (!activeRequest) {
                 activeRequest = true;
@@ -23,12 +25,11 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
                         onYouTubeIframeAPIReady();
 
                         findBookedSeats();
-                        loadYouTubePlayer()
                     },
                     function () {
                         //fail
                     }
-                )
+                );
                 activeRequest = false;
             }
         };
@@ -118,7 +119,13 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
             $scope.selectedSeats.delete(id);
         }
 
-        
+        function findBookedSeats() {
+            for (var i = 0; i < $scope.currentShowing.bookings.length; i++) {
+                for (var j = 0; j < $scope.currentShowing.bookings[i].bookedSeats.length; j++) {
+                    $scope.bookedSeats.add($scope.currentShowing.bookings[i].bookedSeats[j].id);
+                }
+            }
+        }
 
         function updateNumberOfBookedSeats() {
             $scope.numberOfSelectedSeats = $scope.selectedSeats.size;
@@ -136,25 +143,19 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
             return returnArray;
         }
 
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '390',
+                width: '640',
+                videoId: trailerUrl,
+                events: {}
+            });
+        }
 
         //Run on page load
         $scope.fetchShowing();
 
     }]);
 
-var tag = document.createElement('script');
 
-tag.src = "https://www.youtube.com/iframe_api";
-var firstScriptTag = document.getElementsByTagName('script')[0];
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-var player;
-function onYouTubeIframeAPIReady() {
-    player = new YT.Player('player', {
-        height: '390',
-        width: '640',
-        videoId: trailerUrl,
-        events: {
-        }
-    });
-}
