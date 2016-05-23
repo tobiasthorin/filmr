@@ -123,16 +123,18 @@ input.btn {
 .bookingWrapper {
   padding: 5%;
   width: 100%;
-  height: 600px;
+  min-height: 600px;
   background-color: #fafafa;
   border: solid #5c111d 4px;
   border-radius: 10px; }
-  .bookingWrapper .activeMovie {
-    background-color: #5c111d;
-    color: #f1f1f1;
-    border: solid 2px #f3ca29; }
-  .bookingWrapper .notActiveMovie {
-    background-color: rgba(10, 10, 10, 0.56); }
+  .bookingWrapper .bookingTableObject {
+    background-color: rgba(0, 0, 0, 0.14);
+    cursor: pointer; }
+    .bookingWrapper .bookingTableObject .activeMovie {
+      background-color: #5c111d;
+      color: #f3ca29; }
+    .bookingWrapper .bookingTableObject .notActiveMovie {
+      color: #919191; }
   .bookingWrapper .fullBookedShowing {
     background-color: #ff5260; }
 
@@ -199,9 +201,6 @@ input.btn {
   .showingResults .showing .ticketsLeft button {
     margin-left: 1em; }
 
-.bookingTableObject {
-  background-color: rgba(0, 0, 0, 0.14); }
-
 .clearField {
   position: absolute;
   right: 5px;
@@ -256,6 +255,9 @@ tbody > tr.dateRow:hover {
   background: #CCC;
   border: 1px solid #DDD;
   font-weight: bold; }
+  .calendar td .fc-past {
+    background: #DDD;
+    cursor: not-allowed; }
   .calendar td .highlight {
     background: #8008FF;
     color: #FFFFFF;

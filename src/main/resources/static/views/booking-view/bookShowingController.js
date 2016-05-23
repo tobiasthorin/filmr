@@ -8,6 +8,7 @@ angular.module('filmr')
 
 			var today = getToday();
 
+
 			//Execute on page load
 			getCinemas(function(){
 				$scope.cinema = $scope.allCinemas[0];
@@ -20,10 +21,8 @@ angular.module('filmr')
 			$scope.theatersInCinema = [];
 			$scope.allShowings = [];
 			$scope.allCinemas = [];
-
 			$scope.theater = {};
 			$scope.movieForShowing = {};
-			$scope.cinema= $scope.allCinemas[0];
 
 			$scope.selectedMovie = null;
 			$scope.selectedDates = [];
@@ -53,7 +52,7 @@ angular.module('filmr')
 
 			$scope.setMovie = function (movie) {
 				if (movie == $scope.selectedMovie) {
-					$scope.selectedMovie = {};
+					$scope.selectedMovie = null;
 				}
 				else {
 					$scope.selectedMovie = movie;
@@ -110,6 +109,7 @@ angular.module('filmr')
 						$rootScope.errorHandler(error);
 					}
 				)
+
 			}
 
             function refreshPage() {
