@@ -29,7 +29,8 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
         };
 
         $scope.toggleSelection = function (id) {
-
+            //Make sure seat hasnt been taken while user is booking
+            //findBookedSeats();
             if (!$scope.bookedSeats.has(id)) {
 
                 if ($scope.selectedSeats.has(id)) {

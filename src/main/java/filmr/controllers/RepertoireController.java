@@ -66,6 +66,7 @@ public class RepertoireController extends BaseController {
         repertoire = updateRepertoireMoviesIfNeeded(repertoire, add_movie_with_id, remove_movie_with_id);
 
         Repertoire updatedRepertoire = repertoireService.saveEntity(repertoire);
+        updatedRepertoire.setMovies(new TreeSet<Movie>(updatedRepertoire.getMovies())); // temp fix to sort movies
         return new ResponseEntity<Repertoire>(updatedRepertoire, HttpStatus.OK);
     }
 
