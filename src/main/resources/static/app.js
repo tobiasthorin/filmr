@@ -72,7 +72,7 @@
 
 
     // make title names and other functionality accessible for every page, and every controller/service injecting $rootScope
-    app.run(['$rootScope', '$timeout', function ($rootScope, $timeout) {
+    app.run(['$rootScope', '$timeout', '$log', function ($rootScope, $timeout,$log) {
         $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
 
             var debug = true;
