@@ -124,17 +124,7 @@ input.btn {
   padding: 5%;
   width: 100%;
   height: 600px;
-  background-color: #fafafa;
-  border: solid #5c111d 4px;
-  border-radius: 10px; }
-  .bookingWrapper .activeMovie {
-    background-color: #5c111d;
-    color: #f1f1f1;
-    border: solid 2px #f3ca29; }
-  .bookingWrapper .notActiveMovie {
-    background-color: rgba(10, 10, 10, 0.56); }
-  .bookingWrapper .fullBookedShowing {
-    background-color: #ff5260; }
+  background-color: white; }
 
 .confirmWrapper .hooray {
   background: #bb3246;
@@ -201,6 +191,13 @@ input.btn {
 
 .bookingTableObject {
   background-color: rgba(0, 0, 0, 0.14); }
+
+.activeMovie {
+  background-color: #5c111d;
+  color: #f1f1f1; }
+
+.fullBookedShowing {
+  background-color: #ff5260; }
 
 .clearField {
   position: absolute;
