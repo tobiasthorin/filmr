@@ -35,8 +35,13 @@ public class EntityFactory {
         usingContinuousSeatLabeling = false;
 
         Row r = createStandardRowForTheater(theater);
-        rows.add(r);
 
+        Seat s = createStandardSeatForRow(r);
+        List<Seat> ls = new ArrayList<>();
+        ls.add(s);
+        r.setSeats(ls);
+
+        rows.add(r);
 
         theater.setName(theaterName);
 //        theater.setDisabled(disabled);
