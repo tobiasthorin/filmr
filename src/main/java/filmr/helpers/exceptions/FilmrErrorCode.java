@@ -17,18 +17,22 @@ public enum FilmrErrorCode {
 	F105(HttpStatus.PRECONDITION_FAILED, "POST request must not include entity with a set (non-null) id value"),
 	F110(HttpStatus.PRECONDITION_FAILED, "PUT request must not include entity with an unset (null) id value"),
 	
+	// showings
+	
+	F303(HttpStatus.PRECONDITION_FAILED, "Showing collided with existing showing(s)"),
+	
 	// bookings
 	F400(HttpStatus.PRECONDITION_FAILED, "Booking must include at least one seat."),
 	F410(HttpStatus.PRECONDITION_FAILED, "Seat to book must not have state DISABLED or NOT_A_SEAT, and must must exist in theater specified in the choosen showing"), 
 	F415(HttpStatus.PRECONDITION_FAILED, "Seat to book must not already be booked."),
 	F420(HttpStatus.PRECONDITION_FAILED, "Seat to book must not be for a showing that is disabled."),
 	
-	// showings
+	// theaters
 	
-	F303(HttpStatus.PRECONDITION_FAILED, "Showing collided with existing showing(s)"),
+	F510(HttpStatus.PRECONDITION_FAILED, "Valid row width is 1-64 seats. Valid number of rows is 1-64 rows."),
 	
 	// other.
-	F900(HttpStatus.BAD_REQUEST, "Invalid date format detected. Use ISO-8601 (YYYY-MM-DDTHH:mm:ss) or ")
+	F900(HttpStatus.BAD_REQUEST, "Invalid date format detected. Use YYYY-MM-DDTHH:mm:ss")
 	
 	; // end of enum declaration
 	

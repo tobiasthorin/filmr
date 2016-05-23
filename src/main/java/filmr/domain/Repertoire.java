@@ -29,7 +29,6 @@ public class Repertoire {
     }
 
     public Set<Movie> getMovies() {
-    	System.out.println("movies are: " + movies);
         if (movies == null) {
             movies = new HashSet<>(); //TODO this is kinda stupid?
         }

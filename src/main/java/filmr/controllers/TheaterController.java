@@ -1,12 +1,11 @@
 package filmr.controllers;
 
 import filmr.domain.Theater;
-import filmr.helpers.exceptions.FilmrBaseException;
-import filmr.helpers.exceptions.FilmrExceptionModel;
+import filmr.helpers.exceptions.FilmrInvalidTheaterRowParameters;
 import filmr.helpers.exceptions.FilmrPOSTRequestWithPredefinedIdException;
 import filmr.helpers.exceptions.FilmrPUTRequestWithMissingEntityIdException;
 import filmr.services.TheaterService;
-import org.apache.log4j.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +13,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 @RestController
 @RequestMapping(value = "/api/theaters")
-public class TheaterController {
+public class TheaterController extends BaseController {
 
-	private final static org.apache.log4j.Logger logger = Logger.getLogger(TheaterController.class);
+	private static final int MAXIMUM_ROW_DEPTH = 64;
+	private static final int MINIMUM_ROW_DEPTH = 1;
+	private static final int MAXIMUM_ROW_WIDTH = 64;
+	private static final int MININUM_ROW_WIDTH = 1;
 	@Autowired
 	private TheaterService theaterService;
 
@@ -29,12 +29,14 @@ public class TheaterController {
 	public ResponseEntity<Theater> createTheater(
 			@RequestBody Theater theater,
 			@RequestParam(name="number_of_rows") Integer number_of_rows,
-			@RequestParam(name="max_row_size") Integer max_row_size) throws FilmrPOSTRequestWithPredefinedIdException {
+			@RequestParam(name="max_row_size") Integer max_row_size) throws FilmrPOSTRequestWithPredefinedIdException, FilmrInvalidTheaterRowParameters {
 
 		if (theater.getId() != null) throw new FilmrPOSTRequestWithPredefinedIdException("Trying to create Theater but entity already has a set id.");
+		if(isInvalidRowParameters(max_row_size, number_of_rows)) throw new FilmrInvalidTheaterRowParameters("Row parameters are only valid in the range 1-64");
 		
 		logger.debug("Theater (before save) received in createTheater: " + theater);
 		logger.debug(String.format("Creating theater with number_of_rows = %d, max_row_size  = %d ", number_of_rows, max_row_size));
+		
 		
 		theater = theaterService.buildTheaterWithRowsAndSeats(theater,number_of_rows,max_row_size);
 		
@@ -75,10 +77,16 @@ public class TheaterController {
 			@RequestBody Theater theater,
 			@RequestParam(name="reset_seat_numbers_for_each_row", defaultValue="true", required=false) Boolean reset_seat_numbers_for_each_row,
 			@RequestParam(name="new_number_of_rows", required = false) Integer new_number_of_rows,
-			@RequestParam(name="new_max_row_size", required = false) Integer new_max_row_size) throws FilmrPUTRequestWithMissingEntityIdException{
+			@RequestParam(name="new_max_row_size", required = false) Integer new_max_row_size) throws FilmrPUTRequestWithMissingEntityIdException, FilmrInvalidTheaterRowParameters{
 
 		if(theater.getId() == null) throw new FilmrPUTRequestWithMissingEntityIdException("Trying to update Theater but it has no id set.");
-
+		
+		// set default arguments if any of the parameters are null
+		new_number_of_rows = new_number_of_rows != null ? new_number_of_rows : theater.getRows().size();
+		new_max_row_size = new_max_row_size != null ? new_max_row_size : theater.getRows().get(0).getSeats().size();
+		
+		if(isInvalidRowParameters(new_max_row_size, new_number_of_rows)) throw new FilmrInvalidTheaterRowParameters("Row parameters are only valid in the range 1-64");
+		
 		// Temporary(?) fix for issue with theater losing rows on update, because @JsonIgnore means some two-way connections are missing after deserialization
 		theater.getRows().forEach(row -> {
 			row.setTheater(theater);	
@@ -87,9 +95,6 @@ public class TheaterController {
 		
 		logger.debug("theater row size before update: " + theater.getRows().size());
 
-		// set default arguments if any of the parameters are null
-		new_number_of_rows = new_number_of_rows != null ? new_number_of_rows : theater.getRows().size();
-		new_max_row_size = new_max_row_size != null ? new_max_row_size : theater.getRows().get(0).getSeats().size();
 		
 		logger.debug("theater update with 'new_number_of_rows' = " + new_number_of_rows + " and 'new_max_row_size' = " + new_max_row_size);
 		
@@ -101,10 +106,11 @@ public class TheaterController {
 		
 		theaterService.nameRowsAndSeats(theater, reset_seat_numbers_for_each_row);
 
+		// set value for front-end devs to read
+		theater.setUsingContinuousSeatLabeling(!reset_seat_numbers_for_each_row);
+		
 		Theater updatedTheater = theaterService.saveEntity(theater);
 		
-		// set value for front-end devs to read
-		updatedTheater.setUsingContinuousSeatLabeling(!reset_seat_numbers_for_each_row);
 		return new ResponseEntity<Theater>(updatedTheater, HttpStatus.OK);
 	}
 
@@ -115,13 +121,8 @@ public class TheaterController {
 		return new ResponseEntity(HttpStatus.OK);
 	}
 	
-	// all custom errors should inherit from FilmrBaseException, so this should work for all of them. 
-    @ExceptionHandler(FilmrBaseException.class)
-    @ResponseBody
-    public ResponseEntity<FilmrExceptionModel> handleBadRequest(HttpServletRequest req, FilmrBaseException ex) {
-    	logger.debug("Catching custom error in controller.. ");
-    	FilmrExceptionModel exceptionModel = new FilmrExceptionModel(req, ex);
-        return new ResponseEntity<FilmrExceptionModel>(exceptionModel, ex.getHttpStatus());
-    } 
+	private boolean isInvalidRowParameters(Integer rowWidth, Integer rowDepth) {
+		return (rowWidth < MININUM_ROW_WIDTH || rowWidth > MAXIMUM_ROW_WIDTH) || (rowDepth < MINIMUM_ROW_DEPTH || rowDepth > MAXIMUM_ROW_DEPTH);
+	}
 
 }

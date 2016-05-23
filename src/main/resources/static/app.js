@@ -3,7 +3,7 @@
 
 
     // ROUTING - what should happen when url changes to path x
-    app.config(function ($routeProvider) {
+    app.config(['$routeProvider', function ($routeProvider) {
 
         $routeProvider
             .when('/book', {
@@ -65,7 +65,7 @@
             })
             // all other (invalid) paths.
             .otherwise({redirectTo: "/customer"})
-    });
+    }]);
 
 
     // middle-ware

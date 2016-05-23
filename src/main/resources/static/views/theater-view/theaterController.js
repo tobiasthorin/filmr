@@ -13,7 +13,7 @@ angular.module('filmr')
             $scope.currentTheater = {};
             $scope.theaterRows = {};
             
-            $scope.rowReset = true;
+            $scope.rowReset;
 
             //Scoped functions
 
@@ -193,7 +193,7 @@ angular.module('filmr')
 
                 if(!(typeof $scope.theaterDepth == "number")) return false;
                 if(typeof $scope.theaterDepth == "number" && $scope.theaterDepth+offset<=0) return false;
-                if(typeof $scope.theaterDepth == "number" && $scope.theaterDepth+offset>128) return false;
+                if(typeof $scope.theaterDepth == "number" && $scope.theaterDepth+offset>64) return false;
                 return true;
             };
 
@@ -203,7 +203,7 @@ angular.module('filmr')
 
                 if(!(typeof $scope.theaterWidth == "number")) return false;
                 if(typeof $scope.theaterWidth == "number" && $scope.theaterWidth+offset<=0) return false;
-                if(typeof $scope.theaterWidth == "number" && $scope.theaterWidth+offset>128) return false;
+                if(typeof $scope.theaterWidth == "number" && $scope.theaterWidth+offset>64) return false;
                 return true;
             };
 

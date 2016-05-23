@@ -3,26 +3,19 @@ package filmr.controllers;
 import java.util.HashSet;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import filmr.domain.Movie;
 import filmr.domain.Repertoire;
-import filmr.helpers.exceptions.FilmrBaseException;
-import filmr.helpers.exceptions.FilmrExceptionModel;
 import filmr.helpers.exceptions.FilmrPOSTRequestWithPredefinedIdException;
 import filmr.helpers.exceptions.FilmrPUTRequestWithMissingEntityIdException;
 import filmr.services.MovieService;
@@ -30,12 +23,11 @@ import filmr.services.RepertoireService;
 
 @RestController
 @RequestMapping(value = "/api/repertoires")
-public class RepertoireController {
+public class RepertoireController extends BaseController {
     @Autowired
     private RepertoireService repertoireService;
     @Autowired
     private MovieService movieService;
-	private final static org.apache.log4j.Logger logger = Logger.getLogger(TheaterController.class);
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
@@ -97,7 +89,7 @@ public class RepertoireController {
     	
     	if(add_movie_with_id != null) {
         	Movie movieToAdd = movieService.readEntity(add_movie_with_id);
-        	System.out.println("adding movie: " + movieToAdd);
+        	logger.info("adding movie: " + movieToAdd);
         	repertoire.getMovies().add(movieToAdd);
         }
         if(remove_movie_with_id != null) {
@@ -107,15 +99,6 @@ public class RepertoireController {
         
         return repertoire;
     }
-    
-    // all custom errors should inherit from FilmrBaseException, so this should work for all of them. 
-    @ExceptionHandler(FilmrBaseException.class)
-    @ResponseBody
-    public ResponseEntity<FilmrExceptionModel> handleBadRequest(HttpServletRequest req, FilmrBaseException ex) {
-    	logger.debug("Catching custom error in controller.. ");
-    	FilmrExceptionModel exceptionModel = new FilmrExceptionModel(req, ex);
-        return new ResponseEntity<FilmrExceptionModel>(exceptionModel, ex.getHttpStatus());
-    } 
 
 }
 

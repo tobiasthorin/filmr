@@ -198,6 +198,21 @@ tbody > tr.dateRow:hover {
   background-color: #5c111d;
   color: #FFFFFF; }
 
+<<<<<<< HEAD
+.calendar h2 {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: bold; }
+
+.calendar td {
+  background: #CCC;
+  border: 1px solid #DDD;
+  font-weight: bold; }
+  .calendar td .highlight {
+    background: #800840;
+    color: #FFFFFF;
+    border: 1px solid #800840; }
+=======
 .orange {
   color: #fef4e9;
   border: solid 1px #5c111d;
@@ -224,5 +239,6 @@ tbody > tr.dateRow:hover {
   -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); }
+>>>>>>> 67766a2cf5c6ca0eae0845f71ac7dd1d22e6b58e
 
 /*# sourceMappingURL=admin.css.map */
