@@ -1,18 +1,26 @@
 <ol class="breadcrumb">
     <li class="active">Admin Home</li>
 </ol>
-<div>
+<div class="">
     <h2>Home</h2>
-    <h3>Cinemas</h3>
     <div class="row">
+
         <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-            <div class="list">
-                <ul class="list-group">
-                    <li class="list-group-item" ng-repeat="cinema in cinemas">
-                        <a href="#/cinema/{{cinema.id}}">{{cinema.name}}</a>
-                    </li>
-                </ul>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Cinemas</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="list">
+                        <ul class="list-group">
+                            <li class="list-group-item" ng-repeat="cinema in cinemas">
+                                <a href="#/cinema/{{cinema.id}}">{{cinema.name}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
+
         </div>
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
             <div class="panel panel-default">
