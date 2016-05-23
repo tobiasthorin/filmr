@@ -19,7 +19,7 @@ public class Booking {
 	private Long id;
 	
 	@Size(min=1)
-	@ManyToMany //TODO changed from ManyToOne, beware of side effects!!!!!1one!!
+	@ManyToMany //TODO changed from ManyToOne, beware of side effects
 	private List<Seat> bookedSeats;
 	
 	@JsonIgnore
@@ -88,13 +88,6 @@ public class Booking {
 				.append(phoneNumber)
 				.toHashCode();
 	}
-
-	/*@Override
-	public String toString() {
-		return "Booking [id=" + id + ", bookingReference=" + bookingReference + ", bookedSeats=" + bookedSeats
-				+ ", showing=" + showing + ", phoneNumber=" + phoneNumber + "]";
-	}*/
-	
 	
 	// Convenience methods to compensate for missing link to showing (because of @JsonIgnore). Will show up as properties on showing when serialized to json	
 	public String getBookingMovieTitle() {

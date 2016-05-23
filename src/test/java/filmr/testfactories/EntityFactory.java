@@ -25,21 +25,14 @@ public class EntityFactory {
     public static Theater createTheater(String name, Cinema savedCinema) {
         Theater theater = new Theater();
         String theaterName;
-        boolean disabled;
         ArrayList<Row> rows;
-        Cinema cinema;
         ArrayList<Showing> showings;
         Boolean usingContinuousSeatLabeling;
 
         theaterName = name;
 
-        disabled = false; //TODO parameter?
-
         rows = new ArrayList<>(); //TODO linked in DB?
 
-        cinema = savedCinema;
-
-        showings = new ArrayList<>(); //TODO should be empty no errors?
         usingContinuousSeatLabeling = false;
 
         Row r = createStandardRowForTheater(theater);

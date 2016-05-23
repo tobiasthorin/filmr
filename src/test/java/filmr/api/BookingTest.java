@@ -98,9 +98,6 @@ public class BookingTest {
         seat.setState(SeatState.ENABLED);
         theater.getRows().get(0).getSeats().add(seat);
 
-        //rowRepository.save(theater.getRows());
-       // seatRepository.save(seat);
-
         savedTheater = theaterRepository.save(theater);
 
 

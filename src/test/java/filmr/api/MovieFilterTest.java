@@ -17,6 +17,7 @@ import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestContextManager;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
@@ -28,14 +29,12 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-@RunWith(Parameterized.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(Application.class)
 @WebIntegrationTest
 @ActiveProfiles({"test"})
 public class MovieFilterTest {
 
-    //Used instead of SpringJunit4ClassRunner in @RunWith
-    private TestContextManager testContextManager;
     //Variables
     @Autowired
     private RepertoireRepository repertoireRepository;
@@ -53,24 +52,10 @@ public class MovieFilterTest {
     //Parameters
     private Long id;
 
-    //ID, ? TODO parameters pointless for this test
-    @Parameterized.Parameters
-    public static Collection<Object[]> parameters() {
-        return Arrays.asList(new Object[][]{
-                {new Long(1)},
-        });
-    }
-
-    public MovieFilterTest(Long id) {
-        repetoireBaseUrl = "http://localhost:8080/filmr/api/repertoires/";
-	    movieBaseUrl = "http://localhost:8080/filmr/api/movies/";
-    }
-
     @Before
     public void resetDatabase() throws Exception {
-        //Initialize replacement for SpringJunit4ClassRunner
-        testContextManager = new TestContextManager(getClass());
-        testContextManager.prepareTestInstance(this);
+        repetoireBaseUrl = "http://localhost:8080/filmr/api/repertoires/";
+	    movieBaseUrl = "http://localhost:8080/filmr/api/movies/";
 
         //Initialize restTemplate
         restTemplate = new RestTemplate();
@@ -88,7 +73,6 @@ public class MovieFilterTest {
         //Setup id for this run
         id = savedRepertoire.getId();
         urlWithId = repetoireBaseUrl+id;
-
     }
 
     @Test
@@ -101,7 +85,6 @@ public class MovieFilterTest {
 
     @Test
     public void testReadAllWithFilterOnRepetoire() {
-
 	    Movie[] moviesBeforeAddToRepetoire = restTemplate.getForEntity(movieBaseUrl+"?not_in_repertoire_with_id="+id, Movie[].class).getBody();
         assertEquals("Assert that query has movie before test of add movie to repetoire", moviesBeforeAddToRepetoire.length, 1);
 
@@ -112,7 +95,7 @@ public class MovieFilterTest {
 
         restTemplate.put(urlWithId+"?add_movie_with_id="+savedMovie.getId(), savedRepertoire);
 
-	Movie[] moviesAfterAddToRepetoire = restTemplate.getForEntity(movieBaseUrl+"?not_in_repertoire_with_id="+id, Movie[].class).getBody();
+	    Movie[] moviesAfterAddToRepetoire = restTemplate.getForEntity(movieBaseUrl+"?not_in_repertoire_with_id="+id, Movie[].class).getBody();
         assertEquals("Assert that query is empty since now the movie is already in repetoire", moviesAfterAddToRepetoire.length, 0);
 
     }
