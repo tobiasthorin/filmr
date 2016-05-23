@@ -162,8 +162,8 @@ angular.module('filmr')
 
 	            ScheduleService.query(params).$promise.then(
                     function (result){
-                        console.log("in showings with params");
-                        console.log(result);
+                        $log.debug("in showings with params");
+                        $log.debug(result);
                         $scope.showingSchedule = result;
                     },
                     function (error) {
