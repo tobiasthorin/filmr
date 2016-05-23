@@ -9,14 +9,12 @@ import filmr.helpers.exceptions.FilmrBaseException;
 import filmr.helpers.exceptions.booking.FilmrInvalidSeatStatusException;
 import filmr.helpers.exceptions.booking.FilmrSeatAlreadyBookedException;
 import filmr.helpers.exceptions.booking.FilmrSeatInDisabledShowingException;
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
-
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Service;
 
 @Service
 public class BookingService extends BaseServiceClass<Booking,Long> {

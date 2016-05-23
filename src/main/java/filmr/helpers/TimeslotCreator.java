@@ -1,20 +1,14 @@
 package filmr.helpers;
 
+import filmr.domain.Movie;
+import filmr.domain.Showing;
+
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import filmr.domain.Movie;
-import filmr.domain.Showing;
-
-/**
- * 
- * @author Erik
- *
- */
 
 public class TimeslotCreator {
     

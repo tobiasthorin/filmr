@@ -2,20 +2,14 @@ package filmr.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.validation.constraints.NotNull;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.Range;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -141,7 +135,7 @@ public class Theater {
         return new EqualsBuilder()
                 .append(id,theater.getId())
                 .append(name,theater.getName())
-                //.append(rows, theater.getRows()) //TODO breaks everything boo
+                //.append(rows, theater.getRows()) //TODO breaks
                 //.append(cinema, theater.getCinema())
                 //.append(showings,theater.getShowings())
                 .append(disabled, theater.isDisabled())
