@@ -118,14 +118,7 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
             $scope.selectedSeats.delete(id);
         }
 
-        function findBookedSeats(callback) {
-            for (var i = 0; i < $scope.currentShowing.bookings.length; i++) {
-                for (var j = 0; j < $scope.currentShowing.bookings[i].bookedSeats.length; j++) {
-                    $scope.bookedSeats.add($scope.currentShowing.bookings[i].bookedSeats[j].id);
-                }
-            }
-            callback();
-        }
+        
 
         function updateNumberOfBookedSeats() {
             $scope.numberOfSelectedSeats = $scope.selectedSeats.size;
