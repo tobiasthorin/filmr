@@ -12,7 +12,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class Movie {
+public class Movie implements Comparable<Movie>{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -100,11 +100,12 @@ public class Movie {
 				.toHashCode();
 	}
 
-	/*@Override
-	public String toString() {
-		return "Movie [id=" + id + ", title=" + title + ", description=" + description + ", lengthInMinutes="
-				+ lengthInMinutes + "]";
-	}*/
+	@Override
+	public int compareTo(Movie movie) {
+		return this.getTitle().compareTo(movie.getTitle());
+	}
+	
+	
 	
 	
 }
