@@ -193,9 +193,6 @@ input.btn {
 .fullBookedShowing {
   background-color: #ff5260; }
 
-.blockSpan {
-  display: block; }
-
 .clearField {
   position: absolute;
   right: 5px;
@@ -207,12 +204,15 @@ input.btn {
   cursor: pointer;
   color: #ccc; }
 
-.pullLeft {
-  float: left; }
+.btn.pullRight {
+  padding: 3px 3px; }
 
 .form-control {
   display: inline;
   width: 80%; }
+
+.blockSpan {
+  display: block; }
 
 .dateRow {
   background-color: #5c111d;

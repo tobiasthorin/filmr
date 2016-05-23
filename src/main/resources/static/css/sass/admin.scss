@@ -300,10 +300,6 @@ input.btn {
   background-color: #ff5260;
 }
 
-.blockSpan {
-  display: block;
-}
-
 .clearField {
   position: absolute;
   right: 5px;
@@ -316,13 +312,17 @@ input.btn {
   color: #ccc;
 }
 
-.pullLeft {
-  float: left;
+.btn.pullRight{
+  padding: 3px 3px;
 }
 
-.form-control {
+.form-control{
   display: inline;
   width: 80%;
+}
+
+.blockSpan {
+  display: block;
 }
 
 .dateRow {
@@ -372,3 +372,4 @@ tbody > tr.dateRow:hover {
     border: none;
   }
 }
+
