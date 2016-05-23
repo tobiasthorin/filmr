@@ -129,6 +129,7 @@ public class BookingTest {
         //assertEquals("Compare seats", booking.getBookedSeats(), postedBooking.getBookedSeats()); //TODO seats equals method bugged?
         //assertEquals("Compare showing", booking.getShowing(), postedBooking.getShowing());
         assertEquals("Compare phone numbers", booking.getPhoneNumber(), booking.getPhoneNumber());
+        assertEquals("Make sure something was added", tableSize + 1, bookingRepository.findAll().size());
     }
 
     @Test (expected = HttpClientErrorException.class)

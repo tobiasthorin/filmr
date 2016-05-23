@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 @Entity
 public class Repertoire {
@@ -30,13 +31,13 @@ public class Repertoire {
 
     public Set<Movie> getMovies() {
         if (movies == null) {
-            movies = new HashSet<>(); //TODO this is kinda stupid?
+            movies = new TreeSet<>(); //TODO this is kinda stupid?
         }
         return movies;
     }
 
     public void setMovies(Set<Movie> movies) {
-        this.movies = movies;
+        this.movies = new TreeSet<Movie>(movies);
     }
     
     @Override
