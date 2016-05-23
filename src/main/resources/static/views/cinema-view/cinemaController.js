@@ -40,11 +40,11 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', '$lo
 
             if(!$scope.number_of_rows) return false;
             if($scope.number_of_rows<1) return false;
-			if($scope.number_of_rows>128) return false;
+			if($scope.number_of_rows>64) return false;
 
             if(!$scope.number_of_seats) return false;
             if($scope.number_of_seats<1) return false;
-			if($scope.number_of_seats>128) return false;
+			if($scope.number_of_seats>64) return false;
 
             return true;
         };

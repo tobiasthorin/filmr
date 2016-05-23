@@ -76,7 +76,6 @@ public class ShowingController extends BaseController {
         return new ResponseEntity<Showing>(retrievedShowing, HttpStatus.OK);
     }
 
-
     
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
@@ -93,19 +92,11 @@ public class ShowingController extends BaseController {
     		@RequestParam(name="include_empty_slots_for_movie_of_length", required=false) Long include_empty_slots_for_movie_of_length
     		) {
     	
-    	//TODO: figure out why dates from chrome datepicker is received as the date minus one day. 2001-01-02 -> 2001-01-01
     	logger.info("from date, before manipulation: " + from_date);
     	logger.info("to date, before manipulation: " + to_date);
     	
-    	// plusDays(1) is temp fix for issue #86  - dates are one day off. TODO: fix for real
-//    	from_date = from_date != null ? from_date.withHour(0).withMinute(0).plusDays(1) : LocalDateTime.now();
-//    	to_date = to_date != null ? to_date.withHour(23).withMinute(59).plusDays(1) : null;
-    	
     	// default values that are hard to code as strings.. If not null -> use the value, else provide a default value
 		from_date = from_date != null ? from_date : LocalDateTime.now();
-		// change time of to_date so that it includes the whole day
-		to_date = to_date != null ? to_date : null;
-		
 
 		logger.info("From date: " + from_date);
 		logger.info("To date: " + to_date);
@@ -123,7 +114,6 @@ public class ShowingController extends BaseController {
 	
     	HttpHeaders customHeaders = null;
 
-
         if(include_distinct_movies_in_header) {
         	logger.info("Trying to include distinct movies in http header.");
             try {
@@ -131,9 +121,9 @@ public class ShowingController extends BaseController {
             } catch (JsonProcessingException e) {
                 logger.warn("Couldn't parse movie list into JSON");
                 e.printStackTrace();
-            } finally {
-                return ResponseEntity.ok().headers(customHeaders).body(retrievedShowings);
+                return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).body(retrievedShowings);
             }
+            return ResponseEntity.ok().headers(customHeaders).body(retrievedShowings);
         }
         
         if(include_empty_slots_for_movie_of_length != null) {
@@ -164,9 +154,6 @@ public class ShowingController extends BaseController {
     }
     
     
-    
-    // testing "schedule" version of showings 
-    
     @CrossOrigin
     @RequestMapping(value = "/schedule", method = RequestMethod.GET)
     public ResponseEntity<? extends Object> readAllShowingsSchedule(
@@ -184,49 +171,40 @@ public class ShowingController extends BaseController {
     		
     		) {
     	
-    	//TODO: figure out why dates from chrome datepicker is received as the date minus one day. 2001-01-02 -> 2001-01-01
-    	logger.info("from date, before manipulation: " + from_date);
-    	logger.info("to date, before manipulation: " + to_date);
+    	// reuse existing readAll method
+    	ResponseEntity<List<Showing>> ungroupedShowingsResponseEntity = readAllShowings(
+    					from_date, 
+    					to_date, minimum_available_tickets, 
+    					only_for_movie_with_id, only_for_theater_with_id, 
+    					only_for_cinema_with_id, limit, show_disabled_showings, 
+    					include_distinct_movies_in_header, 
+    					include_empty_slots_for_movie_of_length);
     	
-    	// default values that are hard to code as strings.. If not null -> use the value, else provide a default value
-		from_date = from_date != null ? from_date : LocalDateTime.now();
-		// change time of to_date so that it includes the whole day
-		to_date = to_date != null ? to_date : null;
-		
+    	List<Showing> ungroupedShowings = ungroupedShowingsResponseEntity.getBody();
 
-		logger.info("From date: " + from_date);
-		logger.info("To date: " + to_date);
-		
-		List<Showing> retrievedShowings = showingService.getAllMatchingParams(
-						from_date, 
-						to_date, 
-						minimum_available_tickets, 
-						only_for_movie_with_id,
-						only_for_theater_with_id,
-						only_for_cinema_with_id,
-						limit,
-						show_disabled_showings
-				);
-		
-		
-		if(include_empty_slots_for_movie_of_length != null) {
-        	retrievedShowings = 
-        			TimeslotCreator.createExtendedShowingsListWithEmptyTimeSlots(retrievedShowings, include_empty_slots_for_movie_of_length);        	
-        }
-		
 		
 		Function<Showing, String> pickOutOnlyDateStringFromShowingDateTime = showing -> showing.getShowDateTime().toLocalDate().toString();
-		Function<Showing, String> pickOutTheaterNameFromShowing = showing -> showing.getTheater().getName();
 		
 		Map<String,List<Showing>> scheduleByDate = 
-				retrievedShowings.stream()
+				ungroupedShowings.stream()
 				.collect(Collectors.groupingBy(pickOutOnlyDateStringFromShowingDateTime));
 		
 		// sort
-		TreeMap<String,List<Showing>> sortedScheduleByDate = new TreeMap<String,List<Showing>>(scheduleByDate);
+		TreeMap<String,List<Showing>> sortedScheduleByDate = new TreeMap<String,List<Showing>>(scheduleByDate);		
+
+        
+		HttpHeaders ungroupedShowingsHttpHeaders = ungroupedShowingsResponseEntity.getHeaders();
+		ResponseEntity<? extends Object> scheduleReponseEntity = 
+				ResponseEntity.ok().headers(ungroupedShowingsHttpHeaders).body(group_by_theater ? groupShowingsByTheater(sortedScheduleByDate) : sortedScheduleByDate);
 		
-		
+        return scheduleReponseEntity;
+    }
+
+	private Map<String, Map<String, List<Showing>>> groupShowingsByTheater(
+			TreeMap<String, List<Showing>> sortedScheduleByDate) {
 		Map<String,Map<String,List<Showing>>> scheuduleByDateAndTheaterName = new TreeMap<String,Map<String,List<Showing>>>();
+		
+		Function<Showing, String> pickOutTheaterNameFromShowing = showing -> showing.getTheater().getName();
 		
 		sortedScheduleByDate.forEach((dateString, listOfShowings) -> {
 			Map<String, List<Showing>> showingsForSpecificDateGroupedByTheater = 
@@ -237,35 +215,9 @@ public class ShowingController extends BaseController {
 			TreeMap<String, List<Showing>> sortedShowingsForSpecificDateGroupedByTheater = 
 					new TreeMap<String, List<Showing>>(showingsForSpecificDateGroupedByTheater);
 			scheuduleByDateAndTheaterName.put(dateString, sortedShowingsForSpecificDateGroupedByTheater);
-		});			
-		
-		
-		// optional headers
-		
-    	HttpHeaders customHeaders = null;
-
-
-        if(include_distinct_movies_in_header) {
-        	logger.info("Trying to include distinct movies in http header.");
-            try {
-                customHeaders = buildCustomHeadersForReadAll(retrievedShowings);
-            } catch (JsonProcessingException e) {
-                logger.warn("Couldn't parse movie list into JSON");
-                e.printStackTrace();
-            } finally {
-                return ResponseEntity.ok().headers(customHeaders).body(group_by_theater ? scheuduleByDateAndTheaterName : sortedScheduleByDate);
-            }
-        }
-        
-//        if(group_by_theater) {
-//        	return new ResponseEntity<Map<String,Map<String,List<Showing>>>>(scheuduleByDateAndTheaterName, HttpStatus.OK);
-//        } else {
-//        	return new ResponseEntity<Map<String,List<Showing>>>(sortedScheduleByDate, HttpStatus.OK);        	
-//        }
-        
-        return ResponseEntity.ok().body(group_by_theater ? scheuduleByDateAndTheaterName : sortedScheduleByDate);
-    }
-    
+		});
+		return scheuduleByDateAndTheaterName;
+	}
     
     
     private HttpHeaders buildCustomHeadersForReadAll(List<Showing> showings) throws JsonProcessingException {
