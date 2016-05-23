@@ -13,7 +13,7 @@ angular.module('filmr')
 			getCinemas(function(){
 				$scope.cinema = $scope.allCinemas[0];
 				getTheatersAndRepertoireInCinema();
-                refreshPage
+                refreshPage();
 			});
 
 			//Publicly accessible variables and functions
@@ -37,16 +37,6 @@ angular.module('filmr')
 				$log.debug("---");
 				$log.debug("Set Cinema, get movies and theaters");
 				getTheatersAndRepertoireInCinema();
-                refreshPage();
-			};
-
-			$scope.clearAllFilters = function() {
-				$scope.fromDate = null;
-				$scope.toDate = null;
-				$scope.selectedMovie = null;
-				$scope.theater = {};
-				$scope.selectedDates = [];
-				$scope.showingIsDisabled = false;
                 refreshPage();
 			};
 
@@ -125,7 +115,6 @@ angular.module('filmr')
 				$("td").removeClass("selected");
 
 				if($scope.selectedDates && $scope.selectedDates.length==1) {
-					console.log("!!!");
 					$("td[data-date="+$scope.selectedDates[0]+"]").addClass("selected");
 					return;
 				}

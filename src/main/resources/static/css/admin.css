@@ -256,8 +256,10 @@ tbody > tr.dateRow:hover {
   border: 1px solid #DDD;
   font-weight: bold; }
   .calendar td .fc-past {
+
     background: #DDD;
     cursor: not-allowed; }
+
   .calendar td .highlight {
     background: #8008FF;
     color: #FFFFFF;
