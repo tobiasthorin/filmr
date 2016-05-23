@@ -247,9 +247,16 @@ tbody > tr.dateRow:hover {
   background: #CCC;
   border: 1px solid #DDD;
   font-weight: bold; }
+  .calendar td .fc-past {
+    background: #DDD; }
   .calendar td .highlight {
+    background: #8008FF;
+    color: #FFFFFF;
+    border: none; }
+  .calendar td .selected {
     background: #5c111d;
     color: #f1f1f1;
+    color: #FFFFFF;
     border: none; }
 
 /*# sourceMappingURL=admin.css.map */
