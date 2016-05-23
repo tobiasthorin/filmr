@@ -18,7 +18,7 @@ angular.module('filmr')
             //Scoped functions
 
             $scope.fetchTheater = function () {
-                console.log("Id " + $routeParams.theater_id + " specified.");
+                $log.info("Id " + $routeParams.theater_id + " specified.");
 
                 TheaterService.get({id: $routeParams.theater_id}).$promise.then(
                     //success

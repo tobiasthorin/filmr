@@ -14,8 +14,8 @@ angular.module('filmr')
 	
 	// functions on $scope object will be available to pages/templates (html) that that use this controller (see routing in app.js)
 	$scope.updateAvailableShowings = function(onlyForMovieWithId,date) {
-        console.log("---");
-        console.log("BookingController: updateAvailableShowings");
+		$log.info("---");
+		$log.info("BookingController: updateAvailableShowings");
 
         if(typeof date != "undefined") {
             var fromDate = new Date(date);
@@ -56,20 +56,19 @@ angular.module('filmr')
 	
 	// "private" functions. not visible on $scope.  
 	function getAllRelevantShowings(fromDate, toDate, mininumAvailableTickets, onlyForMovieWithId) {
-		
-		console.log("...");
-		console.log("BookingController: getAllRelevantShowings()");
-		console.log("fetching relevant showings based on selected options");
+		$log.info("---");
+		$log.info("BookingController: getAllRelevantShowings()");
+		$log.info("fetching relevant showings based on selected options");
 		
 		BookingService.getAllRelevantShowings(fromDate, toDate, mininumAvailableTickets, onlyForMovieWithId, true).then(
 				// on success
 				function(response) {
 					
-					console.log(response.data);
+					$log.debug(response.data);
 
 					// new meta data in response
 					var distinctMovieArray = JSON.parse(response.headers().distinct_movies);
-					console.log("distinct movies", distinctMovieArray);
+					$log.debug("distinct movies "+distinctMovieArray);
 					
 					var showingsArray = response.data;
 
@@ -91,7 +90,7 @@ angular.module('filmr')
 					
 				}, // on error
 				function(error) {
-					console.log("error!", error);
+					$log.error("Error! "+error);
 				}
 		);		
 	}

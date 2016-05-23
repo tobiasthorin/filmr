@@ -1,13 +1,9 @@
 app.controller('customerController', ['$scope', 'CinemaService','$log','$rootScope',
 	function ($scope, CinemaService, $log, $rootScope) {
-		console.log('In Customer Controller');
+		$log.info("In customer controller");
 
 		$scope.fetchCinemas = function () {
-
-			console.log("test logg");
-			$log.info("l");
-
-			console.log("Fetching cinemas");
+			$log.info("Fetching cinemas");
 			CinemaService.query().$promise.then(function (result) {
 					$scope.cinemas = result;
 				},
@@ -33,7 +29,7 @@ app.controller('customerController', ['$scope', 'CinemaService','$log','$rootSco
 				return;
 			}
 
-			console.log("Saving...");
+			$log.info("Saving...");
 
 			if (!$scope.add_cinema_disabled) {
 				$scope.add_cinema_disabled = false;
