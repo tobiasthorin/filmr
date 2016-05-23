@@ -125,7 +125,8 @@
 
             $rootScope.errorHandler = (debug ?
                 function (error) {
-                    $log.error("Error! "+error);
+                    $log.error("Error!");
+                    $log.error(error);
                     $rootScope.alert("Error! ", error, 2);
                 } :
                 function (error) {
