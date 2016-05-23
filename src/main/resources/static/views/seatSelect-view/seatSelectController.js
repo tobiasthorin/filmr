@@ -14,47 +14,35 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
 
         var player;
 
-        $scope.fetchShowing = function () {
+        $scope.fetchShowing = function (callback) {
             if (!activeRequest) {
                 activeRequest = true;
                 ShowingService.get({id: $routeParams.showingId}).$promise.then(
                     function (result) {
+                    	activeRequest = false;
                         $scope.currentShowing = result;
                         $scope.theaterRows = result.theater.rows;
                         trailerUrl = result.movie.trailerUrl;
                         onYouTubeIframeAPIReady();
 
                         findBookedSeats();
+                        callback();
                     },
                     function () {
                         //fail
                     }
                 );
-                activeRequest = false;
             }
         };
 
         $scope.toggleSelection = function (id) {
             //Make sure seat hasnt been taken while user is booking
-            if (!activeRequest) {
-                activeRequest = true;
-                console.log("trying to update"); //TODO must wait for server
-                findBookedSeats( function () {
-                    if (!$scope.bookedSeats.has(id)) {
-
-                        if ($scope.selectedSeats.has(id)) {
-                            unselectSeat(id);
-                        } else {
-                            selectSeat(id);
-                        }
-                        updateNumberOfBookedSeats();
-                        activeRequest = false;
-                    }
-                    else {
-                        activeRequest = false;
-                    }
-                })
-            }
+            console.log("trying to update"); //TODO must wait for server
+            $scope.fetchShowing(function() {
+            	determineSeatState(id);
+            	}
+            );
+                
         };
 
         $scope.checkIfSelected = function (id) {
@@ -104,6 +92,22 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
             return true;
 
         };
+        
+        function determineSeatState(id){
+        	if (!$scope.bookedSeats.has(id)) {
+
+                if ($scope.selectedSeats.has(id)) {
+                    unselectSeat(id);
+                } else {
+                    selectSeat(id);
+                }
+                updateNumberOfBookedSeats();
+                // activeRequest = false;
+            }
+            else {
+                // activeRequest = false;
+            }
+        }
 
         function resetFields() {
 
@@ -129,7 +133,8 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
 
         function updateNumberOfBookedSeats() {
             $scope.numberOfSelectedSeats = $scope.selectedSeats.size;
-            activeRequest = false;
+            console.log($scope.numberOfSelectedSeats);
+            // activeRequest = false;
         }
 
         function createSeatArray() {
