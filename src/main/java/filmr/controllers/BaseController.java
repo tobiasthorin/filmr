@@ -4,6 +4,7 @@ import filmr.helpers.exceptions.FilmrBaseException;
 import filmr.helpers.exceptions.FilmrExceptionModel;
 import filmr.helpers.exceptions.FilmrInvalidDateFormatException;
 import org.apache.log4j.Logger;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
  * for all controllers extending the class. 
  *
  */
+@Aspect
 public class BaseController {
 	
 	protected org.apache.log4j.Logger logger = Logger.getLogger(this.getClass());
