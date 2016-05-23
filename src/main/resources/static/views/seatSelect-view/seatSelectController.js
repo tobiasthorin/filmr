@@ -5,6 +5,7 @@ var trailerUrl;
 app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeParams', 'ShowingService', 'BookingService',
     function ($scope, $log, $rootScope, $routeParams, ShowingService, BookingService) {
 
+        var activeRequest = false;
         $scope.theaterRows = [];
         $scope.currentShowing = {};
         $scope.selectedSeats = new Set();
@@ -12,36 +13,46 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
         $scope.numberOfSelectedSeats = 0;
 
         $scope.fetchShowing = function () {
-            ShowingService.get({id: $routeParams.showingId}).$promise.then(
-                function (result) {
-                    $scope.currentShowing = result;
-                    $scope.theaterRows = result.theater.rows;
-                    trailerUrl = result.movie.trailerUrl;
-                    onYouTubeIframeAPIReady();
+            if (!activeRequest) {
+                activeRequest = true;
+                ShowingService.get({id: $routeParams.showingId}).$promise.then(
+                    function (result) {
+                        $scope.currentShowing = result;
+                        $scope.theaterRows = result.theater.rows;
+                        trailerUrl = result.movie.trailerUrl;
+                        onYouTubeIframeAPIReady();
 
-                    findBookedSeats();
-                    loadYouTubePlayer()
-                },
-                function () {
-                    //fail
-                }
-            )
+                        findBookedSeats();
+                        loadYouTubePlayer()
+                    },
+                    function () {
+                        //fail
+                    }
+                )
+                activeRequest = false;
+            }
         };
 
         $scope.toggleSelection = function (id) {
             //Make sure seat hasnt been taken while user is booking
-            console.log("trying to update"); //TODO must wait for server
-            findBookedSeats();
-            if (!$scope.bookedSeats.has(id)) {
+            if (!activeRequest) {
+                activeRequest = true;
+                console.log("trying to update"); //TODO must wait for server
+                findBookedSeats( function () {
+                    if (!$scope.bookedSeats.has(id)) {
 
-                if ($scope.selectedSeats.has(id)) {
-                    unselectSeat(id);
-                } else {
-                    selectSeat(id);
-                }
-
-                updateNumberOfBookedSeats();
-
+                        if ($scope.selectedSeats.has(id)) {
+                            unselectSeat(id);
+                        } else {
+                            selectSeat(id);
+                        }
+                        updateNumberOfBookedSeats();
+                        activeRequest = false;
+                    }
+                    else {
+                        activeRequest = false;
+                    }
+                })
             }
         };
 
@@ -54,27 +65,32 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
         };
 
         $scope.submitBooking = function () {
-            if ($scope.validateInputs()) {
+            if (!activeRequest) {
+                activeRequest = true;
+                if ($scope.validateInputs()) {
 
-                var params = {
-                    for_showing_with_id: $scope.currentShowing.id
-                };
+                    var params = {
+                        for_showing_with_id: $scope.currentShowing.id
+                    };
 
-                var body = {
-                    bookedSeats: createSeatArray(),
-                    phoneNumber: $scope.phoneNumber
-                };
+                    var body = {
+                        bookedSeats: createSeatArray(),
+                        phoneNumber: $scope.phoneNumber
+                    };
 
-                BookingService.save(params, body).$promise.then(
-                    function (result) {
-                        $rootScope.alert("Thank you!", "Your booking is now confirmed.", 1);
-                        window.location.assign("#/book/showing/" + $scope.currentShowing.id + "/confirm/" + result.id);
-                    },
-                    function () {
-                        $rootScope.genericError();
-                    }
-                );
+                    BookingService.save(params, body).$promise.then(
+                        function (result) {
+                            $rootScope.alert("Thank you!", "Your booking is now confirmed.", 1);
+                            window.location.assign("#/book/showing/" + $scope.currentShowing.id + "/confirm/" + result.id);
+                            activeRequest = false;
+                        },
+                        function () {
+                            $rootScope.genericError();
+                            activeRequest = false;
+                        }
+                    );
 
+                }
             }
         };
 
@@ -102,16 +118,18 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
             $scope.selectedSeats.delete(id);
         }
 
-        function findBookedSeats() {
+        function findBookedSeats(callback) {
             for (var i = 0; i < $scope.currentShowing.bookings.length; i++) {
                 for (var j = 0; j < $scope.currentShowing.bookings[i].bookedSeats.length; j++) {
                     $scope.bookedSeats.add($scope.currentShowing.bookings[i].bookedSeats[j].id);
                 }
             }
+            callback();
         }
 
         function updateNumberOfBookedSeats() {
             $scope.numberOfSelectedSeats = $scope.selectedSeats.size;
+            activeRequest = false;
         }
 
         function createSeatArray() {
