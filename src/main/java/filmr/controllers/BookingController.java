@@ -1,19 +1,28 @@
 package filmr.controllers;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import filmr.helpers.exceptions.booking.FilmrShowingPastDateException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import filmr.domain.Booking;
 import filmr.domain.Showing;
 import filmr.helpers.exceptions.FilmrBaseException;
 import filmr.helpers.exceptions.FilmrPOSTRequestWithPredefinedIdException;
 import filmr.helpers.exceptions.FilmrPUTRequestWithMissingEntityIdException;
-import filmr.helpers.exceptions.booking.FilmerBookingMustHaveSeatsException;
+import filmr.helpers.exceptions.booking.FilmrBookingMustHaveSeatsException;
 import filmr.services.BookingService;
 import filmr.services.ShowingService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/bookings")
@@ -38,10 +47,14 @@ public class BookingController extends BaseController {
         }
         
         if (booking.getBookedSeats() == null || booking.getBookedSeats().size() == 0) {
-        	throw new FilmerBookingMustHaveSeatsException();
+        	throw new FilmrBookingMustHaveSeatsException();
         } 
         
         Showing showing = showingService.readEntity(for_showing_with_id);
+	    if(showing.getShowDateTime().isBefore(LocalDateTime.now())){
+			throw new FilmrShowingPastDateException();
+	    }
+
         booking.setShowing(showing);
         
         
