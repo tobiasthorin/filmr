@@ -199,6 +199,36 @@ input.btn {
   text-align: center;
 }
 
+.bookingWrapper {
+  padding: 5%;
+  width: 100%;
+  min-height: 600px;
+  background-color: #fafafa;
+  border: solid $cinema-red-dark 4px;
+  border-radius: 10px;
+
+  .bookingTableObject {
+    background-color: rgba(0, 0, 0, 0.14);
+    cursor: pointer;
+    .activeMovie {
+      background-color: $cinema-red-dark;
+      color: $cinema-gold;
+    }
+
+    .notActiveMovie{
+      color: #919191;
+    }
+
+    .unselected{
+    }
+
+  }
+
+  .fullBookedShowing {
+    background-color: #ff5260;
+  }
+}
+
 .confirmWrapper {
   .hooray {
     background: $cinema-red;
@@ -287,18 +317,9 @@ input.btn {
   }
 }
 
-.bookingTableObject {
-  background-color: rgba(0, 0, 0, 0.14);
-}
 
-.activeMovie {
-  background-color: $cinema-red-dark;
-  color: $text-light;
-}
 
-.fullBookedShowing {
-  background-color: #ff5260;
-}
+
 
 .clearField {
   position: absolute;
@@ -369,6 +390,7 @@ tbody > tr.dateRow:hover {
 
   .fc-past {
     background:#DDD;
+    cursor: not-allowed;
   }
 
   .highlight{

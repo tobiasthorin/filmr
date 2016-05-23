@@ -8,11 +8,12 @@ angular.module('filmr')
 
 			var today = getToday();
 
+
 			//Execute on page load
 			getCinemas(function(){
 				$scope.cinema = $scope.allCinemas[0];
 				getTheatersAndRepertoireInCinema();
-                refreshPage
+                refreshPage();
 			});
 
 			//Publicly accessible variables and functions
@@ -20,10 +21,8 @@ angular.module('filmr')
 			$scope.theatersInCinema = [];
 			$scope.allShowings = [];
 			$scope.allCinemas = [];
-
 			$scope.theater = {};
 			$scope.movieForShowing = {};
-			$scope.cinema= $scope.allCinemas[0];
 
 			$scope.selectedMovie = null;
 			$scope.selectedDates = [];
@@ -41,19 +40,9 @@ angular.module('filmr')
                 refreshPage();
 			};
 
-			$scope.clearAllFilters = function() {
-				$scope.fromDate = null;
-				$scope.toDate = null;
-				$scope.selectedMovie = null;
-				$scope.theater = {};
-				$scope.selectedDates = [];
-				$scope.showingIsDisabled = false;
-                refreshPage();
-			};
-
 			$scope.setMovie = function (movie) {
 				if (movie == $scope.selectedMovie) {
-					$scope.selectedMovie = {};
+					$scope.selectedMovie = null;
 				}
 				else {
 					$scope.selectedMovie = movie;
@@ -110,6 +99,7 @@ angular.module('filmr')
 						$rootScope.errorHandler(error);
 					}
 				)
+
 			}
 
             function refreshPage() {
@@ -125,7 +115,6 @@ angular.module('filmr')
 				$("td").removeClass("selected");
 
 				if($scope.selectedDates && $scope.selectedDates.length==1) {
-					console.log("!!!");
 					$("td[data-date="+$scope.selectedDates[0]+"]").addClass("selected");
 					return;
 				}

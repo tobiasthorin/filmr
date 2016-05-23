@@ -25,20 +25,18 @@
     });
 
 </script>
-
-<div class="booking-wrapper">
-    <button class="" type="button" ng-click="clearAllFilters()">Start Over</button>
+<h2>Booking</h2>
+<div class="bookingWrapper">
+   <select ng-options="cinema as cinema.name for cinema in allCinemas"
+           name="cinemas" ng-model="cinema" ng-change="updateCinemaScope()">
+   </select>
     <div class=row>
         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <h3>Movies</h3>
             <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th>Movie</th>
-                </tr>
-                </thead>
                 <tbody ng-repeat="movie in moviesInRepertoire">
                 <tr class="bookingTableObject">
-                    <td ng-class="{'activeMovie': selectedMovie == movie}" ng-click="setMovie(movie)">{{movie.title}}
+                    <td ng-class="{'activeMovie': selectedMovie == movie, 'notActiveMovie': selectedMovie != movie && selectedMovie != null, 'unselected': selectedMovie == null}" ng-click="setMovie(movie)">{{movie.title}}
                     </td>
                 </tr>
                 </tbody>
