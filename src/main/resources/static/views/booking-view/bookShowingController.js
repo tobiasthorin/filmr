@@ -130,7 +130,7 @@ angular.module('filmr')
 				$log.debug("---");
 				$log.debug("get showings with params");
 
-				var fromDate = today+" 00:00";
+				var fromDate;
 				var toDate = null;
 				var movieId = $scope.selectedMovie == null ? null : $scope.selectedMovie.id;
 				$log.debug($scope.selectedDates);
