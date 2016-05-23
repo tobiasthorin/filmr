@@ -1,6 +1,6 @@
 angular.module('filmr')
-.controller('bookingController', ['$location','$rootScope', '$scope', '$routeParams', 'BookingService',
-    function($location,$rootScope, $scope, $routeParams, BookingService) {
+.controller('bookingController', ['$location','$rootScope', '$scope', '$routeParams', 'BookingService','$log',
+    function($location,$rootScope, $scope, $routeParams, BookingService, $log) {
 
 	$scope.relevantShowings = [];
 	$scope.movies = [];

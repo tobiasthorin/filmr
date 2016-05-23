@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('filmr')
-    .controller('theaterController', ['$rootScope', '$scope', '$routeParams', '$location', 'TheaterService',
-        function ($rootScope, $scope, $routeParams, $location, TheaterService) {
+    .controller('theaterController', ['$rootScope', '$scope', '$routeParams', '$location', 'TheaterService', '$log',
+        function ($rootScope, $scope, $routeParams, $location, TheaterService, $log) {
 			var activeRequest = false;
             var resetSeatNumbers = false;
 
