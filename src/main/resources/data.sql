@@ -11,27 +11,25 @@ INSERT INTO cinema (name,repertoire) VALUES('Lisas Biograf',2);
 /* MOVIES*/
 
 INSERT INTO movie (title, length_in_minutes, description, default_price, trailer_url)
-	VALUES ('Lion King', 119, 'Story about lions', 65.00, '4sj1MT05lAA?t=10');
-INSERT INTO movie (title, length_in_minutes, description, default_price) 
-	VALUES ('Lion Queen', 115, 'Tale about lions', 70.00);
-INSERT INTO movie (title, length_in_minutes, description, default_price) 
-	VALUES ('Lion Prince', 110, 'Epic story about lions', 55.50);
-INSERT INTO movie (title, length_in_minutes, description, default_price) 
-	VALUES ('Lion Princess', 92, 'Old tale about lions', 72.33);
+	VALUES ('The Lion King', 119, 'Story about lions', 65.00, '4sj1MT05lAA?t=10');
 
-INSERT INTO movie (title, length_in_minutes, description, default_price) 
-	VALUES ('One Flew Over the Cuckoo\'s Nest', 133, 'A criminal pleads insanity after getting into trouble', 80);
+INSERT INTO movie (title, length_in_minutes, description, default_price, trailer_url)
+	VALUES ('One Flew Over the Cuckoo\'s Nest', 133, 'A criminal pleads insanity after getting into trouble', 80, '2WSyJgydTsA');
 
-INSERT INTO movie (title, length_in_minutes, description, default_price) 
-	VALUES ('Batman Returns', 126, 'When a corrupt businessman and the grotesque Penguin plot to take control of Gotham City', 60);
-INSERT INTO movie (title, length_in_minutes, description, default_price) 
-	VALUES ('The Cable Guy', 96, '-', 72.33);
-INSERT INTO movie (title, length_in_minutes, description, default_price) 
-	VALUES ('Ferris Bueller\'s Day Off', 103, '-', 72.33);
-INSERT INTO movie (title, length_in_minutes, description, default_price) 
-	VALUES ('The Da Vinci Code', 159, '-', 72.33);
-INSERT INTO movie (title, length_in_minutes, description, default_price) 
-	VALUES ('Alien', 117, '-', 72.33);
+INSERT INTO movie (title, length_in_minutes, description, default_price, trailer_url)
+	VALUES ('Batman Returns', 126, 'When a corrupt businessman and the grotesque Penguin plot to take control of Gotham City', 60, 'Too3qgNaYBE');
+
+INSERT INTO movie (title, length_in_minutes, description, default_price, trailer_url)
+	VALUES ('The Cable Guy', 96, '-', 72.33, 'Xj259Pi_vrA');
+
+INSERT INTO movie (title, length_in_minutes, description, default_price, trailer_url)
+	VALUES ('Ferris Bueller\'s Day Off', 103, '-', 72.33, 'K-X2XzKqBiE');
+
+INSERT INTO movie (title, length_in_minutes, description, default_price, trailer_url)
+	VALUES ('The Da Vinci Code', 159, '-', 72.33, 'zMba3fckhuQ');
+
+INSERT INTO movie (title, length_in_minutes, description, default_price, trailer_url)
+	VALUES ('Alien', 117, '-', 72.33, 'LjLamj-b0I8');
 	
 /* THEATERS */
 
@@ -232,20 +230,19 @@ INSERT INTO repertoire_movies (repertoire,movies) VALUES(2,3);
 INSERT INTO repertoire_movies (repertoire,movies) VALUES(2,4);
 
 
-/* SOME "DYNAMIC" DATA THAT GUARANTIES THAT THERE ARE ALWAYS A FEW SHOWINGS TODAY (now()). GETS THEIR OWN THEATERS SO THEY CAN'T INTERFERE WITH OTHER SHOWINGS ABOVE */
-/* theater will get id 5 and 6 */
+/* SOME "DYNAMIC" DATA THAT GUARANTIES THAT THERE ARE ALWAYS A FEW SHOWINGS TODAY (now()). */
 
 
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 10:00'), 3, 4);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 13:00'), 3, 4);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 16:00'), 3, 4);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 19:00'), 3, 4);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 22:00'), 3, 4);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 10:00'), 3, 1);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 13:00'), 3, 1);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 16:00'), 3, 1);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 19:00'), 3, 1);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 22:00'), 3, 1);
 
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 09:00'), 2, 3);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 12:00'), 2, 3);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 15:00'), 2, 3);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 18:00'), 2, 3);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 21:00'), 2, 3);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 23:30'), 2, 3);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 09:00'), 2, 2);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 12:00'), 2, 2);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 15:00'), 2, 2);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 18:00'), 2, 2);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 21:00'), 2, 2);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 23:30'), 2, 2);
 

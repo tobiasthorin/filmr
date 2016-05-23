@@ -6,6 +6,8 @@ angular.module('filmr')
 		function ($rootScope, $scope, $routeParams, $location, $resource, $log, CinemaService, ScheduleService, BookingService) {
 
 
+			var today = getToday();
+
 			//Execute on page load
 			getCinemas(function(){
 				$scope.cinema = $scope.allCinemas[0];
@@ -20,9 +22,11 @@ angular.module('filmr')
 			$scope.allCinemas = [];
 
 			$scope.theater = {};
-			$scope.selectedMovie = {};
 			$scope.movieForShowing = {};
 			$scope.cinema= $scope.allCinemas[0];
+
+			$scope.selectedMovie = null;
+			$scope.selectedDates = [];
 
 			$scope.updateShowings = function() {
 				$log.debug("---");
@@ -40,8 +44,9 @@ angular.module('filmr')
 			$scope.clearAllFilters = function() {
 				$scope.fromDate = null;
 				$scope.toDate = null;
-				$scope.selectedMovie = {};
+				$scope.selectedMovie = null;
 				$scope.theater = {};
+				$scope.selectedDates = [];
 				$scope.showingIsDisabled = false;
                 refreshPage();
 			};
@@ -56,7 +61,20 @@ angular.module('filmr')
                 $scope.updateShowings();
 			};
 
-            $scope.goToSelectSeat = function(showing) {
+			$scope.setDate = function (date) {
+				$log.info("---");
+				$log.info("set date");
+				$log.info(date);
+				if (date == $scope.selectedDates) {
+					$scope.selectedDates = [];
+				}
+				else {
+					$scope.selectedDates = [date];
+				}
+				$scope.updateShowings();
+			};
+
+			$scope.goToSelectSeat = function(showing) {
                 $location.url("book/showing/"+showing.id+"/seat_select");
             };
 
@@ -98,6 +116,15 @@ angular.module('filmr')
                var dates = Object.keys($scope.allShowings);
 				$log.debug(dates);
                 $("td").removeClass("highlight");
+				$("td").removeClass("selected");
+
+				if($scope.selectedDates && $scope.selectedDates.length==1) {
+					console.log("!!!");
+					$("td[data-date="+$scope.selectedDates[0]+"]").addClass("selected");
+					return;
+				}
+
+				if($scope.selectedMovie == null && $scope.selectedDates.length==0) return;
                 for(var i=0; i<dates.length; i++) {
                     if(dates[i].substr(0,1)=="2") //TODO: this is an hack to make sure we just handle dates from result. We also get other stuff like promise etc
                         $("td[data-date="+dates[i]+"]").addClass("highlight");
@@ -105,12 +132,25 @@ angular.module('filmr')
             }
 
 			function getShowingsWithParams(callbackWhenDone){
+				$log.debug("---");
+				$log.debug("get showings with params");
+
+				var fromDate = today+" 00:00";
+				var toDate = null;
+				var movieId = $scope.selectedMovie == null ? null : $scope.selectedMovie.id;
+				$log.debug($scope.selectedDates);
+				if($scope.selectedDates && $scope.selectedDates.length==1) {
+					$log.debug($scope.selectedDates[0]);
+					var date = $scope.selectedDates[0];
+					fromDate = date+" 00:00";
+					toDate = date+" 23:59";
+				}
 				var params = {
 					"only_for_cinema_with_id" : $scope.cinema.id,
 					"only_for_theater_with_id" : $scope.theater.id,
-					"only_for_movie_with_id" : $scope.selectedMovie.id,
-					"from_date" : parseDateStringToValidAPIDateString($scope.fromDate),
-					"to_date" : parseDateStringToValidAPIDateString($scope.toDate),
+					"only_for_movie_with_id" : movieId,
+					"from_date" : parseDateStringToValidAPIDateString(fromDate),
+					"to_date" : parseDateStringToValidAPIDateString(toDate),
 					"show_disabled_showings" : $scope.showingIsDisabled,
 					"include_empty_slots_for_movie_of_length" : $scope.movieForShowing.lengthInMinutes
 				}
@@ -137,5 +177,15 @@ angular.module('filmr')
 				$log.debug(r);
 				return r;
 			}
+
+			function getToday() {
+				var d = new Date();
+				var month = d.getMonth()+1;
+				var date = d.getDate();
+				month = month<10 ? "0" + month : month;
+				date = date<10 ? "0" + date : date;
+				return d.getFullYear()+"-"+month+"-"+date;
+			}
+
 		}]);
 
