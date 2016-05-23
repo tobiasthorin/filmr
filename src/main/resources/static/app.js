@@ -1,9 +1,29 @@
 // wrapped in a IIFE, good habit. (doensn't pollute global name-space)
     var app = angular.module('filmr', ['ngRoute', 'ngResource']); // name  [dependencies] , name is referenced in html tag
 
+    var debug = false;
 
     // ROUTING - what should happen when url changes to path x
-    app.config(['$routeProvider', function ($routeProvider) {
+    app.config(['$routeProvider', '$logProvider', '$provide', function ($routeProvider,$logProvider,$provide) {
+
+        if(!debug) {
+            $provide.decorator('$log', function ($delegate) {
+
+                var origLog = $delegate.log;
+                var origInfo = $delegate.info;
+                var origWarn = $delegate.warn;
+                var origError = $delegate.error;
+                var origDebug = $delegate.debug;
+
+                $delegate.log = function () {};
+                $delegate.info = function () {};
+                $delegate.warn = function () {};
+                $delegate.error = function () {};
+                $delegate.debug = function () {};
+
+                return $delegate;
+            });
+        }
 
         $routeProvider
             .when('/book', {
@@ -76,7 +96,6 @@
     app.run(['$rootScope', '$timeout', '$log', function ($rootScope, $timeout,$log) {
         $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
 
-            var debug = true;
 
             function clear() {
                 $log.debug("clear");
@@ -106,7 +125,8 @@
 
             $rootScope.errorHandler = (debug ?
                 function (error) {
-                    $log.error("Error! "+error);
+                    $log.error("Error!");
+                    $log.error(error);
                     $rootScope.alert("Error! ", error, 2);
                 } :
                 function (error) {
