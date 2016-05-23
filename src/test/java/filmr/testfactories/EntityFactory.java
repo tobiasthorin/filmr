@@ -4,7 +4,6 @@ import filmr.domain.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,13 +30,18 @@ public class EntityFactory {
 
         theaterName = name;
 
-        rows = new ArrayList<>(); //TODO linked in DB?
+        rows = new ArrayList<>();
 
         usingContinuousSeatLabeling = false;
 
         Row r = createStandardRowForTheater(theater);
-        rows.add(r);
 
+        Seat s = createStandardSeatForRow(r);
+        List<Seat> ls = new ArrayList<>();
+        ls.add(s);
+        r.setSeats(ls);
+
+        rows.add(r);
 
         theater.setName(theaterName);
 //        theater.setDisabled(disabled);

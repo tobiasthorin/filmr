@@ -1,26 +1,18 @@
 package filmr.helpers;
 
-import java.io.IOException;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-
-import javax.servlet.http.HttpServletRequest;
-
-import filmr.controllers.TheaterController;
-import filmr.helpers.exceptions.FilmrExceptionModel;
-import filmr.helpers.exceptions.FilmrInvalidDateFormatException;
-
-import org.apache.log4j.Logger;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
+import filmr.controllers.TheaterController;
+import org.apache.log4j.Logger;
+
+import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 
 // copied from http://blog.chris-ritchie.com/2014/09/localdate-java-8-custom-serializer.html (but changed to LocalDateTime)
@@ -32,13 +24,13 @@ public class CustomJsonDateDeserializer extends JsonDeserializer<LocalDateTime> 
 
 	@Override
     public LocalDateTime deserialize(JsonParser jp, DeserializationContext ctxt)
-            throws IOException, JsonProcessingException {//TODO throw an excpetion?
+            throws IOException, JsonProcessingException {
 
 		LocalDateTime dateTime = null;
 		
 		try {
 			
-			//  test doesn't enforse write-dates-as-timestamps: false  in application-test.yml
+			//  test doesn't enforce write-dates-as-timestamps: false  in application-test.yml
 			// so we seem to get the date as an array of numbers, instead of a string.
 			//
 			
@@ -48,7 +40,7 @@ public class CustomJsonDateDeserializer extends JsonDeserializer<LocalDateTime> 
 			logger.debug("!! TEST! in custom deserializer!! ");
 			ObjectCodec oc = jp.getCodec();
 			TreeNode node = oc.readTree(jp);
-			String nodeString = node.toString();
+			String nodeString = node.toString(); //should be named better
 			nodeString = nodeString.substring(1, nodeString.length()-1); // remove brackets
 			
 			logger.debug("\n node.toString : " + nodeString);
@@ -70,20 +62,17 @@ public class CustomJsonDateDeserializer extends JsonDeserializer<LocalDateTime> 
 								Integer.parseInt(datenumbers[4]),
 								Integer.parseInt(datenumbers[5]));
 				logger.debug("Formatted dateString from array values: " + dateString);
-				nodeString = dateString;//TODO probably a new variable for both
+				nodeString = dateString;
 			}
 			//If string is less than 17, return as LocalDateTime, Timezone has been handled when creating
 			else if(nodeString.length()<17){
 				if(nodeString.contains(" ")){
 					logger.debug("Contains whitespace: "+nodeString);
 					nodeString = nodeString.substring(0,10) + "T" + nodeString.substring(11,nodeString.length());
-//				String temp = nodeString.substring(0,10);
-//				temp = temp + "T"+ nodeString.substring(11,nodeString.length());
-//				nodeString = temp;
 					logger.info("Datestring after parsing: "+nodeString);
 				}
-				dateTime = LocalDateTime.parse(nodeString);
-				return dateTime;
+			dateTime = LocalDateTime.parse(nodeString);
+			return dateTime;
 			}
 			else if (!nodeString.substring(nodeString.length()-5).equals(".000Z")) {
 				nodeString += ".000Z";

@@ -26,7 +26,7 @@ describe("cinemaController.js", function () {
             'depth': 7
         };
 	    $rootScope.errorHandler = function(){
-		    console.log("Error!");
+            $log.error("Error!");
 	    };
         $rootScope.clearAlerts = function(){
 

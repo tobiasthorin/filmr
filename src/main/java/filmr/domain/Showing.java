@@ -1,18 +1,15 @@
 package filmr.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import filmr.helpers.CustomJsonDateDeserializer;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.Range;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
-import filmr.helpers.CustomJsonDateDeserializer;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Entity

@@ -55,7 +55,6 @@ public class ShowingController extends BaseController {
             return new ResponseEntity<Showing>(savedShowing, HttpStatus.OK);
         }
         logger.warn("Not valid time");
-
         throw new FilmrShowingTimeOccupiedException("Chosen time for showing is already occupied");
 
     }

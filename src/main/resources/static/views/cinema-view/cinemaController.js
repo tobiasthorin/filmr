@@ -73,7 +73,7 @@ app.controller('cinemaController', ['$scope', '$rootScope', '$routeParams', '$lo
 		};
 
 		$scope.alert = function (message) {
-			console.log(message);
+			$log.info(message);
 		};
 
 		$scope.resetFields = function () {

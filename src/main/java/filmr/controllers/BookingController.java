@@ -1,7 +1,9 @@
 package filmr.controllers;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import filmr.helpers.exceptions.booking.FilmrShowingPastDateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +20,7 @@ import filmr.domain.Showing;
 import filmr.helpers.exceptions.FilmrBaseException;
 import filmr.helpers.exceptions.FilmrPOSTRequestWithPredefinedIdException;
 import filmr.helpers.exceptions.FilmrPUTRequestWithMissingEntityIdException;
-import filmr.helpers.exceptions.booking.FilmerBookingMustHaveSeatsException;
+import filmr.helpers.exceptions.booking.FilmrBookingMustHaveSeatsException;
 import filmr.services.BookingService;
 import filmr.services.ShowingService;
 
@@ -45,10 +47,14 @@ public class BookingController extends BaseController {
         }
         
         if (booking.getBookedSeats() == null || booking.getBookedSeats().size() == 0) {
-        	throw new FilmerBookingMustHaveSeatsException();
+        	throw new FilmrBookingMustHaveSeatsException();
         } 
         
         Showing showing = showingService.readEntity(for_showing_with_id);
+	    if(showing.getShowDateTime().isBefore(LocalDateTime.now())){
+			throw new FilmrShowingPastDateException();
+	    }
+
         booking.setShowing(showing);
         
         

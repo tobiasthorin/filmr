@@ -4,9 +4,7 @@ import filmr.domain.Row;
 import filmr.domain.Seat;
 import filmr.domain.SeatState;
 import filmr.domain.Theater;
-
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
