@@ -2,9 +2,9 @@
     <li><a href="#/customer">Admin Home</a></li>
     <li class="active">{{getCurrentCinema().name}}</li>
 </ol>
-<div class="">
 
 <h2>{{getCurrentCinema().name}}</h2>
+<div class="container">
     <div class="row">
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
             <div class="panel panel-default">
@@ -16,7 +16,7 @@
                         <li class="list-group-item" ng-repeat="movie in getMoviesInRepertoire()">
                             {{movie.title}}
                             <!--TODO make buttons go to the right, try to get same size on this and theater list elements?-->
-                            <button class="btn pullRight" type="button" ng-click="removeMovieFromRepertoire(movie.id)"><span class="glyphicon glyphicon-remove"></button>
+                            <div class="remove pull-right"  ng-click="removeMovieFromRepertoire(movie.id)"><span class="glyphicon glyphicon-remove"></div>
                         </li>
                     </ul>
                     <form>
@@ -76,5 +76,5 @@
             </div>
         </div>
     </div>
-    <hr>
+
 </div>

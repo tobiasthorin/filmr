@@ -4,87 +4,85 @@
         defaultDate: '2016-05-12',
         editable: true,
         eventLimit: true,
-        events: [
-
-        ],
-        header: { prevYear: false,
+        events: [],
+        header: {
+            prevYear: false,
             prevMonth: false,
             nextMonth: false,
             nextYear: false
         }
 
     });
-    $(".calendar button").css("display","none");
-    $('.calendar').fullCalendar('option', 'height', 500);
+    $(".calendar button").css("display", "none");
+    $('.calendar').fullCalendar('option', 'height', 400);
 </script>
+
 <div class="booking-wrapper">
     <button class="" type="button" ng-click="clearAllFilters()">Start Over</button>
-    <div class = row>
+    <div class=row>
         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        	<table class="table table-hover">
-        		<thead>
-        			<tr>
-        				<th>Movie</th>
-        			</tr>
-        		</thead>
-        		<tbody ng-repeat="movie in moviesInRepertoire">
-        			<tr class="bookingTableObject">
-        				<td ng-class="{'activeMovie': selectedMovie == movie}" ng-click="setMovie(movie)">{{movie.title}}</td>
-        			</tr>
-        		</tbody>
-        	</table>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Movie</th>
+                </tr>
+                </thead>
+                <tbody ng-repeat="movie in moviesInRepertoire">
+                <tr class="bookingTableObject">
+                    <td ng-class="{'activeMovie': selectedMovie == movie}" ng-click="setMovie(movie)">{{movie.title}}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
 
-		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
             <label>From Date:</label>
-        	<input name="from_date" ng-model="fromDate" ng-change="updateShowings()">
-			<button class="" type="button" ng-click="fromDate = null; updateShowings()">x</button>
+            <input name="from_date" ng-model="fromDate" ng-change="updateShowings()">
+            <button class="" type="button" ng-click="fromDate = null; updateShowings()">x</button>
             <div class="calendar">
             </div>
         </div>
 
-		<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-			
-			<table class="table" ng-repeat="(date,theaters) in allShowings">
-				<thead>
-				<tr>
-					<th>{{(date)}}</th>
-				</tr>
-				</thead>
-				<tbody ng-repeat="(theaterName, showings) in theaters">
-				<tr><td>{{theaterName}}<td></tr>
-				<tr class="bookingTableObject" ng-class="{'fullBookedShowing': showing.availableTickets <= 0}" ng-repeat="showing in showings">
-                    <td>
-                    <table>
-                        <tr>
-                            <td>{{showing.movie.title}}</td>
-                            <td>{{showing.movie.lengthInMinutes}} minutes.</td>
-                        </tr>
-                        <tr>
-                            <td>{{showing.showDateTime | date : 'dd MMM HH:mm'}} </td>
-                            <td></td>
-                            <td>{{showing.theater.name}}</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td>Seats left: {{showing.availableTickets}}</td>
-                        </tr>
-                    </table>
-                    </td>
-                    <td>
-                        <button class="button orange small" type="button" ng-click="goToSelectSeat(showing)"><span class="glyphicon glyphicon-arrow-right"></span> </button>
-                    </td>
-				</tr>
-				</tbody>
-			</table>
-			</div>
-		</div>
+        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+
+            <div class="showingResults" ng-repeat="(date,theaters) in allShowings">
+
+                <div class="date">{{(date)}}</div>
+
+                <div ng-repeat="(theaterName, showings) in theaters">
+
+                    <div class="theaterName">{{theaterName}}</div>
+
+                    <div class="showing" ng-class="{'fullBookedShowing': showing.availableTickets <= 0}"
+                         ng-repeat="showing in showings">
+
+                        <div>
+                            <span class="movieTitle">{{showing.movie.title}}</span>
+                            <span class="movieLength">{{showing.movie.lengthInMinutes}} minutes.</span>
+                        </div>
+                        <div>
+                            <span class="movieTimeAndPlace">{{showing.showDateTime | date : 'dd MMM HH:mm'}}, {{showing.theater.name}}</span>
+                            <span class="ticketsLeft pull-right">Tickets Left: {{showing.availableTickets}}
+                            <button class="button red small pull-right" type="button"
+                                    ng-click="goToSelectSeat(showing)">
+                                <span class="glyphicon glyphicon-arrow-right"></span>
+                            </button>
+                            </span>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
     </div>
+</div>
 </div>
 <script>
     $('input[name=from_date]').datetimepicker({
-        format:'Y-m-d H:i',
-        step:15
+        format: 'Y-m-d H:i',
+        step: 15
     });
 </script>
