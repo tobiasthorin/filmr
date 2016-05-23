@@ -78,7 +78,7 @@
             var debug = true;
 
             function clear() {
-                console.log("clear");
+                $log.debug("clear");
                 $rootScope.alerts = [];
             }
 
@@ -90,7 +90,7 @@
             $rootScope.activeTab = current.$$route.activeTab;
 
             $rootScope.clearAlerts = function() {
-                console.log("clear");
+                $log.info("clear");
                 $rootScope.alerts = [];
             };
 
@@ -105,7 +105,7 @@
 
             $rootScope.errorHandler = (debug ?
                 function (error) {
-                    console.log("Error!", error);
+                    $log.error("Error! "+error);
                     $rootScope.alert("Error! ", error, 2);
                 } :
                 function (error) {

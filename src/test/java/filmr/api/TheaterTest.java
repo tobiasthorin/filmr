@@ -12,7 +12,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
@@ -25,10 +24,7 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import static junit.framework.TestCase.assertEquals;
@@ -90,8 +86,6 @@ public class TheaterTest {
 
     @Test
     public void testCreate() throws Exception {
-    	
-    	// TODO: fix test with params ?number_of_rows=2&max_row_size=4  <-- Who wrote this?
     	HashMap<String,String> parameters = new HashMap<String, String>();
     	parameters.put("number_of_rows", "4");
     	parameters.put("max_row_size", "5");
@@ -182,8 +176,6 @@ public class TheaterTest {
         assertEquals("Assert that the row size is updated", savedTheater, updatedTheater);
         assertEquals("Assert that the rows are actually updated", Integer.parseInt(updatedMaxRowSize), actualNewRowSize);
     }
-    
-    
 
     @After
     public void clearDatabase() throws Exception {

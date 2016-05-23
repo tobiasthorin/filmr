@@ -1,5 +1,7 @@
 'use strict';
 
+var trailerUrl;
+
 app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeParams', 'ShowingService', 'BookingService',
     function ($scope, $log, $rootScope, $routeParams, ShowingService, BookingService) {
 
@@ -14,8 +16,11 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
                 function (result) {
                     $scope.currentShowing = result;
                     $scope.theaterRows = result.theater.rows;
+                    trailerUrl = result.movie.trailerUrl;
+                    onYouTubeIframeAPIReady();
 
                     findBookedSeats();
+                    loadYouTubePlayer()
                 },
                 function () {
                     //fail
@@ -71,11 +76,11 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
             }
         };
 
-        $scope.validateInputs = function() {
+        $scope.validateInputs = function () {
             $scope.phoneNumber = parseInt($scope.phoneNumber);
 
-            if(typeof $scope.phoneNumber != "number" || !$scope.phoneNumber) return false;
-            if($scope.numberOfSelectedSeats < 1) return false;
+            if (typeof $scope.phoneNumber != "number" || !$scope.phoneNumber) return false;
+            if ($scope.numberOfSelectedSeats < 1) return false;
 
             return true;
 
@@ -119,7 +124,24 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
         }
 
 
-
         //Run on page load
         $scope.fetchShowing();
+
     }]);
+
+var tag = document.createElement('script');
+
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+var player;
+function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+        height: '390',
+        width: '640',
+        videoId: trailerUrl,
+        events: {
+        }
+    });
+}

@@ -16,6 +16,7 @@ public enum FilmrErrorCode {
 	// for all entities
 	F105(HttpStatus.PRECONDITION_FAILED, "POST request must not include entity with a set (non-null) id value"),
 	F110(HttpStatus.PRECONDITION_FAILED, "PUT request must not include entity with an unset (null) id value"),
+	F115(HttpStatus.PRECONDITION_FAILED, "Entity parameter is out of range"),
 	
 	// showings
 	
@@ -26,6 +27,7 @@ public enum FilmrErrorCode {
 	F410(HttpStatus.PRECONDITION_FAILED, "Seat to book must not have state DISABLED or NOT_A_SEAT, and must must exist in theater specified in the choosen showing"), 
 	F415(HttpStatus.PRECONDITION_FAILED, "Seat to book must not already be booked."),
 	F420(HttpStatus.PRECONDITION_FAILED, "Seat to book must not be for a showing that is disabled."),
+	F425(HttpStatus.PRECONDITION_FAILED, "Showing to book must not be in the past"),
 	
 	// theaters
 	

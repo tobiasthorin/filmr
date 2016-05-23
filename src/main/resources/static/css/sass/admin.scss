@@ -70,6 +70,10 @@ h2 {
   }
 }
 
+.breadcrumb {
+  margin-top: 1em;
+}
+
 .inputTable {
   tbody {
     tr {
@@ -236,7 +240,7 @@ input.btn {
 }
 
 .alert {
-  position: absolute;
+  position: fixed;
   top: 2em;
   right: 2em;
   padding: 3em;
@@ -244,20 +248,59 @@ input.btn {
   box-shadow: 0 0 1em rgba(#000000, 0.2);
 }
 
+.remove {
+  cursor: pointer;
+}
+
+.showingResults {
+  .date {
+    font-size: 1.5em;
+    font-weight: bold;
+    border-top: 2px solid $cinema-red-dark;
+    margin-top: 1em;
+  }
+  .theaterName {
+    font-size: 1.5em;
+    font-family: serif;
+    font-style: italic;
+  }
+  .showing {
+    background-color: $cinema-red-dark;
+    margin: 0.5em 0;
+    padding: 0.5em;
+    color: $text-light;
+    border-radius: 5px;
+    .movieTitle {
+      color: $cinema-gold;
+      font-size: 1.5em;
+      font-family: serif;
+    }
+    .movieTimeAndPlace {
+      font-family: serif;
+      font-style: italic;
+      font-size: 1.3em;
+      color: $cinema-red-light;
+    }
+    .ticketsLeft button {
+      margin-left: 1em;
+    }
+  }
+}
+
 .bookingTableObject {
   background-color: rgba(0, 0, 0, 0.14);
 }
 
 .activeMovie {
-  background-color: #800840;
-  color: #FFFFFF;
+  background-color: $cinema-red-dark;
+  color: $text-light;
 }
 
 .fullBookedShowing {
   background-color: #ff5260;
 }
 
-.clearField{
+.clearField {
   position: absolute;
   right: 5px;
   top: 0;
@@ -269,71 +312,51 @@ input.btn {
   color: #ccc;
 }
 
-.blockSpan{
-  display: block;
-}
-
-.clearButton{
-  float: left;
-}
-
-.pullLeft{
-  float: left;
-}
-
-.pullRight{
-  float: right;
-}
-
 .btn.pullRight{
   padding: 3px 3px;
 }
 
 .form-control{
   display: inline;
-  width:80%;
+  width: 80%;
 }
 
-.dateRow{
+.blockSpan {
+  display: block;
+}
+
+.dateRow {
   background-color: #5c111d;
   color: #FFFFFF;
 }
 
-tbody > tr.dateRow:hover{
+tbody > tr.dateRow:hover {
   background-color: #5c111d;
   color: #FFFFFF;
 }
 
 //Button CSS
-.orange {
-  color: #fef4e9;
-  border: solid 1px $cinema-red-dark;
-  background-color: $cinema-red;
+
+.button {
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+  text-align: center;
+  border-radius: .5em;
 }
+
 .small {
   font-size: 11px;
   padding: .2em 1em .275em;
 }
-.button {
-  display: inline-block;
-  zoom: 1;
-  vertical-align: baseline;
-  margin: 0 2px;
-  outline: none;
-  cursor: pointer;
-text-align: center;
-  text-decoration: none;
-  padding: .5em 2em .55em;
-  text-shadow: 0 1px 1px rgba(0,0,0,.3);
-  -webkit-border-radius: .5em;
-  -moz-border-radius: .5em;
-  border-radius: .5em;
-  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
-  -moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
-  box-shadow: 0 1px 2px rgba(0,0,0,.2);
+
+.red {
+  color: #fef4e9;
+  border: solid 1px $cinema-red-dark;
+  background-color: $cinema-red;
 }
 
-.calendar h2{
+.calendar h2 {
   font-size: 14px;
   font-style: normal;
   font-weight: bold;
@@ -342,15 +365,18 @@ text-align: center;
 .calendar td {
   background: #CCC;
   border: 1px solid #DDD;
+
   font-weight:bold;
   .highlight{
     background: #8008FF;
     color: #FFFFFF;
-    border: 1px solid #8008FF;
+    border: none;
   }
   .selected {
-    background: #800840;
+    background: $cinema-red-dark;
+    color: $text-light;
     color: #FFFFFF;
-    border: 1px solid #800840;
+    border: none;
   }
 }
+

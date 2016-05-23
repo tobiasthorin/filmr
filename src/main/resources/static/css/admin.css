@@ -37,6 +37,9 @@ h2 {
 .nav-pills li.active a, .nav-pills li.active a:active, .nav-pills li.active a:focus {
   color: #fff !important; }
 
+.breadcrumb {
+  margin-top: 1em; }
+
 .inputTable tbody tr td {
   padding: 0.5em; }
 
@@ -143,19 +146,49 @@ input.btn {
     margin: 4em 0; }
 
 .alert {
-  position: absolute;
+  position: fixed;
   top: 2em;
   right: 2em;
   padding: 3em;
   z-index: 10;
   box-shadow: 0 0 1em rgba(0, 0, 0, 0.2); }
 
+.remove {
+  cursor: pointer; }
+
+.showingResults .date {
+  font-size: 1.5em;
+  font-weight: bold;
+  border-top: 2px solid #5c111d;
+  margin-top: 1em; }
+.showingResults .theaterName {
+  font-size: 1.5em;
+  font-family: serif;
+  font-style: italic; }
+.showingResults .showing {
+  background-color: #5c111d;
+  margin: 0.5em 0;
+  padding: 0.5em;
+  color: #f1f1f1;
+  border-radius: 5px; }
+  .showingResults .showing .movieTitle {
+    color: #f3ca29;
+    font-size: 1.5em;
+    font-family: serif; }
+  .showingResults .showing .movieTimeAndPlace {
+    font-family: serif;
+    font-style: italic;
+    font-size: 1.3em;
+    color: #e88989; }
+  .showingResults .showing .ticketsLeft button {
+    margin-left: 1em; }
+
 .bookingTableObject {
   background-color: rgba(0, 0, 0, 0.14); }
 
 .activeMovie {
-  background-color: #800840;
-  color: #FFFFFF; }
+  background-color: #5c111d;
+  color: #f1f1f1; }
 
 .fullBookedShowing {
   background-color: #ff5260; }
@@ -171,24 +204,15 @@ input.btn {
   cursor: pointer;
   color: #ccc; }
 
-.blockSpan {
-  display: block; }
-
-.clearButton {
-  float: left; }
-
-.pullLeft {
-  float: left; }
-
-.pullRight {
-  float: right; }
-
 .btn.pullRight {
   padding: 3px 3px; }
 
 .form-control {
   display: inline;
   width: 80%; }
+
+.blockSpan {
+  display: block; }
 
 .dateRow {
   background-color: #5c111d;
@@ -198,7 +222,22 @@ tbody > tr.dateRow:hover {
   background-color: #5c111d;
   color: #FFFFFF; }
 
-<<<<<<< HEAD
+.button {
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+  text-align: center;
+  border-radius: .5em; }
+
+.small {
+  font-size: 11px;
+  padding: .2em 1em .275em; }
+
+.red {
+  color: #fef4e9;
+  border: solid 1px #5c111d;
+  background-color: #bb3246; }
+
 .calendar h2 {
   font-size: 14px;
   font-style: normal;
@@ -209,36 +248,8 @@ tbody > tr.dateRow:hover {
   border: 1px solid #DDD;
   font-weight: bold; }
   .calendar td .highlight {
-    background: #800840;
-    color: #FFFFFF;
-    border: 1px solid #800840; }
-=======
-.orange {
-  color: #fef4e9;
-  border: solid 1px #5c111d;
-  background-color: #bb3246; }
-
-.small {
-  font-size: 11px;
-  padding: .2em 1em .275em; }
-
-.button {
-  display: inline-block;
-  zoom: 1;
-  vertical-align: baseline;
-  margin: 0 2px;
-  outline: none;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  padding: .5em 2em .55em;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-  -webkit-border-radius: .5em;
-  -moz-border-radius: .5em;
-  border-radius: .5em;
-  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); }
->>>>>>> 67766a2cf5c6ca0eae0845f71ac7dd1d22e6b58e
+    background: #5c111d;
+    color: #f1f1f1;
+    border: none; }
 
 /*# sourceMappingURL=admin.css.map */

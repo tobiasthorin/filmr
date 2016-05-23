@@ -1,7 +1,10 @@
 package filmr.api;
 
 import filmr.Application;
-import filmr.domain.*;
+import filmr.domain.Cinema;
+import filmr.domain.Movie;
+import filmr.domain.Showing;
+import filmr.domain.Theater;
 import filmr.repositories.*;
 import filmr.testfactories.EntityFactory;
 import org.junit.After;

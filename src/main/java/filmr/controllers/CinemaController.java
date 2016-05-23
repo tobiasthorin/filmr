@@ -2,6 +2,7 @@ package filmr.controllers;
 
 import filmr.domain.Cinema;
 import filmr.domain.Repertoire;
+import filmr.helpers.exceptions.FilmrInvalidEntityParameterRange;
 import filmr.helpers.exceptions.FilmrPOSTRequestWithPredefinedIdException;
 import filmr.helpers.exceptions.FilmrPUTRequestWithMissingEntityIdException;
 import filmr.services.CinemaService;
@@ -24,13 +25,14 @@ public class CinemaController extends BaseController{
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Cinema> createCinema(@RequestBody Cinema cinema) throws FilmrPOSTRequestWithPredefinedIdException {
+    public ResponseEntity<Cinema> createCinema(@RequestBody Cinema cinema) throws FilmrPOSTRequestWithPredefinedIdException, FilmrInvalidEntityParameterRange {
         if(cinema.getId() != null) {
 			logger.warn("Can't create cinema with manually set ID");
         	throw new FilmrPOSTRequestWithPredefinedIdException("Trying to create Cinema, but sending Cinema with predefined id.");
         }
-        if(cinema.getName().length() > 48) {
-            return new ResponseEntity<Cinema>(new Cinema(), HttpStatus.BAD_REQUEST); //TODO use custom error?
+        if(cinema.getName().length() > 48) { //TODO this really should be some global variable?
+            logger.warn("Can't create cinema with a name surpassing the limit.");
+            throw new FilmrInvalidEntityParameterRange("Trying to create Cinema, but name is to long (limit 48)");
         }
         Repertoire repertoire = new Repertoire();
         repertoireService.saveEntity(repertoire);
@@ -57,13 +59,14 @@ public class CinemaController extends BaseController{
 
     @CrossOrigin
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Cinema> updateCinema(@PathVariable Long id, @RequestBody Cinema cinema) throws FilmrPUTRequestWithMissingEntityIdException{
+    public ResponseEntity<Cinema> updateCinema(@PathVariable Long id, @RequestBody Cinema cinema) throws FilmrPUTRequestWithMissingEntityIdException, FilmrInvalidEntityParameterRange {
         if(cinema.getId() == null){
 			logger.warn("Can only update cinema with a set ID");
         	throw new FilmrPUTRequestWithMissingEntityIdException("Cinema entity to be updated must have a non-null id property");
         }
         if(cinema.getName().length() > 48) {
-            return new ResponseEntity<Cinema>(new Cinema(), HttpStatus.BAD_REQUEST); //TODO use custom error?
+            logger.warn("Can't create cinema with a name surpassing the limit.");
+            throw new FilmrInvalidEntityParameterRange("Trying to create Cinema, but name is to long (limit 48)");
         }
         Cinema updatedCinema = cinemaService.saveEntity(cinema);
         return new ResponseEntity<Cinema>(updatedCinema, HttpStatus.OK);

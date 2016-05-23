@@ -1,32 +1,27 @@
 package filmr.api;
 
 import filmr.Application;
-import filmr.domain.*;
+import filmr.domain.Cinema;
+import filmr.domain.Movie;
+import filmr.domain.Showing;
+import filmr.domain.Theater;
 import filmr.repositories.*;
 import filmr.testfactories.EntityFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestContextManager;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -63,10 +58,6 @@ public class ShowingTest {
 
     //Parameters
     private Long id;
-
-    public ShowingTest(Long id) {
-        baseUrl = "http://localhost:8080/filmr/api/showings/";
-    }
 
     @Before
     public void resetDatabase() throws Exception {
@@ -113,7 +104,7 @@ public class ShowingTest {
 
         //Assert
         assertTrue("Make sure the http was successfull", responseEntity.getStatusCode().is2xxSuccessful());
-       // assertEquals("Compare times", showing.getShowDateTime(), postedShowing.getShowDateTime()); //TODO the returned date has passed through deserializer and therefore is slightly different
+       // assertEquals("Compare times", showing.getShowDateTime(), postedShowing.getShowDateTime()); //The returned date has passed through deserializer and therefore is slightly different
         assertEquals("Compare movies", showing.getMovie(), postedShowing.getMovie());
         assertEquals("Compare theaters", showing.getTheater(), postedShowing.getTheater());
         assertEquals("Compare bookings", showing.getBookings(), postedShowing.getBookings());
@@ -121,14 +112,9 @@ public class ShowingTest {
 
     @Test(expected = HttpMessageNotWritableException.class)
     public void testCreateWithNullMovie() {
-        //TODO actually properly finish this ya lazy tyke
         Showing showing = EntityFactory.createShowing(LocalDateTime.now(), null, savedTheater, new ArrayList<>());
 
         ResponseEntity<Showing> responseEntity = restTemplate.postForEntity(baseUrl, showing, Showing.class);
-        Showing postedShowing = responseEntity.getBody();
-
-        System.out.println("DA COD" + responseEntity.getStatusCode());
-        //assertTrue("Make sure its a fail")
     }
 
     @Test

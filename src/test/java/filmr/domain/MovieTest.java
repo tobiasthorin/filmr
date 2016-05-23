@@ -11,13 +11,12 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Created by luffarvante on 2016-04-26.
+ * Entity testing is kind of stupid, this is just to display some basic understanding of mocking as it was
+ * never used in the "real" tests
  */
 @RunWith(Parameterized.class)
 public class MovieTest {
@@ -76,11 +75,7 @@ public class MovieTest {
     @Test
     public void testSetTitle() {
         movie.setTitle(movieTitle);
-
         verify(movie).setTitle(Matchers.eq(movieTitle));
-
-        //TODO use assertEquals here or is veryfing the parameter sent in what we are more interested in?
-        //TODO if assertEquals is used this is also needed
         when(movie.getTitle()).thenReturn(movieTitle);
         assertEquals(movieTitle, movie.getTitle());
     }
@@ -88,31 +83,18 @@ public class MovieTest {
     @Test
     public void testGetDescription() {
         when(movie.getDescription()).thenReturn(movieDescription);
-
         assertEquals("test if getDescription returns correct String", movieDescription, movie.getDescription());
-    }
-
-    @Test
-    public void testSetDescription() {
-        //TODO figure out proper test for setDesrription
     }
 
     @Test
     public void testGetLenghtInMinutes() {
         when(movie.getLengthInMinutes()).thenReturn(movieLength);
-
         assertEquals("test if getLengthInMinutes returns proper Long", movieLength, movie.getLengthInMinutes());
-    }
-
-    @Test
-    public void testSetLengthInMinutes() {
-        //TODO see earlier
     }
 
     @Test
     public void testGetId() {
         when(movie.getId()).thenReturn(movieId);
-
         assertEquals("tests if getId() returns proper id", movieId, movie.getId());
     }
 }

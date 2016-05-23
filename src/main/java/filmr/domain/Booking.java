@@ -1,15 +1,12 @@
 package filmr.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.persistence.*;
-import javax.validation.constraints.Size;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.hibernate.validator.constraints.Range;
 
+import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -19,7 +16,7 @@ public class Booking {
 	private Long id;
 	
 	@Size(min=1)
-	@ManyToMany //TODO changed from ManyToOne, beware of side effects!!!!!1one!!
+	@ManyToMany //TODO changed from ManyToOne, beware of side effects
 	private List<Seat> bookedSeats;
 	
 	@JsonIgnore
@@ -88,13 +85,6 @@ public class Booking {
 				.append(phoneNumber)
 				.toHashCode();
 	}
-
-	/*@Override
-	public String toString() {
-		return "Booking [id=" + id + ", bookingReference=" + bookingReference + ", bookedSeats=" + bookedSeats
-				+ ", showing=" + showing + ", phoneNumber=" + phoneNumber + "]";
-	}*/
-	
 	
 	// Convenience methods to compensate for missing link to showing (because of @JsonIgnore). Will show up as properties on showing when serialized to json	
 	public String getBookingMovieTitle() {
