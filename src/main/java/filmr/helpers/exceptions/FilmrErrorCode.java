@@ -21,6 +21,7 @@ public enum FilmrErrorCode {
 	// showings
 	
 	F303(HttpStatus.PRECONDITION_FAILED, "Showing collided with existing showing(s)"),
+	F306(HttpStatus.PRECONDITION_FAILED, "Showing can't be created in a past time"),
 	
 	// bookings
 	F400(HttpStatus.PRECONDITION_FAILED, "Booking must include at least one seat."),

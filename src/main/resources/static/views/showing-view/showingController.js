@@ -77,6 +77,7 @@ angular.module('filmr')
                 return true;
             };
 
+
             $scope.createShowing = function() {
                 $log.info("---");
                 $log.info("create showing");
@@ -108,6 +109,9 @@ angular.module('filmr')
                         if(error.data && error.data.filmrErrorCode=="F303") {
                             $rootScope.alert("Error! ","Time is already occupied",2);
                         }
+	                    if(error.data && error.data.filmrErrorCode=="F306"){
+		                    $rootScope.alert("Error! ","Can't create showing in the past",2);
+	                    }
                         else $rootScope.errorHandler(error);
                     });
             };

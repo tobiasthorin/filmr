@@ -1,19 +1,22 @@
 <script>
 
     $('.calendar').fullCalendar({
-        editable: true,
-        eventLimit: true,
-        events: [],
-        header: {
-            prevYear: false,
-            prevMonth: false,
-            nextMonth: false,
-            nextYear: false
-        }
+        viewRender   : function(view,element) {
+            var now = new Date();
+            var end = new Date();
+            end.setMonth(now.getMonth() + 1); //Adjust as needed
+            if ( end < view.end) {
+                $(".fc-next-button").hide();
+                return false;
+            }
+            else {
+                $(".fc-next-button").show();
+            }
+            $(".fc-prev-button").hide();
 
+        },
     });
 
-    $(".calendar button").css("display","none");
     $('.calendar').fullCalendar('option', 'height', 400);
     $('.calendar td').click(function(){
 
@@ -31,8 +34,15 @@
 </script>
 <h2>Booking</h2>
 <div class="bookingWrapper">
-   <select ng-options="cinema as cinema.name for cinema in allCinemas"
-           name="cinemas" ng-model="cinema" ng-change="updateCinemaScope()">
+    <div class="row">
+    	<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <label class="blockSpan">Cinema:</label>
+            <select class="form-control" ng-options="cinema as cinema.name for cinema in allCinemas"
+                    name="cinemas" ng-model="cinema" ng-change="updateCinemaScope()">
+
+            </select>
+    	</div>
+    </div>
    </select>
     <div class=row>
         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
@@ -47,8 +57,8 @@
             </table>
         </div>
 
-
 		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <br>
             <div class="calendar">
             </div>
         </div>
