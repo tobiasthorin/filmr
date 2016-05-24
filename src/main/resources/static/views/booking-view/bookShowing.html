@@ -21,7 +21,11 @@
     });
     $('.calendar td').each(function(index){
         var date = $(this).attr("data-date");
-        if(typeof date != "undefined") $(this).attr("ng-click","setDate('"+date+"')");
+        if(typeof date != "undefined") {
+        	$clickedTd = $(this);
+    		$clickedTd.attr("ng-click","dateIsWithInValidRange('" + date + "') && setDate('"+date+"')");
+    		$clickedTd.attr("ng-class", "{'non-clickable-date': " + "!dateIsWithInValidRange('" + date + "')}");
+        }
     });
 
 </script>
