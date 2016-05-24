@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ShowingService extends BaseServiceClass<Showing, Long> {
@@ -58,7 +59,7 @@ public class ShowingService extends BaseServiceClass<Showing, Long> {
 	}
 
     //Presupposes no previous conflicts
-    public boolean showingTimeIsValid(Showing showingToSave) {
+    public boolean showingTimeNotOccupied(Showing showingToSave) {
 
         List<Showing> surroundingShowings = 
         		getSurroundingShowings(showingToSave, ASSUMED_MAX_H_LENGTH_OF_ANY_MOVIE);
@@ -79,14 +80,8 @@ public class ShowingService extends BaseServiceClass<Showing, Long> {
         LocalDateTime otherShowingStartTime = existingShowing.getShowDateTime();
         LocalDateTime otherShowingEndTime = existingShowing.getShowingEndTime();
 
-//        if(otherShowingStartTime.isAfter(showingToSave.getShowingEndTime())){
-//            return true;
-//        }else if(otherShowingEndTime.isBefore(showingToSave.getShowDateTime())){
-//            return true;
-//        }else return false;
-
          return otherShowingStartTime.isAfter(showingToSave.getShowingEndTime()) || otherShowingEndTime.isBefore(showingToSave.getShowDateTime());
-        // too dense?
+
     }
     
 
@@ -98,22 +93,16 @@ public class ShowingService extends BaseServiceClass<Showing, Long> {
         
         Long theaterId = showing.getTheater().getId();
         List<Showing>potentialConflicts = getAllMatchingParams(startOfDate,endOfDate,null,null,theaterId,null,null,false);
-        
-        Collections.sort(potentialConflicts);
+
+	    Collections.sort(potentialConflicts);
         return potentialConflicts;
     }
 
     private List<Showing> showingsWithMinimumAvailableTickets(Long minimunAvailableTickets, List<Showing> showings) {
-    	List<Showing> s = new ArrayList<>();
-    	for(Showing showing : showings) {
-    		if (showing.getAvailableTickets() >= minimunAvailableTickets) {
-    			s.add(showing);
-    		}
-    	}
-    	return s;
-    	// same thing using Stream api, for future reference
-//    	return showings.stream()
-//    			.filter(showing -> showing.getAvailableTickets() >= minimunAvailableTickets)
-//    			.collect(Collectors.toList());
+	    return showings.stream()
+			    .filter(showing -> showing.getAvailableTickets() >= minimunAvailableTickets)
+			    .collect(Collectors.toList());
+
+
     }
 }
