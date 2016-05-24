@@ -230,6 +230,9 @@ input.btn {
   background-color: #5c111d;
   color: #FFFFFF; }
 
+.disabledShowing {
+  background-color: rgba(92, 17, 29, 0.59); }
+
 tbody > tr.dateRow:hover {
   background-color: #5c111d;
   color: #FFFFFF; }

@@ -62,21 +62,23 @@
                 </thead>
                 <tbody ng-repeat="(date,showings) in showingSchedule">
                     <tr class="dateRow "><td colspan="5">Date: {{date}}</td></tr>
-                    <tr ng-class="'disabledShowing' : showing.isDisabled" ng-repeat="showing in showings">
-                        <td>{{showing.showDateTime | date : 'HH:mm'}} - {{showing.showingEndTime | date : 'HH:mm'}}
-                        <td>{{showing.movie.title}}</td>
-                        <td>{{showing.price}}</td>
-                        <td>{{showing.theater.name}}</td>
-                        <td>
-                            <div ng-if="showing.id"> <!-- If there is no id, it is an empty time slot -->
-                                <button ng-if="showing.isDisabled" class="btn is_enabled" type="button" name="disable"
-                                        ng-click="disableShowing(showing)">Enable
-                                </button>
-                                <button ng-if="!showing.isDisabled" class="btn is_disabled" type="button" name="disable"
-                                        ng-click="disableShowing(showing)">Disable
-                                </button>
-                            </div>
-                        </td>
+                    <tr ng-repeat="showing in showings">
+                            <td>{{showing.showDateTime | date : 'HH:mm'}} - {{showing.showingEndTime | date : 'HH:mm'}}
+                            <td>{{showing.movie.title}}</td>
+                            <td>{{showing.price}}</td>
+                            <td>{{showing.theater.name}}</td>
+                            <td>
+                                <div ng-if="showing.id"> <!-- If there is no id, it is an empty time slot -->
+                                    <button ng-if="showing.isDisabled" class="btn btn-danger" type="button" name="disable"
+                                            ng-click="disableShowing(showing)">Enable
+                                    </button>
+                                    <button ng-if="!showing.isDisabled" class="btn btn-success" type="button" name="disable"
+                                            ng-click="disableShowing(showing)">Disable
+                                    </button>
+
+                            </td>
+                        </div>
+
                     </tr>
                 </tbody>
             </table>
