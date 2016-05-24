@@ -144,9 +144,22 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
         }
 
         function findBookedSeats() {
-            for (var i = 0; i < $scope.currentShowing.bookings.length; i++) {
-                for (var j = 0; j < $scope.currentShowing.bookings[i].bookedSeats.length; j++) {
-                    $scope.bookedSeats.add($scope.currentShowing.bookings[i].bookedSeats[j].id);
+            //Disable booked seats
+            var bookings = $scope.currentShowing.bookings;
+
+            for (var i = 0; i < bookings.length; i++) {
+                for (var j = 0; j < bookings[i].bookedSeats.length; j++) {
+                    $scope.bookedSeats.add(bookings[i].bookedSeats[j].id);
+                }
+            }
+
+            //Disable disabled seats
+            var rows = $scope.currentShowing.theater.rows;
+            for (var i = 0; i < rows.length; i++) {
+                for (var j = 0; j < rows[i].seats.length; j++) {
+                    if (rows[i].seats[j].state == "DISABLED") {
+                        $scope.bookedSeats.add(rows[i].seats[j].id);
+                    }
                 }
             }
         }
