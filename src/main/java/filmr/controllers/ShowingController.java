@@ -7,6 +7,7 @@ import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import filmr.helpers.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -25,10 +26,6 @@ import filmr.domain.Showing;
 import filmr.domain.Theater;
 
 import filmr.helpers.TimeslotCreator;
-import filmr.helpers.exceptions.FilmrInvalidDateFormatException;
-import filmr.helpers.exceptions.FilmrPOSTRequestWithPredefinedIdException;
-import filmr.helpers.exceptions.FilmrPUTRequestWithMissingEntityIdException;
-import filmr.helpers.exceptions.FilmrShowingTimeOccupiedException;
 import filmr.services.ShowingService;
 
 @RestController
@@ -42,15 +39,17 @@ public class ShowingController extends BaseController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Showing> createShowing(@RequestBody Showing showing) throws FilmrInvalidDateFormatException, FilmrPOSTRequestWithPredefinedIdException, FilmrShowingTimeOccupiedException {
+    public ResponseEntity<Showing> createShowing(@RequestBody Showing showing) throws FilmrInvalidDateFormatException, FilmrPOSTRequestWithPredefinedIdException, FilmrShowingTimeOccupiedException, FilmrPastDateException {
        
     	if(showing.getId() != null) throw new FilmrPOSTRequestWithPredefinedIdException("Trying to create showing, but showing already has id.");
         
         if(showing.getShowDateTime().equals(ERROR_DATE_TIME)) throw new FilmrInvalidDateFormatException();
-        
-        Boolean showingTimeisValid = showingService.showingTimeIsValid(showing); //TODO: show time valid is to generic IMO. rename to time is occupied or make method return type of invalid error
 
-        if(showingTimeisValid){
+	    if(showing.getShowDateTime().isBefore(LocalDateTime.now())) throw new FilmrPastDateException();
+        
+        Boolean showingTimeNotOccupied = showingService.showingTimeNotOccupied(showing); //TODO: show time valid is to generic IMO. rename to time is occupied or make method return type of invalid error
+
+        if(showingTimeNotOccupied){
             Showing savedShowing = showingService.saveEntity(showing);
             return new ResponseEntity<Showing>(savedShowing, HttpStatus.OK);
         }

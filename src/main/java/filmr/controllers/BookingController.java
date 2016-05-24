@@ -3,7 +3,7 @@ package filmr.controllers;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import filmr.helpers.exceptions.booking.FilmrShowingPastDateException;
+import filmr.helpers.exceptions.booking.FilmrBookingPastDateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,7 +52,7 @@ public class BookingController extends BaseController {
         
         Showing showing = showingService.readEntity(for_showing_with_id);
 	    if(showing.getShowDateTime().isBefore(LocalDateTime.now())){
-			throw new FilmrShowingPastDateException();
+			throw new FilmrBookingPastDateException();
 	    }
 
         booking.setShowing(showing);

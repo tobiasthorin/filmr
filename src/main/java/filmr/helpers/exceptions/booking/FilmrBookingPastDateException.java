@@ -6,9 +6,9 @@ import filmr.helpers.exceptions.FilmrErrorCode;
 /**
  * Created by Marco on 2016-05-23.
  */
-public class FilmrShowingPastDateException  extends FilmrBaseException{
+public class FilmrBookingPastDateException extends FilmrBaseException{
 
-	public FilmrShowingPastDateException() {
+	public FilmrBookingPastDateException() {
 		super(FilmrErrorCode.F425);
 	}
 
