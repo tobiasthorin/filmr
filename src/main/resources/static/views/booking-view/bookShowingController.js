@@ -77,7 +77,7 @@ angular.module('filmr')
 				
 				var dateIsAfterPastLimit = compareDates(pastLimit, date) == 1 || compareDates(pastLimit, date) == 0;
 				var dateIsBeforeFutureLimit = compareDates(futureLimit, date) == -1;
-				$log.debug("dateIsAfterPastLimit / dateIsBeforeFutureLimit : ", dateIsAfterPastLimit, dateIsBeforeFutureLimit);
+				$log.debug("dateIsAfterPastLimit / dateIsBeforeFutureLimit : ", dateIsAfterPastLimit, ' / ' , dateIsBeforeFutureLimit);
 				
 				return dateIsAfterPastLimit && dateIsBeforeFutureLimit;
 			}
