@@ -157,6 +157,13 @@ describe("Tests for seatSelectController.js", function () {
             $scope.numberOfSelectedSeats = 5;
             expect($scope.validateInputs()).toEqual(true);
         });
+
+        it("Checks for double bookings", function () {
+            $scope.selectedSeats.clear();
+            expect($scope.checkBookingConflict()).toEqual(true);
+            $scope.selectedSeats.add(1);
+            expect($scope.checkBookingConflict()).toEqual(false);
+        });
     });
 
 
