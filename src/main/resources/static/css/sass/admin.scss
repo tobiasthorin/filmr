@@ -303,6 +303,7 @@ input.btn {
     padding: 0.5em;
     color: $text-light;
     border-radius: 5px;
+    overflow: auto;
     .movieTitle {
       color: $cinema-gold;
       font-size: 1.5em;
