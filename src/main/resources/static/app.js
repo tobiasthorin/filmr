@@ -1,7 +1,7 @@
 // wrapped in a IIFE, good habit. (doensn't pollute global name-space)
     var app = angular.module('filmr', ['ngRoute', 'ngResource']); // name  [dependencies] , name is referenced in html tag
 
-    var debug = false;
+    var debug = true;
 
     // ROUTING - what should happen when url changes to path x
     app.config(['$routeProvider', '$logProvider', '$provide', function ($routeProvider,$logProvider,$provide) {
