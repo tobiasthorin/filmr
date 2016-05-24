@@ -1,11 +1,9 @@
 package filmr.controllers;
 
-import com.jcabi.aspects.Loggable;
 import filmr.domain.Movie;
 import filmr.helpers.exceptions.FilmrPOSTRequestWithPredefinedIdException;
 import filmr.helpers.exceptions.FilmrPUTRequestWithMissingEntityIdException;
 import filmr.services.MovieService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +18,6 @@ public class MovieController extends BaseController {
     @Autowired
     private MovieService movieService;
 
-    @Loggable
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Movie> createMovie(@RequestBody Movie movie) throws FilmrPOSTRequestWithPredefinedIdException {
@@ -32,7 +29,6 @@ public class MovieController extends BaseController {
         return new ResponseEntity<Movie>(savedMovie, HttpStatus.OK);
     }
 
-    @Loggable
     @CrossOrigin
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Movie> readMovie(@PathVariable Long id){
@@ -40,7 +36,6 @@ public class MovieController extends BaseController {
         return new ResponseEntity<Movie>(retrievedMovie, HttpStatus.OK);
     }
 
-    @Loggable
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Movie>> readAllMovies(
@@ -57,7 +52,6 @@ public class MovieController extends BaseController {
 
     }
 
-    @Loggable
     @CrossOrigin
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Movie> updateMovie(@PathVariable Long id, @RequestBody Movie movie) throws FilmrPUTRequestWithMissingEntityIdException {
@@ -70,7 +64,6 @@ public class MovieController extends BaseController {
         return new ResponseEntity<Movie>(updatedMovie, HttpStatus.OK);
     }
 
-    @Loggable
     @CrossOrigin
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteMovie(@PathVariable Long id) {
