@@ -19,7 +19,7 @@
   server:
     context-path: /filmr
 
-  loggin:
+  logging:
     level:
       org.springframework.web: DEBUG
       org.hibernate: ERROR
