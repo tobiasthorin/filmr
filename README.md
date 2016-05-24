@@ -16,6 +16,9 @@ This project is based on [Spring Boot](http://projects.spring.io/spring-boot/), 
 
 * Access the website at [http://localhost:8080/filmr](http://localhost:8080/filmr).
 
+*This is not the most elegant solution, we hope to be able to bring you a proper installer in the future.*
+
+
 ## Functionality (as of version 0.3)
 ### The admin interface
 This is the part of the system intended for use by a cinema administrator - such as the owner, or the scheduler.
@@ -50,9 +53,6 @@ This release marks the end of the project, during which this product was created
 
 *This is the current state of the software, but with the right incentive we might develop it further. :)*
 
-##Known issues
-* 
-
 ## Project Contributors
 - [Marco Fält](https://gitlab.com/u/marco.falt)
 - [Adrian Kinberger](https://gitlab.com/u/luffarvante)
@@ -61,6 +61,6 @@ This release marks the end of the project, during which this product was created
 - [Erik Wiberg](https://gitlab.com/u/erik-wiberg-87)
 
 ## License
-Filmr is licensed under a [Creative Commons Attribution-NonCommercial 4.0 International License]([http://](http://creativecommons.org/licenses/by-nc/4.0/)).
+Filmr is licensed under a [Creative Commons Attribution-NonCommercial 4.0 International License](http://](http://creativecommons.org/licenses/by-nc/4.0/).
 
 
