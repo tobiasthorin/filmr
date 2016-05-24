@@ -388,7 +388,7 @@ tbody > tr.dateRow:hover {
   border: 1px solid #DDD;
   font-weight:bold;
 
-  .fc-past {
+  .non-clickable-date {
     background:#DDD;
     cursor: not-allowed;
   }

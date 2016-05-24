@@ -55,11 +55,12 @@ angular.module('filmr')
 				$log.info("set date");
 				$log.info(date);
 
+				// see if date is before today
 				var cd = compareDates(today,date);
 				$log.debug(cd);
+				// date is before today
 				if(cd==-1) return;
-
-
+				
 				if (date == $scope.selectedDates) {
 					$scope.selectedDates = [];
 				}
@@ -68,6 +69,18 @@ angular.module('filmr')
 				}
 				$scope.updateShowings();
 			};
+			
+
+			$scope.dateIsWithInValidRange = function(date) {
+				var pastLimit = getToday();
+				var futureLimit = getTodayPlusDays(10);
+				
+				var dateIsAfterPastLimit = compareDates(pastLimit, date) == 1 || compareDates(pastLimit, date) == 0;
+				var dateIsBeforeFutureLimit = compareDates(futureLimit, date) == -1;
+				$log.debug("dateIsAfterPastLimit / dateIsBeforeFutureLimit : ", dateIsAfterPastLimit, dateIsBeforeFutureLimit);
+				
+				return dateIsAfterPastLimit && dateIsBeforeFutureLimit;
+			}
 
 			$scope.goToSelectSeat = function(showing) {
                 $location.url("book/showing/"+showing.id+"/seat_select");
@@ -130,8 +143,8 @@ angular.module('filmr')
 				$log.debug("---");
 				$log.debug("get showings with params");
 
-				var fromDate;
-				var toDate = null;
+				var fromDate = null;
+				var toDate = getTodayPlusDays(10)+ " 23:59";
 				var movieId = $scope.selectedMovie == null ? null : $scope.selectedMovie.id;
 				$log.debug($scope.selectedDates);
 				if($scope.selectedDates && $scope.selectedDates.length==1) {
@@ -174,7 +187,13 @@ angular.module('filmr')
 			}
 
 			function getToday() {
+				return getTodayPlusDays(0);
+			}
+			
+			function getTodayPlusDays(days){
 				var d = new Date();
+				d.setDate(d.getDate() + days);
+				
 				var month = d.getMonth()+1;
 				var date = d.getDate();
 				month = month<10 ? "0" + month : month;
@@ -183,11 +202,14 @@ angular.module('filmr')
 			}
 
 			function compareDates(dateA,dateB) {
+					
 				if(dateA.substring(0,4)<dateB.substring(0,4)) return 1;
-				if(dateA.substring(5,7)<dateB.substring(5,7)) return 1;
-				if(dateA.substring(8,10)<dateB.substring(8,10)) return 1;
 				if(dateA.substring(0,4)>dateB.substring(0,4)) return -1;
+
+				if(dateA.substring(5,7)<dateB.substring(5,7)) return 1;
 				if(dateA.substring(5,7)>dateB.substring(5,7)) return -1;
+
+				if(dateA.substring(8,10)<dateB.substring(8,10)) return 1;				
 				if(dateA.substring(8,10)>dateB.substring(8,10)) return -1;
 				return 0;
 			}
