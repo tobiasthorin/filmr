@@ -30,7 +30,7 @@ If you have a server with tomcat (tomcat manager) and know how to deploy a .war 
 	`git checkout easier_deployment`
 * Make sure branch easier_deployment is up to date `git merge origin/dev` 
 * In the resource folder (src/main/resources) create the file application.properties and define the following properties for your own MySQL database:
-    * `spring.datasource.url=`MY_DATABASE_URL
+    * `spring.datasource.url=`MY_DATABASE_URL  like `jdbc:mysql://localhost:3306/filmr` 
     * `spring.datasource.username=`MY_DATABASE_USERNAME
     * `spring.datasource.password=`MY_DATABASE_PASSWORD
 * Build the .war file 
@@ -82,6 +82,6 @@ This release marks the end of the project, during which this product was created
 - [Erik Wiberg](https://gitlab.com/u/erik-wiberg-87)
 
 ## License
-Filmr is licensed under a [Creative Commons Attribution-NonCommercial 4.0 International License](http://](http://creativecommons.org/licenses/by-nc/4.0/).
+Filmr is licensed under a [Creative Commons Attribution-NonCommercial 4.0 International License](http://creativecommons.org/licenses/by-nc/4.0/).
 
 
