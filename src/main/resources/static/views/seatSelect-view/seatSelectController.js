@@ -36,8 +36,6 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
         };
 
         $scope.toggleSelection = function (id) {
-            //Make sure seat hasnt been taken while user is booking
-            console.log("trying to update"); //TODO must wait for server
             $scope.fetchShowing(function() {
             	determineSeatState(id);
             	}
@@ -73,8 +71,12 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
                             window.location.assign("#/book/showing/" + $scope.currentShowing.id + "/confirm/" + result.id);
                             activeRequest = false;
                         },
-                        function () {
-                            $rootScope.genericError();
+                        function (error) {
+                            if(error.data && error.data.filmrErrorCode=="F415") {
+                                $rootScope.alert("Error! ","Seat is already booked",2);
+                            }
+                            else $rootScope.errorHandler(error);
+                            
                             activeRequest = false;
                         }
                     );
