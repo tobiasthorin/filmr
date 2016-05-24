@@ -60,3 +60,7 @@ This release marks the end of the project, during which this product was created
 - [Emil Rånge](https://gitlab.com/u/rangeemil)
 - [Erik Wiberg](https://gitlab.com/u/erik-wiberg-87)
 
+## License
+Filmr is licensed under a [Creative Commons Attribution-NonCommercial 4.0 International License]([http://](http://creativecommons.org/licenses/by-nc/4.0/)).
+
+
