@@ -1,5 +1,6 @@
 package filmr.controllers;
 
+import com.jcabi.aspects.Loggable;
 import filmr.helpers.exceptions.FilmrBaseException;
 import filmr.helpers.exceptions.FilmrExceptionModel;
 import filmr.helpers.exceptions.FilmrInvalidDateFormatException;
@@ -23,7 +24,8 @@ public class BaseController {
 	
 	protected org.apache.log4j.Logger logger = Logger.getLogger(this.getClass());
 	
-    // all custom errors should inherit from FilmrBaseException, so this should work for all of them. 
+    // all custom errors should inherit from FilmrBaseException, so this should work for all of them.
+    @Loggable
     @ExceptionHandler(FilmrBaseException.class)
     @ResponseBody
     public ResponseEntity<FilmrExceptionModel> handleBadRequest(HttpServletRequest req, FilmrBaseException ex) {
@@ -31,7 +33,8 @@ public class BaseController {
     	FilmrExceptionModel exceptionModel = new FilmrExceptionModel(req, ex);
         return new ResponseEntity<FilmrExceptionModel>(exceptionModel, ex.getHttpStatus());
     }
-    
+
+    @Loggable
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     @ResponseBody
     public ResponseEntity<FilmrExceptionModel> handleBadDateTimeFormat(HttpServletRequest req, MethodArgumentTypeMismatchException ex) {

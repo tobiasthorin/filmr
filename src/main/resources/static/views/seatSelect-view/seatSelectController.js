@@ -76,7 +76,7 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
                                 $rootScope.alert("Error! ","Seat is already booked",2);
                             }
                             else $rootScope.errorHandler(error);
-                            
+
                             activeRequest = false;
                         }
                     );
