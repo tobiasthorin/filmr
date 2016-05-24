@@ -1,15 +1,20 @@
 # Filmr: Cinema Management System
 
+##Introduction
+Filmr is the result of a five week long 
+
 ##Installation
-This project is based on Spring Boot, and uses Maven for dependencies and deployment. It also uses a mySql database for persistance.
+This project is based on [Spring Boot](http://projects.spring.io/spring-boot/), and uses [Maven](https://maven.apache.org) for dependencies and deployment. It also uses a [MySQL](http://www.mysql.com) database for persistance.
 
-Download the repository and open the folder in your favourite IDE (we use IntelliJ IDEA and Eclipse).
+* Download the repository and open the folder in your favourite IDE (we use [IntelliJ IDEA](https://www.jetbrains.com/idea/) or [Eclipse](http://www.eclipse.org)).
+    
+* In the resource folder (src/main/resources) create the file application.properties and define the following properties for your own MySQL database:
+    * `spring.datasource.url=`MY_DATABASE_URL
+    * `spring.datasource.username=`MY_DATABASE_USERNAME
+    * `spring.datasource.password=`MY_DATABASE_PASSWORD
+* Run Application.java, located in src/main/java/filmr.
 
-In the folder src/main/resources add the file application.yml and paste the following code (substitute database values for you own):
-
-[application.yml](https://gist.github.com/tobiasljungstrom/87003eef0861f95ec1f2204a234ab99b)
-
-*Sorry for the hassle. We're looking into creating a more user friendly and less hacky way to install the software.*
+* Access the website at [http://localhost:8080/filmr](http://localhost:8080/filmr).
 
 ## Functionality (as of v0.3)
 ### The admin interface
