@@ -216,3 +216,4 @@ hs_err_pid*
 
 # user specific application settings
 src/main/resources/application.properties
+application.properties
