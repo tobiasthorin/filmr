@@ -62,7 +62,7 @@
                 </thead>
                 <tbody ng-repeat="(date,showings) in showingSchedule">
                     <tr class="dateRow "><td colspan="5">Date: {{date}}</td></tr>
-                    <tr ng-repeat="showing in showings">
+                    <tr ng-class="'disabledShowing' : showing.isDisabled" ng-repeat="showing in showings">
                         <td>{{showing.showDateTime | date : 'HH:mm'}} - {{showing.showingEndTime | date : 'HH:mm'}}
                         <td>{{showing.movie.title}}</td>
                         <td>{{showing.price}}</td>
