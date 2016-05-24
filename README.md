@@ -30,7 +30,7 @@ If you have a server with tomcat (tomcat manager) and know how to deploy a .war 
 	`git checkout easier_deployment`
 * Make sure branch easier_deployment is up to date `git merge origin/dev` 
 * In the resource folder (src/main/resources) create the file application.properties and define the following properties for your own MySQL database:
-    * `spring.datasource.url=`MY_DATABASE_URL  like `jdbc:mysql://localhost:3306/filmr` 
+    * `spring.datasource.url=`MY_DATABASE_URL  (like `jdbc:mysql://localhost:3306/filmr`) 
     * `spring.datasource.username=`MY_DATABASE_USERNAME
     * `spring.datasource.password=`MY_DATABASE_PASSWORD
 * Build the .war file 
