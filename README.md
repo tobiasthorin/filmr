@@ -19,6 +19,26 @@ This project is based on [Spring Boot](http://projects.spring.io/spring-boot/), 
 *This is not the most elegant solution, we hope to be able to bring you a proper installer in the future.*
 
 
+##Deployment (.war)
+If you have a server with tomcat (tomcat manager) and know how to deploy a .war file, you can follow these steps: (NOTE: our project uses Java 8 features so server will have to have a compatible Java version)
+
+* Clone the repository, eg. 
+	`clone https://gitlab.com/vintr/filmr.git`
+* Change directory to project root 
+	`cd filmr`
+* Change to branch easier_deployment
+	`git checkout easier_deployment`
+* Make sure branch easier_deployment is up to date `git merge origin/dev` 
+* In the resource folder (src/main/resources) create the file application.properties and define the following properties for your own MySQL database:
+    * `spring.datasource.url=`MY_DATABASE_URL
+    * `spring.datasource.username=`MY_DATABASE_USERNAME
+    * `spring.datasource.password=`MY_DATABASE_PASSWORD
+* Build the .war file 
+	`mvn clean package -DskipTests`
+* Locate the .war file in folder /target and rename it to filmr (needs to correspond to the value of 'server-context' in src/main/resources/application.yml)
+* Deploy the .war file to Tomcat server or similar, eg. through Tomcat Manager App.
+
+
 ## Functionality (as of version 0.3)
 ### The admin interface
 This is the part of the system intended for use by a cinema administrator - such as the owner, or the scheduler.
