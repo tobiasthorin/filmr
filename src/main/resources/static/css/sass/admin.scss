@@ -231,7 +231,7 @@ input.btn {
 
 .confirmWrapper {
   .hooray {
-    background: $cinema-red;
+    background: $cinema-red-dark;
     font-family: serif;
     text-align: center;
 
@@ -258,6 +258,9 @@ input.btn {
 
     h3 {
       font-style: normal;
+      font-family: sans-serif;
+      font-size: 1.7em;
+      letter-spacing: 1px;
       color: $cinema-red-light;
       margin: 0;
     }
@@ -385,23 +388,23 @@ tbody > tr.dateRow:hover {
 
 .calendar td {
   background: #CCC;
-  border: 1px solid #DDD;
   font-weight:bold;
+  cursor: pointer;
 
   .non-clickable-date {
     background:#DDD;
-    cursor: not-allowed;
+    cursor: default;
+    border: none;
   }
 
   .highlight{
-    background: #8008FF;
-    color: #FFFFFF;
+    background: $cinema-red-dark;
+    color: $text-light;
     border: none;
   }
   .selected {
     background: $cinema-red-dark;
     color: $text-light;
-    color: #FFFFFF;
     border: none;
   }
 }
