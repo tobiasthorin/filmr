@@ -15,6 +15,13 @@ angular.module('filmr')
             
             $scope.rowReset;
 
+            //PARAMETERS USED FOR UPDATE
+            var theaterDepth;
+            var theaterWidth;
+            var theaterName;
+            var theaterRows;
+            var resetSeats;
+
             //Scoped functions
 
             $scope.fetchTheater = function () {
@@ -81,15 +88,15 @@ angular.module('filmr')
 
                 if(!activeRequest){
 
-					$scope.currentTheater.name = $scope.name;
-                    $scope.currentTheater.
+					//$scope.currentTheater.name = $scope.name;
+                    //$scope.currentTheater.
 
 					activeRequest = true;
 
                     var updateParams = {
-                        new_number_of_rows: $scope.theaterDepth,
-                        new_max_row_size: $scope.theaterWidth,
-                        reset_seat_numbers_for_each_row: resetSeatNumbers
+                        new_number_of_rows: theaterDepth,
+                        new_max_row_size: theaterWidth,
+                        reset_seat_numbers_for_each_row: resetSeats
                     };
 
 					TheaterService.update(updateParams,$scope.currentTheater).$promise.then(
@@ -131,11 +138,13 @@ angular.module('filmr')
                 }
 	        };
 
+            //TODO WIP
 	        $scope.addRow = function (){
 
                 $scope.theaterDepth++;
 
-                if(!$scope.validateTheater()) {
+                //if(!$scope.validateTheater()) {
+                if(!$scope.validateRowInput($scope.theaterDepth)) {
                     $rootScope.genericError();
                     $scope.theaterDepth--;
                     return;
@@ -187,6 +196,7 @@ angular.module('filmr')
 
             };
 
+            //TODO this is where i got
             $scope.validateRowInput = function (offset) {
 
                 offset = typeof $scope.theaterDepth == "undefined" ? 0 : offset;
