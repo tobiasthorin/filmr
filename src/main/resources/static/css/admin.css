@@ -191,7 +191,8 @@ input.btn {
   margin: 0.5em 0;
   padding: 0.5em;
   color: #f1f1f1;
-  border-radius: 5px; }
+  border-radius: 5px;
+  overflow: auto; }
   .showingResults .showing .movieTitle {
     color: #f3ca29;
     font-size: 1.5em;
