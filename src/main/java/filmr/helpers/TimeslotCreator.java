@@ -23,7 +23,12 @@ public class TimeslotCreator {
     public static List<Showing> createExtendedShowingsListWithEmptyTimeSlots(List<Showing> showings, Long minimumTimeSlotLengthInMinutes) {
     	// guard
     	if(showings.size() <= 1) return showings;
-    		
+    	
+    	// only care about enabled showings.
+    	showings =  showings.stream()
+    			.filter(s -> !s.getIsDisabled())
+    			.collect(Collectors.toList());
+    	
     	List<Showing> extendedListOfShowings = new ArrayList<>();
     	
     	// to find actual empty time slots, the showings we are comparing must be

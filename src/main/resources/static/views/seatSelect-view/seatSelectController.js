@@ -9,7 +9,7 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
         $scope.theaterRows = [];
         $scope.currentShowing = {};
         $scope.selectedSeats = new Set();
-        $scope.bookedSeats = new Set;
+        $scope.bookedSeats = new Set();
         $scope.numberOfSelectedSeats = 0;
 
         var player;
@@ -19,28 +19,29 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
                 activeRequest = true;
                 ShowingService.get({id: $routeParams.showingId}).$promise.then(
                     function (result) {
-                    	activeRequest = false;
+                        activeRequest = false;
                         $scope.currentShowing = result;
                         $scope.theaterRows = result.theater.rows;
                         trailerUrl = result.movie.trailerUrl;
-                        onYouTubeIframeAPIReady();
+
 
                         findBookedSeats();
                         callback();
                     },
                     function () {
-                        //fail
+                        $rootScope.genericError();
+                        activeRequest = false;
                     }
                 );
             }
         };
 
         $scope.toggleSelection = function (id) {
-            $scope.fetchShowing(function() {
-            	determineSeatState(id);
-            	}
+            $scope.fetchShowing(function () {
+                    determineSeatState(id);
+                }
             );
-                
+
         };
 
         $scope.checkIfSelected = function (id) {
@@ -52,36 +53,8 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
         };
 
         $scope.submitBooking = function () {
-            if (!activeRequest) {
-                activeRequest = true;
-                if ($scope.validateInputs()) {
-
-                    var params = {
-                        for_showing_with_id: $scope.currentShowing.id
-                    };
-
-                    var body = {
-                        bookedSeats: createSeatArray(),
-                        phoneNumber: $scope.phoneNumber
-                    };
-
-                    BookingService.save(params, body).$promise.then(
-                        function (result) {
-                            $rootScope.alert("Thank you!", "Your booking is now confirmed.", 1);
-                            window.location.assign("#/book/showing/" + $scope.currentShowing.id + "/confirm/" + result.id);
-                            activeRequest = false;
-                        },
-                        function (error) {
-                            if(error.data && error.data.filmrErrorCode=="F415") {
-                                $rootScope.alert("Error! ","Seat is already booked",2);
-                            }
-                            else $rootScope.errorHandler(error);
-
-                            activeRequest = false;
-                        }
-                    );
-
-                }
+            if ($scope.validateInputs()) {
+                $scope.fetchShowing(saveBooking);
             }
         };
 
@@ -94,9 +67,55 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
             return true;
 
         };
-        
-        function determineSeatState(id){
-        	if (!$scope.bookedSeats.has(id)) {
+
+        $scope.checkBookingConflict = function () {
+
+            var selectedSeats = [...$scope.selectedSeats];
+
+            for (var i = 0; i < selectedSeats.length; i++) {
+                if ($scope.bookedSeats.has(selectedSeats[i])) {
+                    return false;
+                }
+            }
+            return true;
+        };
+
+        function saveBooking() {
+            if ($scope.checkBookingConflict()) {
+                var params = {
+                    for_showing_with_id: $scope.currentShowing.id
+                };
+
+                var body = {
+                    bookedSeats: createSeatArray(),
+                    phoneNumber: $scope.phoneNumber
+                };
+
+                BookingService.save(params, body).$promise.then(
+                    function (result) {
+                        $rootScope.alert("Thank you!", "Your booking is now confirmed.", 1);
+                        window.location.assign("#/book/showing/" + $scope.currentShowing.id + "/confirm/" + result.id);
+                        activeRequest = false;
+                    },
+                    function (error) {
+                        if (error.data && error.data.filmrErrorCode == "F415") {
+                            $rootScope.alert("Error! ", "Seat is already booked", 2);
+                        }
+                        else $rootScope.errorHandler(error);
+
+                        activeRequest = false;
+                    }
+                );
+            } else {
+                resetFields();
+                $rootScope.alert("Sorry!", "Those seats are already booked.", 2);
+                activeRequest = false;
+
+            }
+        }
+
+        function determineSeatState(id) {
+            if (!$scope.bookedSeats.has(id)) {
 
                 if ($scope.selectedSeats.has(id)) {
                     unselectSeat(id);
@@ -114,7 +133,6 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
         function resetFields() {
 
             $scope.selectedSeats.clear();
-            $scope.phoneNumber = "";
         }
 
         function selectSeat(id) {
@@ -126,17 +144,28 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
         }
 
         function findBookedSeats() {
-            for (var i = 0; i < $scope.currentShowing.bookings.length; i++) {
-                for (var j = 0; j < $scope.currentShowing.bookings[i].bookedSeats.length; j++) {
-                    $scope.bookedSeats.add($scope.currentShowing.bookings[i].bookedSeats[j].id);
+            //Disable booked seats
+            var bookings = $scope.currentShowing.bookings;
+
+            for (var i = 0; i < bookings.length; i++) {
+                for (var j = 0; j < bookings[i].bookedSeats.length; j++) {
+                    $scope.bookedSeats.add(bookings[i].bookedSeats[j].id);
+                }
+            }
+
+            //Disable disabled seats
+            var rows = $scope.currentShowing.theater.rows;
+            for (var i = 0; i < rows.length; i++) {
+                for (var j = 0; j < rows[i].seats.length; j++) {
+                    if (rows[i].seats[j].state == "DISABLED") {
+                        $scope.bookedSeats.add(rows[i].seats[j].id);
+                    }
                 }
             }
         }
 
         function updateNumberOfBookedSeats() {
             $scope.numberOfSelectedSeats = $scope.selectedSeats.size;
-            console.log($scope.numberOfSelectedSeats);
-            // activeRequest = false;
         }
 
         function createSeatArray() {
@@ -160,7 +189,7 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
         }
 
         //Run on page load
-        $scope.fetchShowing();
+        $scope.fetchShowing(onYouTubeIframeAPIReady);
 
     }]);
 

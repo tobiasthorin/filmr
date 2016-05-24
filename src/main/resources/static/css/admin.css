@@ -139,7 +139,7 @@ input.btn {
     background-color: #ff5260; }
 
 .confirmWrapper .hooray {
-  background: #bb3246;
+  background: #5c111d;
   font-family: serif;
   text-align: center;
   border-radius: 5px;
@@ -157,6 +157,9 @@ input.btn {
     margin: 0; }
   .confirmWrapper .hooray h3 {
     font-style: normal;
+    font-family: sans-serif;
+    font-size: 1.7em;
+    letter-spacing: 1px;
     color: #e88989;
     margin: 0; }
   .confirmWrapper .hooray .divider {
@@ -253,21 +256,19 @@ tbody > tr.dateRow:hover {
 
 .calendar td {
   background: #CCC;
-  border: 1px solid #DDD;
-  font-weight: bold; }
-  .calendar td .fc-past {
-
+  font-weight: bold;
+  cursor: pointer; }
+  .calendar td .non-clickable-date {
     background: #DDD;
-    cursor: not-allowed; }
-
+    cursor: default;
+    border: none; }
   .calendar td .highlight {
-    background: #8008FF;
-    color: #FFFFFF;
+    background: #5c111d;
+    color: #f1f1f1;
     border: none; }
   .calendar td .selected {
     background: #5c111d;
     color: #f1f1f1;
-    color: #FFFFFF;
     border: none; }
 
 /*# sourceMappingURL=admin.css.map */

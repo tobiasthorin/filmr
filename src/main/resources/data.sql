@@ -272,7 +272,7 @@ INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 2) , ' 10:00'), 1, 1);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 2) , ' 13:00'), 1, 1);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 2) , ' 16:00'), 1, 1);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 2) , ' 19:00'), 1, 1);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 2) , ' 20:00'), 1, 1);
                                                                    
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 3) , ' 08:00'), 1, 1);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 3) , ' 11:00'), 1, 1);
@@ -289,22 +289,22 @@ INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 0) , ' 13:00'), 2, 2);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 0) , ' 16:00'), 2, 2);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 0) , ' 19:00'), 2, 2);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 0) , ' 21:00'), 2, 2);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 0) , ' 23:30'), 2, 2);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 0) , ' 22:00'), 2, 2);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 0) , ' 06:30'), 2, 2);
                                                                    
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 1) , ' 10:00'), 2, 2);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 1) , ' 13:00'), 2, 2);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 1) , ' 16:00'), 2, 2);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 1) , ' 19:00'), 2, 2);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 1) , ' 21:00'), 2, 2);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 1) , ' 23:30'), 2, 2);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 1) , ' 22:00'), 2, 2);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 1) , ' 06:30'), 2, 2);
                                                                   
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 2) , ' 10:00'), 2, 2);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 2) , ' 13:00'), 2, 2);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 2) , ' 16:00'), 2, 2);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 2) , ' 19:00'), 2, 2);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 2) , ' 21:00'), 2, 2);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 2) , ' 23:30'), 2, 2);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 2) , ' 22:00'), 2, 2);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 2) , ' 06:30'), 2, 2);
                                                               
 
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 3) , ' 10:00'), 2, 2);
@@ -318,8 +318,8 @@ INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 4) , ' 13:00'), 2, 2);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 4) , ' 16:00'), 2, 2);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 4) , ' 19:00'), 2, 2);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 4) , ' 21:00'), 2, 2);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 4) , ' 23:30'), 2, 2);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 4) , ' 22:00'), 2, 2);
+INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 4) , ' 06:30'), 2, 2);
                                                                                                                                  
                                                                    
 /* for movie 3, theater 3 */                                     
