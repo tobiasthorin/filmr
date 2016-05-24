@@ -148,6 +148,8 @@ describe("Tests for seatSelectController.js", function () {
             expect($scope.validateInputs()).toEqual(false);
             $scope.phoneNumber = 123;
             expect($scope.validateInputs()).toEqual(true);
+            $scope.phoneNumber = "0123";
+            expect($scope.validateInputs()).toEqual(true);
         });
 
         it("Verifies the seats selected", function () {
