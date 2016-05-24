@@ -1,9 +1,9 @@
 # Filmr: Cinema Management System
 
-##Introduction
+## Introduction
 Filmr is the result of a six week long course at Teknikhögskolan, Gothenburg. The product consists of two main parts: A backend, written in Java, serving JSON-formatted data and acting as an API for a frontend. Our provided frontend, in turn, is meant to serve as an example of how one can use the API to manage a cinema. The frontend is written mainly in JavaScript, using Angular 1.x.
 
-##Installation
+## Installation
 This project is based on [Spring Boot](http://projects.spring.io/spring-boot/), and uses [Maven](https://maven.apache.org) for dependencies and deployment. It also uses a [MySQL](http://www.mysql.com) database for persistance.
 
 * Download the repository and open the folder in your favourite IDE (we use [IntelliJ IDEA](https://www.jetbrains.com/idea/) or [Eclipse](http://www.eclipse.org)).
@@ -19,7 +19,7 @@ This project is based on [Spring Boot](http://projects.spring.io/spring-boot/), 
 *This is not the most elegant solution, we hope to be able to bring you a proper installer in the future.*
 
 
-##Deployment (.war)
+## Deployment (.war)
 If you have a server with tomcat (tomcat manager) and know how to deploy a .war file, you can follow these steps: (NOTE: our project uses Java 8 features so server will have to have a compatible Java version)
 
 * Clone the repository, eg. 
