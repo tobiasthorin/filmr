@@ -6,7 +6,9 @@ Filmr is the result of a six week long course at Teknikhögskolan, Gothenburg. T
 ## Installation
 This project is based on [Spring Boot](http://projects.spring.io/spring-boot/), and uses [Maven](https://maven.apache.org) for dependencies and deployment. It also uses a [MySQL](http://www.mysql.com) database for persistence.
 
-* Download the repository and open the folder in your favourite IDE (we use [IntelliJ IDEA](https://www.jetbrains.com/idea/) or [Eclipse](http://www.eclipse.org)).
+* Clone the repository, eg. 
+	`clone https://gitlab.com/vintr/filmr.git`
+* Open the root folder with your favourite IDE (we use [IntelliJ IDEA](https://www.jetbrains.com/idea/) or [Eclipse](http://www.eclipse.org)).
     
 * In the resource folder (src/main/resources) create the file application.properties and define the following properties for your own MySQL database:
     * `spring.datasource.url=`MY_DATABASE_URL
@@ -53,6 +55,9 @@ The repertoire allows a cinema to be associated with any number of movies. These
 This page displays information about a specific theater. Controls allow for the theaters name to be changed, as well as the number of rows and seats.
 
 A visual representation of the theaters layout allows the user of the system to customize the number and size of rows. Clicking each individual seat also cycles the seats' status between "enabled" (seat can be used as normal), "disabled" (seat is visible but not bookable), and "not a seat" (seat is disabled and will not show up at all for bookings). The last state can be used to shape the theater - to give rows different width or to create lanes and spacing.
+
+##### The showings page
+This page allows an admin to list and schedule showings. The left part of the page lists all currently scheduled showings, with options to filter the results based on cinema, theater, movie and time. To the right is a form for adding a new showing the the schedule. All parameters must be specified. If the showings conflicts with an already existing showing in the selected theater this is presented to the user as an error message.
 ### The customer interface
 This part of the system is meant to represent how a customer of the cinema can use the system to book tickets. There is currently no functionality for paying immediately on the site.
 ##### The booking pages

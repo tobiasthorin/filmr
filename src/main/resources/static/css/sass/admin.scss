@@ -321,7 +321,16 @@ input.btn {
   }
 }
 
-
+.showingDateInput {
+  input.showingDate {
+    display: inline;
+    width: 35%;
+  }
+  input.showingTime {
+    display: inline;
+    width: 20%;
+  }
+}
 
 
 

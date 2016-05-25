@@ -4,7 +4,6 @@ import filmr.helpers.exceptions.FilmrBaseException;
 import filmr.helpers.exceptions.FilmrExceptionModel;
 import filmr.helpers.exceptions.FilmrInvalidDateFormatException;
 import org.apache.log4j.Logger;
-import org.aspectj.lang.annotation.Aspect;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,12 +17,11 @@ import javax.servlet.http.HttpServletRequest;
  * for all controllers extending the class. 
  *
  */
-@Aspect
 public class BaseController {
 	
 	protected org.apache.log4j.Logger logger = Logger.getLogger(this.getClass());
 	
-    // all custom errors should inherit from FilmrBaseException, so this should work for all of them. 
+    // all custom errors should inherit from FilmrBaseException, so this should work for all of them.
     @ExceptionHandler(FilmrBaseException.class)
     @ResponseBody
     public ResponseEntity<FilmrExceptionModel> handleBadRequest(HttpServletRequest req, FilmrBaseException ex) {
@@ -31,7 +29,7 @@ public class BaseController {
     	FilmrExceptionModel exceptionModel = new FilmrExceptionModel(req, ex);
         return new ResponseEntity<FilmrExceptionModel>(exceptionModel, ex.getHttpStatus());
     }
-    
+
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     @ResponseBody
     public ResponseEntity<FilmrExceptionModel> handleBadDateTimeFormat(HttpServletRequest req, MethodArgumentTypeMismatchException ex) {

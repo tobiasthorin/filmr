@@ -4,7 +4,6 @@ import filmr.domain.Movie;
 import filmr.helpers.exceptions.FilmrPOSTRequestWithPredefinedIdException;
 import filmr.helpers.exceptions.FilmrPUTRequestWithMissingEntityIdException;
 import filmr.services.MovieService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,10 +1,10 @@
 <ol class="breadcrumb">
     <li><a href="#/customer">Admin Home</a></li>
     <li><a href="#/cinema/{{currentTheater.cinema.id}}">{{currentTheater.cinemaName}}</a></li>
-    <li>{{theaterName}}</li>
+    <li>{{name}}</li>
 </ol>
 
-<h2>{{theaterName}}</h2>
+<h2>{{name}}</h2>
 
 <div>
 
@@ -12,7 +12,7 @@
         <tbody>
         <tr>
             <td>Name:</td>
-            <td><input type="text" placeholder="Name" ng-model="theaterNameEdit"></td>
+            <td><input type="text" placeholder="Name" ng-model="original_name"></td>
             <td>
                 <button type="button" class="btn btn-default btn-sm" ng-click="setTheaterName()"
                         ng-disabled="!validateNameInput()">Update name
@@ -24,10 +24,10 @@
             <td>{{theaterWidth}}</td>
             <td>
                 <button class="btn btn-default btn-sm" type="button" ng-click="addSeats()"
-                        ng-disabled="!validateSeatInput(theaterWidthEdit + 1)">+
+                        ng-disabled="!validateSeatInput(1)">+
                 </button>
                 <button class="btn btn-default btn-sm" type="button" ng-click="removeSeats()"
-                        ng-disabled="!validateSeatInput(theaterWidthEdit - 1)">-
+                        ng-disabled="!validateSeatInput(-1)">-
                 </button>
             </td>
         </tr>
@@ -36,32 +36,32 @@
             <td>{{theaterDepth}}</td>
             <td>
                 <button class="btn btn-default btn-sm" type="button" ng-click="addRow()"
-                        ng-disabled="!validateRowInput(theaterDepthEdit + 1)">+
+                        ng-disabled="!validateRowInput(1)">+
                 </button>
                 <button class="btn btn-default btn-sm" type="button" ng-click="removeRow()"
-                        ng-disabled="!validateRowInput(theaterDepthEdit - 1)">-
+                        ng-disabled="!validateRowInput(-1)">-
                 </button>
             </td>
         </tr>
-
+        
         <tr>
-            <td>Seat numbers:</td>
+        	<td>Seat numbers:</td>
             <td colspan="2">
                 <div>
+				    <label class="radio-inline">
+				    	<input type="radio" name="rowReset" ng-model="rowReset" ng-value="false" ng-click="setRowReset(false)">
+				    	Continuous
+				    </label>
+				    
                     <label class="radio-inline">
-                        <input type="radio" name="rowReset" ng-model="rowReset" ng-value="false" ng-click="setRowReset(false)">
-                        Continuous
-                    </label>
-
-                    <label class="radio-inline">
-                        <input type="radio" name="rowReset" ng-model="rowReset" ng-value="true" ng-click="setRowReset(true)">
-                        Reset for each row
+                    	<input type="radio" name="rowReset" ng-model="rowReset" ng-value="true" ng-click="setRowReset(true)">
+                    	Reset for each row
                     </label>
                 </div>
 
             </td>
         </tr>
-
+        
         </tbody>
     </table>
 
