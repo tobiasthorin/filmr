@@ -8,7 +8,6 @@ angular.module('filmr')
 
 			var today = getToday();
 			
-			setupCalendar();
 			
 			//Execute on page load
 			getCinemas(function(){
@@ -212,6 +211,7 @@ angular.module('filmr')
 				return 0;
 			}
 			
+			setupCalendar();
 			function setupCalendar() {
 				
 			    $('.calendar').fullCalendar({
@@ -236,6 +236,9 @@ angular.module('filmr')
 //			        		$clickedTd.attr("ng-click","dateIsWithInValidRange('" + date + "') && setDate('"+date+"')");
 //			        		$clickedTd.attr("ng-class", "{'non-clickable-date': " + "!dateIsWithInValidRange('" + date + "')}");
 			        		
+			            	if(!$scope.dateIsWithInValidRange(date)) {
+			            		$clickedTd.addClass('non-clickable-date');
+			            	}
 			            	$clickedTd.click(function() {
 			            		$scope.setDate(date);
 			            	});
