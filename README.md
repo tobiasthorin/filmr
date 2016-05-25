@@ -1,12 +1,14 @@
 # Filmr: Cinema Management System
 
-##Introduction
+## Introduction
 Filmr is the result of a six week long course at Teknikhögskolan, Gothenburg. The product consists of two main parts: A backend, written in Java, serving JSON-formatted data and acting as an API for a frontend. Our provided frontend, in turn, is meant to serve as an example of how one can use the API to manage a cinema. The frontend is written mainly in JavaScript, using Angular 1.x.
 
-##Installation
-This project is based on [Spring Boot](http://projects.spring.io/spring-boot/), and uses [Maven](https://maven.apache.org) for dependencies and deployment. It also uses a [MySQL](http://www.mysql.com) database for persistance.
+## Installation
+This project is based on [Spring Boot](http://projects.spring.io/spring-boot/), and uses [Maven](https://maven.apache.org) for dependencies and deployment. It also uses a [MySQL](http://www.mysql.com) database for persistence.
 
-* Download the repository and open the folder in your favourite IDE (we use [IntelliJ IDEA](https://www.jetbrains.com/idea/) or [Eclipse](http://www.eclipse.org)).
+* Clone the repository, eg. 
+	`clone https://gitlab.com/vintr/filmr.git`
+* Open the root folder with your favourite IDE (we use [IntelliJ IDEA](https://www.jetbrains.com/idea/) or [Eclipse](http://www.eclipse.org)).
     
 * In the resource folder (src/main/resources) create the file application.properties and define the following properties for your own MySQL database:
     * `spring.datasource.url=`MY_DATABASE_URL
@@ -15,6 +17,30 @@ This project is based on [Spring Boot](http://projects.spring.io/spring-boot/), 
 * Run Application.java, located in src/main/java/filmr.
 
 * Access the website at [http://localhost:8080/filmr](http://localhost:8080/filmr).
+
+*This is not the most elegant solution, we hope to be able to bring you a proper installer in the future.*
+
+
+## Deployment (.war)
+If you have a server with tomcat (tomcat manager) and know how to deploy a .war file, you can follow these steps: (NOTE: our project uses Java 8 features so server will have to have a compatible Java version)
+
+* Clone the repository, eg. 
+	`clone https://gitlab.com/vintr/filmr.git`
+* Change directory to project root 
+	`cd filmr`
+* Change to branch easier_deployment
+	`git checkout easier_deployment`
+* Make sure branch easier_deployment is up to date `git merge origin/dev` 
+* In the resource folder (src/main/resources) create the file application.properties and define the following properties for your own MySQL database:
+    * `spring.datasource.url=`MY_DATABASE_URL  (like `jdbc:mysql://localhost:3306/filmr`) 
+    * `spring.datasource.username=`MY_DATABASE_USERNAME
+    * `spring.datasource.password=`MY_DATABASE_PASSWORD
+* Build the .war file 
+	`mvn clean package -DskipTests`
+* Locate the .war file in folder /target and rename it to filmr (needs to correspond to the value of 'server-context' in src/main/resources/application.yml)
+* Deploy the .war file to Tomcat server or similar, eg. through Tomcat Manager App.
+* Access the website at [http://your-domain-or-local-address:8080/filmr](http://your-domain-or-local-address:8080/filmr)
+
 
 ## Functionality (as of version 0.3)
 ### The admin interface
@@ -29,6 +55,9 @@ The repertoire allows a cinema to be associated with any number of movies. These
 This page displays information about a specific theater. Controls allow for the theaters name to be changed, as well as the number of rows and seats.
 
 A visual representation of the theaters layout allows the user of the system to customize the number and size of rows. Clicking each individual seat also cycles the seats' status between "enabled" (seat can be used as normal), "disabled" (seat is visible but not bookable), and "not a seat" (seat is disabled and will not show up at all for bookings). The last state can be used to shape the theater - to give rows different width or to create lanes and spacing.
+
+##### The showings page
+This page allows an admin to list and schedule showings. The left part of the page lists all currently scheduled showings, with options to filter the results based on cinema, theater, movie and time. To the right is a form for adding a new showing the the schedule. All parameters must be specified. If the showings conflicts with an already existing showing in the selected theater this is presented to the user as an error message.
 ### The customer interface
 This part of the system is meant to represent how a customer of the cinema can use the system to book tickets. There is currently no functionality for paying immediately on the site.
 ##### The booking pages
@@ -50,9 +79,6 @@ This release marks the end of the project, during which this product was created
 
 *This is the current state of the software, but with the right incentive we might develop it further. :)*
 
-##Known issues
-* 
-
 ## Project Contributors
 - [Marco Fält](https://gitlab.com/u/marco.falt)
 - [Adrian Kinberger](https://gitlab.com/u/luffarvante)
@@ -61,6 +87,6 @@ This release marks the end of the project, during which this product was created
 - [Erik Wiberg](https://gitlab.com/u/erik-wiberg-87)
 
 ## License
-Filmr is licensed under a [Creative Commons Attribution-NonCommercial 4.0 International License]([http://](http://creativecommons.org/licenses/by-nc/4.0/)).
+Filmr is licensed under a [Creative Commons Attribution-NonCommercial 4.0 International License](http://creativecommons.org/licenses/by-nc/4.0/).
 
 

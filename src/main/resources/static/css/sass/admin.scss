@@ -303,6 +303,7 @@ input.btn {
     padding: 0.5em;
     color: $text-light;
     border-radius: 5px;
+    overflow: auto;
     .movieTitle {
       color: $cinema-gold;
       font-size: 1.5em;
@@ -320,7 +321,16 @@ input.btn {
   }
 }
 
-
+.showingDateInput {
+  input.showingDate {
+    display: inline;
+    width: 35%;
+  }
+  input.showingTime {
+    display: inline;
+    width: 20%;
+  }
+}
 
 
 
@@ -352,6 +362,9 @@ input.btn {
 .dateRow {
   background-color: #5c111d;
   color: #FFFFFF;
+}
+.disabledShowing{
+  background-color: rgba(92, 17, 29, 0.59);
 }
 
 tbody > tr.dateRow:hover {

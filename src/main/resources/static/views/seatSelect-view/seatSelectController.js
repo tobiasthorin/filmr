@@ -59,9 +59,10 @@ app.controller('seatSelectController', ['$scope', '$log', '$rootScope', '$routeP
         };
 
         $scope.validateInputs = function () {
-            $scope.phoneNumber = parseInt($scope.phoneNumber);
+            var number = parseInt($scope.phoneNumber);
 
-            if (typeof $scope.phoneNumber != "number" || !$scope.phoneNumber) return false;
+            if (!number) return false;
+            if (typeof number == "NaN") return false;
             if ($scope.numberOfSelectedSeats < 1) return false;
 
             return true;

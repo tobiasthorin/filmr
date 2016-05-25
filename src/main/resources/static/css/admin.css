@@ -191,7 +191,8 @@ input.btn {
   margin: 0.5em 0;
   padding: 0.5em;
   color: #f1f1f1;
-  border-radius: 5px; }
+  border-radius: 5px;
+  overflow: auto; }
   .showingResults .showing .movieTitle {
     color: #f3ca29;
     font-size: 1.5em;
@@ -203,6 +204,13 @@ input.btn {
     color: #e88989; }
   .showingResults .showing .ticketsLeft button {
     margin-left: 1em; }
+
+.showingDateInput input.showingDate {
+  display: inline;
+  width: 35%; }
+.showingDateInput input.showingTime {
+  display: inline;
+  width: 20%; }
 
 .clearField {
   position: absolute;
@@ -228,6 +236,9 @@ input.btn {
 .dateRow {
   background-color: #5c111d;
   color: #FFFFFF; }
+
+.disabledShowing {
+  background-color: rgba(92, 17, 29, 0.59); }
 
 tbody > tr.dateRow:hover {
   background-color: #5c111d;
