@@ -1,35 +1,15 @@
 <script>
 
-    $('.calendar').fullCalendar({
-        viewRender   : function(view,element) {
-            var now = new Date();
-            var end = new Date();
-            end.setMonth(now.getMonth() + 1); //Adjust as needed
-            if ( end < view.end) {
-                $(".fc-next-button").hide();
-                return false;
-            }
-            else {
-                $(".fc-next-button").show();
-            }
-            $(".fc-prev-button").hide();
 
-        },
-    });
-
-    $('.calendar').fullCalendar('option', 'height', 400);
-    $('.calendar td').click(function(){
-
-
-    });
-    $('.calendar td').each(function(index){
+	
+/*      $('.calendar td').each(function(index){
         var date = $(this).attr("data-date");
-        if(typeof date != "undefined") {
+        if(date) {
         	$clickedTd = $(this);
     		$clickedTd.attr("ng-click","dateIsWithInValidRange('" + date + "') && setDate('"+date+"')");
     		$clickedTd.attr("ng-class", "{'non-clickable-date': " + "!dateIsWithInValidRange('" + date + "')}");
         }
-    });
+    }); */
 
 </script>
 <h2>Booking</h2>

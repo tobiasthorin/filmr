@@ -7,8 +7,9 @@ angular.module('filmr')
 
 
 			var today = getToday();
-
-
+			
+			setupCalendar();
+			
 			//Execute on page load
 			getCinemas(function(){
 				$scope.cinema = $scope.allCinemas[0];
@@ -55,11 +56,8 @@ angular.module('filmr')
 				$log.info("set date");
 				$log.info(date);
 
-				// see if date is before today
-				var cd = compareDates(today,date);
-				$log.debug(cd);
-				// date is before today
-				if(cd==-1) return;
+				
+				if(!$scope.dateIsWithInValidRange(date)) return;
 				
 				if (date == $scope.selectedDates) {
 					$scope.selectedDates = [];
@@ -212,6 +210,40 @@ angular.module('filmr')
 				if(dateA.substring(8,10)<dateB.substring(8,10)) return 1;				
 				if(dateA.substring(8,10)>dateB.substring(8,10)) return -1;
 				return 0;
+			}
+			
+			function setupCalendar() {
+				
+			    $('.calendar').fullCalendar({
+			        viewRender   : function(view,element) {
+			            var now = new Date();
+			            var end = new Date();
+			            end.setMonth(now.getMonth() + 1); //Adjust as needed
+			            if ( end < view.end) {
+			                $(".fc-next-button").hide();
+			                return false;
+			            }
+			            else {
+			                $(".fc-next-button").show();
+			            }
+			            $(".fc-prev-button").hide();
+
+			        }, 
+			        dayRender: function(date, cell) {
+			        	var date = $(cell).attr("data-date");
+			            if(date) {
+			            	var $clickedTd = $(cell);
+//			        		$clickedTd.attr("ng-click","dateIsWithInValidRange('" + date + "') && setDate('"+date+"')");
+//			        		$clickedTd.attr("ng-class", "{'non-clickable-date': " + "!dateIsWithInValidRange('" + date + "')}");
+			        		
+			            	$clickedTd.click(function() {
+			            		$scope.setDate(date);
+			            	});
+			            }
+			        }
+			    });
+
+			    $('.calendar').fullCalendar('option', 'height', 400);
 			}
 
 		}]);
