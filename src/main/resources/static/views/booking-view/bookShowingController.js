@@ -56,14 +56,22 @@ angular.module('filmr')
 				$log.info(date);
 
 				
-				if(!$scope.dateIsWithInValidRange(date)) return;
+				if(!$scope.dateIsWithInValidRange(date)) {
+					$log.debug("click canceled. not valid date");
+					return;
+				}
 				
+				$log.debug("valid date. ");
+				
+				// clear selected dates if the sent date is already
 				if (date == $scope.selectedDates) {
+					$log.debug("clearing previously selected date");
 					$scope.selectedDates = [];
 				}
 				else {
 					$scope.selectedDates = [date];
 				}
+				$log.debug("updating showings with new selected date");
 				$scope.updateShowings();
 			};
 			
@@ -239,10 +247,11 @@ angular.module('filmr')
 			            	if(!$scope.dateIsWithInValidRange(date)) {
 			            		$clickedTd.addClass('non-clickable-date');
 			            	}
-			            	$clickedTd.click(function() {
-			            		$scope.setDate(date);
-			            	});
 			            }
+			        }, 
+			        dayClick: function(date, jsEvent, view) {
+			        	var rDate = $(this).attr("data-date");
+		            	$scope.setDate(rDate);
 			        }
 			    });
 
