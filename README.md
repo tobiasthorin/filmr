@@ -6,7 +6,9 @@ Filmr is the result of a six week long course at Teknikhögskolan, Gothenburg. T
 ## Installation
 This project is based on [Spring Boot](http://projects.spring.io/spring-boot/), and uses [Maven](https://maven.apache.org) for dependencies and deployment. It also uses a [MySQL](http://www.mysql.com) database for persistence.
 
-* Download the repository and open the folder in your favourite IDE (we use [IntelliJ IDEA](https://www.jetbrains.com/idea/) or [Eclipse](http://www.eclipse.org)).
+* Clone the repository, eg. 
+	`clone https://gitlab.com/vintr/filmr.git`
+* Open the root folder with your favourite IDE (we use [IntelliJ IDEA](https://www.jetbrains.com/idea/) or [Eclipse](http://www.eclipse.org)).
     
 * In the resource folder (src/main/resources) create the file application.properties and define the following properties for your own MySQL database:
     * `spring.datasource.url=`MY_DATABASE_URL

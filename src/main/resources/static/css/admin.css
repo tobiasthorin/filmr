@@ -205,6 +205,13 @@ input.btn {
   .showingResults .showing .ticketsLeft button {
     margin-left: 1em; }
 
+.showingDateInput input.showingDate {
+  display: inline;
+  width: 35%; }
+.showingDateInput input.showingTime {
+  display: inline;
+  width: 20%; }
+
 .clearField {
   position: absolute;
   right: 5px;
