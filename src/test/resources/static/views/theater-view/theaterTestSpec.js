@@ -11,6 +11,7 @@ describe("cinemaController.js", function () {
 	var seat;
     var $scope;
 	var $rootScope = {};
+    var $log;
 
     var $controller;
 
@@ -18,6 +19,12 @@ describe("cinemaController.js", function () {
 
     //Mocks
     beforeEach(function () {
+
+        $log = {
+            error: function(msg) {
+
+            }
+        };
 
         $routeParams = {
             'cinema_id': 1,
@@ -31,7 +38,7 @@ describe("cinemaController.js", function () {
         $rootScope.clearAlerts = function(){
 
         };
-	    seat = {state: "ENABLED"}
+	    seat = {state: "ENABLED"};
 
         MockedTheaterService = {
             'get': function (params) {
@@ -120,7 +127,6 @@ describe("cinemaController.js", function () {
         $controller = _$controller_;
         $scope = {};
 
-
         $controller('theaterController', {
             $scope: $scope, $routeParams: $routeParams,
             TheaterService: MockedTheaterService,
@@ -186,32 +192,32 @@ describe("cinemaController.js", function () {
 			var beforeRows = $scope.theaterDepth;
 			$scope.addRow();
 			expect(beforeRows+1).toEqual($scope.theaterDepth);
-		})
+		});
 		it("Removes a row", function(){
 			var beforeRows = $scope.theaterDepth;
 			$scope.removeRow();
 			expect(beforeRows-1).toEqual($scope.theaterDepth);
-		})
+		});
 		it("Doesnt remove the last row", function(){
 			var beforeRows = 1;
 			$scope.removeRow();
 			expect(beforeRows).toEqual(1);
-		})
+		});
 		it("Removes seats", function(){
 			var beforeSeats = $scope.theaterWidth;
 			$scope.removeSeats();
 			expect(beforeSeats-1).toEqual($scope.theaterWidth);
-		})
+		});
 		it("Adds seats", function(){
 			var beforeSeats = $scope.theaterWidth;
 			$scope.addSeats();
 			expect(beforeSeats+1).toEqual($scope.theaterWidth);
-		})
+		});
 		it("Doesnt remove the last row", function(){
 			var beforeSeats = 1;
 			$scope.removeSeats();
 			expect(beforeSeats).toEqual(1);
-		})
+		});
 	})
 
 
