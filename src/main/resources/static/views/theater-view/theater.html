@@ -24,10 +24,10 @@
             <td>{{theaterWidth}}</td>
             <td>
                 <button class="btn btn-default btn-sm" type="button" ng-click="addSeats()"
-                        ng-disabled="!validateSeatInput(theaterWidthEdit)">+
+                        ng-disabled="!validateSeatInput(theaterWidthEdit + 1)">+
                 </button>
                 <button class="btn btn-default btn-sm" type="button" ng-click="removeSeats()"
-                        ng-disabled="!validateSeatInput(theaterWidthEdit)">-
+                        ng-disabled="!validateSeatInput(theaterWidthEdit - 1)">-
                 </button>
             </td>
         </tr>
@@ -36,10 +36,10 @@
             <td>{{theaterDepth}}</td>
             <td>
                 <button class="btn btn-default btn-sm" type="button" ng-click="addRow()"
-                        ng-disabled="!validateRowInput(theaterDepthEdit)">+
+                        ng-disabled="!validateRowInput(theaterDepthEdit + 1)">+
                 </button>
                 <button class="btn btn-default btn-sm" type="button" ng-click="removeRow()"
-                        ng-disabled="!validateRowInput(theaterDepthEdit)">-
+                        ng-disabled="!validateRowInput(theaterDepthEdit - 1)">-
                 </button>
             </td>
         </tr>

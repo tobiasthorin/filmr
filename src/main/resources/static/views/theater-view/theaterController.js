@@ -110,7 +110,7 @@ angular.module('filmr')
 	        };
 
             $scope.removeSeats = function(){
-                $scope.theaterWidth--;
+                $scope.theaterWidthEdit--;
                 if(!$scope.validateSeatInput($scope.theaterWidthEdit)) {
                     $rootScope.genericError();
                     $scope.theaterWidthEdit++;
