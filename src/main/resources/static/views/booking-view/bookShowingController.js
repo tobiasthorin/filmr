@@ -243,10 +243,12 @@ angular.module('filmr')
 			            	var $clickedTd = $(cell);
 //			        		$clickedTd.attr("ng-click","dateIsWithInValidRange('" + date + "') && setDate('"+date+"')");
 //			        		$clickedTd.attr("ng-class", "{'non-clickable-date': " + "!dateIsWithInValidRange('" + date + "')}");
-			        		
 			            	if(!$scope.dateIsWithInValidRange(date)) {
 			            		$clickedTd.addClass('non-clickable-date');
 			            	}
+                            else {
+    			        		$clickedTd.attr("style","cursor:pointer");
+                            }
 			            }
 			        }, 
 			        dayClick: function(date, jsEvent, view) {

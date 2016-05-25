@@ -394,15 +394,15 @@ tbody > tr.dateRow:hover {
 }
 
 .calendar h2 {
-  font-size: 14px;
+  font-size: 1.8em;
   font-style: normal;
-  font-weight: bold;
+  font-weight: normal;
+  font-family: Helvetica,sans-serif;
 }
 
 .calendar td {
   background: #CCC;
   font-weight:bold;
-  cursor: pointer;
 
   .non-clickable-date {
     background:#DDD;
