@@ -25,14 +25,14 @@ public class BaseController {
     @ExceptionHandler(FilmrBaseException.class)
     @ResponseBody
     public ResponseEntity<FilmrExceptionModel> handleBadRequest(HttpServletRequest req, FilmrBaseException ex) {
-    	logger.debug("Catching custom error in method inherrited from BaseController.java ");
+    	logger.debug("Catching custom error in method inherrited from BaseController.java ", ex);
     	FilmrExceptionModel exceptionModel = new FilmrExceptionModel(req, ex);
         return new ResponseEntity<FilmrExceptionModel>(exceptionModel, ex.getHttpStatus());
     }
 
-    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ExceptionHandler(Exception.class)
     @ResponseBody
-    public ResponseEntity<FilmrExceptionModel> handleBadDateTimeFormat(HttpServletRequest req, MethodArgumentTypeMismatchException ex) {
+    public ResponseEntity<FilmrExceptionModel> handleBadDateTimeFormat(HttpServletRequest req, Exception ex) throws Exception {
     	
     	logger.debug("caught non-custom exception: " + ex);
     	logger.debug("caught non-custom exception with message : " + ex.getLocalizedMessage());

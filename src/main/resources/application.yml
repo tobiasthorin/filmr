@@ -20,7 +20,8 @@
     context-path: /filmr
 
   logging:
+    file: filmr_log.txt
     level:
       org.springframework.web: DEBUG
       org.hibernate: ERROR
-      filmr: INFO
+      filmr: DEBUG
