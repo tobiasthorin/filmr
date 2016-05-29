@@ -1,27 +1,35 @@
-  spring:
-    application:
-      name: application
-    jpa:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQLInnoDBDialect
-        naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
-        ddl-auto: create-drop
-    datasource:
-      driverClassName: com.mysql.jdbc.Driver
-    data:
-      cassandra:
-        connect-timeout-millis: 3000
-    jackson:
-      serialization:
-        fail-on-empty-beans: false
-        write-dates-as-timestamps: false
+spring:
+  application:
+    name: application
+  jpa:
+    hibernate:
+      dialect: org.hibernate.dialect.MySQLInnoDBDialect
+      naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+      ddl-auto: create-drop
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    max-active: 5 # for key/values below, see http://stackoverflow.com/questions/30451470/connection-to-db-dies-after-424-in-spring-boot-jpa-hibernate
+    initial-size: 1
+    max-idle: 3
+    min-idle: 1
+    test-while-idle: true
+    test-on-borrow: true
+    validation-query: 'SELECT 1'
+    time-between-eviction-runs-millis: 5000
+    min-evictable-idle-time-millis: 60000
+  data:
+    cassandra:
+      connect-timeout-millis: 3000
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+      write-dates-as-timestamps: false
 
-  server:
-    context-path: /filmr
+server:
+  context-path: /filmr
 
-  logging:
-    file: filmr_log.txt
-    level:
-      org.springframework.web: DEBUG
-      org.hibernate: ERROR
-      filmr: DEBUG
+logging:
+  level:
+    org.springframework.web: DEBUG
+    org.hibernate: ERROR
+    filmr: INFO

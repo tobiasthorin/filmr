@@ -230,31 +230,6 @@ INSERT INTO repertoire_movies (repertoire,movies) VALUES(2,3);
 INSERT INTO repertoire_movies (repertoire,movies) VALUES(2,4);
 
 
-/* SOME "DYNAMIC" DATA THAT GUARANTIES THAT THERE ARE ALWAYS A FEW SHOWINGS TODAY (now()). */
-
-
-/* 
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 10:00'), 3, 1);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 13:00'), 3, 1);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 16:00'), 3, 1);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 19:00'), 3, 1);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 22:00'), 3, 1);
-
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 09:00'), 2, 2);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 12:00'), 2, 2);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 15:00'), 2, 2);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 18:00'), 2, 2);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 21:00'), 2, 2);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (date_format(now(), '%Y-%m-%d 23:30'), 2, 2);
-*/
-
-/*
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 2) , ' 12:00'), 3, 3);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 2) , ' 14:00'), 3, 3);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 2) , ' 18:00'), 3, 3);
-INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 2) , ' 20:00'), 3, 3);
-*/
-
 /* NEW DYNAMIC SHOWINGS */
 
 /* SHOWINGS */
@@ -263,7 +238,8 @@ INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 0) , ' 13:00'), 1, 1);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 0) , ' 16:00'), 1, 1);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 0) , ' 19:00'), 1, 1);
-                                                                 
+
+/*    these test data may break build, because they may generate invalid dates, like 2016-05-32 10:00                                                                
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 1) , ' 08:00'), 1, 1);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 1) , ' 11:00'), 1, 1);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 1) , ' 14:00'), 1, 1);
@@ -283,6 +259,7 @@ INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 4) , ' 13:00'), 1, 1);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 4) , ' 16:00'), 1, 1);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 4) , ' 19:00'), 1, 1);
+*/
                                                                  
 /* for movie 2, theater 2*/                                       
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 0) , ' 10:00'), 2, 2);
@@ -291,7 +268,8 @@ INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 0) , ' 19:00'), 2, 2);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 0) , ' 22:00'), 2, 2);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 0) , ' 06:30'), 2, 2);
-                                                                   
+
+/*        these test data may break build, because they may generate invalid dates, like 2016-05-32 10:00                                                                  
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 1) , ' 10:00'), 2, 2);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 1) , ' 13:00'), 2, 2);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 1) , ' 16:00'), 2, 2);
@@ -320,14 +298,15 @@ INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 4) , ' 19:00'), 2, 2);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 4) , ' 22:00'), 2, 2);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 4) , ' 06:30'), 2, 2);
-                                                                                                                                 
+*/                                                                                                                    
                                                                    
 /* for movie 3, theater 3 */                                     
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 0) , ' 08:00'), 3, 3);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 0) , ' 11:00'), 3, 3);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 0) , ' 14:00'), 3, 3);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 0) , ' 19:00'), 3, 3);
-                                                                  
+
+/*     these test data may break build, because they may generate invalid dates, like 2016-05-32 10:00                                                              
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 1) , ' 08:00'), 3, 3);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 1) , ' 11:00'), 3, 3);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 1) , ' 14:00'), 3, 3);
@@ -347,4 +326,5 @@ INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 4) , ' 11:00'), 3, 3);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 4) , ' 14:00'), 3, 3);
 INSERT INTO showing (show_date_time, movie_id, theater_id) VALUES (CONCAT(CONCAT(DATE_FORMAT(NOW(), '%Y-%m-'),  CAST(date_format(now(),'%d') AS UNSIGNED) + 4) , ' 19:00'), 3, 3);
+*/
                                                                   
