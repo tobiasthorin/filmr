@@ -3,6 +3,13 @@
 ## Introduction
 Filmr is the result of a six week long course at Teknikhögskolan, Gothenburg. The product consists of two main parts: A backend, written in Java, serving JSON-formatted data and acting as an API for a frontend. Our provided frontend, in turn, is meant to serve as an example of how one can use the API to manage a cinema. The frontend is written mainly in JavaScript, using Angular 1.x.
 
+## Preview of admin features
+* Creating a cinema
+* Adding/removing movies to/from its repertoire
+* Adding a theater and customizing its appearence
+
+![](readme-media/from-cinema-to-theater.gif)
+
 ## Installation
 This project is based on [Spring Boot](http://projects.spring.io/spring-boot/), and uses [Maven](https://maven.apache.org) for dependencies and deployment. It also uses a [MySQL](http://www.mysql.com) database for persistence.
 
